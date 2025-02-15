@@ -95,13 +95,13 @@ const Filters = () => {
             "id": 12,
             "filter_image": "https://vectorflags.s3.amazonaws.com/flags/us-square-01.png",
             "filter_text": "USA",
-            "filter_no_image_text": "125",
+            "filter_no_image_text": null,
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
                 return fighter.Nationality == "United States";
             })
         }, {
             "id": 13,
-            "filter_image": "https://pngimg.com/d/ufc_PNG66.png",
+            "filter_image": null,
             "filter_text": "Total Title Bouts",
             "filter_no_image_text": ">2",
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
