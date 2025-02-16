@@ -1,5 +1,5 @@
 import React from 'react'
-import fighters_url from "../assets/data/fighters_url.json";
+import fighters_url from "../assets/data/fighters.json";
 import { Fighter } from '../interfaces/Fighter';
 const Filters = () => {
     let filters_all = [
@@ -33,7 +33,9 @@ const Filters = () => {
             "filter_text": "Welterweight",
             "filter_no_image_text": "170",
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
-                return fighter.Division == "Welterweight";
+                return fighter.WeightLbs.split(", ")
+                    .map(Number)
+                    .includes(170);
             })
         }, {
             "id": 5,
@@ -41,15 +43,18 @@ const Filters = () => {
             "filter_text": "Middleweight",
             "filter_no_image_text": "185",
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
-                return fighter.Division == "Middleweight";
+                return fighter.WeightLbs.split(", ")
+                    .map(Number)
+                    .includes(185);
             })
         }, {
             "id": 6,
             "filter_image": null,
             "filter_text": "Lightweight",
-            "filter_no_image_text": "155",
-            "filter_fighters": fighters_url.filter((fighter: Fighter) => {
-                return fighter.Division == "Lightweight";
+            "filter_no_image_text": fighters_url.filter((fighter: Fighter) => {
+                return fighter.WeightLbs.split(", ")
+                    .map(Number)
+                    .includes(155);
             })
         }, {
             "id": 7,
@@ -57,7 +62,9 @@ const Filters = () => {
             "filter_text": "Light heavyweight",
             "filter_no_image_text": "205",
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
-                return fighter.Division == "Light heavyweight";
+                return fighter.WeightLbs.split(", ")
+                    .map(Number)
+                    .includes(205);
             })
         }, {
             "id": 8,
@@ -65,7 +72,9 @@ const Filters = () => {
             "filter_text": "Heavyweight",
             "filter_no_image_text": "205>",
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
-                return fighter.Division == "Heavyweight";
+                return fighter.WeightLbs.split(", ")
+                    .map(Number)
+                    .some(weight => weight > 205);
             })
         }, {
             "id": 9,
@@ -73,7 +82,9 @@ const Filters = () => {
             "filter_text": "Featherweight",
             "filter_no_image_text": "145",
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
-                return fighter.Division == "Featherweight";
+                return fighter.WeightLbs.split(", ")
+                    .map(Number)
+                    .includes(145);
             })
         }, {
             "id": 10,
@@ -81,7 +92,9 @@ const Filters = () => {
             "filter_text": "Bantamweight",
             "filter_no_image_text": "135",
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
-                return fighter.Division == "Bantamweight";
+                return fighter.WeightLbs.split(", ")
+                    .map(Number)
+                    .includes(135);
             })
         }, {
             "id": 11,
@@ -89,7 +102,9 @@ const Filters = () => {
             "filter_text": "Flyweight",
             "filter_no_image_text": "125",
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
-                return fighter.Division == "Flyweight";
+                return fighter.WeightLbs.split(", ")
+                    .map(Number)
+                    .includes(125);
             })
         }, {
             "id": 12,

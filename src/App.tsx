@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import fighters_url from "./assets/data/fighters_url.json";
+import fighters_url from "./assets/data/fighters.json";
 import Filters from "./logic/filters";
 import { Fighter } from "./interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
 
 function App() {
   let filters = Filters();
+
+  const [gameWinner, setGameWinner]: any = useState(null);
+
+  const [selected, setSelected]: any = useState();
 
   const [positionsFighters, setPositionsFighters]: any = useState({
     position03: {},
@@ -21,17 +25,23 @@ function App() {
 
   const [turn, setTurn]: any = useState("red");
 
-  useEffect(() => {
-    const winner = checkWinner();
-    if (winner) {
-      alert(winner); // Kazananı bildir
-      return;
-    }
-  }, [turn]);
-
   const [filtersSelected, setFiltersSelected]: any = useState([]);
 
   const [fighters, setFigters]: any = useState();
+
+  useEffect(() => {
+    const winner = checkWinner();
+    if (winner) {
+      if (winner == "Red Wins!") {
+        setGameWinner("Red");
+      } else if (winner == "Blue Wins!") {
+        setGameWinner("Blue");
+      } else {
+        setGameWinner(null);
+      }
+      return;
+    }
+  }, [turn]);
 
   const [fighter00, setFighter00]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
@@ -83,7 +93,31 @@ function App() {
     getFilters();
   }, []);
 
-  const [selected, setSelected]: any = useState();
+  const restartGame = () => {
+    // Tüm kutuları başlangıç durumuna döndür
+    setFighter00({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
+    setFighter01({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
+    setFighter02({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
+    setFighter10({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
+    setFighter11({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
+    setFighter12({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
+    setFighter20({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
+    setFighter21({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
+    setFighter22({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
+
+    // Oyunun ilk sırası kırmızı olsun
+    setTurn("red");
+
+    // Oyuncuların seçtiği dövüşçüleri sıfırla
+    setFigters([]);
+
+    // Yeni rastgele dövüşçüleri belirle
+    getFilters();
+
+    setGameWinner(null);
+
+    console.log("Game restarted!");
+  };
 
   const filterByName = (name: string) => {
     if (name.length > 3) {
@@ -165,6 +199,11 @@ function App() {
       }
     }
 
+    if (filters_arr.length < 6) {
+      console.error("HATA: filters_arr 6'dan az eleman içeriyor!");
+      return;
+    }
+
     let isDone: boolean = false;
     let finish = 0;
 
@@ -178,35 +217,43 @@ function App() {
         }
       }
 
+      if (!filters_arr[3] || !filters_arr[4] || !filters_arr[5]) {
+        console.error(
+          "HATA: filters_arr[3], filters_arr[4] veya filters_arr[5] undefined!"
+        );
+        continue;
+      }
+
       let newPositions = { ...positionsFighters }; // Yeni state nesnesi oluştur
 
       for (let i = 0; i < 3; i++) {
-        let intersection3 = filters_arr[i].filter_fighters.filter(
-          (fighter1: Fighter) =>
-            filters_arr[3].filter_fighters.some(
+        let intersection3 =
+          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
+            filters_arr[3]?.filter_fighters?.some(
               (fighter2: Fighter) => fighter1.Id === fighter2.Id
             )
-        );
+          ) || [];
 
-        let intersection4 = filters_arr[i].filter_fighters.filter(
-          (fighter1: Fighter) =>
-            filters_arr[4].filter_fighters.some(
+        let intersection4 =
+          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
+            filters_arr[4]?.filter_fighters?.some(
               (fighter2: Fighter) => fighter1.Id === fighter2.Id
             )
-        );
+          ) || [];
 
-        let intersection5 = filters_arr[i].filter_fighters.filter(
-          (fighter1: Fighter) =>
-            filters_arr[5].filter_fighters.some(
+        let intersection5 =
+          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
+            filters_arr[5]?.filter_fighters?.some(
               (fighter2: Fighter) => fighter1.Id === fighter2.Id
             )
-        );
+          ) || [];
 
         if (
           intersection3.length < 2 ||
           intersection4.length < 2 ||
           intersection5.length < 2
         ) {
+          console.warn("Eşleşme sağlanamadı, döngü yeniden başlatılıyor.");
           break;
         }
 
@@ -233,10 +280,10 @@ function App() {
       if (isDone) {
         setPositionsFighters(newPositions); // Tek seferde state güncelle
         setFiltersSelected(filters_arr);
+        console.log("BİTTİ", newPositions);
         break;
       }
     }
-    console.log(filtersSelected);
   };
 
   const checkWinner = () => {
@@ -328,27 +375,35 @@ function App() {
         />
         <div className="flex w-full h-full justify-center">
           <div>
-            <div className="flex justify-end text-right pt-12">
+            <div className="flex justify-between text-right pt-12">
+              <div
+                onClick={() => {
+                  restartGame();
+                }}
+                className="bg-stone-300 flex gap-4 text-stone-800 cursor-pointer border border-stone-400 font-semibold w-fit px-5 py-1 rounded-xl shadow-xl"
+              >
+                Restart Game
+              </div>
               {turn == "red" ? (
-                <div className="bg-stone-300 flex gap-4 text-red-600 border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl">
+                <div className="bg-stone-300 flex gap-4 text-red-600 border border-stone-400 font-semibold w-fit px-5 py-1 rounded-xl shadow-xl">
                   <p>Turn : Red</p>
                   <div
                     onClick={() => {
                       setTurn("blue");
                     }}
-                    className="bg-stone-600 text-white cursor-pointer px-2 rounded-lg"
+                    className="bg-stone-600 text-white cursor-pointer px-2 rounded-xl shadow-lg border border-stone-700"
                   >
                     Skip
                   </div>
                 </div>
               ) : (
-                <div className="bg-stone-300 flex gap-4 text-blue-600 border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl">
+                <div className="bg-stone-300 flex gap-4 text-blue-600 border border-stone-400 font-semibold w-fit px-5 py-1 rounded-xl shadow-xl">
                   <p>Turn : Blue</p>
                   <div
                     onClick={() => {
                       setTurn("red");
                     }}
-                    className="bg-stone-600 text-white cursor-pointer px-2 rounded-lg"
+                    className="bg-stone-600 text-white cursor-pointer px-2 rounded-xl shadow-lg border border-stone-700"
                   >
                     Skip
                   </div>
@@ -356,6 +411,36 @@ function App() {
               )}
             </div>
             <div className="bg-stone-600 rounded-lg relative h-fit mt-3 shadow-xl">
+              <div
+                className={`${
+                  gameWinner == null ? "hidden" : "absolute"
+                } left-50 top-50 bg-stone-800 border-2 w-72 border-stone-700 px-6 pt-4 pb-4 rounded-lg shadow-lg`}
+              >
+                <p className="text-stone-200 xl:text-2xl text-center lg:text-xl text-lg font-semibold">
+                  Game Finished!
+                </p>
+                {gameWinner == "Red" ? (
+                  <>
+                    <p className="text-red-500 font-semibold text-xl mt-4 text-center">
+                      Red Wins!
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-blue-500 font-semibold text-xl mt-4 text-center">
+                      Blue Wins!
+                    </p>
+                  </>
+                )}
+                <div className="flex justify-center">
+                  <button
+                    onClick={restartGame}
+                    className="bg-gradient-to-r cursor-pointer from-stone-500 to-stone-700 border border-stone-600 text-lg font-semibold px-3 py-1 rounded-lg shadow-lg mt-5 text-white"
+                  >
+                    Play Again
+                  </button>
+                </div>
+              </div>
               <div className="flex text-white">
                 <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-neutral-900 text-center flex items-center justify-center">
                   <div>
@@ -490,7 +575,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
                       {fighter00.text}
                     </p>
                   </div>
@@ -509,7 +594,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
                       {fighter01.text}
                     </p>
                   </div>
@@ -528,7 +613,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
                       {fighter02.text}
                     </p>
                   </div>
@@ -575,7 +660,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
                       {fighter10.text}
                     </p>
                   </div>
@@ -594,7 +679,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
                       {fighter11.text}
                     </p>
                   </div>
@@ -613,7 +698,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
                       {fighter12.text}
                     </p>
                   </div>
@@ -660,7 +745,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
                       {fighter20.text}
                     </p>
                   </div>
@@ -679,7 +764,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
                       {fighter21.text}
                     </p>
                   </div>
@@ -698,7 +783,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
                       {fighter22.text}
                     </p>
                   </div>

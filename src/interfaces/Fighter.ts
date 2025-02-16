@@ -1,6 +1,6 @@
 export interface Fighter {
-    Id: string;
     Fighter: string;
+    Id: number;
     totalRoundsFought: string;
     winsByDecisionSplit: string;
     WinsByDecisionSplit: string;
@@ -22,7 +22,6 @@ export interface Fighter {
     TotalTitleBouts: string;
     BestRank: string;
     BeenInTitleFight: string;
-    Nationality: string;
     Picture: string;
-    Division: string;
+    Nationality: string;
 }
