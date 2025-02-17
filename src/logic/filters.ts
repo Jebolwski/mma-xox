@@ -1,4 +1,3 @@
-import React from 'react'
 import fighters_url from "../assets/data/fighters.json";
 import { Fighter } from '../interfaces/Fighter';
 const Filters = () => {
