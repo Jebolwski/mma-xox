@@ -489,7 +489,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
                       />
                     </div>
-                    <p className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]">
+                    <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
                       MMA XOX
                     </p>
                   </div>
@@ -509,10 +509,7 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p
-                        onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
-                      >
+                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
                         {filtersSelected[0].filter_text}
                       </p>
                     </div>
@@ -535,10 +532,7 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p
-                        onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
-                      >
+                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
                         {filtersSelected[1].filter_text}
                       </p>
                     </div>
@@ -561,10 +555,7 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p
-                        onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
-                      >
+                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
                         {filtersSelected[2].filter_text}
                       </p>
                     </div>
@@ -589,10 +580,7 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p
-                        onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
-                      >
+                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
                         {filtersSelected[3].filter_text}
                       </p>
                     </div>
@@ -674,10 +662,7 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p
-                        onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
-                      >
+                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
                         {filtersSelected[4].filter_text}
                       </p>
                     </div>
@@ -759,10 +744,7 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p
-                        onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
-                      >
+                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
                         {filtersSelected[5].filter_text}
                       </p>
                     </div>
