@@ -414,35 +414,35 @@ function App() {
         />
         <div className="flex w-full h-full justify-center">
           <div>
-            <div className="flex justify-between text-right pt-12">
+            <div className="flex justify-between items-center flex-wrap text-right pt-12">
               <div
                 onClick={() => {
                   restartGame();
                 }}
-                className="bg-stone-300 flex gap-4 text-stone-800 cursor-pointer border border-stone-400 font-semibold w-fit px-5 py-1 rounded-xl shadow-xl"
+                className="bg-stone-300 flex gap-4 text-stone-800 cursor-pointer border xl:text-base text-sm border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl"
               >
                 Restart Game
               </div>
               {turn == "red" ? (
-                <div className="bg-stone-300 flex gap-4 text-red-600 border border-stone-400 font-semibold w-fit px-5 py-1 rounded-xl shadow-xl">
+                <div className="bg-stone-300 flex gap-4 text-red-600 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl">
                   <p>Turn : Red</p>
                   <div
                     onClick={() => {
                       setTurn("blue");
                     }}
-                    className="bg-stone-600 text-white cursor-pointer px-2 rounded-xl shadow-lg border border-stone-700"
+                    className="bg-stone-600 text-white cursor-pointer xl:text-base text-sm px-2 rounded-xl shadow-lg border border-stone-700"
                   >
                     Skip
                   </div>
                 </div>
               ) : (
-                <div className="bg-stone-300 flex gap-4 text-blue-600 border border-stone-400 font-semibold w-fit px-5 py-1 rounded-xl shadow-xl">
+                <div className="bg-stone-300 flex gap-4 text-blue-600 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl">
                   <p>Turn : Blue</p>
                   <div
                     onClick={() => {
                       setTurn("red");
                     }}
-                    className="bg-stone-600 text-white cursor-pointer px-2 rounded-xl shadow-lg border border-stone-700"
+                    className="bg-stone-600 xl:text-base text-sm text-white cursor-pointer px-2 rounded-xl shadow-lg border border-stone-700"
                   >
                     Skip
                   </div>
@@ -489,7 +489,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
                       />
                     </div>
-                    <p className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-xs">
+                    <p className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]">
                       MMA XOX
                     </p>
                   </div>
@@ -511,7 +511,7 @@ function App() {
                       </div>
                       <p
                         onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-xs"
+                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
                       >
                         {filtersSelected[0].filter_text}
                       </p>
@@ -537,7 +537,7 @@ function App() {
                       </div>
                       <p
                         onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-xs"
+                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
                       >
                         {filtersSelected[1].filter_text}
                       </p>
@@ -563,7 +563,7 @@ function App() {
                       </div>
                       <p
                         onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-xs"
+                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
                       >
                         {filtersSelected[2].filter_text}
                       </p>
@@ -591,7 +591,7 @@ function App() {
                       </div>
                       <p
                         onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-xs"
+                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
                       >
                         {filtersSelected[3].filter_text}
                       </p>
@@ -676,7 +676,7 @@ function App() {
                       </div>
                       <p
                         onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-xs"
+                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
                       >
                         {filtersSelected[4].filter_text}
                       </p>
@@ -761,7 +761,7 @@ function App() {
                       </div>
                       <p
                         onClick={getFilters}
-                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-xs"
+                        className="font-semibold pt-2 xl:text-base md:text-lg sm:text-sm text-[12px]"
                       >
                         {filtersSelected[5].filter_text}
                       </p>
@@ -836,7 +836,7 @@ function App() {
                       filterByName(e.target.value);
                     }}
                     placeholder="Search for a fighter..."
-                    className="bg-white input-fighter text-black px-3 w-full py-1 rounded-lg hover:outline-0 focus:outline-1 outline-stone-500 shadow-lg"
+                    className="bg-white input-fighter text-black xl:text-base text-sm px-3 w-full py-1 rounded-lg hover:outline-0 focus:outline-1 outline-stone-500 shadow-lg"
                   />
                   {fighters && fighters.length > 0 ? (
                     <div className="w-full h-48 overflow-scroll overflow-x-hidden">
@@ -854,9 +854,9 @@ function App() {
                                 ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
                                 : fighter.Picture
                             }
-                            className="w-13"
+                            className="xl:w-13 w-10"
                           />
-                          <p className="text-lg font-semibold">
+                          <p className="xl:text-lg md:text-base text-sm font-semibold">
                             {fighter.Fighter}
                           </p>
                         </div>

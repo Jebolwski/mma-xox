@@ -1,0 +1,21 @@
+/* Scrollbar Genel Ayarları */
+::-webkit-scrollbar {
+  width: 8px !important; /* Scroll çubuğu genişliği */
+}
+
+/* Scrollbar Track (arka plan) */
+::-webkit-scrollbar-track {
+  background: #222 !important; /* Koyu arka plan */
+  border-radius: 10px !important; /* Yuvarlatılmış kenarlar */
+}
+
+/* Scrollbar Thumb (kaydırılabilir alan) */
+::-webkit-scrollbar-thumb {
+  background: #666 !important; /* Gri tonlu kaydırma rengi */
+  border-radius: 10px !important;
+}
+
+/* Scrollbar üzerine gelince */
+::-webkit-scrollbar-thumb:hover {
+  background: #888 !important; /* Açık gri */
+}
