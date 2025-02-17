@@ -959,7 +959,7 @@
         "HeightCms": "180.34",
         "Losses": "2",
         "ReachCms": "182.88",
-        "WeightLbs": "235",
+        "WeightLbs": "205, 235",
         "Age": "41",
         "CurrentWinStreak": "0",
         "CurrentLoseStreak": "1",
@@ -1373,7 +1373,7 @@
         "BestRank": "0",
         "BeenInTitleFight": "False",
         "Picture": "Unknown",
-        "Nationality": "Unknown",
+        "Nationality": "United States",
         "Id": 51
     },
     {
@@ -3641,7 +3641,7 @@
         "BestRank": "0",
         "BeenInTitleFight": "False",
         "Picture": "Unknown",
-        "Nationality": "Unknown",
+        "Nationality": "Jamaica",
         "Id": 135
     },
     {
@@ -3722,7 +3722,7 @@
         "BestRank": "14",
         "BeenInTitleFight": "False",
         "Picture": "Unknown",
-        "Nationality": "Unknown",
+        "Nationality": "United States",
         "Id": 138
     },
     {
@@ -4370,7 +4370,7 @@
         "BestRank": "15",
         "BeenInTitleFight": "False",
         "Picture": "Unknown",
-        "Nationality": "Unknown",
+        "Nationality": "United States",
         "Id": 162
     },
     {
@@ -4532,7 +4532,7 @@
         "BestRank": "0",
         "BeenInTitleFight": "False",
         "Picture": "Unknown",
-        "Nationality": "Unknown",
+        "Nationality": "Argentina",
         "Id": 168
     },
     {
@@ -8798,7 +8798,7 @@
         "BestRank": "0",
         "BeenInTitleFight": "False",
         "Picture": "Unknown",
-        "Nationality": "Unknown",
+        "Nationality": "United States",
         "Id": 326
     },
     {
@@ -8906,7 +8906,7 @@
         "BestRank": "5",
         "BeenInTitleFight": "True",
         "Picture": "Unknown",
-        "Nationality": "Unknown",
+        "Nationality": "Brazil",
         "Id": 330
     },
     {
@@ -9464,7 +9464,7 @@
         "HeightCms": "195.58",
         "Losses": "7",
         "ReachCms": "200.66",
-        "WeightLbs": "205",
+        "WeightLbs": "205, 230",
         "Age": "35",
         "CurrentWinStreak": "0",
         "CurrentLoseStreak": "3",
@@ -9950,7 +9950,7 @@
         "HeightCms": "193.04",
         "Losses": "3",
         "ReachCms": "203.2",
-        "WeightLbs": "185",
+        "WeightLbs": "185, 205",
         "Age": "35",
         "CurrentWinStreak": "0",
         "CurrentLoseStreak": "1",
@@ -10148,7 +10148,7 @@
         "BestRank": "0",
         "BeenInTitleFight": "False",
         "Picture": "https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2022-03/da96e8bc-5274-47a0-b65c-b0ebb719569a%252FGalore-Bofando_627637_LeftFullBodyImage.png?itok=eHFdSPvD",
-        "Nationality": "Unknown",
+        "Nationality": "Brazil",
         "Id": 376
     },
     {
@@ -12146,7 +12146,7 @@
         "BestRank": "0",
         "BeenInTitleFight": "False",
         "Picture": "https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2022-03/b234b354-8110-42f1-8dc3-e12c64426cce%252FPapy-Abedi_205746_LeftFullBodyImage.png?itok=cxcjAQ75",
-        "Nationality": "Unknown",
+        "Nationality": "Sweden",
         "Id": 450
     },
     {
@@ -17762,7 +17762,7 @@
         "BestRank": "0",
         "BeenInTitleFight": "False",
         "Picture": "Unknown",
-        "Nationality": "Unknown",
+        "Nationality": "United States",
         "Id": 658
     },
     {
@@ -24782,7 +24782,7 @@
         "BestRank": "14",
         "BeenInTitleFight": "False",
         "Picture": "Unknown",
-        "Nationality": "Unknown",
+        "Nationality": "United States",
         "Id": 918
     },
     {
@@ -24890,7 +24890,7 @@
         "BestRank": "0",
         "BeenInTitleFight": "False",
         "Picture": "Unknown",
-        "Nationality": "Unknown",
+        "Nationality": "India",
         "Id": 922
     },
     {
@@ -25727,7 +25727,7 @@
         "BestRank": "0",
         "BeenInTitleFight": "False",
         "Picture": "https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2025-01/5/KRYLOV_NIKITA_L_03-11.png?itok=H2IvRh4q",
-        "Nationality": "Unknown",
+        "Nationality": "Ukraine",
         "Id": 953
     },
     {
@@ -27401,7 +27401,7 @@
         "BestRank": "0",
         "BeenInTitleFight": "False",
         "Picture": "Unknown",
-        "Nationality": "Unknown",
+        "Nationality": "Brazil",
         "Id": 1015
     },
     {
@@ -35339,7 +35339,7 @@
         "BestRank": "13",
         "BeenInTitleFight": "False",
         "Picture": "https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2021-11/71660%252Fprofile-galery%252Ffullbodyleft-picture%252FCHIMAEV_KHAMZAT_L_10-30.png?itok=V9OsChbC",
-        "Nationality": "Unknown",
+        "Nationality": "Russia",
         "Id": 1309
     },
     {

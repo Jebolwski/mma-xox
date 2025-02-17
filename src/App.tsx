@@ -7,6 +7,10 @@ import { ToastContainer, toast } from "react-toastify";
 function App() {
   let filters = Filters();
 
+  useEffect(() => {
+    document.title = "MMA XOX"; // Sayfa başlığını değiştir
+  }, []);
+
   const [gameWinner, setGameWinner]: any = useState(null);
 
   const [selected, setSelected]: any = useState();
@@ -95,15 +99,51 @@ function App() {
 
   const restartGame = () => {
     // Tüm kutuları başlangıç durumuna döndür
-    setFighter00({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
-    setFighter01({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
-    setFighter02({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
-    setFighter10({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
-    setFighter11({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
-    setFighter12({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
-    setFighter20({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
-    setFighter21({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
-    setFighter22({ url: "", text: "", bg: "from-stone-700 to-stone-800" });
+    setFighter00({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-700 to-stone-800",
+    });
+    setFighter01({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-700 to-stone-800",
+    });
+    setFighter02({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-700 to-stone-800",
+    });
+    setFighter10({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-700 to-stone-800",
+    });
+    setFighter11({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-700 to-stone-800",
+    });
+    setFighter12({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-700 to-stone-800",
+    });
+    setFighter20({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-700 to-stone-800",
+    });
+    setFighter21({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-700 to-stone-800",
+    });
+    setFighter22({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-700 to-stone-800",
+    });
 
     // Oyunun ilk sırası kırmızı olsun
     setTurn("red");
@@ -280,7 +320,6 @@ function App() {
       if (isDone) {
         setPositionsFighters(newPositions); // Tek seferde state güncelle
         setFiltersSelected(filters_arr);
-        console.log("BİTTİ", newPositions);
         break;
       }
     }
@@ -410,7 +449,7 @@ function App() {
                 </div>
               )}
             </div>
-            <div className="bg-stone-600 rounded-lg relative h-fit mt-3 shadow-xl">
+            <div className="bg-stone-500 rounded-lg border border-stone-600 relative h-fit mt-3 shadow-xl">
               <div
                 className={`${
                   gameWinner == null ? "hidden" : "absolute"
@@ -441,7 +480,7 @@ function App() {
                   </button>
                 </div>
               </div>
-              <div className="flex text-white">
+              <div className="flex gap-[2px] text-white">
                 <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-neutral-900 text-center flex items-center justify-center">
                   <div>
                     <div className="flex items-center justify-center">
@@ -534,7 +573,7 @@ function App() {
                   )}
                 </div>
               </div>
-              <div className="flex text-white">
+              <div className="flex gap-[2px] mt-[2px] text-white">
                 <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center">
                   {filtersSelected.length > 0 ? (
                     <div>
@@ -619,7 +658,7 @@ function App() {
                   </div>
                 </div>
               </div>
-              <div className="flex text-white">
+              <div className="flex gap-[2px] mt-[2px] text-white">
                 <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center">
                   {filtersSelected.length > 0 ? (
                     <div>
@@ -704,7 +743,7 @@ function App() {
                   </div>
                 </div>
               </div>
-              <div className="flex text-white">
+              <div className="flex gap-[2px] mt-[2px] text-white">
                 <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center">
                   {filtersSelected.length > 0 ? (
                     <div>
