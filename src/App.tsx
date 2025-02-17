@@ -155,8 +155,6 @@ function App() {
     getFilters();
 
     setGameWinner(null);
-
-    console.log("Game restarted!");
   };
 
   const filterByName = (name: string) => {
@@ -453,31 +451,35 @@ function App() {
               <div
                 className={`${
                   gameWinner == null ? "hidden" : "absolute"
-                } left-50 top-50 bg-stone-800 border-2 w-72 border-stone-700 px-6 pt-4 pb-4 rounded-lg shadow-lg`}
+                } bg-[#00000080] rounded-lg w-full h-full`}
               >
-                <p className="text-stone-200 xl:text-2xl text-center lg:text-xl text-lg font-semibold">
-                  Game Finished!
-                </p>
-                {gameWinner == "Red" ? (
-                  <>
-                    <p className="text-red-500 font-semibold text-xl mt-4 text-center">
-                      Red Wins!
+                <div className="flex justify-center mt-12">
+                  <div className="bg-stone-800 border-2 w-72 border-stone-700 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg">
+                    <p className="text-stone-200 xl:text-2xl text-center lg:text-xl text-lg font-semibold">
+                      Game Finished!
                     </p>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-blue-500 font-semibold text-xl mt-4 text-center">
-                      Blue Wins!
-                    </p>
-                  </>
-                )}
-                <div className="flex justify-center">
-                  <button
-                    onClick={restartGame}
-                    className="bg-gradient-to-r cursor-pointer from-stone-500 to-stone-700 border border-stone-600 text-lg font-semibold px-3 py-1 rounded-lg shadow-lg mt-5 text-white"
-                  >
-                    Play Again
-                  </button>
+                    {gameWinner == "Red" ? (
+                      <>
+                        <p className="text-red-500 font-semibold text-xl mt-4 text-center">
+                          Red Wins!
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-blue-500 font-semibold text-xl mt-4 text-center">
+                          Blue Wins!
+                        </p>
+                      </>
+                    )}
+                    <div className="flex justify-center">
+                      <button
+                        onClick={restartGame}
+                        className="bg-gradient-to-r cursor-pointer from-stone-500 to-stone-700 border border-stone-600 text-lg font-semibold px-3 py-1 rounded-lg shadow-lg mt-5 text-white"
+                      >
+                        Play Again
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="flex gap-[2px] text-white">
@@ -590,8 +592,12 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    toggleFighterPick();
-                    setSelected("fighter00");
+                    if (fighter00.bg == "from-stone-700 to-stone-800") {
+                      toggleFighterPick();
+                      setSelected("fighter00");
+                    } else {
+                      toast.info("Fighter already selected.");
+                    }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter00.bg} text-center flex items-center justify-center`}
                 >
@@ -602,15 +608,19 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
                       {fighter00.text}
                     </p>
                   </div>
                 </div>
                 <div
                   onClick={() => {
-                    toggleFighterPick();
-                    setSelected("fighter01");
+                    if (fighter01.bg == "from-stone-700 to-stone-800") {
+                      toggleFighterPick();
+                      setSelected("fighter01");
+                    } else {
+                      toast.info("Fighter already selected.");
+                    }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter01.bg} text-center flex items-center justify-center`}
                 >
@@ -621,15 +631,19 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
                       {fighter01.text}
                     </p>
                   </div>
                 </div>
                 <div
                   onClick={() => {
-                    toggleFighterPick();
-                    setSelected("fighter02");
+                    if (fighter02.bg == "from-stone-700 to-stone-800") {
+                      toggleFighterPick();
+                      setSelected("fighter02");
+                    } else {
+                      toast.info("Fighter already selected.");
+                    }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter02.bg} text-center flex items-center justify-center`}
                 >
@@ -640,7 +654,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
                       {fighter02.text}
                     </p>
                   </div>
@@ -672,8 +686,12 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    toggleFighterPick();
-                    setSelected("fighter10");
+                    if (fighter10.bg == "from-stone-700 to-stone-800") {
+                      toggleFighterPick();
+                      setSelected("fighter10");
+                    } else {
+                      toast.info("Fighter already selected.");
+                    }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter10.bg} text-center flex items-center justify-center`}
                 >
@@ -684,15 +702,19 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
                       {fighter10.text}
                     </p>
                   </div>
                 </div>
                 <div
                   onClick={() => {
-                    toggleFighterPick();
-                    setSelected("fighter11");
+                    if (fighter11.bg == "from-stone-700 to-stone-800") {
+                      toggleFighterPick();
+                      setSelected("fighter11");
+                    } else {
+                      toast.info("Fighter already selected.");
+                    }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter11.bg} text-center flex items-center justify-center`}
                 >
@@ -703,15 +725,19 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
                       {fighter11.text}
                     </p>
                   </div>
                 </div>
                 <div
                   onClick={() => {
-                    toggleFighterPick();
-                    setSelected("fighter12");
+                    if (fighter12.bg == "from-stone-700 to-stone-800") {
+                      toggleFighterPick();
+                      setSelected("fighter12");
+                    } else {
+                      toast.info("Fighter already selected.");
+                    }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter12.bg} text-center flex items-center justify-center`}
                 >
@@ -722,7 +748,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
                       {fighter12.text}
                     </p>
                   </div>
@@ -754,8 +780,12 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    toggleFighterPick();
-                    setSelected("fighter20");
+                    if (fighter20.bg == "from-stone-700 to-stone-800") {
+                      toggleFighterPick();
+                      setSelected("fighter20");
+                    } else {
+                      toast.info("Fighter already selected.");
+                    }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter20.bg} text-center flex items-center justify-center`}
                 >
@@ -766,15 +796,19 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
                       {fighter20.text}
                     </p>
                   </div>
                 </div>
                 <div
                   onClick={() => {
-                    toggleFighterPick();
-                    setSelected("fighter21");
+                    if (fighter21.bg == "from-stone-700 to-stone-800") {
+                      toggleFighterPick();
+                      setSelected("fighter21");
+                    } else {
+                      toast.info("Fighter already selected.");
+                    }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter21.bg} text-center flex items-center justify-center`}
                 >
@@ -785,15 +819,19 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
                       {fighter21.text}
                     </p>
                   </div>
                 </div>
                 <div
                   onClick={() => {
-                    toggleFighterPick();
-                    setSelected("fighter22");
+                    if (fighter22.bg == "from-stone-700 to-stone-800") {
+                      toggleFighterPick();
+                      setSelected("fighter22");
+                    } else {
+                      toast.info("Fighter already selected.");
+                    }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter22.bg} text-center flex items-center justify-center`}
                 >
@@ -804,7 +842,7 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 line-height-[12px]">
+                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
                       {fighter22.text}
                     </p>
                   </div>

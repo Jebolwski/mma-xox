@@ -1371,7 +1371,7 @@
         "LongestWinStreak": "7",
         "TotalTitleBouts": "7",
         "BestRank": "0",
-        "BeenInTitleFight": "False",
+        "BeenInTitleFight": "True",
         "Picture": "Unknown",
         "Nationality": "United States",
         "Id": 51
@@ -25313,7 +25313,7 @@
         "HeightCms": "190.5",
         "Losses": "1",
         "ReachCms": "200.66",
-        "WeightLbs": "205",
+        "WeightLbs": "205, 235",
         "Age": "32",
         "CurrentWinStreak": "0",
         "CurrentLoseStreak": "1",
