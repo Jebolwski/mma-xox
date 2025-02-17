@@ -494,7 +494,7 @@ function App() {
                     </p>
                   </div>
                 </div>
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center">
+                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
@@ -520,7 +520,7 @@ function App() {
                     <p>Loading...</p>
                   )}
                 </div>
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center">
+                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
@@ -546,7 +546,7 @@ function App() {
                     <p>Loading...</p>
                   )}
                 </div>
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center">
+                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
@@ -574,7 +574,7 @@ function App() {
                 </div>
               </div>
               <div className="flex gap-[2px] mt-[2px] text-white">
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center">
+                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
@@ -659,7 +659,7 @@ function App() {
                 </div>
               </div>
               <div className="flex gap-[2px] mt-[2px] text-white">
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center">
+                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
@@ -744,7 +744,7 @@ function App() {
                 </div>
               </div>
               <div className="flex gap-[2px] mt-[2px] text-white">
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center">
+                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
