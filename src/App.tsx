@@ -40,6 +40,8 @@ function App() {
         setGameWinner("Red");
       } else if (winner == "Blue Wins!") {
         setGameWinner("Blue");
+      } else if (winner == "Draw!") {
+        setGameWinner("Draw");
       } else {
         setGameWinner(null);
       }
@@ -378,6 +380,7 @@ function App() {
       ],
     ];
 
+    // 🎯 Kazanan var mı kontrol et
     for (let pattern of winPatterns) {
       const [a, b, c] = pattern;
       const cellA = board[a[0]][a[1]];
@@ -393,7 +396,16 @@ function App() {
       }
     }
 
-    return null;
+    // 🎯 Beraberlik kontrolü
+    const isBoardFull = board
+      .flat()
+      .every((cell) => cell !== "from-stone-700 to-stone-800");
+
+    if (isBoardFull) {
+      return "Draw!"; // Beraberlik durumu
+    }
+
+    return null; // Oyun devam ediyor
   };
 
   const toggleFighterPick = () => {
@@ -464,10 +476,16 @@ function App() {
                           Red Wins!
                         </p>
                       </>
-                    ) : (
+                    ) : gameWinner == "Blue" ? (
                       <>
                         <p className="text-blue-500 font-semibold text-xl mt-4 text-center">
                           Blue Wins!
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-stone-100 font-semibold text-xl mt-4 text-center">
+                          Draw!
                         </p>
                       </>
                     )}

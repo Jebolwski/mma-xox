@@ -1,6 +1,5 @@
 export interface Fighter {
     Fighter: string;
-    Id: number;
     totalRoundsFought: string;
     winsByDecisionSplit: string;
     WinsByDecisionSplit: string;
@@ -14,7 +13,7 @@ export interface Fighter {
     HeightCms: string;
     Losses: string;
     ReachCms: string;
-    WeightLbs: string;
+    WeightLbs: any;
     Age: string;
     CurrentWinStreak: string;
     CurrentLoseStreak: string;
@@ -24,4 +23,6 @@ export interface Fighter {
     BeenInTitleFight: string;
     Picture: string;
     Nationality: string;
+    OctagonDebut: string;
+    Id: number;
 }

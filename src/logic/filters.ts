@@ -73,7 +73,7 @@ const Filters = () => {
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
                 return fighter.WeightLbs.split(", ")
                     .map(Number)
-                    .some(weight => weight > 205);
+                    .some((weight: any): any => weight > 205);
             })
         }, {
             "id": 9,
@@ -115,19 +115,96 @@ const Filters = () => {
             })
         }, {
             "id": 13,
+            "filter_image": "https://static.vecteezy.com/system/resources/previews/004/712/176/non_2x/poland-square-national-flag-vector.jpg",
+            "filter_text": "Poland",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters_url.filter((fighter: Fighter) => {
+                return fighter.Nationality == "Poland";
+            })
+        }, {
+            "id": 14,
+            "filter_image": "https://static.vecteezy.com/system/resources/previews/004/712/747/non_2x/nigeria-square-national-flag-vector.jpg",
+            "filter_text": "Nigeria",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters_url.filter((fighter: Fighter) => {
+                return fighter.Nationality == "Nigeria";
+            })
+        }, {
+            "id": 15,
+            "filter_image": "https://vectorflags.s3.amazonaws.com/flags/au-square-01.png",
+            "filter_text": "Australia",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters_url.filter((fighter: Fighter) => {
+                return fighter.Nationality == "Australia";
+            })
+        },
+        {
+            "id": 16,
+            "filter_image": "https://static.vecteezy.com/system/resources/previews/004/711/931/non_2x/russia-square-national-flag-vector.jpg",
+            "filter_text": "Russia",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters_url.filter((fighter: Fighter) => {
+                return fighter.Nationality == "Russia";
+            })
+        }, {
+            "id": 17,
+            "filter_image": null,
+            "filter_text": "Octagon Debut",
+            "filter_no_image_text": "2015>",
+            "filter_fighters": fighters_url.filter((fighter: Fighter) => {
+                return parseInt(fighter.OctagonDebut) > 2015;
+            })
+        },
+        // {
+        //     "id": 12,
+        //     "filter_image": "https://clipart-library.com/2024/gambar-karate/gambar-karate-12.png",
+        //     "filter_text": "Orthodox",
+        //     "filter_no_image_text": null,
+        //     "filter_fighters": fighters_url.filter((fighter: Fighter) => {
+        //         return fighter.Stance == "Orthodox";
+        //     })
+        // }, {
+        //     "id": 12,
+        //     "filter_image": "https://clipart-library.com/2024/gambar-karate/gambar-karate-12.png",
+        //     "filter_text": "Switch",
+        //     "filter_no_image_text": null,
+        //     "filter_fighters": fighters_url.filter((fighter: Fighter) => {
+        //         return fighter.Stance == "Switch";
+        //     })
+        // }, {
+        //     "id": 12,
+        //     "filter_image": "https://clipart-library.com/2024/gambar-karate/gambar-karate-12.png",
+        //     "filter_text": "Southpaw",
+        //     "filter_no_image_text": null,
+        //     "filter_fighters": fighters_url.filter((fighter: Fighter) => {
+        //         return fighter.Stance == "Southpaw";
+        //     })
+        // }, 
+        {
+            "id": 18,
             "filter_image": null,
             "filter_text": "Total Title Bouts",
             "filter_no_image_text": ">2",
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
                 return parseInt(fighter.TotalTitleBouts) > 2;
             })
-        }, {
-            "id": 14,
-            "filter_image": "https://static.vecteezy.com/system/resources/previews/004/711/931/non_2x/russia-square-national-flag-vector.jpg",
-            "filter_text": "Russian",
-            "filter_no_image_text": null,
+        },
+        {
+            "id": 19,
+            "filter_image": null,
+            "filter_text": "Height",
+            "filter_no_image_text": ">180",
             "filter_fighters": fighters_url.filter((fighter: Fighter) => {
-                return fighter.Nationality == "Russia";
+                return parseFloat(fighter.HeightCms) > 180;
+            })
+        },
+        {
+            "id": 20,
+            "filter_image": null,
+            "filter_text": "Rounds Fought",
+            "filter_no_image_text": ">20",
+            "filter_fighters": fighters_url.filter((fighter: Fighter) => {
+                return parseFloat(fighter.totalRoundsFought) > 20;
             })
         }]
     return filters_all;
