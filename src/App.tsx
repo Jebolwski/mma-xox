@@ -1,19 +1,26 @@
 import { useEffect, useState } from "react";
 import fighters_url from "./assets/data/fighters.json";
 import Filters from "./logic/filters";
-import { Fighter } from "./interfaces/Fighter";
+import { Fighter, Filter, FilterDifficulty } from "./interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
 
 function App() {
-  let filters = Filters();
-
   useEffect(() => {
     document.title = "MMA XOX"; // Sayfa başlığını değiştir
   }, []);
 
+  const [difficulty, setDifficulty]: any = useState("MEDIUM");
+
+  const [timer, setTimer]: any = useState("30");
+  const [timerLength, setTimerLength]: any = useState("30");
+
+  const [gameStart, setGameStart] = useState(false);
+
   const [gameWinner, setGameWinner]: any = useState(null);
 
   const [selected, setSelected]: any = useState();
+
+  const [filters, setFilters]: any = useState();
 
   const [positionsFighters, setPositionsFighters]: any = useState({
     position03: {},
@@ -32,22 +39,6 @@ function App() {
   const [filtersSelected, setFiltersSelected]: any = useState([]);
 
   const [fighters, setFigters]: any = useState();
-
-  useEffect(() => {
-    const winner = checkWinner();
-    if (winner) {
-      if (winner == "Red Wins!") {
-        setGameWinner("Red");
-      } else if (winner == "Blue Wins!") {
-        setGameWinner("Blue");
-      } else if (winner == "Draw!") {
-        setGameWinner("Draw");
-      } else {
-        setGameWinner(null);
-      }
-      return;
-    }
-  }, [turn]);
 
   const [fighter00, setFighter00]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
@@ -95,11 +86,8 @@ function App() {
     bg: "from-stone-700 to-stone-800",
   });
 
-  useEffect(() => {
-    getFilters();
-  }, []);
-
   const restartGame = () => {
+    setGameStart(false);
     // Tüm kutuları başlangıç durumuna döndür
     setFighter00({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
@@ -224,9 +212,25 @@ function App() {
     }
 
     setTurn(turn === "red" ? "blue" : "red");
+    setTimer(timerLength);
     toggleFighterPick();
     resetInput();
     setFigters([]);
+  };
+
+  const startGame = () => {
+    let f: FilterDifficulty = Filters();
+
+    setTimer(timerLength);
+    if (difficulty == "EASY") {
+      setFilters(f.easy);
+    } else if (difficulty == "MEDIUM") {
+      setFilters(f.medium);
+    } else {
+      setFilters(f.hard);
+    }
+
+    setGameStart(true);
   };
 
   const getFilters = () => {
@@ -413,6 +417,42 @@ function App() {
     div?.classList.toggle("hidden");
   };
 
+  useEffect(() => {
+    const winner = checkWinner();
+    if (winner) {
+      if (winner == "Red Wins!") {
+        setGameWinner("Red");
+      } else if (winner == "Blue Wins!") {
+        setGameWinner("Blue");
+      } else if (winner == "Draw!") {
+        setGameWinner("Draw");
+      } else {
+        setGameWinner(null);
+      }
+      return;
+    }
+  }, [turn]);
+
+  useEffect(() => {
+    if (gameStart == true) {
+      getFilters();
+    }
+  }, [gameStart]);
+
+  useEffect(() => {
+    if (timer <= 0) {
+      setTurn((prevTurn: any) => (prevTurn === "red" ? "blue" : "red"));
+      setTimer(timerLength);
+      return; // Yeni interval başlatmadan çık
+    }
+
+    const interval = setInterval(() => {
+      setTimer((prev: any) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval); // Eski intervali temizle
+  }, [timer]); // Sadece timer değiştiğinde çalışacak
+
   const notify = () => toast.error("Fighter doesnt meet the requirements.");
 
   return (
@@ -424,7 +464,18 @@ function App() {
         />
         <div className="flex w-full h-full justify-center">
           <div>
-            <div className="flex justify-between items-center flex-wrap text-right pt-12">
+            <div className="mt-12">
+              {gameStart && timerLength != "-2" ? (
+                <p
+                  className={`xl:text-xl md:hidden block lg:text-lg text-base font-semibold ${
+                    turn == "red" ? "text-red-500" : "text-blue-500"
+                  }`}
+                >
+                  {timer} seconds
+                </p>
+              ) : null}
+            </div>
+            <div className="flex justify-between items-center gap-3 flex-wrap text-right pt-2">
               <div
                 onClick={() => {
                   restartGame();
@@ -433,12 +484,24 @@ function App() {
               >
                 Restart Game
               </div>
+              <div>
+                {gameStart ? (
+                  <p
+                    className={`xl:text-xl md:block hidden lg:text-lg text-base text-center font-semibold ${
+                      turn == "red" ? "text-red-500" : "text-blue-500"
+                    }`}
+                  >
+                    {timer} seconds
+                  </p>
+                ) : null}
+              </div>
               {turn == "red" ? (
                 <div className="bg-stone-300 flex gap-4 text-red-600 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl">
                   <p>Turn : Red</p>
                   <div
                     onClick={() => {
                       setTurn("blue");
+                      setTimer(timerLength);
                     }}
                     className="bg-stone-600 text-white cursor-pointer xl:text-base text-sm px-2 rounded-xl shadow-lg border border-stone-700"
                   >
@@ -451,6 +514,7 @@ function App() {
                   <div
                     onClick={() => {
                       setTurn("red");
+                      setTimer(timerLength);
                     }}
                     className="bg-stone-600 xl:text-base text-sm text-white cursor-pointer px-2 rounded-xl shadow-lg border border-stone-700"
                   >
@@ -912,6 +976,65 @@ function App() {
                     </button>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className={`${
+            gameStart ? "hidden" : "absolute"
+          } w-full h-full top-0 left-0`}
+        >
+          <div className="flex w-full h-full justify-center items-center bg-[#00000092]">
+            <div className="z-10 absolute bg-gradient-to-b from-stone-600 to-stone-700 shadow-lg text-stone-100 py-5 px-10 border-2 border-stone-500 rounded-lg">
+              <div className="flex gap-3 items-center">
+                <img
+                  src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                  alt="logo"
+                  className="w-10"
+                />
+                <h1 className="font-semibold text-2xl">MMA XOX</h1>
+              </div>
+              <div className="flex text-center justify-center">
+                <div className="mt-5">
+                  <h2 className="font-semibold text-lg">CHOOSE DIFFICULTY</h2>
+                  <select
+                    defaultValue={"MEDIUM"}
+                    onChange={(e) => {
+                      setDifficulty(e.target.value);
+                    }}
+                    className="text-stone-900 shadow-lg focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2 mt-1"
+                  >
+                    <option value="EASY">EASY</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="HARD">HARD</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex text-center justify-center">
+                <div className="mt-5">
+                  <h2 className="font-semibold text-lg">TIMER</h2>
+                  <select
+                    onChange={(e) => {
+                      setTimerLength(e.target.value);
+                    }}
+                    defaultValue={"30"}
+                    className="text-stone-900 shadow-lg focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2 mt-1"
+                  >
+                    <option value="-2">No time limit</option>
+                    <option value="20">20 seconds</option>
+                    <option value="30">30 seconds</option>
+                    <option value="40">40 seconds</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <button
+                  onClick={startGame}
+                  className="border border-stone-300 bg-gradient-to-r from-stone-200 to-stone-400 text-stone-800 mt-5 text-xl hover:shadow-xl px-4 shadow-md duration-300 cursor-pointer rounded-lg font-semibold"
+                >
+                  PLAY!
+                </button>
               </div>
             </div>
           </div>

@@ -26,3 +26,17 @@ export interface Fighter {
     OctagonDebut: string;
     Id: number;
 }
+
+export interface Filter {
+    id: number,
+    filter_image: string | null,
+    filter_text: string,
+    filter_no_image_text: string | null,
+    filter_fighters: Fighter[];
+}
+
+export interface FilterDifficulty {
+    easy: Filter[],
+    medium: Filter[],
+    hard: Filter[],
+}
