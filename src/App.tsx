@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import fighters_url from "./assets/data/fighters.json";
 import Filters from "./logic/filters";
-import { Fighter, Filter, FilterDifficulty } from "./interfaces/Fighter";
+import { Fighter, FilterDifficulty } from "./interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
 
 function App() {
