@@ -816,7 +816,7 @@ function App() {
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                     theme == "dark"
                       ? "border-stone-600 bg-neutral-900"
-                      : "border-stone-500 bg-stone-400"
+                      : "border-stone-500 bg-neutral-400"
                   } rounded-lg text-center flex items-center justify-center`}
                 >
                   <div>
@@ -826,7 +826,11 @@ function App() {
                         className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
                       />
                     </div>
-                    <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
+                    <p
+                      className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                        theme == "dark" ? "text-white" : "text-white"
+                      }`}
+                    >
                       MMA XOX
                     </p>
                   </div>
@@ -852,7 +856,11 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
+                      <p
+                        className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                          theme == "dark" ? "text-white" : "text-black"
+                        }`}
+                      >
                         {filtersSelected[0].filter_text}
                       </p>
                     </div>
@@ -881,7 +889,11 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
+                      <p
+                        className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                          theme == "dark" ? "text-white" : "text-black"
+                        }`}
+                      >
                         {filtersSelected[1].filter_text}
                       </p>
                     </div>
@@ -910,7 +922,11 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
+                      <p
+                        className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                          theme == "dark" ? "text-white" : "text-black"
+                        }`}
+                      >
                         {filtersSelected[2].filter_text}
                       </p>
                     </div>
@@ -941,7 +957,11 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
+                      <p
+                        className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                          theme == "dark" ? "text-white" : "text-black"
+                        }`}
+                      >
                         {filtersSelected[3].filter_text}
                       </p>
                     </div>
@@ -1062,7 +1082,11 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
+                      <p
+                        className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                          theme == "dark" ? "text-white" : "text-black"
+                        }`}
+                      >
                         {filtersSelected[4].filter_text}
                       </p>
                     </div>
@@ -1183,7 +1207,11 @@ function App() {
                           </h2>
                         )}
                       </div>
-                      <p className="font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px]">
+                      <p
+                        className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                          theme == "dark" ? "text-white" : "text-black"
+                        }`}
+                      >
                         {filtersSelected[5].filter_text}
                       </p>
                     </div>
