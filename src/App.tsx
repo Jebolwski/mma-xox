@@ -9,6 +9,8 @@ function App() {
     document.title = "MMA XOX"; // Sayfa başlığını değiştir
   }, []);
 
+  const [theme, setTheme] = useState("dark");
+
   const [difficulty, setDifficulty]: any = useState("MEDIUM");
 
   const [timer, setTimer]: any = useState("30");
@@ -43,47 +45,74 @@ function App() {
   const [fighter00, setFighter00]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-700 to-stone-800",
+    bg:
+      theme == "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
   });
   const [fighter01, setFighter01]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-700 to-stone-800",
+    bg:
+      theme == "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
   });
   const [fighter02, setFighter02]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-700 to-stone-800",
+    bg:
+      theme == "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
   });
   const [fighter10, setFighter10]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-700 to-stone-800",
+    bg:
+      theme == "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
   });
   const [fighter11, setFighter11]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-700 to-stone-800",
+    bg:
+      theme == "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
   });
   const [fighter12, setFighter12]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-700 to-stone-800",
+    bg:
+      theme == "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
   });
   const [fighter20, setFighter20]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-700 to-stone-800",
+    bg:
+      theme == "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
   });
   const [fighter21, setFighter21]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-700 to-stone-800",
+    bg:
+      theme == "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
   });
   const [fighter22, setFighter22]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-700 to-stone-800",
+    bg:
+      theme == "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
   });
 
   const restartGame = () => {
@@ -92,47 +121,74 @@ function App() {
     setFighter00({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-700 to-stone-800",
+      bg:
+        theme == "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
     });
     setFighter01({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-700 to-stone-800",
+      bg:
+        theme == "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
     });
     setFighter02({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-700 to-stone-800",
+      bg:
+        theme == "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
     });
     setFighter10({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-700 to-stone-800",
+      bg:
+        theme == "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
     });
     setFighter11({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-700 to-stone-800",
+      bg:
+        theme == "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
     });
     setFighter12({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-700 to-stone-800",
+      bg:
+        theme == "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
     });
     setFighter20({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-700 to-stone-800",
+      bg:
+        theme == "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
     });
     setFighter21({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-700 to-stone-800",
+      bg:
+        theme == "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
     });
     setFighter22({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-700 to-stone-800",
+      bg:
+        theme == "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
     });
 
     // Oyunun ilk sırası kırmızı olsun
@@ -392,7 +448,8 @@ function App() {
       const cellC = board[c[0]][c[1]];
 
       if (
-        cellA !== "from-stone-700 to-stone-800" && // Boş değilse
+        cellA !== "from-stone-700 to-stone-800" &&
+        cellA !== "from-stone-200 to-stone-300" && // Boş değilse
         cellA === cellB &&
         cellB === cellC
       ) {
@@ -403,7 +460,11 @@ function App() {
     // 🎯 Beraberlik kontrolü
     const isBoardFull = board
       .flat()
-      .every((cell) => cell !== "from-stone-700 to-stone-800");
+      .every(
+        (cell) =>
+          cell !== "from-stone-700 to-stone-800" &&
+          cell !== "from-stone-200 to-stone-300"
+      );
 
     if (isBoardFull) {
       return "Draw!"; // Beraberlik durumu
@@ -434,6 +495,121 @@ function App() {
   }, [turn]);
 
   useEffect(() => {
+    console.log(fighter00.bg);
+    console.log(fighter01.bg);
+    console.log(fighter02.bg);
+
+    if (
+      fighter00.bg != "from-red-800 to-red-900" &&
+      fighter00.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter00({
+        ...fighter00,
+        bg:
+          theme == "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter01.bg != "from-red-800 to-red-900" &&
+      fighter01.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter01({
+        ...fighter01,
+        bg:
+          theme == "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter02.bg != "from-red-800 to-red-900" &&
+      fighter02.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter02({
+        ...fighter02,
+        bg:
+          theme == "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter10.bg != "from-red-800 to-red-900" &&
+      fighter10.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter10({
+        ...fighter10,
+        bg:
+          theme == "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter11.bg != "from-red-800 to-red-900" &&
+      fighter11.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter11({
+        ...fighter11,
+        bg:
+          theme == "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter12.bg != "from-red-800 to-red-900" &&
+      fighter12.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter12({
+        ...fighter12,
+        bg:
+          theme == "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter20.bg != "from-red-800 to-red-900" &&
+      fighter20.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter20({
+        ...fighter20,
+        bg:
+          theme == "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter21.bg != "from-red-800 to-red-900" &&
+      fighter21.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter21({
+        ...fighter21,
+        bg:
+          theme == "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter22.bg != "from-red-800 to-red-900" &&
+      fighter22.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter22({
+        ...fighter22,
+        bg:
+          theme == "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+  }, [theme]);
+
+  useEffect(() => {
     if (gameStart == true) {
       getFilters();
     }
@@ -451,21 +627,52 @@ function App() {
     }, 1000);
 
     return () => clearInterval(interval); // Eski intervali temizle
-  }, [timer]); // Sadece timer değiştiğinde çalışacak
+  }, [timer]);
 
   const notify = () => toast.error("Fighter doesnt meet the requirements.");
 
   return (
     <>
-      <div className="w-[100vw] h-[100vh] bg-stone-800">
+      <div
+        className={`w-[100vw] h-[100vh] ${
+          theme == "dark" ? "bg-stone-800" : "bg-stone-200"
+        }`}
+      >
         <ToastContainer
           position="bottom-right"
           theme="dark"
         />
+        <div className="absolute z-30 text-red-500 top-3 left-3">
+          {theme == "dark" ? (
+            <div
+              onClick={() => {
+                setTheme("light");
+              }}
+              className="p-1 rounded-full bg-stone-700 border border-stone-800 cursor-pointer shadow-xl"
+            >
+              <img
+                src="https://clipart-library.com/images/6iypd9jin.png"
+                className="w-8"
+              />
+            </div>
+          ) : (
+            <div
+              onClick={() => {
+                setTheme("dark");
+              }}
+              className="p-1 rounded-full bg-stone-300 border border-stone-400 cursor-pointer shadow-xl"
+            >
+              <img
+                src="https://clipart-library.com/img/1669853.png"
+                className="w-8"
+              />
+            </div>
+          )}
+        </div>
         <div className="flex w-full h-full justify-center">
           <div>
-            <div className="mt-12">
-              {gameStart && timerLength != "-2" ? (
+            <div className="mt-16">
+              {gameStart == true && parseInt(timerLength) >= 0 ? (
                 <p
                   className={`xl:text-xl md:hidden block lg:text-lg text-base font-semibold ${
                     turn == "red" ? "text-red-500" : "text-blue-500"
@@ -480,12 +687,16 @@ function App() {
                 onClick={() => {
                   restartGame();
                 }}
-                className="bg-stone-300 flex gap-4 text-stone-800 cursor-pointer border xl:text-base text-sm border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl"
+                className={`${
+                  theme == "dark"
+                    ? "bg-stone-600 border-stone-500 text-stone-200"
+                    : "bg-stone-300 border-stone-400 text-stone-800"
+                } bg-stone-300 cursor-pointer flex gap-4 text-red-600 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl`}
               >
                 Restart Game
               </div>
               <div>
-                {gameStart ? (
+                {gameStart == true && parseInt(timerLength) >= 0 ? (
                   <p
                     className={`xl:text-xl md:block hidden lg:text-lg text-base text-center font-semibold ${
                       turn == "red" ? "text-red-500" : "text-blue-500"
@@ -496,42 +707,74 @@ function App() {
                 ) : null}
               </div>
               {turn == "red" ? (
-                <div className="bg-stone-300 flex gap-4 text-red-600 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl">
+                <div
+                  className={`${
+                    theme == "dark"
+                      ? "bg-stone-600 border-stone-500 text-red-400"
+                      : "bg-stone-300 border-stone-400 text-red-600"
+                  } bg-stone-300 flex gap-4 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl`}
+                >
                   <p>Turn : Red</p>
                   <div
                     onClick={() => {
                       setTurn("blue");
                       setTimer(timerLength);
                     }}
-                    className="bg-stone-600 text-white cursor-pointer xl:text-base text-sm px-2 rounded-xl shadow-lg border border-stone-700"
+                    className={`${
+                      theme == "dark"
+                        ? "bg-stone-500 border-stone-700 text-stone-200"
+                        : "bg-gradient-to-b from-stone-300 to-stone-400 border-stone-400 text-stone-900"
+                    } cursor-pointer xl:text-base text-sm px-2 rounded-xl shadow-lg border`}
                   >
                     Skip
                   </div>
                 </div>
               ) : (
-                <div className="bg-stone-300 flex gap-4 text-blue-600 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl">
+                <div
+                  className={`${
+                    theme == "dark"
+                      ? "bg-stone-600 border-stone-500 text-blue-400"
+                      : "bg-stone-300 border-stone-400 text-blue-600"
+                  } bg-stone-300 flex gap-4 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl`}
+                >
                   <p>Turn : Blue</p>
                   <div
                     onClick={() => {
                       setTurn("red");
                       setTimer(timerLength);
                     }}
-                    className="bg-stone-600 xl:text-base text-sm text-white cursor-pointer px-2 rounded-xl shadow-lg border border-stone-700"
+                    className={`${
+                      theme == "dark"
+                        ? "bg-stone-500 border-stone-700 text-stone-200"
+                        : "bg-gradient-to-b from-stone-300 to-stone-400 border-stone-400 text-stone-900"
+                    } cursor-pointer xl:text-base text-sm px-2 rounded-xl shadow-lg border`}
                   >
                     Skip
                   </div>
                 </div>
               )}
             </div>
-            <div className="bg-stone-500 rounded-lg border border-stone-600 relative h-fit mt-3 shadow-xl">
+            <div
+              className={`${
+                theme == "dark"
+                  ? "bg-stone-500 text-stone-200 border-stone-600"
+                  : "bg-stone-300 text-stone-700 border-stone-400"
+              } rounded-lg border relative h-fit mt-3 shadow-xl`}
+            >
               <div
-                className={`${
-                  gameWinner == null ? "hidden" : "absolute"
-                } bg-[#00000080] rounded-lg w-full h-full`}
+                className={`${gameWinner == null ? "hidden" : "absolute"} ${
+                  theme == "dark" ? "bg-[#00000061]" : "bg-[#ffffff61]"
+                }  rounded-lg w-full h-full`}
               >
                 <div className="flex justify-center mt-12">
-                  <div className="bg-stone-800 border-2 w-72 border-stone-700 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg">
-                    <p className="text-stone-200 xl:text-2xl text-center lg:text-xl text-lg font-semibold">
+                  <div
+                    className={`${
+                      theme == "dark"
+                        ? "bg-stone-800 border-stone-700"
+                        : "bg-stone-300 border-stone-400"
+                    } border-2 w-72 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
+                  >
+                    <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold">
                       Game Finished!
                     </p>
                     {gameWinner == "Red" ? (
@@ -556,7 +799,11 @@ function App() {
                     <div className="flex justify-center">
                       <button
                         onClick={restartGame}
-                        className="bg-gradient-to-r cursor-pointer from-stone-500 to-stone-700 border border-stone-600 text-lg font-semibold px-3 py-1 rounded-lg shadow-lg mt-5 text-white"
+                        className={`bg-gradient-to-r cursor-pointer ${
+                          theme == "dark"
+                            ? "from-stone-500 to-stone-700 text-white border-stone-600"
+                            : "from-stone-300 to-stone-400 text-black border-stone-400"
+                        } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg mt-5`}
                       >
                         Play Again
                       </button>
@@ -564,8 +811,14 @@ function App() {
                   </div>
                 </div>
               </div>
-              <div className="flex gap-[2px] text-white">
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-neutral-900 text-center flex items-center justify-center">
+              <div className={`flex gap-[2px] text-white`}>
+                <div
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                    theme == "dark"
+                      ? "border-stone-600 bg-neutral-900"
+                      : "border-stone-500 bg-stone-400"
+                  } rounded-lg text-center flex items-center justify-center`}
+                >
                   <div>
                     <div className="flex items-center justify-center">
                       <img
@@ -578,7 +831,13 @@ function App() {
                     </p>
                   </div>
                 </div>
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
+                <div
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                    theme == "dark"
+                      ? "border-stone-600 bg-stone-800"
+                      : "border-stone-400 bg-stone-300"
+                  } rounded-lg text-center flex items-center justify-center p-1`}
+                >
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
@@ -601,7 +860,13 @@ function App() {
                     <p>Loading...</p>
                   )}
                 </div>
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
+                <div
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                    theme == "dark"
+                      ? "border-stone-600 bg-stone-800"
+                      : "border-stone-400 bg-stone-300"
+                  } rounded-lg text-center flex items-center justify-center p-1`}
+                >
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
@@ -624,7 +889,13 @@ function App() {
                     <p>Loading...</p>
                   )}
                 </div>
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
+                <div
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                    theme == "dark"
+                      ? "border-stone-600 bg-stone-800"
+                      : "border-stone-400 bg-stone-300"
+                  } rounded-lg text-center flex items-center justify-center p-1`}
+                >
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
@@ -648,8 +919,14 @@ function App() {
                   )}
                 </div>
               </div>
-              <div className="flex gap-[2px] mt-[2px] text-white">
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
+              <div className={`flex gap-[2px] text-white`}>
+                <div
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                    theme == "dark"
+                      ? "border-stone-600 bg-stone-800"
+                      : "border-stone-400 bg-stone-300"
+                  } rounded-lg text-center flex items-center justify-center p-1`}
+                >
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
@@ -674,14 +951,21 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    if (fighter00.bg == "from-stone-700 to-stone-800") {
+                    if (
+                      fighter00.bg == "from-stone-700 to-stone-800" ||
+                      "from-stone-200 to-stone-300"
+                    ) {
                       toggleFighterPick();
                       setSelected("fighter00");
                     } else {
                       toast.info("Fighter already selected.");
                     }
                   }}
-                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter00.bg} text-center flex items-center justify-center`}
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                    theme == "dark" ? "border-stone-600" : "border-stone-400"
+                  } rounded-lg shadow-md bg-gradient-to-b ${
+                    fighter00.bg
+                  } text-center flex items-center justify-center`}
                 >
                   <div>
                     <div className="flex justify-center">
@@ -697,14 +981,21 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    if (fighter01.bg == "from-stone-700 to-stone-800") {
+                    if (
+                      fighter01.bg == "from-stone-700 to-stone-800" ||
+                      "from-stone-200 to-stone-300"
+                    ) {
                       toggleFighterPick();
                       setSelected("fighter01");
                     } else {
                       toast.info("Fighter already selected.");
                     }
                   }}
-                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter01.bg} text-center flex items-center justify-center`}
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                    theme == "dark" ? "border-stone-600" : "border-stone-400"
+                  } rounded-lg shadow-md bg-gradient-to-b ${
+                    fighter01.bg
+                  } text-center flex items-center justify-center`}
                 >
                   <div>
                     <div className="flex justify-center">
@@ -720,14 +1011,21 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    if (fighter02.bg == "from-stone-700 to-stone-800") {
+                    if (
+                      fighter02.bg == "from-stone-700 to-stone-800" ||
+                      "from-stone-200 to-stone-300"
+                    ) {
                       toggleFighterPick();
                       setSelected("fighter02");
                     } else {
                       toast.info("Fighter already selected.");
                     }
                   }}
-                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter02.bg} text-center flex items-center justify-center`}
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                    theme == "dark" ? "border-stone-600" : "border-stone-400"
+                  } rounded-lg shadow-md bg-gradient-to-b ${
+                    fighter02.bg
+                  } text-center flex items-center justify-center`}
                 >
                   <div>
                     <div className="flex justify-center">
@@ -742,8 +1040,14 @@ function App() {
                   </div>
                 </div>
               </div>
-              <div className="flex gap-[2px] mt-[2px] text-white">
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
+              <div className={`flex gap-[2px] text-white`}>
+                <div
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                    theme == "dark"
+                      ? "border-stone-600 bg-stone-800"
+                      : "border-stone-400 bg-stone-300"
+                  } rounded-lg text-center flex items-center justify-center p-1`}
+                >
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
@@ -768,14 +1072,21 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    if (fighter10.bg == "from-stone-700 to-stone-800") {
+                    if (
+                      fighter10.bg == "from-stone-700 to-stone-800" ||
+                      "from-stone-200 to-stone-300"
+                    ) {
                       toggleFighterPick();
                       setSelected("fighter10");
                     } else {
                       toast.info("Fighter already selected.");
                     }
                   }}
-                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter10.bg} text-center flex items-center justify-center`}
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                    theme == "dark" ? "border-stone-600" : "border-stone-400"
+                  } rounded-lg shadow-md bg-gradient-to-b ${
+                    fighter10.bg
+                  } text-center flex items-center justify-center`}
                 >
                   <div>
                     <div className="flex justify-center">
@@ -791,14 +1102,21 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    if (fighter11.bg == "from-stone-700 to-stone-800") {
+                    if (
+                      fighter11.bg == "from-stone-700 to-stone-800" ||
+                      "from-stone-200 to-stone-300"
+                    ) {
                       toggleFighterPick();
                       setSelected("fighter11");
                     } else {
                       toast.info("Fighter already selected.");
                     }
                   }}
-                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter11.bg} text-center flex items-center justify-center`}
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                    theme == "dark" ? "border-stone-600" : "border-stone-400"
+                  } rounded-lg shadow-md bg-gradient-to-b ${
+                    fighter11.bg
+                  } text-center flex items-center justify-center`}
                 >
                   <div>
                     <div className="flex justify-center">
@@ -814,14 +1132,21 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    if (fighter12.bg == "from-stone-700 to-stone-800") {
+                    if (
+                      fighter12.bg == "from-stone-700 to-stone-800" ||
+                      "from-stone-200 to-stone-300"
+                    ) {
                       toggleFighterPick();
                       setSelected("fighter12");
                     } else {
                       toast.info("Fighter already selected.");
                     }
                   }}
-                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter12.bg} text-center flex items-center justify-center`}
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                    theme == "dark" ? "border-stone-600" : "border-stone-400"
+                  } rounded-lg shadow-md bg-gradient-to-b ${
+                    fighter12.bg
+                  } text-center flex items-center justify-center`}
                 >
                   <div>
                     <div className="flex justify-center">
@@ -836,8 +1161,14 @@ function App() {
                   </div>
                 </div>
               </div>
-              <div className="flex gap-[2px] mt-[2px] text-white">
-                <div className="xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border border-stone-600 rounded-lg bg-stone-800 text-center flex items-center justify-center p-1">
+              <div className={`flex gap-[2px] text-white`}>
+                <div
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                    theme == "dark"
+                      ? "border-stone-600 bg-stone-800"
+                      : "border-stone-400 bg-stone-300"
+                  } rounded-lg text-center flex items-center justify-center p-1`}
+                >
                   {filtersSelected.length > 0 ? (
                     <div>
                       <div className="flex items-center justify-center">
@@ -862,14 +1193,21 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    if (fighter20.bg == "from-stone-700 to-stone-800") {
+                    if (
+                      fighter20.bg == "from-stone-700 to-stone-800" ||
+                      "from-stone-200 to-stone-300"
+                    ) {
                       toggleFighterPick();
                       setSelected("fighter20");
                     } else {
                       toast.info("Fighter already selected.");
                     }
                   }}
-                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter20.bg} text-center flex items-center justify-center`}
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                    theme == "dark" ? "border-stone-600" : "border-stone-400"
+                  } rounded-lg shadow-md bg-gradient-to-b ${
+                    fighter20.bg
+                  } text-center flex items-center justify-center`}
                 >
                   <div>
                     <div className="flex justify-center">
@@ -885,14 +1223,21 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    if (fighter21.bg == "from-stone-700 to-stone-800") {
+                    if (
+                      fighter21.bg == "from-stone-700 to-stone-800" ||
+                      "from-stone-200 to-stone-300"
+                    ) {
                       toggleFighterPick();
                       setSelected("fighter21");
                     } else {
                       toast.info("Fighter already selected.");
                     }
                   }}
-                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter21.bg} text-center flex items-center justify-center`}
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                    theme == "dark" ? "border-stone-600" : "border-stone-400"
+                  } rounded-lg shadow-md bg-gradient-to-b ${
+                    fighter21.bg
+                  } text-center flex items-center justify-center`}
                 >
                   <div>
                     <div className="flex justify-center">
@@ -908,14 +1253,21 @@ function App() {
                 </div>
                 <div
                   onClick={() => {
-                    if (fighter22.bg == "from-stone-700 to-stone-800") {
+                    if (
+                      fighter22.bg == "from-stone-700 to-stone-800" ||
+                      "from-stone-200 to-stone-300"
+                    ) {
                       toggleFighterPick();
                       setSelected("fighter22");
                     } else {
                       toast.info("Fighter already selected.");
                     }
                   }}
-                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer  border border-stone-600 rounded-lg shadow-md bg-gradient-to-b ${fighter22.bg} text-center flex items-center justify-center`}
+                  className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                    theme == "dark" ? "border-stone-600" : "border-stone-400"
+                  } rounded-lg shadow-md bg-gradient-to-b ${
+                    fighter22.bg
+                  } text-center flex items-center justify-center`}
                 >
                   <div>
                     <div className="flex justify-center">
@@ -930,7 +1282,13 @@ function App() {
                   </div>
                 </div>
               </div>
-              <div className="absolute hidden select-fighter w-full text-white bottom-0 bg-stone-700 rounded-lg border border-stone-600 shadow-lg left-0">
+              <div
+                className={`absolute hidden select-fighter w-full text-white bottom-0 ${
+                  theme == "dark"
+                    ? "bg-stone-700 border-stone-600"
+                    : "bg-stone-200 border-stone-400"
+                } rounded-lg border shadow-lg left-0`}
+              >
                 <div className="p-2 w-full">
                   <input
                     type="text"
@@ -948,7 +1306,11 @@ function App() {
                             updateBox(fighter);
                           }}
                           key={key}
-                          className="flex items-center cursor-pointer gap-6 my-3 px-2 pt-2 bg-gradient-to-r from-stone-800 to-stone-900 shadow-lg rounded-lg text-white"
+                          className={`flex items-center border cursor-pointer gap-6 my-3 px-2 pt-2 bg-gradient-to-r ${
+                            theme == "dark"
+                              ? "from-stone-800 to-stone-900 border-stone-900 text-white"
+                              : "from-stone-300 to-stone-400 border-stone-400 text-black"
+                          } shadow-lg rounded-lg`}
                         >
                           <img
                             src={
@@ -970,7 +1332,11 @@ function App() {
                       onClick={() => {
                         toggleFighterPick();
                       }}
-                      className="bg-stone-800 px-6 py-1 font-semibold rounded-tr-lg rounded-bl-lg shadow-lg border cursor-pointer border-stone-600"
+                      className={` ${
+                        theme == "dark"
+                          ? "bg-stone-800 text-white border-stone-600"
+                          : "bg-stone-300 text-black border-stone-400"
+                      } px-6 py-1 font-semibold rounded-tr-lg rounded-bl-lg shadow-lg border cursor-pointer`}
                     >
                       Cancel
                     </button>
@@ -986,7 +1352,13 @@ function App() {
           } w-full h-full top-0 left-0`}
         >
           <div className="flex w-full h-full justify-center items-center bg-[#00000092]">
-            <div className="z-10 absolute bg-gradient-to-b from-stone-600 to-stone-700 shadow-lg text-stone-100 py-5 px-10 border-2 border-stone-500 rounded-lg">
+            <div
+              className={`z-10 absolute bg-gradient-to-b ${
+                theme == "dark"
+                  ? "from-stone-600 to-stone-700 border-stone-500 text-stone-100"
+                  : "from-stone-300 to-stone-400 border-stone-200 text-stone-800"
+              } shadow-lg py-5 px-10 border-2 rounded-lg`}
+            >
               <div className="flex gap-3 items-center">
                 <img
                   src="https://cdn-icons-png.freepik.com/512/921/921676.png"
