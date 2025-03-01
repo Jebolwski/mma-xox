@@ -465,7 +465,7 @@ const Filters = (): FilterDifficulty => {
             "filter_text": "Orthodox",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
-                return fighter.Stance == "Orthodox";
+                return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
             })
         }, {
             "id": 19,
@@ -481,7 +481,7 @@ const Filters = (): FilterDifficulty => {
             "filter_text": "Southpaw",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
-                return fighter.Stance == "Southpaw";
+                return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
             })
         },
         {
