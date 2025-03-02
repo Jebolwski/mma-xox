@@ -122,6 +122,15 @@ const Filters = (): FilterDifficulty => {
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseFloat(fighter.totalRoundsFought) > 20;
         })
+    },
+    {
+        "id": 14,
+        "filter_image": null,
+        "filter_text": "Octagon Debut",
+        "filter_no_image_text": "2018<",
+        "filter_fighters": fighters.filter((fighter: Fighter) => {
+            return parseInt(fighter.OctagonDebut) < 2018;
+        })
     }];
     let filters_medium: Filter[] = [{
         "id": 1,
@@ -302,6 +311,31 @@ const Filters = (): FilterDifficulty => {
         "filter_no_image_text": ">20",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseFloat(fighter.totalRoundsFought) > 20;
+        })
+    }, {
+        "id": 21,
+        "filter_image": null,
+        "filter_text": "Age",
+        "filter_no_image_text": "35>",
+        "filter_fighters": fighters.filter((fighter: Fighter) => {
+            return parseInt(fighter.Age) > 35;
+        })
+    }, {
+        "id": 22,
+        "filter_image": null,
+        "filter_text": "Age",
+        "filter_no_image_text": "30<",
+        "filter_fighters": fighters.filter((fighter: Fighter) => {
+            return parseInt(fighter.Age) < 30;
+        })
+    },
+    {
+        "id": 23,
+        "filter_image": null,
+        "filter_text": "Octagon Debut",
+        "filter_no_image_text": "2015<",
+        "filter_fighters": fighters.filter((fighter: Fighter) => {
+            return parseInt(fighter.OctagonDebut) < 2015;
         })
     }];
     let filters_hard: Filter[] = [
@@ -509,6 +543,15 @@ const Filters = (): FilterDifficulty => {
             "filter_no_image_text": ">20",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return parseFloat(fighter.totalRoundsFought) > 20;
+            })
+        },
+        {
+            "id": 24,
+            "filter_image": null,
+            "filter_text": "Octagon Debut",
+            "filter_no_image_text": "2014<",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return parseInt(fighter.OctagonDebut) < 2014;
             })
         }
     ];
