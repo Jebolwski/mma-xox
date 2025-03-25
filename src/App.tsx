@@ -3,6 +3,7 @@ import fighters_url from "./assets/data/fighters.json";
 import Filters from "./logic/filters";
 import { Fighter, FilterDifficulty } from "./interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
+import { io, Socket } from "socket.io-client";
 
 function App() {
   useEffect(() => {
@@ -114,6 +115,155 @@ function App() {
         ? "from-stone-700 to-stone-800"
         : "from-stone-300 to-stone-400",
   });
+
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const [roomId, setRoomId] = useState<string>("");
+  const [isHost, setIsHost] = useState(false);
+  const [joinRoomId, setJoinRoomId] = useState("");
+  const [isOnline, setIsOnline] = useState(false);
+
+  // Socket.io bağlantısı
+  useEffect(() => {
+    const newSocket = io("http://localhost:3000");
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+    };
+  }, []);
+
+  // Socket.io event listeners
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("roomCreated", (id: string) => {
+      setRoomId(id);
+      setIsHost(true);
+    });
+
+    socket.on("joinedRoom", (id: string) => {
+      setRoomId(id);
+      setIsHost(false);
+    });
+
+    socket.on(
+      "gameStart",
+      (data: { redPlayer: string; bluePlayer: string }) => {
+        if (socket.id === data.redPlayer) {
+          setTurn("red");
+          // Sadece oda sahibi filtreleri oluşturup göndersin
+          let f: FilterDifficulty = Filters();
+          setTimer(timerLength);
+
+          if (difficulty == "EASY") {
+            setFilters(f.easy);
+          } else if (difficulty == "MEDIUM") {
+            setFilters(f.medium);
+          } else {
+            setFilters(f.hard);
+          }
+        } else {
+          setTurn("blue");
+        }
+        setGameStart(true);
+      }
+    );
+
+    socket.on("filtersUpdated", (filters: any) => {
+      setFilters(filters);
+    });
+
+    socket.on("moveMade", (move: any) => {
+      handleOpponentMove(move);
+    });
+
+    socket.on("playerDisconnected", () => {
+      toast.error("Rakip oyundan ayrıldı!");
+      restartGame();
+    });
+
+    return () => {
+      socket.off("roomCreated");
+      socket.off("joinedRoom");
+      socket.off("gameStart");
+      socket.off("filtersUpdated");
+      socket.off("moveMade");
+      socket.off("playerDisconnected");
+    };
+  }, [socket]);
+
+  const createRoom = () => {
+    if (socket) {
+      socket.emit("createRoom");
+      setIsOnline(true);
+    }
+  };
+
+  const joinRoom = () => {
+    if (socket && joinRoomId) {
+      socket.emit("joinRoom", joinRoomId);
+      setIsOnline(true);
+    }
+  };
+
+  const handleOpponentMove = (move: any) => {
+    const { fighter, position, turn } = move;
+    const fighterMap: { [key: string]: keyof typeof positionsFighters } = {
+      fighter00: "position03",
+      fighter01: "position13",
+      fighter02: "position23",
+      fighter10: "position04",
+      fighter11: "position14",
+      fighter12: "position24",
+      fighter20: "position05",
+      fighter21: "position15",
+      fighter22: "position25",
+    };
+
+    if (!fighterMap[position]) return;
+
+    const positionKey = fighterMap[position];
+    if (!positionsFighters[positionKey].includes(fighter)) {
+      notify();
+    } else {
+      const bgColor =
+        turn === "red"
+          ? "from-red-800 to-red-900"
+          : "from-blue-800 to-blue-900";
+      const setterMap: { [key: string]: Function } = {
+        fighter00: setFighter00,
+        fighter01: setFighter01,
+        fighter02: setFighter02,
+        fighter10: setFighter10,
+        fighter11: setFighter11,
+        fighter12: setFighter12,
+        fighter20: setFighter20,
+        fighter21: setFighter21,
+        fighter22: setFighter22,
+      };
+
+      setterMap[position]({
+        url:
+          fighter.Picture === "Unknown"
+            ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
+            : fighter.Picture,
+        text: fighter.Fighter,
+        bg: bgColor,
+      });
+
+      const winner = checkWinner();
+      if (winner) {
+        alert(winner);
+        return;
+      }
+    }
+
+    setTurn(turn === "red" ? "blue" : "red");
+    setTimer(timerLength);
+    toggleFighterPick();
+    resetInput();
+    setFigters([]);
+  };
 
   const restartGame = () => {
     setGameStart(false);
@@ -260,6 +410,17 @@ function App() {
 
       setterMap[selected]({ url: picture, text: name, bg: bgColor });
 
+      if (isOnline && socket) {
+        socket.emit("makeMove", {
+          roomId,
+          move: {
+            fighter,
+            position: selected,
+            turn,
+          },
+        });
+      }
+
       const winner = checkWinner();
       if (winner) {
         alert(winner); // Kazananı bildir
@@ -276,8 +437,9 @@ function App() {
 
   const startGame = () => {
     let f: FilterDifficulty = Filters();
-
     setTimer(timerLength);
+
+    // Zorluk seviyesine göre filtreleri ayarla
     if (difficulty == "EASY") {
       setFilters(f.easy);
     } else if (difficulty == "MEDIUM") {
@@ -610,10 +772,14 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    if (gameStart == true) {
+    if (gameStart && filters && isHost) {
+      // Sadece oda sahibi filtreleri oluşturup göndersin
       getFilters();
+      if (socket && roomId) {
+        socket.emit("updateFilters", { roomId, filters });
+      }
     }
-  }, [gameStart]);
+  }, [gameStart, filters]); // filters'ı dependency array'e ekle
 
   useEffect(() => {
     if (timer <= 0) {
@@ -1428,6 +1594,40 @@ function App() {
                   </select>
                 </div>
               </div>
+
+              <div className="flex flex-col gap-4 mt-5">
+                <button
+                  onClick={createRoom}
+                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors"
+                >
+                  Oda Oluştur
+                </button>
+
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={joinRoomId}
+                    onChange={(e) => setJoinRoomId(e.target.value)}
+                    placeholder="Oda Kodu"
+                    className="px-2 py-1 rounded text-black"
+                  />
+                  <button
+                    onClick={joinRoom}
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+                  >
+                    Odaya Katıl
+                  </button>
+                  ""
+                </div>
+
+                {roomId && (
+                  <div className="text-center mt-2">
+                    <p className="font-semibold">Oda Kodu: {roomId}</p>
+                    <p className="text-sm">Bu kodu arkadaşınızla paylaşın</p>
+                  </div>
+                )}
+              </div>
+
               <div className="flex justify-center">
                 <button
                   onClick={startGame}
