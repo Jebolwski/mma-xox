@@ -23,7 +23,7 @@ const Menu = () => {
       return;
     }
     const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
-    await createRoom(newRoomId, playerName, difficulty, timerLength);
+    //await createRoom(newRoomId, playerName, difficulty, timerLength);
     navigate(`/room/${newRoomId}?role=host&name=${playerName}`);
   };
 
