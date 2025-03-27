@@ -1,0 +1,193 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { useTheme } from "../context/ThemeContext";
+
+const Menu = () => {
+  const navigate = useNavigate();
+  const [theme, setTheme] = useState("dark");
+
+  const [playerName, setPlayerName] = useState("");
+  const [roomCode, setRoomCode] = useState("");
+  const [showJoinFields, setShowJoinFields] = useState(false);
+  const [showCreateFields, setShowCreateFields] = useState(false);
+  const [difficulty, setDifficulty] = useState("MEDIUM");
+  const [timerLength, setTimerLength] = useState("30");
+
+  const handleLocalGame = () => {
+    navigate("/same-screen");
+  };
+
+  const handleCreateRoom = async () => {
+    if (!playerName) {
+      toast.error("Lütfen isminizi girin!");
+      return;
+    }
+    const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
+    await createRoom(newRoomId, playerName, difficulty, timerLength);
+    navigate(`/room/${newRoomId}?role=host&name=${playerName}`);
+  };
+
+  const handleJoinRoom = () => {
+    if (!playerName || !roomCode) {
+      toast.error("Lütfen tüm alanları doldurun!");
+      return;
+    }
+    navigate(`/room/${roomCode}?role=guest&name=${playerName}`);
+  };
+
+  return (
+    <div
+      className={`w-screen h-screen ${
+        theme === "dark" ? "bg-stone-800" : "bg-stone-200"
+      } flex items-center justify-center`}
+    >
+      <div
+        className={`p-8 rounded-lg shadow-xl border w-96 ${
+          theme === "dark"
+            ? "bg-stone-700 border-stone-600 text-stone-200"
+            : "bg-stone-300 border-stone-400 text-stone-800"
+        }`}
+      >
+        <ToastContainer
+          position="bottom-right"
+          theme="dark"
+        />
+        <div className="absolute z-30 text-red-500 top-3 left-3">
+          {theme === "dark" ? (
+            <div
+              onClick={() => {
+                setTheme(theme === "dark" ? "light" : "dark");
+              }}
+              className="p-1 rounded-full bg-stone-700 border border-stone-800 cursor-pointer shadow-xl"
+            >
+              <img
+                src="https://clipart-library.com/images/6iypd9jin.png"
+                className="w-8"
+              />
+            </div>
+          ) : (
+            <div
+              onClick={() => {
+                setTheme(theme === "dark" ? "light" : "dark");
+              }}
+              className="p-1 rounded-full bg-stone-300 border border-stone-400 cursor-pointer shadow-xl"
+            >
+              <img
+                src="https://clipart-library.com/img/1669853.png"
+                className="w-8"
+              />
+            </div>
+          )}
+        </div>
+        <div className="flex items-center justify-center mb-6">
+          <img
+            src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+            alt="logo"
+            className="w-12 h-12 mr-3"
+          />
+          <h1 className="text-3xl font-bold">MMA XOX</h1>
+        </div>
+
+        {!showJoinFields && !showCreateFields ? (
+          <div className="space-y-4">
+            <button
+              onClick={handleLocalGame}
+              className="w-full bg-red-500 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-red-600 duration-200"
+            >
+              Tek Ekranda Oyna
+            </button>
+            <button
+              onClick={() => setShowCreateFields(true)}
+              className="w-full bg-green-500 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-green-600 duration-200"
+            >
+              Oda Oluştur
+            </button>
+            <button
+              onClick={() => setShowJoinFields(true)}
+              className="w-full bg-blue-500 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-blue-600 duration-200"
+            >
+              Odaya Katıl
+            </button>
+          </div>
+        ) : showCreateFields ? (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="İsminiz"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-stone-600 text-white border border-stone-500 focus:outline-none focus:border-stone-400"
+            />
+            <select
+              value={difficulty}
+              onChange={(e) => setDifficulty(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-stone-600 text-white border border-stone-500 focus:outline-none focus:border-stone-400"
+            >
+              <option value="EASY">Kolay</option>
+              <option value="MEDIUM">Orta</option>
+              <option value="HARD">Zor</option>
+            </select>
+            <select
+              value={timerLength}
+              onChange={(e) => setTimerLength(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-stone-600 text-white border border-stone-500 focus:outline-none focus:border-stone-400"
+            >
+              <option value="-2">Süre Sınırı Yok</option>
+              <option value="20">20 Saniye</option>
+              <option value="30">30 Saniye</option>
+              <option value="40">40 Saniye</option>
+            </select>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowCreateFields(false)}
+                className="w-1/2 bg-stone-500 cursor-pointer text-white py-2 rounded-lg font-semibold hover:bg-stone-600 transition"
+              >
+                Geri
+              </button>
+              <button
+                onClick={handleCreateRoom}
+                className="w-1/2 bg-green-500 cursor-pointer text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition"
+              >
+                Oda Oluştur
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="İsminiz"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-stone-600 text-white border border-stone-500 focus:outline-none focus:border-stone-400"
+            />
+            <input
+              type="text"
+              placeholder="Oda Kodu"
+              value={roomCode}
+              onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+              className="w-full px-4 py-2 rounded-lg bg-stone-600 text-white border border-stone-500 focus:outline-none focus:border-stone-400"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowJoinFields(false)}
+                className="w-1/2 bg-stone-500 cursor-pointer text-white py-2 rounded-lg font-semibold hover:bg-stone-600 transition"
+              >
+                Geri
+              </button>
+              <button
+                onClick={handleJoinRoom}
+                className="w-1/2 bg-blue-500 cursor-pointer text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition"
+              >
+                Odaya Katıl
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Menu;
