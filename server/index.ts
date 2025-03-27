@@ -16,7 +16,6 @@ interface Room {
     id: string;
     players: string[];
     gameState?: any;
-    filters?: any;
 }
 
 const rooms: Map<string, Room> = new Map();
@@ -48,15 +47,6 @@ io.on('connection', (socket) => {
             });
         } else {
             socket.emit('roomError', 'Oda bulunamadı veya dolu');
-        }
-    });
-
-    // Filtre güncelleme
-    socket.on('updateFilters', (data: { roomId: string, filters: any }) => {
-        const room = rooms.get(data.roomId);
-        if (room) {
-            room.filters = data.filters;
-            socket.to(data.roomId).emit('filtersUpdated', data.filters);
         }
     });
 

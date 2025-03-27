@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.6",
+    "@types/react-router-dom": "^5.3.3",
     "express": "^4.21.2",
+    "firebase": "^11.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.4.0",
     "react-toastify": "^11.0.3",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
