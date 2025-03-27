@@ -5,7 +5,6 @@ import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
 import return_img from "../assets/return.png";
 import { Link } from "react-router-dom";
-import { useTheme } from "../context/ThemeContext";
 
 function SameScreenGame() {
   useEffect(() => {
