@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -23,16 +25,54 @@ const Menu = () => {
       return;
     }
     const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
-    //await createRoom(newRoomId, playerName, difficulty, timerLength);
-    navigate(`/room/${newRoomId}?role=host&name=${playerName}`);
+
+    try {
+      await setDoc(doc(db, "rooms", newRoomId), {
+        host: playerName,
+        guest: null,
+        turn: "red",
+        difficulty,
+        timerLength,
+        gameStarted: false,
+        positions: {},
+        createdAt: new Date().toISOString(),
+      });
+
+      navigate(`/room/${newRoomId}?role=host&name=${playerName}`);
+    } catch (error) {
+      toast.error("Oda oluşturulurken bir hata oluştu!");
+      console.error(error);
+    }
   };
 
-  const handleJoinRoom = () => {
+  const handleJoinRoom = async () => {
     if (!playerName || !roomCode) {
       toast.error("Lütfen tüm alanları doldurun!");
       return;
     }
-    navigate(`/room/${roomCode}?role=guest&name=${playerName}`);
+
+    try {
+      const roomRef = doc(db, "rooms", roomCode);
+      const roomDoc = await getDoc(roomRef);
+
+      if (!roomDoc.exists()) {
+        toast.error("Bu kodda bir oda bulunamadı!");
+        return;
+      }
+
+      const roomData = roomDoc.data();
+
+      if (roomData.guest !== null) {
+        toast.error("Bu oda dolu! Başka bir oda deneyin.");
+        return;
+      }
+
+      // Oda boşsa ve bulunduysa odaya katıl
+      navigate(`/room/${roomCode}?role=guest&name=${playerName}`);
+    } catch (error) {
+      toast.error("Odaya katılırken bir hata oluştu!");
+      console.error(error);
+    }
   };
 
   return (

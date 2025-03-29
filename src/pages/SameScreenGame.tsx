@@ -13,8 +13,6 @@ function SameScreenGame() {
 
   const [theme, setTheme] = useState("dark");
 
-  console.log("themememe same screen", theme);
-
   const [difficulty, setDifficulty]: any = useState("MEDIUM");
 
   const [timer, setTimer]: any = useState("30");
@@ -675,9 +673,6 @@ function SameScreenGame() {
         </div>
         <div className="absolute z-30 top-3 right-3">
           <div
-            onClick={() => {
-              setTheme(theme === "dark" ? "light" : "dark");
-            }}
             className={`p-1 rounded-lg border border-stone-800 duration-300 cursor-pointer shadow-xl ${
               theme === "dark"
                 ? "bg-stone-700 text-stone-200 hover:bg-stone-600"
