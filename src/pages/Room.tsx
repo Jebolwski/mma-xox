@@ -8,6 +8,7 @@ import {
   updateDoc,
   deleteDoc,
   getDoc,
+  runTransaction,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
@@ -55,18 +56,15 @@ const Room = () => {
     const unsubscribe = onSnapshot(roomRef, (doc) => {
       if (doc.exists()) {
         const newData = doc.data();
-        // Eğer host ise ve guest değişmişse logla
-        if (role === "host" && gameState && newData.guest !== gameState.guest) {
-          console.log(`Yeni guest katıldı: ${newData.guest || "Guest çıktı"}`);
-          // Eğer yeni bir guest katıldıysa (guest null değilse ve önceki guest'ten farklıysa)
-          if (
-            newData.guest &&
-            (!gameState.guest || newData.guest !== gameState.guest)
-          ) {
-            toast.success(`Yeni oyuncu katıldı: ${newData.guest}`);
-          }
-        }
         setGameState(newData);
+      } else {
+        // Eğer oda silinmişse ve guest ise ana sayfaya yönlendir
+        if (role === "guest") {
+          toast.info("Host oyundan çıktı!");
+          setTimeout(() => {
+            navigate("/");
+          }, 1500);
+        }
       }
     });
 
@@ -230,6 +228,8 @@ const Room = () => {
 
     const roomRef = doc(db, "rooms", roomId!);
     const newPositions = { ...gameState.positions };
+
+    // Sadece gerekli bilgileri saklayalım
     newPositions[selected] = {
       url:
         fighter.Picture === "Unknown"
@@ -253,8 +253,13 @@ const Room = () => {
       updates.gameEnded = true;
     }
 
-    await updateDoc(roomRef, updates);
-    setSelected(null);
+    try {
+      await updateDoc(roomRef, updates);
+      setSelected(null);
+    } catch (error) {
+      console.error("Pozisyon güncellenirken hata:", error);
+      toast.error("Pozisyon güncellenirken bir hata oluştu!");
+    }
   };
 
   const startGame = async () => {
@@ -285,21 +290,26 @@ const Room = () => {
         console.log("Host çıkış işlemi başladı");
         console.log("Room ID:", roomId);
 
-        // Önce odayı kontrol et
-        const roomDoc = await getDoc(roomRef);
-        if (!roomDoc.exists()) {
-          console.log("Oda zaten silinmiş");
+        // Transaction içinde silme işlemini gerçekleştir
+        await runTransaction(db, async (transaction) => {
+          // Önce odayı kontrol et
+          const roomDoc = await transaction.get(roomRef);
+
+          if (!roomDoc.exists()) {
+            console.log("Oda zaten silinmiş");
+            return;
+          }
+
+          // Odayı sil
+          transaction.delete(roomRef);
+          console.log("Silme işlemi transaction'a eklendi");
+        });
+
+        // Toast mesajını göster ve 1.5 saniye sonra yönlendir
+        toast.success("Oda başarıyla silindi!");
+        setTimeout(() => {
           navigate("/");
-          return;
-        }
-
-        // Odayı sil
-        await deleteDoc(roomRef);
-        console.log("Oda başarıyla silindi");
-        console.log(`${playerName} (host) oyundan çıktı ve oda silindi.`);
-
-        // Silme işlemi başarılı olduktan sonra yönlendir
-        navigate("/");
+        }, 1500);
       } else if (role === "guest") {
         // Guest çıkarsa sadece guest'i null yap
         setHasExited(true); // Guest'in çıkış yaptığını işaretle
@@ -311,6 +321,10 @@ const Room = () => {
       }
     } catch (error) {
       console.error("Çıkış yapılırken hata oluştu:", error);
+      console.error(
+        "Hata detayı:",
+        error instanceof Error ? error.message : "Bilinmeyen hata"
+      );
       toast.error("Çıkış yapılırken bir hata oluştu!");
       // Hata durumunda da ana sayfaya yönlendir
       navigate("/");
@@ -318,35 +332,6 @@ const Room = () => {
       setIsExiting(false);
     }
   };
-
-  // Sayfa kapatıldığında çalışacak effect
-  useEffect(() => {
-    const handleBeforeUnload = async () => {
-      if (!playerName || !role || !roomId) return;
-
-      const roomRef = doc(db, "rooms", roomId);
-
-      try {
-        if (role === "host") {
-          // Host sekmeyi kapatırsa odayı sil
-          await deleteDoc(roomRef);
-          console.log(`${playerName} (host) sekmeyi kapattı ve oda silindi.`);
-        } else if (role === "guest") {
-          // Guest sekmeyi kapatırsa guest'i null yap
-          setHasExited(true); // Guest'in çıkış yaptığını işaretle
-          await updateDoc(roomRef, {
-            guest: null,
-          });
-          console.log(`${playerName} (guest) sekmeyi kapattı.`);
-        }
-      } catch (error) {
-        console.error("Sekme kapatılırken hata oluştu:", error);
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [playerName, role, roomId]);
 
   if (!gameState) {
     return (
