@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import {
-  doc,
+  collection,
   onSnapshot,
+  query,
+  doc,
   setDoc,
   updateDoc,
+  documentId,
   runTransaction,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
@@ -49,57 +53,50 @@ const Room = () => {
   useEffect(() => {
     if (!roomId) return;
 
-    const roomRef = doc(db, "rooms", roomId);
-    const unsubscribe = onSnapshot(roomRef, (doc) => {
-      if (doc.exists()) {
-        const newData = doc.data();
-        console.log("Room değişikliği:", {
-          host: newData.host,
-          guest: newData.guest,
-          gameStarted: newData.gameStarted,
-          gameEnded: newData.gameEnded,
-          turn: newData.turn,
-          winner: newData.winner,
-          positions: Object.keys(newData.positions || {}).length,
-        });
+    console.log("Listener başlatılıyor...");
 
-        // Guest değişikliklerini kontrol et
-        if (role === "host" && gameState) {
-          if (
-            newData.guest &&
-            (!gameState.guest || newData.guest !== gameState.guest)
-          ) {
-            toast.success(`${newData.guest} odaya katıldı!`);
-          } else if (!newData.guest && gameState.guest) {
-            toast.info(`${gameState.guest} odadan ayrıldı!`);
-          }
-        }
+    const collectionRef = collection(db, "rooms");
+    const q = query(collectionRef, where(documentId(), "==", roomId));
 
-        setGameState(newData);
-      } else {
-        // Eğer oda silinmişse ve guest ise ana sayfaya yönlendir
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      if (snapshot.empty) {
+        console.log("Belge bulunamadı");
         if (role === "guest") {
           toast.info("Host oyundan çıktı!");
           setTimeout(() => {
             navigate("/");
           }, 1500);
         }
+        return;
       }
+
+      console.log("Snapshot tetiklendi");
+
+      const updatedData = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+        positions: Object.keys(doc.data().positions || {}).length,
+      }))[0]; // Sadece tek belge olduğu için ilk öğeyi alıyoruz
+
+      console.log("Yeni veri:", updatedData);
+
+      setGameState(updatedData);
     });
 
-    return () => unsubscribe();
+    return () => {
+      console.log("Listener temizleniyor...");
+      unsubscribe();
+    };
   }, [roomId, role]);
 
   useEffect(() => {
     if (role === "host" && !gameState) {
-      console.log("Host initialize effect tetiklendi");
       const initializeGame = async () => {
         const roomRef = doc(db, "rooms", roomId!);
         const f = Filters();
         const difficulty = "MEDIUM";
         const timerLength = "30";
 
-        console.log("Host odayı oluşturuyor - roomId:", roomId);
         await setDoc(roomRef, {
           host: playerName,
           guest: null,
@@ -110,7 +107,6 @@ const Room = () => {
           positions: {},
           filters: f.medium,
         });
-        console.log("Host oda oluşturma tamamlandı");
       };
 
       initializeGame();
@@ -422,7 +418,11 @@ const Room = () => {
       </div>
 
       {/* Oyun alanı */}
-      <div className="flex flex-col items-center justify-center h-full">
+      <div
+        className={`flex flex-col items-center justify-center h-full ${
+          theme == "dark" ? "text-white" : "text-black"
+        }`}
+      >
         <div className="text-2xl mb-4">Oda Kodu: {roomId}</div>
 
         {gameState.gameStarted && !gameState.gameEnded ? (
