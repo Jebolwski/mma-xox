@@ -52,13 +52,30 @@ const Room = () => {
   useEffect(() => {
     if (!roomId) return;
 
+    console.log(
+      "Ana snapshot listener başlatıldı - roomId:",
+      roomId,
+      "role:",
+      role
+    );
     const roomRef = doc(db, "rooms", roomId);
     const unsubscribe = onSnapshot(roomRef, (doc) => {
+      console.log("Ana snapshot tetiklendi - doc exists:", doc.exists());
       if (doc.exists()) {
         const newData = doc.data();
+        console.log("Ana snapshot - Room değişikliği:", {
+          host: newData.host,
+          guest: newData.guest,
+          gameStarted: newData.gameStarted,
+          gameEnded: newData.gameEnded,
+          turn: newData.turn,
+          winner: newData.winner,
+          positions: Object.keys(newData.positions || {}).length,
+        });
+
         setGameState(newData);
       } else {
-        // Eğer oda silinmişse ve guest ise ana sayfaya yönlendir
+        console.log("Ana snapshot - Oda silinmiş");
         if (role === "guest") {
           toast.info("Host oyundan çıktı!");
           setTimeout(() => {
@@ -68,17 +85,22 @@ const Room = () => {
       }
     });
 
-    return () => unsubscribe();
+    return () => {
+      console.log("Ana snapshot listener temizlendi");
+      unsubscribe();
+    };
   }, [roomId, role]);
 
   useEffect(() => {
     if (role === "host" && !gameState) {
+      console.log("Host initialize effect tetiklendi");
       const initializeGame = async () => {
         const roomRef = doc(db, "rooms", roomId!);
         const f = Filters();
-        const difficulty = "MEDIUM"; // Varsayılan zorluk
-        const timerLength = "30"; // Varsayılan süre
+        const difficulty = "MEDIUM";
+        const timerLength = "30";
 
+        console.log("Host odayı oluşturuyor - roomId:", roomId);
         await setDoc(roomRef, {
           host: playerName,
           guest: null,
@@ -89,6 +111,7 @@ const Room = () => {
           positions: {},
           filters: f.medium,
         });
+        console.log("Host oda oluşturma tamamlandı");
       };
 
       initializeGame();
@@ -102,11 +125,14 @@ const Room = () => {
       gameState?.guest == null &&
       !hasExited
     ) {
+      console.log("Guest join effect tetiklendi");
       const joinGame = async () => {
         const roomRef = doc(db, "rooms", roomId!);
+        console.log("Guest odaya katılıyor - playerName:", playerName);
         await updateDoc(roomRef, {
           guest: playerName,
         });
+        console.log("Guest odaya katılma tamamlandı");
       };
 
       joinGame();
