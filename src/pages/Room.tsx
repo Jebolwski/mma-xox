@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import {
-  collection,
   doc,
   onSnapshot,
   setDoc,
   updateDoc,
-  deleteDoc,
-  getDoc,
   runTransaction,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import return_img from "../assets/return.png";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import fighters_url from "../assets/data/fighters.json";
 import Filters from "../logic/filters";
 import { Fighter } from "../interfaces/Fighter";
@@ -29,21 +26,21 @@ const Room = () => {
   const [gameState, setGameState] = useState<any>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [fighters, setFighters] = useState<Fighter[]>([]);
-  const [filters, setFilters] = useState<any>(null);
-  const [filtersSelected, setFiltersSelected] = useState<any[]>([]);
+  //const [filters, setFilters] = useState<any>(null);
+  //const [filtersSelected, setFiltersSelected] = useState<any[]>([]);
   const [hasExited, setHasExited] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const [positionsFighters, setPositionsFighters] = useState({
-    position03: [],
-    position04: [],
-    position05: [],
-    position13: [],
-    position14: [],
-    position15: [],
-    position23: [],
-    position24: [],
-    position25: [],
-  });
+  //const [positionsFighters, setPositionsFighters] = useState({
+  //  position03: [],
+  //  position04: [],
+  //  position05: [],
+  //  position13: [],
+  //  position14: [],
+  //  position15: [],
+  //  position23: [],
+  //  position24: [],
+  //  position25: [],
+  //});
 
   useEffect(() => {
     document.title = "MMA XOX - Online Game";
@@ -52,18 +49,11 @@ const Room = () => {
   useEffect(() => {
     if (!roomId) return;
 
-    console.log(
-      "Ana snapshot listener başlatıldı - roomId:",
-      roomId,
-      "role:",
-      role
-    );
     const roomRef = doc(db, "rooms", roomId);
     const unsubscribe = onSnapshot(roomRef, (doc) => {
-      console.log("Ana snapshot tetiklendi - doc exists:", doc.exists());
       if (doc.exists()) {
         const newData = doc.data();
-        console.log("Ana snapshot - Room değişikliği:", {
+        console.log("Room değişikliği:", {
           host: newData.host,
           guest: newData.guest,
           gameStarted: newData.gameStarted,
@@ -73,9 +63,21 @@ const Room = () => {
           positions: Object.keys(newData.positions || {}).length,
         });
 
+        // Guest değişikliklerini kontrol et
+        if (role === "host" && gameState) {
+          if (
+            newData.guest &&
+            (!gameState.guest || newData.guest !== gameState.guest)
+          ) {
+            toast.success(`${newData.guest} odaya katıldı!`);
+          } else if (!newData.guest && gameState.guest) {
+            toast.info(`${gameState.guest} odadan ayrıldı!`);
+          }
+        }
+
         setGameState(newData);
       } else {
-        console.log("Ana snapshot - Oda silinmiş");
+        // Eğer oda silinmişse ve guest ise ana sayfaya yönlendir
         if (role === "guest") {
           toast.info("Host oyundan çıktı!");
           setTimeout(() => {
@@ -85,10 +87,7 @@ const Room = () => {
       }
     });
 
-    return () => {
-      console.log("Ana snapshot listener temizlendi");
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, [roomId, role]);
 
   useEffect(() => {
