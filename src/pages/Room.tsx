@@ -18,7 +18,7 @@ import return_img from "../assets/return.png";
 //import { Link } from "react-router-dom";
 import fighters_url from "../assets/data/fighters.json";
 import Filters from "../logic/filters";
-import { Fighter } from "../interfaces/Fighter";
+import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 
 const Room = () => {
   const { roomId } = useParams();
@@ -29,22 +29,28 @@ const Room = () => {
   const [theme, setTheme] = useState("dark");
   const [gameState, setGameState] = useState<any>(null);
   const [selected, setSelected] = useState<string | null>(null);
+  const [guest, setGuest] = useState<string | null>(null);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [timer, setTimer] = useState<string | null>(null);
+  const [oldData, setOldData] = useState<any | null>(null);
+  const [filters, setFilters]: any = useState();
+  const [filtersSelected, setFiltersSelected]: any = useState([]);
   const [fighters, setFighters] = useState<Fighter[]>([]);
-  //const [filters, setFilters] = useState<any>(null);
-  //const [filtersSelected, setFiltersSelected] = useState<any[]>([]);
+  const [positionsFighters, setPositionsFighters]: any = useState({
+    position03: {},
+    position04: {},
+    position05: {},
+    position13: {},
+    position14: {},
+    position15: {},
+    position23: {},
+    position24: {},
+    position25: {},
+  });
+  const [difficulty, setDifficulty] = useState("MEDIUM");
+  const [timerLength, setTimerLength] = useState("30");
   const [hasExited, setHasExited] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  //const [positionsFighters, setPositionsFighters] = useState({
-  //  position03: [],
-  //  position04: [],
-  //  position05: [],
-  //  position13: [],
-  //  position14: [],
-  //  position15: [],
-  //  position23: [],
-  //  position24: [],
-  //  position25: [],
-  //});
 
   useEffect(() => {
     document.title = "MMA XOX - Online Game";
@@ -70,21 +76,29 @@ const Room = () => {
         return;
       }
 
-      console.log("Snapshot tetiklendi");
-
-      const updatedData = snapshot.docs.map((doc) => ({
+      setOldData(gameState);
+      const updatedData: any = snapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
         positions: Object.keys(doc.data().positions || {}).length,
       }))[0]; // Sadece tek belge olduğu için ilk öğeyi alıyoruz
 
-      console.log("Yeni veri:", updatedData);
+      //console.log("GUEST YENİ:", updatedData?.guest);
+      //console.log("GUEST ESKİ:", guest);
 
+      if (role === "host") {
+        if (guest == null && updatedData?.guest != null) {
+          toast.success(updatedData?.guest + " oyuna katıldı!");
+        } else if (guest != null && updatedData?.guest == null) {
+          toast.success(guest + " oyundan çıktı!");
+        }
+      }
+
+      setGuest(updatedData?.guest);
       setGameState(updatedData);
     });
 
     return () => {
-      console.log("Listener temizleniyor...");
       unsubscribe();
     };
   }, [roomId, role]);
@@ -93,22 +107,13 @@ const Room = () => {
     if (role === "host" && !gameState) {
       const initializeGame = async () => {
         const roomRef = doc(db, "rooms", roomId!);
-        const f = Filters();
-        const difficulty = "MEDIUM";
-        const timerLength = "30";
-
         await setDoc(roomRef, {
           host: playerName,
           guest: null,
           turn: "red",
-          difficulty,
-          timerLength,
           gameStarted: false,
-          positions: {},
-          filters: f.medium,
         });
       };
-
       initializeGame();
     }
   }, [roomId, role, playerName]);
@@ -286,17 +291,162 @@ const Room = () => {
   const startGame = async () => {
     if (!roomId) return;
 
-    const roomRef = doc(db, "rooms", roomId);
-    const f = Filters();
-    const difficulty = "MEDIUM"; // Varsayılan zorluk
-    const timerLength = "30"; // Varsayılan süre
+    let f: FilterDifficulty = Filters();
 
-    await updateDoc(roomRef, {
-      gameStarted: true,
-      difficulty,
-      timerLength,
-      filters: f.medium,
-    });
+    setTimer(timerLength);
+    if (difficulty == "EASY") {
+      setFilters(f.easy);
+    } else if (difficulty == "MEDIUM") {
+      setFilters(f.medium);
+    } else {
+      setFilters(f.hard);
+    }
+
+    //setGameStart(true);
+
+    setGameStarted(true);
+    console.log("gameStarted");
+  };
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const updateGameState = async () => {
+      console.log("111");
+
+      try {
+        await getFilters();
+        console.log("2222");
+
+        // State'lerin güncellenmesini beklemek için küçük bir gecikme
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        console.log("3333");
+        const roomRef = doc(db, "rooms", roomId);
+        console.log("4444");
+        await updateDoc(roomRef, {
+          gameStarted: gameStarted,
+          difficulty: difficulty,
+          timerLength: timerLength,
+          filters: filters,
+          filtersSelected: filtersSelected,
+          positionsFighters: positionsFighters,
+          turn: "red",
+          gameEnded: false,
+          winner: null,
+        });
+        console.log("55555");
+
+        console.log("Firestore güncellemesi başarılı:", {
+          filtersSelected,
+          positionsFighters,
+        });
+      } catch (error) {
+        console.error("Firestore güncelleme hatası:", error);
+      }
+    };
+
+    if (gameStarted) {
+      updateGameState();
+    }
+  }, [gameStarted]);
+
+  const getFilters = async () => {
+    console.log("getFilters");
+
+    let filters_arr: any = [];
+
+    while (filters_arr.length < 6) {
+      let random_index = Math.floor(Math.random() * filters.length);
+      if (!filters_arr.includes(filters[random_index])) {
+        filters_arr.push(filters[random_index]);
+      }
+    }
+
+    if (filters_arr.length < 6) {
+      console.error("HATA: filters_arr 6'dan az eleman içeriyor!");
+      return;
+    }
+
+    let isDone: boolean = false;
+    let finish = 0;
+
+    while (!isDone && finish < 1500) {
+      finish += 1;
+      let filters_arr: any = [];
+      while (filters_arr.length < 6) {
+        let random_index = Math.floor(Math.random() * filters.length);
+        if (!filters_arr.includes(filters[random_index])) {
+          filters_arr.push(filters[random_index]);
+        }
+      }
+
+      if (!filters_arr[3] || !filters_arr[4] || !filters_arr[5]) {
+        console.error(
+          "HATA: filters_arr[3], filters_arr[4] veya filters_arr[5] undefined!"
+        );
+        continue;
+      }
+
+      let newPositions = { ...positionsFighters }; // Yeni state nesnesi oluştur
+
+      for (let i = 0; i < 3; i++) {
+        let intersection3 =
+          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
+            filters_arr[3]?.filter_fighters?.some(
+              (fighter2: Fighter) => fighter1.Id === fighter2.Id
+            )
+          ) || [];
+
+        let intersection4 =
+          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
+            filters_arr[4]?.filter_fighters?.some(
+              (fighter2: Fighter) => fighter1.Id === fighter2.Id
+            )
+          ) || [];
+
+        let intersection5 =
+          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
+            filters_arr[5]?.filter_fighters?.some(
+              (fighter2: Fighter) => fighter1.Id === fighter2.Id
+            )
+          ) || [];
+
+        if (
+          intersection3.length < 2 ||
+          intersection4.length < 2 ||
+          intersection5.length < 2
+        ) {
+          console.warn("Eşleşme sağlanamadı, döngü yeniden başlatılıyor.");
+          break;
+        }
+
+        if (i === 0) {
+          newPositions.position03 = intersection3;
+          newPositions.position04 = intersection4;
+          newPositions.position05 = intersection5;
+        } else if (i === 1) {
+          newPositions.position13 = intersection3;
+          newPositions.position14 = intersection4;
+          newPositions.position15 = intersection5;
+        } else if (i === 2) {
+          newPositions.position23 = intersection3;
+          newPositions.position24 = intersection4;
+          newPositions.position25 = intersection5;
+        }
+
+        if (i === 2) {
+          isDone = true;
+          break;
+        }
+      }
+
+      if (isDone) {
+        await setPositionsFighters(newPositions); // Tek seferde state güncelle
+        await setFiltersSelected(filters_arr);
+        break;
+      }
+    }
   };
 
   const handleExit = async () => {
@@ -600,13 +750,55 @@ const Room = () => {
             <h2 className="text-xl mb-4">
               {role === "host" ? "Oda Oluşturuldu" : "Odaya Katıldınız"}
             </h2>
+            <div className="my-5">
+              <p>id: {gameState.id}</p>
+              <p>guest: {gameState.guest}</p>
+              <p>host: {gameState.host}</p>
+            </div>
             {role === "host" && (
-              <button
-                onClick={startGame}
-                className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600"
-              >
-                Oyunu Başlat
-              </button>
+              <div className="space-y-4">
+                <div>
+                  <h2 className="font-semibold text-lg mb-2">
+                    ZORLUK SEVİYESİ
+                  </h2>
+                  <select
+                    value={difficulty}
+                    onChange={(e) => setDifficulty(e.target.value)}
+                    className="text-stone-900 shadow-lg focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2 py-1"
+                  >
+                    <option value="EASY">KOLAY</option>
+                    <option value="MEDIUM">ORTA</option>
+                    <option value="HARD">ZOR</option>
+                  </select>
+                </div>
+                <div>
+                  <h2 className="font-semibold text-lg mb-2">SÜRE</h2>
+                  <select
+                    value={timerLength}
+                    onChange={(e) => setTimerLength(e.target.value)}
+                    className="text-stone-900 shadow-lg focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2 py-1"
+                  >
+                    <option value="-2">Süre Sınırı Yok</option>
+                    <option value="20">20 Saniye</option>
+                    <option value="30">30 Saniye</option>
+                    <option value="40">40 Saniye</option>
+                  </select>
+                </div>
+                <button
+                  onClick={() => {
+                    if (gameState.guest != null) {
+                      startGame();
+                    } else {
+                      toast.info("Oyuna katılımcı bulunamadı!");
+                    }
+                  }}
+                  className={`bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 ${
+                    gameState.guest == null ? "opacity-70" : "opacity-100"
+                  }`}
+                >
+                  Oyunu Başlat
+                </button>
+              </div>
             )}
           </div>
         )}

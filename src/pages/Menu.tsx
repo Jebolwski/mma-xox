@@ -31,10 +31,7 @@ const Menu = () => {
         host: playerName,
         guest: null,
         turn: "red",
-        difficulty,
-        timerLength,
         gameStarted: false,
-        positions: {},
         createdAt: new Date().toISOString(),
       });
 
