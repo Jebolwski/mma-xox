@@ -81,10 +81,7 @@ const Room = () => {
         ...doc.data(),
         id: doc.id,
         positions: Object.keys(doc.data().positions || {}).length,
-      }))[0]; // Sadece tek belge olduğu için ilk öğeyi alıyoruz
-
-      //console.log("GUEST YENİ:", updatedData?.guest);
-      //console.log("GUEST ESKİ:", guest);
+      }))[0];
 
       if (role === "host") {
         if (guest == null && updatedData?.guest != null) {
@@ -138,6 +135,48 @@ const Room = () => {
       joinGame();
     }
   }, [gameState, role, playerName, roomId, hasExited]);
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const updateGameState = async () => {
+      try {
+        await getFilters();
+
+        const roomRef = doc(db, "rooms", roomId);
+        console.log(filtersSelected, "AŞNANAŞNAŞ");
+
+        while (filtersSelected.length == 0) {
+          console.log("messi ronaldo");
+
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+        console.log(filtersSelected.length);
+
+        await updateDoc(roomRef, {
+          gameStarted: gameStarted,
+          difficulty: difficulty,
+          timerLength: timerLength,
+          filtersSelected: filtersSelected,
+          //positionsFighters: positionsFighters,
+          turn: "red",
+          gameEnded: false,
+          winner: null,
+        });
+
+        console.log("Firestore güncellemesi başarılı:", {
+          filtersSelected,
+          positionsFighters,
+        });
+      } catch (error) {
+        console.error("Firestore güncelleme hatası:", error);
+      }
+    };
+
+    if (gameStarted) {
+      updateGameState();
+    }
+  }, [gameStarted]);
 
   const filterByName = (name: string) => {
     if (name.length > 3) {
@@ -302,54 +341,9 @@ const Room = () => {
       setFilters(f.hard);
     }
 
-    //setGameStart(true);
-
     setGameStarted(true);
     console.log("gameStarted");
   };
-
-  useEffect(() => {
-    if (!roomId) return;
-
-    const updateGameState = async () => {
-      console.log("111");
-
-      try {
-        await getFilters();
-        console.log("2222");
-
-        // State'lerin güncellenmesini beklemek için küçük bir gecikme
-        await new Promise((resolve) => setTimeout(resolve, 100));
-
-        console.log("3333");
-        const roomRef = doc(db, "rooms", roomId);
-        console.log("4444");
-        await updateDoc(roomRef, {
-          gameStarted: gameStarted,
-          difficulty: difficulty,
-          timerLength: timerLength,
-          filters: filters,
-          filtersSelected: filtersSelected,
-          positionsFighters: positionsFighters,
-          turn: "red",
-          gameEnded: false,
-          winner: null,
-        });
-        console.log("55555");
-
-        console.log("Firestore güncellemesi başarılı:", {
-          filtersSelected,
-          positionsFighters,
-        });
-      } catch (error) {
-        console.error("Firestore güncelleme hatası:", error);
-      }
-    };
-
-    if (gameStarted) {
-      updateGameState();
-    }
-  }, [gameStarted]);
 
   const getFilters = async () => {
     console.log("getFilters");
@@ -442,8 +436,8 @@ const Room = () => {
       }
 
       if (isDone) {
-        await setPositionsFighters(newPositions); // Tek seferde state güncelle
-        await setFiltersSelected(filters_arr);
+        setPositionsFighters(newPositions); // Tek seferde state güncelle
+        setFiltersSelected(filters_arr);
         break;
       }
     }
@@ -793,7 +787,9 @@ const Room = () => {
                     }
                   }}
                   className={`bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 ${
-                    gameState.guest == null ? "opacity-70" : "opacity-100"
+                    gameState.guest == null
+                      ? "opacity-70"
+                      : "opacity-100 cursor-pointer"
                   }`}
                 >
                   Oyunu Başlat

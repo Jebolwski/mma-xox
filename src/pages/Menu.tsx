@@ -155,25 +155,6 @@ const Menu = () => {
               onChange={(e) => setPlayerName(e.target.value)}
               className="w-full px-4 py-2 rounded-lg bg-stone-600 text-white border border-stone-500 focus:outline-none focus:border-stone-400"
             />
-            <select
-              value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg bg-stone-600 text-white border border-stone-500 focus:outline-none focus:border-stone-400"
-            >
-              <option value="EASY">Kolay</option>
-              <option value="MEDIUM">Orta</option>
-              <option value="HARD">Zor</option>
-            </select>
-            <select
-              value={timerLength}
-              onChange={(e) => setTimerLength(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg bg-stone-600 text-white border border-stone-500 focus:outline-none focus:border-stone-400"
-            >
-              <option value="-2">Süre Sınırı Yok</option>
-              <option value="20">20 Saniye</option>
-              <option value="30">30 Saniye</option>
-              <option value="40">40 Saniye</option>
-            </select>
             <div className="flex gap-2">
               <button
                 onClick={() => setShowCreateFields(false)}
