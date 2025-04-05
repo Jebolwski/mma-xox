@@ -35,6 +35,7 @@ const Room = () => {
   const [oldData, setOldData] = useState<any | null>(null);
   const [filters, setFilters]: any = useState();
   const [filtersSelected, setFiltersSelected]: any = useState([]);
+  const [pushFirestore, setPushFirestore]: any = useState(false);
   const [fighters, setFighters] = useState<Fighter[]>([]);
   const [positionsFighters, setPositionsFighters]: any = useState({
     position03: {},
@@ -144,29 +145,20 @@ const Room = () => {
         await getFilters();
 
         const roomRef = doc(db, "rooms", roomId);
-        console.log(filtersSelected, "AŞNANAŞNAŞ");
-
-        while (filtersSelected.length == 0) {
-          console.log("messi ronaldo");
-
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-        }
-        console.log(filtersSelected.length);
+        const updatedData = filtersSelected.map(
+          ({ filter_fighters, ...rest }: any) => rest
+        );
+        console.log(positionsFighters);
 
         await updateDoc(roomRef, {
           gameStarted: gameStarted,
           difficulty: difficulty,
           timerLength: timerLength,
-          filtersSelected: filtersSelected,
+          filtersSelected: updatedData,
           //positionsFighters: positionsFighters,
           turn: "red",
           gameEnded: false,
           winner: null,
-        });
-
-        console.log("Firestore güncellemesi başarılı:", {
-          filtersSelected,
-          positionsFighters,
         });
       } catch (error) {
         console.error("Firestore güncelleme hatası:", error);
@@ -176,7 +168,129 @@ const Room = () => {
     if (gameStarted) {
       updateGameState();
     }
-  }, [gameStarted]);
+  }, [pushFirestore]);
+
+  useEffect(() => {
+    if (filters != undefined) {
+      getFilters();
+    }
+  }, [filters]);
+
+  const startGame = async () => {
+    if (!roomId) return;
+
+    let f: FilterDifficulty = Filters();
+
+    setTimer(timerLength);
+    if (difficulty == "EASY") {
+      setFilters(f.easy);
+    } else if (difficulty == "MEDIUM") {
+      setFilters(f.medium);
+    } else {
+      setFilters(f.hard);
+    }
+
+    setGameStarted(true);
+  };
+
+  const getFilters = async () => {
+    console.log("getFilters");
+
+    let filters_arr: any = [];
+
+    while (filters_arr.length < 6) {
+      let random_index = Math.floor(Math.random() * filters.length);
+      if (!filters_arr.includes(filters[random_index])) {
+        filters_arr.push(filters[random_index]);
+      }
+    }
+
+    if (filters_arr.length < 6) {
+      console.error("HATA: filters_arr 6'dan az eleman içeriyor!");
+      return;
+    }
+
+    let isDone: boolean = false;
+    let finish = 0;
+
+    while (!isDone && finish < 1500) {
+      finish += 1;
+      let filters_arr: any = [];
+      while (filters_arr.length < 6) {
+        let random_index = Math.floor(Math.random() * filters.length);
+        if (!filters_arr.includes(filters[random_index])) {
+          filters_arr.push(filters[random_index]);
+        }
+      }
+
+      if (!filters_arr[3] || !filters_arr[4] || !filters_arr[5]) {
+        console.error(
+          "HATA: filters_arr[3], filters_arr[4] veya filters_arr[5] undefined!"
+        );
+        continue;
+      }
+
+      let newPositions = { ...positionsFighters }; // Yeni state nesnesi oluştur
+
+      for (let i = 0; i < 3; i++) {
+        let intersection3 =
+          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
+            filters_arr[3]?.filter_fighters?.some(
+              (fighter2: Fighter) => fighter1.Id === fighter2.Id
+            )
+          ) || [];
+
+        let intersection4 =
+          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
+            filters_arr[4]?.filter_fighters?.some(
+              (fighter2: Fighter) => fighter1.Id === fighter2.Id
+            )
+          ) || [];
+
+        let intersection5 =
+          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
+            filters_arr[5]?.filter_fighters?.some(
+              (fighter2: Fighter) => fighter1.Id === fighter2.Id
+            )
+          ) || [];
+
+        if (
+          intersection3.length < 2 ||
+          intersection4.length < 2 ||
+          intersection5.length < 2
+        ) {
+          console.warn("Eşleşme sağlanamadı, döngü yeniden başlatılıyor.");
+          break;
+        }
+
+        if (i === 0) {
+          newPositions.position03 = intersection3;
+          newPositions.position04 = intersection4;
+          newPositions.position05 = intersection5;
+        } else if (i === 1) {
+          newPositions.position13 = intersection3;
+          newPositions.position14 = intersection4;
+          newPositions.position15 = intersection5;
+        } else if (i === 2) {
+          newPositions.position23 = intersection3;
+          newPositions.position24 = intersection4;
+          newPositions.position25 = intersection5;
+        }
+
+        if (i === 2) {
+          isDone = true;
+          break;
+        }
+      }
+
+      if (isDone) {
+        setPositionsFighters(newPositions); // Tek seferde state güncelle
+        setFiltersSelected(filters_arr);
+        setPushFirestore(true);
+        break;
+      }
+    }
+  };
 
   const filterByName = (name: string) => {
     if (name.length > 3) {
@@ -324,122 +438,6 @@ const Room = () => {
     } catch (error) {
       console.error("Pozisyon güncellenirken hata:", error);
       toast.error("Pozisyon güncellenirken bir hata oluştu!");
-    }
-  };
-
-  const startGame = async () => {
-    if (!roomId) return;
-
-    let f: FilterDifficulty = Filters();
-
-    setTimer(timerLength);
-    if (difficulty == "EASY") {
-      setFilters(f.easy);
-    } else if (difficulty == "MEDIUM") {
-      setFilters(f.medium);
-    } else {
-      setFilters(f.hard);
-    }
-
-    setGameStarted(true);
-    console.log("gameStarted");
-  };
-
-  const getFilters = async () => {
-    console.log("getFilters");
-
-    let filters_arr: any = [];
-
-    while (filters_arr.length < 6) {
-      let random_index = Math.floor(Math.random() * filters.length);
-      if (!filters_arr.includes(filters[random_index])) {
-        filters_arr.push(filters[random_index]);
-      }
-    }
-
-    if (filters_arr.length < 6) {
-      console.error("HATA: filters_arr 6'dan az eleman içeriyor!");
-      return;
-    }
-
-    let isDone: boolean = false;
-    let finish = 0;
-
-    while (!isDone && finish < 1500) {
-      finish += 1;
-      let filters_arr: any = [];
-      while (filters_arr.length < 6) {
-        let random_index = Math.floor(Math.random() * filters.length);
-        if (!filters_arr.includes(filters[random_index])) {
-          filters_arr.push(filters[random_index]);
-        }
-      }
-
-      if (!filters_arr[3] || !filters_arr[4] || !filters_arr[5]) {
-        console.error(
-          "HATA: filters_arr[3], filters_arr[4] veya filters_arr[5] undefined!"
-        );
-        continue;
-      }
-
-      let newPositions = { ...positionsFighters }; // Yeni state nesnesi oluştur
-
-      for (let i = 0; i < 3; i++) {
-        let intersection3 =
-          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
-            filters_arr[3]?.filter_fighters?.some(
-              (fighter2: Fighter) => fighter1.Id === fighter2.Id
-            )
-          ) || [];
-
-        let intersection4 =
-          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
-            filters_arr[4]?.filter_fighters?.some(
-              (fighter2: Fighter) => fighter1.Id === fighter2.Id
-            )
-          ) || [];
-
-        let intersection5 =
-          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
-            filters_arr[5]?.filter_fighters?.some(
-              (fighter2: Fighter) => fighter1.Id === fighter2.Id
-            )
-          ) || [];
-
-        if (
-          intersection3.length < 2 ||
-          intersection4.length < 2 ||
-          intersection5.length < 2
-        ) {
-          console.warn("Eşleşme sağlanamadı, döngü yeniden başlatılıyor.");
-          break;
-        }
-
-        if (i === 0) {
-          newPositions.position03 = intersection3;
-          newPositions.position04 = intersection4;
-          newPositions.position05 = intersection5;
-        } else if (i === 1) {
-          newPositions.position13 = intersection3;
-          newPositions.position14 = intersection4;
-          newPositions.position15 = intersection5;
-        } else if (i === 2) {
-          newPositions.position23 = intersection3;
-          newPositions.position24 = intersection4;
-          newPositions.position25 = intersection5;
-        }
-
-        if (i === 2) {
-          isDone = true;
-          break;
-        }
-      }
-
-      if (isDone) {
-        setPositionsFighters(newPositions); // Tek seferde state güncelle
-        setFiltersSelected(filters_arr);
-        break;
-      }
     }
   };
 
