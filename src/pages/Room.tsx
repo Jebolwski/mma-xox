@@ -31,9 +31,79 @@ const Room = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const [guest, setGuest] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
-  const [timer, setTimer] = useState<string | null>(null);
-  const [oldData, setOldData] = useState<any | null>(null);
   const [filters, setFilters]: any = useState();
+  const [fighter00, setFighter00]: any = useState({
+    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    text: "",
+    bg:
+      theme === "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
+  });
+  const [fighter01, setFighter01]: any = useState({
+    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    text: "",
+    bg:
+      theme === "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
+  });
+  const [fighter02, setFighter02]: any = useState({
+    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    text: "",
+    bg:
+      theme === "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
+  });
+  const [fighter10, setFighter10]: any = useState({
+    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    text: "",
+    bg:
+      theme === "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
+  });
+  const [fighter11, setFighter11]: any = useState({
+    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    text: "",
+    bg:
+      theme === "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
+  });
+  const [fighter12, setFighter12]: any = useState({
+    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    text: "",
+    bg:
+      theme === "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
+  });
+  const [fighter20, setFighter20]: any = useState({
+    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    text: "",
+    bg:
+      theme === "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
+  });
+  const [fighter21, setFighter21]: any = useState({
+    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    text: "",
+    bg:
+      theme === "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
+  });
+  const [fighter22, setFighter22]: any = useState({
+    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    text: "",
+    bg:
+      theme === "dark"
+        ? "from-stone-700 to-stone-800"
+        : "from-stone-300 to-stone-400",
+  });
   const [filtersSelected, setFiltersSelected]: any = useState([]);
   const [pushFirestore, setPushFirestore]: any = useState(false);
   const [fighters, setFighters] = useState<Fighter[]>([]);
@@ -77,7 +147,6 @@ const Room = () => {
         return;
       }
 
-      setOldData(gameState);
       const updatedData: any = snapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
@@ -110,6 +179,7 @@ const Room = () => {
           guest: null,
           turn: "red",
           gameStarted: false,
+          filtersSelected: [],
         });
       };
       initializeGame();
@@ -181,7 +251,6 @@ const Room = () => {
 
     let f: FilterDifficulty = Filters();
 
-    setTimer(timerLength);
     if (difficulty == "EASY") {
       setFilters(f.easy);
     } else if (difficulty == "MEDIUM") {
@@ -299,6 +368,99 @@ const Room = () => {
       });
       setFighters(filteredFighters);
     }
+  };
+
+  const toggleFighterPick = () => {
+    let div = document.querySelector(".select-fighter");
+    div?.classList.toggle("hidden");
+  };
+
+  const restartGame = () => {
+    setGameStart(false);
+    // Tüm kutuları başlangıç durumuna döndür
+    setFighter00({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg:
+        theme === "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
+    });
+    setFighter01({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg:
+        theme === "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
+    });
+    setFighter02({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg:
+        theme === "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
+    });
+    setFighter10({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg:
+        theme === "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
+    });
+    setFighter11({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg:
+        theme === "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
+    });
+    setFighter12({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg:
+        theme === "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
+    });
+    setFighter20({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg:
+        theme === "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
+    });
+    setFighter21({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg:
+        theme === "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
+    });
+    setFighter22({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg:
+        theme === "dark"
+          ? "from-stone-700 to-stone-800"
+          : "from-stone-200 to-stone-300",
+    });
+
+    // Oyunun ilk sırası kırmızı olsun
+    setTurn("red");
+
+    // Oyuncuların seçtiği dövüşçüleri sıfırla
+    setFigters([]);
+
+    // Yeni rastgele dövüşçüleri belirle
+    getFilters();
+
+    setGameWinner(null);
   };
 
   const checkWinner = (positions: any) => {
@@ -566,236 +728,679 @@ const Room = () => {
         }`}
       >
         <div className="text-2xl mb-4">Oda Kodu: {roomId}</div>
-
-        {gameState.gameStarted && !gameState.gameEnded ? (
-          <div className="flex flex-col items-center">
-            <div className="mb-4">
-              <p
-                className={`text-xl font-semibold ${
-                  gameState.turn === "red" ? "text-red-500" : "text-blue-500"
+        <div className="text-center">
+          <h2 className="text-xl mb-4">
+            {role === "host" ? "Oda Oluşturuldu" : "Odaya Katıldınız"}
+          </h2>
+          <div className="my-5">
+            <p>id: {gameState.id}</p>
+            <p>guest: {gameState.guest}</p>
+            <p>host: {gameState.host}</p>
+          </div>
+          {role === "host" && (
+            <div className="space-y-4">
+              <div>
+                <h2 className="font-semibold text-lg mb-2">ZORLUK SEVİYESİ</h2>
+                <select
+                  value={difficulty}
+                  onChange={(e) => setDifficulty(e.target.value)}
+                  className="text-stone-900 shadow-lg focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2 py-1"
+                >
+                  <option value="EASY">KOLAY</option>
+                  <option value="MEDIUM">ORTA</option>
+                  <option value="HARD">ZOR</option>
+                </select>
+              </div>
+              <div>
+                <h2 className="font-semibold text-lg mb-2">SÜRE</h2>
+                <select
+                  value={timerLength}
+                  onChange={(e) => setTimerLength(e.target.value)}
+                  className="text-stone-900 shadow-lg focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2 py-1"
+                >
+                  <option value="-2">Süre Sınırı Yok</option>
+                  <option value="20">20 Saniye</option>
+                  <option value="30">30 Saniye</option>
+                  <option value="40">40 Saniye</option>
+                </select>
+              </div>
+              <button
+                onClick={() => {
+                  if (gameState.guest != null) {
+                    startGame();
+                  } else {
+                    toast.info("Oyuna katılımcı bulunamadı!");
+                  }
+                }}
+                className={`bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 ${
+                  gameState.guest == null
+                    ? "opacity-70"
+                    : "opacity-100 cursor-pointer"
                 }`}
               >
-                Sıra:{" "}
-                {gameState.turn === "red" ? gameState.host : gameState.guest}
-              </p>
+                Oyunu Başlat
+              </button>
             </div>
-
-            {/* Filtreler */}
-            <div className="flex gap-[2px] mb-4">
-              {gameState.filters &&
-                gameState.filters
-                  .slice(0, 3)
-                  .map((filter: any, index: number) => (
-                    <div
-                      key={index}
-                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
-                        theme === "dark"
-                          ? "border-stone-600 bg-stone-800"
-                          : "border-stone-400 bg-stone-300"
-                      } rounded-lg text-center flex items-center justify-center p-1`}
-                    >
-                      <div>
-                        <div className="flex items-center justify-center">
-                          {filter.filter_image ? (
-                            <img
-                              src={filter.filter_image}
-                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
-                              alt={filter.filter_text}
-                            />
-                          ) : (
-                            <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
-                              {filter.filter_no_image_text}
-                            </h2>
-                          )}
-                        </div>
-                        <p
-                          className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
-                            theme === "dark" ? "text-white" : "text-black"
-                          }`}
-                        >
-                          {filter.filter_text}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-            </div>
-
-            {/* Oyun tahtası */}
-            <div className="grid grid-cols-3 gap-2">
-              {Object.entries(gameState.positions).map(
-                ([position, data]: [string, any]) => (
-                  <div
-                    key={position}
-                    onClick={() => {
-                      if (gameState.turn === "red" && role === "host") {
-                        setSelected(position);
-                      } else if (
-                        gameState.turn === "blue" &&
-                        role === "guest"
-                      ) {
-                        setSelected(position);
-                      } else {
-                        toast.info("Sıra sizde değil!");
-                      }
-                    }}
-                    className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
-                      theme === "dark" ? "border-stone-600" : "border-stone-400"
-                    } rounded-lg shadow-md bg-gradient-to-b ${
-                      data?.bg ||
-                      (theme === "dark"
-                        ? "from-stone-700 to-stone-800"
-                        : "from-stone-200 to-stone-300")
-                    } text-center flex items-center justify-center`}
+          )}
+        </div>
+        <div
+          className={`${
+            theme === "dark"
+              ? "bg-stone-500 text-stone-200 border-stone-600"
+              : "bg-stone-300 text-stone-700 border-stone-400"
+          } rounded-lg border relative h-fit mt-3 shadow-xl`}
+        >
+          <div
+            className={`${gameState.winner == null ? "hidden" : "absolute"} ${
+              theme === "dark" ? "bg-[#00000061]" : "bg-[#ffffff61]"
+            }  rounded-lg w-full h-full`}
+          >
+            <div className="flex justify-center mt-12">
+              <div
+                className={`${
+                  theme === "dark"
+                    ? "bg-stone-800 border-stone-700"
+                    : "bg-stone-300 border-stone-400"
+                } border-2 w-72 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
+              >
+                <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold">
+                  Game Finished!
+                </p>
+                {gameState.winner == "Red" ? (
+                  <>
+                    <p className="text-red-500 font-semibold text-xl mt-4 text-center">
+                      Red Wins!
+                    </p>
+                  </>
+                ) : gameState.winner == "Blue" ? (
+                  <>
+                    <p className="text-blue-500 font-semibold text-xl mt-4 text-center">
+                      Blue Wins!
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-stone-100 font-semibold text-xl mt-4 text-center">
+                      Draw!
+                    </p>
+                  </>
+                )}
+                <div className="flex justify-center">
+                  <button
+                    onClick={restartGame}
+                    className={`bg-gradient-to-r cursor-pointer ${
+                      theme === "dark"
+                        ? "from-stone-500 to-stone-700 text-white border-stone-600"
+                        : "from-stone-300 to-stone-400 text-black border-stone-400"
+                    } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg mt-5`}
                   >
-                    <div>
-                      <div className="flex justify-center">
-                        <img
-                          src={
-                            data?.url ||
-                            "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
-                          }
-                          className="xl:w-12 lg:w-10 md:w-9 w-6"
-                          alt={data?.text || ""}
-                        />
-                      </div>
-                      <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
-                        {data?.text || ""}
-                      </p>
-                    </div>
+                    Play Again
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={`flex gap-[2px] text-white`}>
+            <div
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                theme === "dark"
+                  ? "border-stone-600 bg-neutral-900"
+                  : "border-stone-500 bg-neutral-400"
+              } rounded-lg text-center flex items-center justify-center`}
+            >
+              <div>
+                <div className="flex items-center justify-center">
+                  <img
+                    src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                    className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                  />
+                </div>
+                <p
+                  className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                    theme === "dark" ? "text-white" : "text-white"
+                  }`}
+                >
+                  MMA XOX
+                </p>
+              </div>
+            </div>
+            <div
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                theme === "dark"
+                  ? "border-stone-600 bg-stone-800"
+                  : "border-stone-400 bg-stone-300"
+              } rounded-lg text-center flex items-center justify-center p-1`}
+            >
+              {gameState != null && gameState?.filtersSelected.length > 0 ? (
+                <div>
+                  <div className="flex items-center justify-center">
+                    {gameState?.filtersSelected[0].filter_image != null ? (
+                      <img
+                        src={gameState?.filtersSelected[0].filter_image}
+                        className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                      />
+                    ) : (
+                      <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
+                        {gameState?.filtersSelected[0].filter_no_image_text}
+                      </h2>
+                    )}
                   </div>
-                )
+                  <p
+                    className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                      theme === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {gameState?.filtersSelected[0].filter_text}
+                  </p>
+                </div>
+              ) : (
+                <p>Loading...</p>
               )}
             </div>
-
-            {/* Dövüşçü seçim alanı */}
-            {selected && (
-              <div
-                className={`absolute bottom-0 w-full p-4 ${
-                  theme === "dark"
-                    ? "bg-stone-700 border-stone-600"
-                    : "bg-stone-200 border-stone-400"
-                } rounded-lg border shadow-lg`}
-              >
-                <input
-                  type="text"
-                  onChange={(e) => filterByName(e.target.value)}
-                  placeholder="Dövüşçü ara..."
-                  className="w-full px-4 py-2 rounded-lg bg-white text-black mb-4"
-                />
-                <div className="h-48 overflow-y-auto">
-                  {fighters.map((fighter: Fighter, index: number) => (
+            <div
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                theme === "dark"
+                  ? "border-stone-600 bg-stone-800"
+                  : "border-stone-400 bg-stone-300"
+              } rounded-lg text-center flex items-center justify-center p-1`}
+            >
+              {gameState?.filtersSelected.length > 0 ? (
+                <div>
+                  <div className="flex items-center justify-center">
+                    {gameState?.filtersSelected[1].filter_image != null ? (
+                      <img
+                        src={gameState?.filtersSelected[1].filter_image}
+                        className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                      />
+                    ) : (
+                      <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
+                        {gameState?.filtersSelected[1].filter_no_image_text}
+                      </h2>
+                    )}
+                  </div>
+                  <p
+                    className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                      theme === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {gameState?.filtersSelected[1].filter_text}
+                  </p>
+                </div>
+              ) : (
+                <p>Loading...</p>
+              )}
+            </div>
+            <div
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                theme === "dark"
+                  ? "border-stone-600 bg-stone-800"
+                  : "border-stone-400 bg-stone-300"
+              } rounded-lg text-center flex items-center justify-center p-1`}
+            >
+              {gameState?.filtersSelected.length > 0 ? (
+                <div>
+                  <div className="flex items-center justify-center">
+                    {gameState?.filtersSelected[2].filter_image != null ? (
+                      <img
+                        src={gameState?.filtersSelected[2].filter_image}
+                        className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                      />
+                    ) : (
+                      <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
+                        {gameState?.filtersSelected[2].filter_no_image_text}
+                      </h2>
+                    )}
+                  </div>
+                  <p
+                    className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                      theme === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {gameState?.filtersSelected[2].filter_text}
+                  </p>
+                </div>
+              ) : (
+                <p>Loading...</p>
+              )}
+            </div>
+          </div>
+          <div className={`flex gap-[2px] text-white`}>
+            <div
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                theme === "dark"
+                  ? "border-stone-600 bg-stone-800"
+                  : "border-stone-400 bg-stone-300"
+              } rounded-lg text-center flex items-center justify-center p-1`}
+            >
+              {gameState?.filtersSelected.length > 0 ? (
+                <div>
+                  <div className="flex items-center justify-center">
+                    {gameState?.filtersSelected[3].filter_image != null ? (
+                      <img
+                        src={gameState?.filtersSelected[3].filter_image}
+                        className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                      />
+                    ) : (
+                      <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
+                        {gameState?.filtersSelected[3].filter_no_image_text}
+                      </h2>
+                    )}
+                  </div>
+                  <p
+                    className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                      theme === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {gameState?.filtersSelected[3].filter_text}
+                  </p>
+                </div>
+              ) : (
+                <p>Loading...</p>
+              )}
+            </div>
+            <div
+              onClick={() => {
+                if (
+                  fighter00.bg === "from-stone-700 to-stone-800" ||
+                  "from-stone-200 to-stone-300"
+                ) {
+                  toggleFighterPick();
+                  setSelected("fighter00");
+                } else {
+                  toast.info("Fighter already selected.");
+                }
+              }}
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                theme === "dark" ? "border-stone-600" : "border-stone-400"
+              } rounded-lg shadow-md bg-gradient-to-b ${
+                fighter00.bg
+              } text-center flex items-center justify-center`}
+            >
+              <div>
+                <div className="flex justify-center">
+                  <img
+                    src={fighter00.url}
+                    className="xl:w-12 lg:w-10 md:w-9 w-6"
+                  />
+                </div>
+                <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                  {fighter00.text}
+                </p>
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                if (
+                  fighter01.bg === "from-stone-700 to-stone-800" ||
+                  "from-stone-200 to-stone-300"
+                ) {
+                  toggleFighterPick();
+                  setSelected("fighter01");
+                } else {
+                  toast.info("Fighter already selected.");
+                }
+              }}
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                theme === "dark" ? "border-stone-600" : "border-stone-400"
+              } rounded-lg shadow-md bg-gradient-to-b ${
+                fighter01.bg
+              } text-center flex items-center justify-center`}
+            >
+              <div>
+                <div className="flex justify-center">
+                  <img
+                    src={fighter01.url}
+                    className="xl:w-12 lg:w-10 md:w-9 w-6"
+                  />
+                </div>
+                <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                  {fighter01.text}
+                </p>
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                if (
+                  fighter02.bg === "from-stone-700 to-stone-800" ||
+                  "from-stone-200 to-stone-300"
+                ) {
+                  toggleFighterPick();
+                  setSelected("fighter02");
+                } else {
+                  toast.info("Fighter already selected.");
+                }
+              }}
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                theme === "dark" ? "border-stone-600" : "border-stone-400"
+              } rounded-lg shadow-md bg-gradient-to-b ${
+                fighter02.bg
+              } text-center flex items-center justify-center`}
+            >
+              <div>
+                <div className="flex justify-center">
+                  <img
+                    src={fighter02.url}
+                    className="xl:w-12 lg:w-10 md:w-9 w-6"
+                  />
+                </div>
+                <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                  {fighter02.text}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className={`flex gap-[2px] text-white`}>
+            <div
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                theme === "dark"
+                  ? "border-stone-600 bg-stone-800"
+                  : "border-stone-400 bg-stone-300"
+              } rounded-lg text-center flex items-center justify-center p-1`}
+            >
+              {gameState?.filtersSelected.length > 0 ? (
+                <div>
+                  <div className="flex items-center justify-center">
+                    {gameState?.filtersSelected[4].filter_image != null ? (
+                      <img
+                        src={gameState?.filtersSelected[4].filter_image}
+                        className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                      />
+                    ) : (
+                      <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
+                        {gameState?.filtersSelected[4].filter_no_image_text}
+                      </h2>
+                    )}
+                  </div>
+                  <p
+                    className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                      theme === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {gameState?.filtersSelected[4].filter_text}
+                  </p>
+                </div>
+              ) : (
+                <p>Loading...</p>
+              )}
+            </div>
+            <div
+              onClick={() => {
+                if (
+                  fighter10.bg === "from-stone-700 to-stone-800" ||
+                  "from-stone-200 to-stone-300"
+                ) {
+                  toggleFighterPick();
+                  setSelected("fighter10");
+                } else {
+                  toast.info("Fighter already selected.");
+                }
+              }}
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                theme === "dark" ? "border-stone-600" : "border-stone-400"
+              } rounded-lg shadow-md bg-gradient-to-b ${
+                fighter10.bg
+              } text-center flex items-center justify-center`}
+            >
+              <div>
+                <div className="flex justify-center">
+                  <img
+                    src={fighter10.url}
+                    className="xl:w-12 lg:w-10 md:w-9 w-6"
+                  />
+                </div>
+                <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                  {fighter10.text}
+                </p>
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                if (
+                  fighter11.bg === "from-stone-700 to-stone-800" ||
+                  "from-stone-200 to-stone-300"
+                ) {
+                  toggleFighterPick();
+                  setSelected("fighter11");
+                } else {
+                  toast.info("Fighter already selected.");
+                }
+              }}
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                theme === "dark" ? "border-stone-600" : "border-stone-400"
+              } rounded-lg shadow-md bg-gradient-to-b ${
+                fighter11.bg
+              } text-center flex items-center justify-center`}
+            >
+              <div>
+                <div className="flex justify-center">
+                  <img
+                    src={fighter11.url}
+                    className="xl:w-12 lg:w-10 md:w-9 w-6"
+                  />
+                </div>
+                <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                  {fighter11.text}
+                </p>
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                if (
+                  fighter12.bg === "from-stone-700 to-stone-800" ||
+                  "from-stone-200 to-stone-300"
+                ) {
+                  toggleFighterPick();
+                  setSelected("fighter12");
+                } else {
+                  toast.info("Fighter already selected.");
+                }
+              }}
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                theme === "dark" ? "border-stone-600" : "border-stone-400"
+              } rounded-lg shadow-md bg-gradient-to-b ${
+                fighter12.bg
+              } text-center flex items-center justify-center`}
+            >
+              <div>
+                <div className="flex justify-center">
+                  <img
+                    src={fighter12.url}
+                    className="xl:w-12 lg:w-10 md:w-9 w-6"
+                  />
+                </div>
+                <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                  {fighter12.text}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className={`flex gap-[2px] text-white`}>
+            <div
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                theme === "dark"
+                  ? "border-stone-600 bg-stone-800"
+                  : "border-stone-400 bg-stone-300"
+              } rounded-lg text-center flex items-center justify-center p-1`}
+            >
+              {gameState?.filtersSelected.length > 0 ? (
+                <div>
+                  <div className="flex items-center justify-center">
+                    {gameState?.filtersSelected[5].filter_image != null ? (
+                      <img
+                        src={gameState?.filtersSelected[5].filter_image}
+                        className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                      />
+                    ) : (
+                      <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
+                        {gameState?.filtersSelected[5].filter_no_image_text}
+                      </h2>
+                    )}
+                  </div>
+                  <p
+                    className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                      theme === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {gameState?.filtersSelected[5].filter_text}
+                  </p>
+                </div>
+              ) : (
+                <p>Loading...</p>
+              )}
+            </div>
+            <div
+              onClick={() => {
+                if (
+                  fighter20.bg === "from-stone-700 to-stone-800" ||
+                  "from-stone-200 to-stone-300"
+                ) {
+                  toggleFighterPick();
+                  setSelected("fighter20");
+                } else {
+                  toast.info("Fighter already selected.");
+                }
+              }}
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                theme === "dark" ? "border-stone-600" : "border-stone-400"
+              } rounded-lg shadow-md bg-gradient-to-b ${
+                fighter20.bg
+              } text-center flex items-center justify-center`}
+            >
+              <div>
+                <div className="flex justify-center">
+                  <img
+                    src={fighter20.url}
+                    className="xl:w-12 lg:w-10 md:w-9 w-6"
+                  />
+                </div>
+                <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                  {fighter20.text}
+                </p>
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                if (
+                  fighter21.bg === "from-stone-700 to-stone-800" ||
+                  "from-stone-200 to-stone-300"
+                ) {
+                  toggleFighterPick();
+                  setSelected("fighter21");
+                } else {
+                  toast.info("Fighter already selected.");
+                }
+              }}
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                theme === "dark" ? "border-stone-600" : "border-stone-400"
+              } rounded-lg shadow-md bg-gradient-to-b ${
+                fighter21.bg
+              } text-center flex items-center justify-center`}
+            >
+              <div>
+                <div className="flex justify-center">
+                  <img
+                    src={fighter21.url}
+                    className="xl:w-12 lg:w-10 md:w-9 w-6"
+                  />
+                </div>
+                <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                  {fighter21.text}
+                </p>
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                if (
+                  fighter22.bg === "from-stone-700 to-stone-800" ||
+                  "from-stone-200 to-stone-300"
+                ) {
+                  toggleFighterPick();
+                  setSelected("fighter22");
+                } else {
+                  toast.info("Fighter already selected.");
+                }
+              }}
+              className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                theme === "dark" ? "border-stone-600" : "border-stone-400"
+              } rounded-lg shadow-md bg-gradient-to-b ${
+                fighter22.bg
+              } text-center flex items-center justify-center`}
+            >
+              <div>
+                <div className="flex justify-center">
+                  <img
+                    src={fighter22.url}
+                    className="xl:w-12 lg:w-10 md:w-9 w-6"
+                  />
+                </div>
+                <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                  {fighter22.text}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`absolute hidden select-fighter w-full text-white bottom-0 ${
+              theme === "dark"
+                ? "bg-stone-700 border-stone-600"
+                : "bg-stone-200 border-stone-400"
+            } rounded-lg border shadow-lg left-0`}
+          >
+            <div className="p-2 w-full">
+              <input
+                type="text"
+                onChange={(e) => {
+                  filterByName(e.target.value);
+                }}
+                placeholder="Search for a fighter..."
+                className="bg-white input-fighter text-black xl:text-base text-sm px-3 w-full py-1 rounded-lg hover:outline-0 focus:outline-1 outline-stone-500 shadow-lg"
+              />
+              {fighters && fighters.length > 0 ? (
+                <div className="w-full h-48 overflow-scroll overflow-x-hidden">
+                  {fighters.map((fighter: any, key: any) => (
                     <div
-                      key={index}
-                      onClick={() => updateBox(fighter)}
-                      className={`flex items-center gap-4 p-2 mb-2 rounded-lg cursor-pointer ${
+                      onClick={() => {
+                        updateBox(fighter);
+                      }}
+                      key={key}
+                      className={`flex items-center border cursor-pointer gap-6 my-3 px-2 pt-2 bg-gradient-to-r ${
                         theme === "dark"
-                          ? "bg-stone-600 text-white"
-                          : "bg-stone-300 text-black"
-                      }`}
+                          ? "from-stone-800 to-stone-900 border-stone-900 text-white"
+                          : "from-stone-300 to-stone-400 border-stone-400 text-black"
+                      } shadow-lg rounded-lg`}
                     >
                       <img
                         src={
-                          fighter.Picture === "Unknown"
+                          fighter.Picture == "Unknown"
                             ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
                             : fighter.Picture
                         }
-                        className="w-12 h-12 rounded-full"
-                        alt={fighter.Fighter}
+                        className="xl:w-13 w-10"
                       />
-                      <span>{fighter.Fighter}</span>
+                      <p className="xl:text-lg md:text-base text-sm font-semibold">
+                        {fighter.Fighter}
+                      </p>
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
-          </div>
-        ) : gameState.gameEnded ? (
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-4">Oyun Bitti!</h2>
-            <p className="text-xl mb-4">
-              {gameState.winner === "draw"
-                ? "Beraberlik!"
-                : `${
-                    gameState.winner === "red"
-                      ? gameState.host
-                      : gameState.guest
-                  } Kazandı!`}
-            </p>
-            <button
-              onClick={() => {
-                const roomRef = doc(db, "rooms", roomId!);
-                updateDoc(roomRef, {
-                  gameStarted: false,
-                  gameEnded: false,
-                  winner: null,
-                  positions: {},
-                  turn: "red",
-                });
-              }}
-              className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600"
-            >
-              Tekrar Oyna
-            </button>
-          </div>
-        ) : (
-          <div className="text-center">
-            <h2 className="text-xl mb-4">
-              {role === "host" ? "Oda Oluşturuldu" : "Odaya Katıldınız"}
-            </h2>
-            <div className="my-5">
-              <p>id: {gameState.id}</p>
-              <p>guest: {gameState.guest}</p>
-              <p>host: {gameState.host}</p>
-            </div>
-            {role === "host" && (
-              <div className="space-y-4">
-                <div>
-                  <h2 className="font-semibold text-lg mb-2">
-                    ZORLUK SEVİYESİ
-                  </h2>
-                  <select
-                    value={difficulty}
-                    onChange={(e) => setDifficulty(e.target.value)}
-                    className="text-stone-900 shadow-lg focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2 py-1"
-                  >
-                    <option value="EASY">KOLAY</option>
-                    <option value="MEDIUM">ORTA</option>
-                    <option value="HARD">ZOR</option>
-                  </select>
-                </div>
-                <div>
-                  <h2 className="font-semibold text-lg mb-2">SÜRE</h2>
-                  <select
-                    value={timerLength}
-                    onChange={(e) => setTimerLength(e.target.value)}
-                    className="text-stone-900 shadow-lg focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2 py-1"
-                  >
-                    <option value="-2">Süre Sınırı Yok</option>
-                    <option value="20">20 Saniye</option>
-                    <option value="30">30 Saniye</option>
-                    <option value="40">40 Saniye</option>
-                  </select>
-                </div>
+              ) : null}
+              <div className="flex justify-end py-2">
                 <button
                   onClick={() => {
-                    if (gameState.guest != null) {
-                      startGame();
-                    } else {
-                      toast.info("Oyuna katılımcı bulunamadı!");
-                    }
+                    toggleFighterPick();
                   }}
-                  className={`bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 ${
-                    gameState.guest == null
-                      ? "opacity-70"
-                      : "opacity-100 cursor-pointer"
-                  }`}
+                  className={` ${
+                    theme === "dark"
+                      ? "bg-stone-800 text-white border-stone-600"
+                      : "bg-stone-300 text-black border-stone-400"
+                  } px-6 py-1 font-semibold rounded-tr-lg rounded-bl-lg shadow-lg border cursor-pointer`}
                 >
-                  Oyunu Başlat
+                  Cancel
                 </button>
               </div>
-            )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
