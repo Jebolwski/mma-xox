@@ -30,6 +30,7 @@ const Room = () => {
   const [gameState, setGameState] = useState<any>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [guest, setGuest] = useState<string | null>(null);
+  const [turn, setTurn] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [filters, setFilters]: any = useState();
   const [fighter00, setFighter00]: any = useState({
@@ -376,7 +377,7 @@ const Room = () => {
   };
 
   const restartGame = () => {
-    setGameStart(false);
+    setGameStarted(false);
     // Tüm kutuları başlangıç durumuna döndür
     setFighter00({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
@@ -455,12 +456,12 @@ const Room = () => {
     setTurn("red");
 
     // Oyuncuların seçtiği dövüşçüleri sıfırla
-    setFigters([]);
+    setFighters([]);
 
     // Yeni rastgele dövüşçüleri belirle
     getFilters();
 
-    setGameWinner(null);
+    //setWinner(null);
   };
 
   const checkWinner = (positions: any) => {

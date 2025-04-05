@@ -12,8 +12,6 @@ const Menu = () => {
   const [roomCode, setRoomCode] = useState("");
   const [showJoinFields, setShowJoinFields] = useState(false);
   const [showCreateFields, setShowCreateFields] = useState(false);
-  const [difficulty, setDifficulty] = useState("MEDIUM");
-  const [timerLength, setTimerLength] = useState("30");
 
   const handleLocalGame = () => {
     navigate("/same-screen");
