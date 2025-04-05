@@ -729,6 +729,7 @@ const Room = () => {
         }`}
       >
         <div className="text-2xl mb-4">Oda Kodu: {roomId}</div>
+        <p>turn : {turn}</p>
         <div className="text-center">
           <h2 className="text-xl mb-4">
             {role === "host" ? "Oda Oluşturuldu" : "Odaya Katıldınız"}
