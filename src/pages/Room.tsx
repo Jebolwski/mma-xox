@@ -28,11 +28,11 @@ const Room = () => {
   const playerName = searchParams.get("name");
   const [theme, setTheme] = useState("dark");
   const [gameState, setGameState] = useState<any>(null);
-  const [selected, setSelected] = useState<string | null>(null);
   const [guest, setGuest] = useState<string | null>(null);
   const [turn, setTurn] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [filters, setFilters]: any = useState();
+  const [selected, setSelected]: any = useState();
   const [fighter00, setFighter00]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
@@ -208,6 +208,78 @@ const Room = () => {
           turn: "red",
           gameStarted: false,
           filtersSelected: [],
+          fighter00: {
+            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            text: "",
+            bg:
+              theme === "dark"
+                ? "from-stone-700 to-stone-800"
+                : "from-stone-300 to-stone-400",
+          },
+          fighter01: {
+            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            text: "",
+            bg:
+              theme === "dark"
+                ? "from-stone-700 to-stone-800"
+                : "from-stone-300 to-stone-400",
+          },
+          fighter02: {
+            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            text: "",
+            bg:
+              theme === "dark"
+                ? "from-stone-700 to-stone-800"
+                : "from-stone-300 to-stone-400",
+          },
+          fighter10: {
+            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            text: "",
+            bg:
+              theme === "dark"
+                ? "from-stone-700 to-stone-800"
+                : "from-stone-300 to-stone-400",
+          },
+          fighter11: {
+            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            text: "",
+            bg:
+              theme === "dark"
+                ? "from-stone-700 to-stone-800"
+                : "from-stone-300 to-stone-400",
+          },
+          fighter12: {
+            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            text: "",
+            bg:
+              theme === "dark"
+                ? "from-stone-700 to-stone-800"
+                : "from-stone-300 to-stone-400",
+          },
+          fighter20: {
+            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            text: "",
+            bg:
+              theme === "dark"
+                ? "from-stone-700 to-stone-800"
+                : "from-stone-300 to-stone-400",
+          },
+          fighter21: {
+            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            text: "",
+            bg:
+              theme === "dark"
+                ? "from-stone-700 to-stone-800"
+                : "from-stone-300 to-stone-400",
+          },
+          fighter22: {
+            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            text: "",
+            bg:
+              theme === "dark"
+                ? "from-stone-700 to-stone-800"
+                : "from-stone-300 to-stone-400",
+          },
         });
       };
       initializeGame();
@@ -271,15 +343,6 @@ const Room = () => {
           timerLength: timerLength,
           filtersSelected: updatedDataFilters,
           positionsFighters: updatedDataPositionFighters,
-          fighter00: null,
-          fighter01: null,
-          fighter02: null,
-          fighter10: null,
-          fighter11: null,
-          fighter12: null,
-          fighter20: null,
-          fighter21: null,
-          fighter22: null,
           turn: "red",
           gameEnded: false,
           winner: null,
@@ -500,23 +563,97 @@ const Room = () => {
     //setWinner(null);
   };
 
-  const checkWinner = (positions: any) => {
+  const updateBox = async (fighter: Fighter) => {
+    let picture =
+      fighter.Picture === "Unknown"
+        ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
+        : fighter.Picture;
+    let name = fighter.Fighter;
+
+    console.log(name);
+
+    const fighterMap: { [key: string]: keyof typeof positionsFighters } = {
+      fighter00: "position03",
+      fighter01: "position13",
+      fighter02: "position23",
+      fighter10: "position04",
+      fighter11: "position14",
+      fighter12: "position24",
+      fighter20: "position05",
+      fighter21: "position15",
+      fighter22: "position25",
+    };
+
+    if (!fighterMap[selected]) return;
+
+    const positionKey = fighterMap[selected];
+    if (!positionsFighters[positionKey].includes(fighter)) {
+      notify();
+    } else {
+      const bgColor =
+        turn === "red"
+          ? "from-red-800 to-red-900"
+          : "from-blue-800 to-blue-900";
+
+      const setterMap: { [key: string]: Function } = {
+        fighter00: setFighter00,
+        fighter01: setFighter01,
+        fighter02: setFighter02,
+        fighter10: setFighter10,
+        fighter11: setFighter11,
+        fighter12: setFighter12,
+        fighter20: setFighter20,
+        fighter21: setFighter21,
+        fighter22: setFighter22,
+      };
+
+      setterMap[selected]({ url: picture, text: name, bg: bgColor });
+
+      if (!roomId) return;
+
+      const roomRef = doc(db, "rooms", roomId);
+      console.log("update", "kesesenb", 1);
+      console.log(gameState.turn);
+
+      await updateDoc(roomRef, {
+        [selected]: {
+          // selected değişkenini key olarak kullan (fighter01, fighter02 vs.)
+          url: picture,
+          text: name,
+          bg:
+            gameState.turn === "red"
+              ? "from-red-800 to-red-900"
+              : "from-blue-800 to-blue-900",
+          fighterId: fighter.Id,
+          turn: gameState.turn === "red" ? "blue" : "red",
+        },
+      });
+      console.log(gameState.turn);
+      console.log("update", "kesesenb", 2);
+      const winner = checkWinner();
+      if (winner) {
+        alert(winner); // Kazananı bildir
+        return;
+      }
+    }
+
+    setTurn(turn === "red" ? "blue" : "red");
+    //setTimer(timerLength);
+    toggleFighterPick();
+    resetInput();
+    //setFigters([]);
+  };
+
+  const resetInput = () => {
+    let input: any = document.querySelector(".input-fighter");
+    input.value = "";
+  };
+
+  const checkWinner = () => {
     const board = [
-      [
-        positions.position03?.bg,
-        positions.position13?.bg,
-        positions.position23?.bg,
-      ],
-      [
-        positions.position04?.bg,
-        positions.position14?.bg,
-        positions.position24?.bg,
-      ],
-      [
-        positions.position05?.bg,
-        positions.position15?.bg,
-        positions.position25?.bg,
-      ],
+      [fighter00.bg, fighter01.bg, fighter02.bg],
+      [fighter10.bg, fighter11.bg, fighter12.bg],
+      [fighter20.bg, fighter21.bg, fighter22.bg],
     ];
 
     const winPatterns = [
@@ -567,6 +704,7 @@ const Room = () => {
       ],
     ];
 
+    // 🎯 Kazanan var mı kontrol et
     for (let pattern of winPatterns) {
       const [a, b, c] = pattern;
       const cellA = board[a[0]][a[1]];
@@ -574,81 +712,29 @@ const Room = () => {
       const cellC = board[c[0]][c[1]];
 
       if (
-        cellA &&
-        cellB &&
-        cellC &&
         cellA !== "from-stone-700 to-stone-800" &&
-        cellA !== "from-stone-200 to-stone-300" &&
+        cellA !== "from-stone-200 to-stone-300" && // Boş değilse
         cellA === cellB &&
         cellB === cellC
       ) {
-        return cellA.includes("red") ? "red" : "blue";
+        return cellA.includes("red") ? "Red Wins!" : "Blue Wins!";
       }
     }
 
-    // Beraberlik kontrolü
-    const isBoardFull = Object.values(positions).every(
-      (pos: any) =>
-        pos?.bg &&
-        pos.bg !== "from-stone-700 to-stone-800" &&
-        pos.bg !== "from-stone-200 to-stone-300"
-    );
+    // 🎯 Beraberlik kontrolü
+    const isBoardFull = board
+      .flat()
+      .every(
+        (cell) =>
+          cell !== "from-stone-700 to-stone-800" &&
+          cell !== "from-stone-200 to-stone-300"
+      );
 
-    //if (isBoardFull) {
-    //  return "draw";
-    //}
-
-    return null;
-  };
-
-  const updateBox = async (fighter: Fighter) => {
-    if (!gameState || !selected) return;
-
-    const roomRef = doc(db, "rooms", roomId!);
-    const newPositions = { ...gameState.positions };
-
-    // Seçilen fighter ve pozisyon bilgisini ekleyelim
-    const fighterData = {
-      url:
-        fighter.Picture === "Unknown"
-          ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
-          : fighter.Picture,
-      text: fighter.Fighter,
-      bg:
-        gameState.turn === "red"
-          ? "from-red-800 to-red-900"
-          : "from-blue-800 to-blue-900",
-      fighterId: fighter.Id, // Fighter ID'sini ekledik
-      position: selected, // Seçilen pozisyonu ekledik
-    };
-
-    newPositions[selected] = fighterData;
-
-    const winner = checkWinner(newPositions);
-    const updates: any = {
-      positions: newPositions,
-      turn: gameState.turn === "red" ? "blue" : "red",
-      lastMove: {
-        // Son hamle bilgisini ekledik
-        fighterId: fighter.Id,
-        position: selected,
-        player: gameState.turn,
-        timestamp: new Date().getTime(),
-      },
-    };
-
-    if (winner) {
-      updates.winner = winner;
-      updates.gameEnded = true;
+    if (isBoardFull) {
+      return "Draw!"; // Beraberlik durumu
     }
 
-    try {
-      await updateDoc(roomRef, updates);
-      setSelected(null);
-    } catch (error) {
-      console.error("Pozisyon güncellenirken hata:", error);
-      toast.error("Pozisyon güncellenirken bir hata oluştu!");
-    }
+    return null; // Oyun devam ediyor
   };
 
   const handleExit = async () => {
@@ -703,6 +789,8 @@ const Room = () => {
       setIsExiting(false);
     }
   };
+
+  const notify = () => toast.error("Fighter doesnt meet the requirements.");
 
   if (!gameState) {
     return (
@@ -1044,7 +1132,7 @@ const Room = () => {
             <div
               onClick={() => {
                 if (
-                  fighter00.bg === "from-stone-700 to-stone-800" ||
+                  gameState.fighter00.bg === "from-stone-700 to-stone-800" ||
                   "from-stone-200 to-stone-300"
                 ) {
                   toggleFighterPick();
@@ -1056,25 +1144,25 @@ const Room = () => {
               className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                 theme === "dark" ? "border-stone-600" : "border-stone-400"
               } rounded-lg shadow-md bg-gradient-to-b ${
-                fighter00.bg
+                gameState.fighter00.bg
               } text-center flex items-center justify-center`}
             >
               <div>
                 <div className="flex justify-center">
                   <img
-                    src={fighter00.url}
+                    src={gameState.fighter00.url}
                     className="xl:w-12 lg:w-10 md:w-9 w-6"
                   />
                 </div>
                 <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
-                  {fighter00.text}
+                  {gameState.fighter00.text}
                 </p>
               </div>
             </div>
             <div
               onClick={() => {
                 if (
-                  fighter01.bg === "from-stone-700 to-stone-800" ||
+                  gameState.fighter01.bg === "from-stone-700 to-stone-800" ||
                   "from-stone-200 to-stone-300"
                 ) {
                   toggleFighterPick();
@@ -1086,25 +1174,25 @@ const Room = () => {
               className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                 theme === "dark" ? "border-stone-600" : "border-stone-400"
               } rounded-lg shadow-md bg-gradient-to-b ${
-                fighter01.bg
+                gameState.fighter01.bg
               } text-center flex items-center justify-center`}
             >
               <div>
                 <div className="flex justify-center">
                   <img
-                    src={fighter01.url}
+                    src={gameState.fighter01.url}
                     className="xl:w-12 lg:w-10 md:w-9 w-6"
                   />
                 </div>
                 <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
-                  {fighter01.text}
+                  {gameState.fighter01.text}
                 </p>
               </div>
             </div>
             <div
               onClick={() => {
                 if (
-                  fighter02.bg === "from-stone-700 to-stone-800" ||
+                  gameState.fighter02.bg === "from-stone-700 to-stone-800" ||
                   "from-stone-200 to-stone-300"
                 ) {
                   toggleFighterPick();
@@ -1116,18 +1204,18 @@ const Room = () => {
               className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                 theme === "dark" ? "border-stone-600" : "border-stone-400"
               } rounded-lg shadow-md bg-gradient-to-b ${
-                fighter02.bg
+                gameState.fighter02.bg
               } text-center flex items-center justify-center`}
             >
               <div>
                 <div className="flex justify-center">
                   <img
-                    src={fighter02.url}
+                    src={gameState.fighter02.url}
                     className="xl:w-12 lg:w-10 md:w-9 w-6"
                   />
                 </div>
                 <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
-                  {fighter02.text}
+                  {gameState.fighter02.text}
                 </p>
               </div>
             </div>
@@ -1169,7 +1257,7 @@ const Room = () => {
             <div
               onClick={() => {
                 if (
-                  fighter10.bg === "from-stone-700 to-stone-800" ||
+                  gameState.fighter10.bg === "from-stone-700 to-stone-800" ||
                   "from-stone-200 to-stone-300"
                 ) {
                   toggleFighterPick();
@@ -1181,25 +1269,25 @@ const Room = () => {
               className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                 theme === "dark" ? "border-stone-600" : "border-stone-400"
               } rounded-lg shadow-md bg-gradient-to-b ${
-                fighter10.bg
+                gameState.fighter10.bg
               } text-center flex items-center justify-center`}
             >
               <div>
                 <div className="flex justify-center">
                   <img
-                    src={fighter10.url}
+                    src={gameState.fighter10.url}
                     className="xl:w-12 lg:w-10 md:w-9 w-6"
                   />
                 </div>
                 <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
-                  {fighter10.text}
+                  {gameState.fighter10.text}
                 </p>
               </div>
             </div>
             <div
               onClick={() => {
                 if (
-                  fighter11.bg === "from-stone-700 to-stone-800" ||
+                  gameState.fighter11.bg === "from-stone-700 to-stone-800" ||
                   "from-stone-200 to-stone-300"
                 ) {
                   toggleFighterPick();
@@ -1211,25 +1299,25 @@ const Room = () => {
               className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                 theme === "dark" ? "border-stone-600" : "border-stone-400"
               } rounded-lg shadow-md bg-gradient-to-b ${
-                fighter11.bg
+                gameState.fighter11.bg
               } text-center flex items-center justify-center`}
             >
               <div>
                 <div className="flex justify-center">
                   <img
-                    src={fighter11.url}
+                    src={gameState.fighter11.url}
                     className="xl:w-12 lg:w-10 md:w-9 w-6"
                   />
                 </div>
                 <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
-                  {fighter11.text}
+                  {gameState.fighter11.text}
                 </p>
               </div>
             </div>
             <div
               onClick={() => {
                 if (
-                  fighter12.bg === "from-stone-700 to-stone-800" ||
+                  gameState.fighter12.bg === "from-stone-700 to-stone-800" ||
                   "from-stone-200 to-stone-300"
                 ) {
                   toggleFighterPick();
@@ -1241,18 +1329,18 @@ const Room = () => {
               className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                 theme === "dark" ? "border-stone-600" : "border-stone-400"
               } rounded-lg shadow-md bg-gradient-to-b ${
-                fighter12.bg
+                gameState.fighter12.bg
               } text-center flex items-center justify-center`}
             >
               <div>
                 <div className="flex justify-center">
                   <img
-                    src={fighter12.url}
+                    src={gameState.fighter12.url}
                     className="xl:w-12 lg:w-10 md:w-9 w-6"
                   />
                 </div>
                 <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
-                  {fighter12.text}
+                  {gameState.fighter12.text}
                 </p>
               </div>
             </div>
@@ -1294,7 +1382,7 @@ const Room = () => {
             <div
               onClick={() => {
                 if (
-                  fighter20.bg === "from-stone-700 to-stone-800" ||
+                  gameState.fighter20.bg === "from-stone-700 to-stone-800" ||
                   "from-stone-200 to-stone-300"
                 ) {
                   toggleFighterPick();
@@ -1306,25 +1394,25 @@ const Room = () => {
               className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                 theme === "dark" ? "border-stone-600" : "border-stone-400"
               } rounded-lg shadow-md bg-gradient-to-b ${
-                fighter20.bg
+                gameState.fighter20.bg
               } text-center flex items-center justify-center`}
             >
               <div>
                 <div className="flex justify-center">
                   <img
-                    src={fighter20.url}
+                    src={gameState.fighter20.url}
                     className="xl:w-12 lg:w-10 md:w-9 w-6"
                   />
                 </div>
                 <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
-                  {fighter20.text}
+                  {gameState.fighter20.text}
                 </p>
               </div>
             </div>
             <div
               onClick={() => {
                 if (
-                  fighter21.bg === "from-stone-700 to-stone-800" ||
+                  gameState.fighter21.bg === "from-stone-700 to-stone-800" ||
                   "from-stone-200 to-stone-300"
                 ) {
                   toggleFighterPick();
@@ -1336,25 +1424,25 @@ const Room = () => {
               className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                 theme === "dark" ? "border-stone-600" : "border-stone-400"
               } rounded-lg shadow-md bg-gradient-to-b ${
-                fighter21.bg
+                gameState.fighter21.bg
               } text-center flex items-center justify-center`}
             >
               <div>
                 <div className="flex justify-center">
                   <img
-                    src={fighter21.url}
+                    src={gameState.fighter21.url}
                     className="xl:w-12 lg:w-10 md:w-9 w-6"
                   />
                 </div>
                 <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
-                  {fighter21.text}
+                  {gameState.fighter21.text}
                 </p>
               </div>
             </div>
             <div
               onClick={() => {
                 if (
-                  fighter22.bg === "from-stone-700 to-stone-800" ||
+                  gameState.fighter22.bg === "from-stone-700 to-stone-800" ||
                   "from-stone-200 to-stone-300"
                 ) {
                   toggleFighterPick();
@@ -1366,18 +1454,18 @@ const Room = () => {
               className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                 theme === "dark" ? "border-stone-600" : "border-stone-400"
               } rounded-lg shadow-md bg-gradient-to-b ${
-                fighter22.bg
+                gameState.fighter22.bg
               } text-center flex items-center justify-center`}
             >
               <div>
                 <div className="flex justify-center">
                   <img
-                    src={fighter22.url}
+                    src={gameState.fighter22.url}
                     className="xl:w-12 lg:w-10 md:w-9 w-6"
                   />
                 </div>
                 <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
-                  {fighter22.text}
+                  {gameState.fighter22.text}
                 </p>
               </div>
             </div>
