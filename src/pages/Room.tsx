@@ -131,8 +131,6 @@ const Room = () => {
   useEffect(() => {
     if (!roomId) return;
 
-    console.log("Listener başlatılıyor...");
-
     const collectionRef = collection(db, "rooms");
     const q = query(collectionRef, where(documentId(), "==", roomId));
 
@@ -160,6 +158,35 @@ const Room = () => {
         } else if (guest != null && updatedData?.guest == null) {
           toast.success(guest + " oyundan çıktı!");
         }
+      }
+
+      //firestore'daki sadece idli olan fightersPositions'ı fighters_url'den alan fonksiyon
+      const getFightersByPositions = (positionsFighters: any) => {
+        let updatedPositions: any = {};
+
+        // Her bir pozisyon için
+        Object.keys(positionsFighters).forEach((position) => {
+          // O pozisyondaki fighter ID'lerini al
+          const fighterIds = positionsFighters[position];
+
+          // Bu ID'lere sahip fighterları fighters_url'den bul
+          const fighters = fighterIds
+            .map((fighterId: number) =>
+              fighters_url.find((fighter) => fighter.Id === fighterId)
+            )
+            .filter(Boolean); // undefined olanları filtrele
+
+          // Bulunan fighterları pozisyona ata
+          updatedPositions[position] = fighters;
+        });
+
+        return updatedPositions;
+      };
+
+      if (updatedData.positionsFighters) {
+        setPositionsFighters(
+          getFightersByPositions(updatedData.positionsFighters)
+        );
       }
 
       setGuest(updatedData?.guest);
@@ -194,14 +221,11 @@ const Room = () => {
       gameState?.guest == null &&
       !hasExited
     ) {
-      console.log("Guest join effect tetiklendi");
       const joinGame = async () => {
         const roomRef = doc(db, "rooms", roomId!);
-        console.log("Guest odaya katılıyor - playerName:", playerName);
         await updateDoc(roomRef, {
           guest: playerName,
         });
-        console.log("Guest odaya katılma tamamlandı");
       };
 
       joinGame();
@@ -216,17 +240,46 @@ const Room = () => {
         await getFilters();
 
         const roomRef = doc(db, "rooms", roomId);
-        const updatedData = filtersSelected.map(
+        const updatedDataFilters = filtersSelected.map(
           ({ filter_fighters, ...rest }: any) => rest
         );
-        console.log(positionsFighters);
+
+        let updatedDataPositionFighters: any = {};
+
+        updatedDataPositionFighters.position03 =
+          positionsFighters.position03.map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position04 =
+          positionsFighters.position04.map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position05 =
+          positionsFighters.position05.map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position13 =
+          positionsFighters.position13.map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position14 =
+          positionsFighters.position14.map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position15 =
+          positionsFighters.position15.map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position23 =
+          positionsFighters.position23.map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position24 =
+          positionsFighters.position24.map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position25 =
+          positionsFighters.position25.map((fighter: Fighter) => fighter.Id);
 
         await updateDoc(roomRef, {
           gameStarted: gameStarted,
           difficulty: difficulty,
           timerLength: timerLength,
-          filtersSelected: updatedData,
-          //positionsFighters: positionsFighters,
+          filtersSelected: updatedDataFilters,
+          positionsFighters: updatedDataPositionFighters,
+          fighter00: null,
+          fighter01: null,
+          fighter02: null,
+          fighter10: null,
+          fighter11: null,
+          fighter12: null,
+          fighter20: null,
+          fighter21: null,
+          fighter22: null,
           turn: "red",
           gameEnded: false,
           winner: null,
@@ -264,22 +317,6 @@ const Room = () => {
   };
 
   const getFilters = async () => {
-    console.log("getFilters");
-
-    let filters_arr: any = [];
-
-    while (filters_arr.length < 6) {
-      let random_index = Math.floor(Math.random() * filters.length);
-      if (!filters_arr.includes(filters[random_index])) {
-        filters_arr.push(filters[random_index]);
-      }
-    }
-
-    if (filters_arr.length < 6) {
-      console.error("HATA: filters_arr 6'dan az eleman içeriyor!");
-      return;
-    }
-
     let isDone: boolean = false;
     let finish = 0;
 
@@ -329,7 +366,6 @@ const Room = () => {
           intersection4.length < 2 ||
           intersection5.length < 2
         ) {
-          console.warn("Eşleşme sağlanamadı, döngü yeniden başlatılıyor.");
           break;
         }
 
@@ -354,7 +390,7 @@ const Room = () => {
       }
 
       if (isDone) {
-        setPositionsFighters(newPositions); // Tek seferde state güncelle
+        setPositionsFighters(newPositions);
         setFiltersSelected(filters_arr);
         setPushFirestore(true);
         break;
@@ -558,9 +594,9 @@ const Room = () => {
         pos.bg !== "from-stone-200 to-stone-300"
     );
 
-    if (isBoardFull) {
-      return "draw";
-    }
+    //if (isBoardFull) {
+    //  return "draw";
+    //}
 
     return null;
   };
@@ -571,8 +607,8 @@ const Room = () => {
     const roomRef = doc(db, "rooms", roomId!);
     const newPositions = { ...gameState.positions };
 
-    // Sadece gerekli bilgileri saklayalım
-    newPositions[selected] = {
+    // Seçilen fighter ve pozisyon bilgisini ekleyelim
+    const fighterData = {
       url:
         fighter.Picture === "Unknown"
           ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
@@ -582,12 +618,23 @@ const Room = () => {
         gameState.turn === "red"
           ? "from-red-800 to-red-900"
           : "from-blue-800 to-blue-900",
+      fighterId: fighter.Id, // Fighter ID'sini ekledik
+      position: selected, // Seçilen pozisyonu ekledik
     };
+
+    newPositions[selected] = fighterData;
 
     const winner = checkWinner(newPositions);
     const updates: any = {
       positions: newPositions,
       turn: gameState.turn === "red" ? "blue" : "red",
+      lastMove: {
+        // Son hamle bilgisini ekledik
+        fighterId: fighter.Id,
+        position: selected,
+        player: gameState.turn,
+        timestamp: new Date().getTime(),
+      },
     };
 
     if (winner) {
@@ -613,8 +660,6 @@ const Room = () => {
     try {
       if (role === "host") {
         // Host çıkarsa odayı tamamen sil
-        console.log("Host çıkış işlemi başladı");
-        console.log("Room ID:", roomId);
 
         // Transaction içinde silme işlemini gerçekleştir
         await runTransaction(db, async (transaction) => {
@@ -668,11 +713,7 @@ const Room = () => {
   }
 
   return (
-    <div
-      className={`w-screen h-screen ${
-        theme === "dark" ? "bg-stone-800" : "bg-stone-200"
-      }`}
-    >
+    <div className={`${theme === "dark" ? "bg-stone-800" : "bg-stone-200"}`}>
       <ToastContainer
         position="bottom-right"
         theme="dark"
