@@ -152,13 +152,15 @@ const Room = () => {
         positions: Object.keys(doc.data().positions || {}).length,
       }))[0];
 
-      if (role === "host") {
-        if (guest == null && updatedData?.guest != null) {
-          toast.success(updatedData?.guest + " oyuna katıldı!");
-        } else if (guest != null && updatedData?.guest == null) {
-          toast.success(guest + " oyundan çıktı!");
-        }
-      }
+      console.log(updatedData);
+
+      //if (role === "host") {
+      //  if (guest == null && updatedData?.guest != null) {
+      //    toast.success(updatedData?.guest + " oyuna katıldı!");
+      //  } else if (guest != null && updatedData?.guest == null) {
+      //    toast.success(guest + " oyundan çıktı!");
+      //  }
+      //}
 
       //firestore'daki sadece idli olan fightersPositions'ı fighters_url'den alan fonksiyon
       const getFightersByPositions = (positionsFighters: any) => {
@@ -363,6 +365,16 @@ const Room = () => {
     }
   }, [filters]);
 
+  useEffect(() => {
+    const winner = checkWinner();
+    console.log(winner);
+
+    if (winner) {
+      alert(winner);
+      return;
+    }
+  }, [gameState]);
+
   const startGame = async () => {
     if (!roomId) return;
 
@@ -471,6 +483,13 @@ const Room = () => {
   };
 
   const toggleFighterPick = () => {
+    if (role == "host" && gameState.turn == "blue") {
+      toast.error("Its your opponents turn!");
+      return;
+    } else if (role == "guest" && gameState.turn == "red") {
+      toast.error("Its your opponents turn!");
+      return;
+    }
     let div = document.querySelector(".select-fighter");
     div?.classList.toggle("hidden");
   };
@@ -572,6 +591,18 @@ const Room = () => {
 
     console.log(name);
 
+    if (role == "host" && gameState.turn == "blue") {
+      toast.error("Its your opponents turn!");
+      return;
+    } else if (role == "guest" && gameState.turn == "red") {
+      toast.error("Its your opponents turn!");
+      return;
+    }
+
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+
     const fighterMap: { [key: string]: keyof typeof positionsFighters } = {
       fighter00: "position03",
       fighter01: "position13",
@@ -589,6 +620,9 @@ const Room = () => {
     const positionKey = fighterMap[selected];
     if (!positionsFighters[positionKey].includes(fighter)) {
       notify();
+      await updateDoc(roomRef, {
+        turn: gameState.turn === "red" ? "blue" : "red",
+      });
     } else {
       const bgColor =
         turn === "red"
@@ -609,12 +643,6 @@ const Room = () => {
 
       setterMap[selected]({ url: picture, text: name, bg: bgColor });
 
-      if (!roomId) return;
-
-      const roomRef = doc(db, "rooms", roomId);
-      console.log("update", "kesesenb", 1);
-      console.log(gameState.turn);
-
       await updateDoc(roomRef, {
         [selected]: {
           // selected değişkenini key olarak kullan (fighter01, fighter02 vs.)
@@ -625,16 +653,9 @@ const Room = () => {
               ? "from-red-800 to-red-900"
               : "from-blue-800 to-blue-900",
           fighterId: fighter.Id,
-          turn: gameState.turn === "red" ? "blue" : "red",
         },
+        turn: gameState.turn === "red" ? "blue" : "red",
       });
-      console.log(gameState.turn);
-      console.log("update", "kesesenb", 2);
-      const winner = checkWinner();
-      if (winner) {
-        alert(winner); // Kazananı bildir
-        return;
-      }
     }
 
     setTurn(turn === "red" ? "blue" : "red");
@@ -650,10 +671,25 @@ const Room = () => {
   };
 
   const checkWinner = () => {
+    if (!gameState) {
+      return;
+    }
     const board = [
-      [fighter00.bg, fighter01.bg, fighter02.bg],
-      [fighter10.bg, fighter11.bg, fighter12.bg],
-      [fighter20.bg, fighter21.bg, fighter22.bg],
+      [
+        gameState?.fighter00.bg,
+        gameState?.fighter01.bg,
+        gameState?.fighter02.bg,
+      ],
+      [
+        gameState?.fighter10.bg,
+        gameState?.fighter11.bg,
+        gameState?.fighter12.bg,
+      ],
+      [
+        gameState?.fighter20.bg,
+        gameState?.fighter21.bg,
+        gameState?.fighter22.bg,
+      ],
     ];
 
     const winPatterns = [
@@ -717,7 +753,9 @@ const Room = () => {
         cellA === cellB &&
         cellB === cellC
       ) {
-        return cellA.includes("red") ? "Red Wins!" : "Blue Wins!";
+        return cellA.includes("red")
+          ? gameState.host + " Wins!"
+          : gameState.guest + " Wins!";
       }
     }
 
