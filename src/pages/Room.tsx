@@ -126,6 +126,10 @@ const Room = () => {
 
   useEffect(() => {
     document.title = "MMA XOX - Online Game";
+    console.log(guest);
+    console.log(fighter00, fighter01, fighter02);
+    console.log(fighter10, fighter11, fighter12);
+    console.log(fighter20, fighter21, fighter22);
   }, []);
 
   useEffect(() => {
