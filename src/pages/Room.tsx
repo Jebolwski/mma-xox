@@ -535,92 +535,119 @@ const Room = () => {
     div?.classList.toggle("hidden");
   };
 
-  const restartGame = () => {
+  const restartGame = async () => {
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+
+    await updateDoc(roomRef, {
+      gameStarted: false,
+      gameEnded: false,
+      winner: null,
+      turn: "red",
+      timerLength: "-2",
+      filtersSelected: [],
+      positionsFighters: {},
+      fighter00: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-300 to-stone-400",
+      },
+      fighter01: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-300 to-stone-400",
+      },
+      fighter02: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-300 to-stone-400",
+      },
+      fighter10: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-300 to-stone-400",
+      },
+      fighter11: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-300 to-stone-400",
+      },
+      fighter12: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-300 to-stone-400",
+      },
+      fighter20: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-300 to-stone-400",
+      },
+      fighter21: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-300 to-stone-400",
+      },
+      fighter22: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-300 to-stone-400",
+      },
+    });
+
+    // local state'leri de sıfırla
     setGameStarted(false);
-    // Tüm kutuları başlangıç durumuna döndür
-    setFighter00({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
-      text: "",
-      bg:
-        theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
+    setFiltersSelected([]);
+    setPushFirestore(false);
+    setPositionsFighters({
+      position03: {},
+      position04: {},
+      position05: {},
+      position13: {},
+      position14: {},
+      position15: {},
+      position23: {},
+      position24: {},
+      position25: {},
     });
-    setFighter01({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
-      text: "",
-      bg:
-        theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
-    });
-    setFighter02({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
-      text: "",
-      bg:
-        theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
-    });
-    setFighter10({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
-      text: "",
-      bg:
-        theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
-    });
-    setFighter11({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
-      text: "",
-      bg:
-        theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
-    });
-    setFighter12({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
-      text: "",
-      bg:
-        theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
-    });
-    setFighter20({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
-      text: "",
-      bg:
-        theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
-    });
-    setFighter21({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
-      text: "",
-      bg:
-        theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
-    });
-    setFighter22({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
-      text: "",
-      bg:
-        theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
-    });
-
-    // Oyunun ilk sırası kırmızı olsun
+    setFilters(null);
+    setFighter00({ url: "", text: "", bg: "" });
+    setFighter01({ url: "", text: "", bg: "" });
+    setFighter02({ url: "", text: "", bg: "" });
+    setFighter10({ url: "", text: "", bg: "" });
+    setFighter11({ url: "", text: "", bg: "" });
+    setFighter12({ url: "", text: "", bg: "" });
+    setFighter20({ url: "", text: "", bg: "" });
+    setFighter21({ url: "", text: "", bg: "" });
+    setFighter22({ url: "", text: "", bg: "" });
     setTurn("red");
-
-    // Oyuncuların seçtiği dövüşçüleri sıfırla
-    setFighters([]);
-
-    // Yeni rastgele dövüşçüleri belirle
-    getFilters();
-
-    //setWinner(null);
   };
 
   const updateBox = async (fighter: Fighter) => {
@@ -970,7 +997,7 @@ const Room = () => {
               </div>
               <div>
                 {gameState?.gameStarted == true &&
-                parseInt(timerLength) >= 0 ? (
+                parseInt(gameState?.timerLength) >= 0 ? (
                   <p
                     className={`xl:text-xl md:block hidden lg:text-lg text-base text-center font-semibold ${
                       gameState?.turn == "red"
@@ -980,7 +1007,9 @@ const Room = () => {
                   >
                     {gameState.timerLength} seconds
                   </p>
-                ) : null}
+                ) : (
+                  <p>ank mesi</p>
+                )}
               </div>
               {gameState?.turn == "red" ? (
                 <div
@@ -1079,10 +1108,10 @@ const Room = () => {
                           onChange={(e) => setTimerLength(e.target.value)}
                           className="text-stone-900 shadow-lg mt-1 focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2"
                         >
-                          <option value="-2">Süre Sınırı Yok</option>
-                          <option value="20">20 Saniye</option>
-                          <option value="30">30 Saniye</option>
-                          <option value="40">40 Saniye</option>
+                          <option value="-2">No time limit</option>
+                          <option value="20">20 Seconds</option>
+                          <option value="30">30 Seconds</option>
+                          <option value="40">40 Seconds</option>
                         </select>
                       </div>
                       <button
