@@ -972,15 +972,24 @@ const Room = () => {
         }`}
       >
         <div className="w-fit">
-          <div className="text-2xl mb-4">Oda Kodu: {roomId}</div>
-          <p>turn : {turn}</p>
+          <div className="text-2xl mb-2 mt-16 text-center">
+            Oda Kodu: {roomId}
+          </div>
+          {gameState.guest == null ? (
+            <p className="text-2xl text-center">Rakip bekleniyor...</p>
+          ) : null}
           <div className="text-center">
-            <h2 className="text-xl mb-4">
-              {role === "host" ? "Oda Oluşturuldu" : "Odaya Katıldınız"}
-            </h2>
-            <div className="my-5">
-              <p>guest: {gameState.guest}</p>
-              <p>host: {gameState.host}</p>
+            <div>
+              {gameState?.gameStarted == true &&
+              parseInt(gameState?.timerLength) >= 0 ? (
+                <p
+                  className={`xl:text-xl md:hidden block lg:text-lg text-base text-center font-semibold ${
+                    gameState?.turn == "red" ? "text-red-500" : "text-blue-500"
+                  }`}
+                >
+                  {gameState.timerLength} seconds
+                </p>
+              ) : null}
             </div>
             <div
               className={`${
@@ -1011,9 +1020,7 @@ const Room = () => {
                   >
                     {gameState.timerLength} seconds
                   </p>
-                ) : (
-                  <p>ank mesi</p>
-                )}
+                ) : null}
               </div>
               {gameState?.turn == "red" ? (
                 <div
