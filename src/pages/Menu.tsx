@@ -151,12 +151,20 @@ const Menu = () => {
               placeholder="İsminiz"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg bg-stone-600 text-white border border-stone-500 focus:outline-none focus:border-stone-400"
+              className={`${
+                theme == "dark"
+                  ? "bg-stone-600 border-stone-500 text-white"
+                  : "bg-stone-200 border-stone-400 text-black"
+              } w-full px-4 py-2 rounded-lg border focus:outline-none focus:border-stone-400`}
             />
             <div className="flex gap-2">
               <button
                 onClick={() => setShowCreateFields(false)}
-                className="w-1/2 bg-stone-500 cursor-pointer text-white py-2 rounded-lg font-semibold hover:bg-stone-600 transition"
+                className={`${
+                  theme == "dark"
+                    ? "bg-stone-600 text-white"
+                    : "bg-stone-500 text-white"
+                } w-1/2 cursor-pointer py-2 rounded-lg font-semibold hover:bg-stone-600 transition`}
               >
                 Geri
               </button>
@@ -175,19 +183,31 @@ const Menu = () => {
               placeholder="İsminiz"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg bg-stone-600 text-white border border-stone-500 focus:outline-none focus:border-stone-400"
+              className={`${
+                theme == "dark"
+                  ? "bg-stone-600 border-stone-500 text-white"
+                  : "bg-stone-200 border-stone-400 text-black"
+              } w-full px-4 py-2 rounded-lg border focus:outline-none focus:border-stone-400`}
             />
             <input
               type="text"
               placeholder="Oda Kodu"
               value={roomCode}
               onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-              className="w-full px-4 py-2 rounded-lg bg-stone-600 text-white border border-stone-500 focus:outline-none focus:border-stone-400"
+              className={`${
+                theme == "dark"
+                  ? "bg-stone-600 border-stone-500 text-white"
+                  : "bg-stone-200 border-stone-400 text-black"
+              } w-full px-4 py-2 rounded-lg border focus:outline-none focus:border-stone-400`}
             />
             <div className="flex gap-2">
               <button
                 onClick={() => setShowJoinFields(false)}
-                className="w-1/2 bg-stone-500 cursor-pointer text-white py-2 rounded-lg font-semibold hover:bg-stone-600 transition"
+                className={`${
+                  theme == "dark"
+                    ? "bg-stone-600 text-white"
+                    : "bg-stone-500 text-white"
+                } w-1/2 cursor-pointer py-2 rounded-lg font-semibold hover:bg-stone-600 transition`}
               >
                 Geri
               </button>

@@ -127,9 +127,6 @@ const Room = () => {
   useEffect(() => {
     document.title = "MMA XOX - Online Game";
     console.log(guest);
-    console.log(fighter00, fighter01, fighter02);
-    console.log(fighter10, fighter11, fighter12);
-    console.log(fighter20, fighter21, fighter22);
   }, []);
 
   useEffect(() => {
@@ -400,6 +397,192 @@ const Room = () => {
     return () => clearInterval(interval);
   }, [gameState]);
 
+  useEffect(() => {
+    const handleBeforeUnload = async () => {
+      if (!roomId || !playerName || !role) return;
+
+      const roomRef = doc(db, "rooms", roomId);
+
+      if (role === "host") {
+        try {
+          await updateDoc(roomRef, {
+            ank: "messi",
+          });
+          // await runTransaction(db, async (transaction) => {
+          //   const roomDoc = await transaction.get(roomRef);
+          //   if (!roomDoc.exists()) return;
+          //   transaction.delete(roomRef);
+          // });
+        } catch (error) {
+          console.error("Host çıkışında oda silinirken hata oluştu:", error);
+        }
+      } else if (role === "guest") {
+        try {
+          await updateDoc(roomRef, {
+            guest: null,
+            gameStarted: false,
+          });
+        } catch (error) {
+          console.error("Guest çıkışında güncelleme hatası:", error);
+        }
+      }
+    };
+
+    const handleUnload = () => {
+      // Asenkron işlemleri 'beforeunload' yerine 'unload'ta tetikleyebiliriz
+      handleBeforeUnload();
+    };
+
+    window.addEventListener("unload", handleUnload);
+
+    return () => {
+      window.removeEventListener("unload", handleUnload);
+    };
+  }, [roomId, playerName, role]);
+
+  useEffect(() => {
+    if (
+      fighter00.bg != "from-red-800 to-red-900" &&
+      fighter00.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter00({
+        ...fighter00,
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter01.bg != "from-red-800 to-red-900" &&
+      fighter01.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter01({
+        ...fighter01,
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter02.bg != "from-red-800 to-red-900" &&
+      fighter02.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter02({
+        ...fighter02,
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter10.bg != "from-red-800 to-red-900" &&
+      fighter10.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter10({
+        ...fighter10,
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter11.bg != "from-red-800 to-red-900" &&
+      fighter11.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter11({
+        ...fighter11,
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter12.bg != "from-red-800 to-red-900" &&
+      fighter12.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter12({
+        ...fighter12,
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter20.bg != "from-red-800 to-red-900" &&
+      fighter20.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter20({
+        ...fighter20,
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter21.bg != "from-red-800 to-red-900" &&
+      fighter21.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter21({
+        ...fighter21,
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+    if (
+      fighter22.bg != "from-red-800 to-red-900" &&
+      fighter22.bg != "from-blue-800 to-blue-900"
+    ) {
+      setFighter22({
+        ...fighter22,
+        bg:
+          theme === "dark"
+            ? "from-stone-700 to-stone-800"
+            : "from-stone-200 to-stone-300",
+      });
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+    let upd = async () => {
+      await updateDoc(roomRef, {
+        fighter00: fighter00,
+        fighter01: fighter01,
+        fighter02: fighter02,
+        fighter10: fighter10,
+        fighter11: fighter11,
+        fighter12: fighter12,
+        fighter20: fighter20,
+        fighter21: fighter21,
+        fighter22: fighter22,
+      });
+    };
+
+    upd();
+  }, [
+    fighter00,
+    fighter01,
+    fighter02,
+    fighter02,
+    fighter10,
+    fighter11,
+    fighter12,
+    fighter20,
+    fighter21,
+    fighter22,
+  ]);
+
   const resetTimerFirestore = async () => {
     if (!roomId) return;
 
@@ -660,8 +843,6 @@ const Room = () => {
         ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
         : fighter.Picture;
     let name = fighter.Fighter;
-
-    console.log(name);
 
     if (role == "host" && gameState.turn == "blue") {
       toast.error("Its your opponents turn!");
@@ -1098,7 +1279,13 @@ const Room = () => {
               gameState?.gameStarted == false && (
                 <div className="absolute w-full h-full top-0 left-0">
                   <div className="flex w-full h-full justify-center items-center bg-[#00000092]">
-                    <div className="z-30 from-stone-600 to-stone-700 bg-gradient-to-b border-2 border-stone-500 rounded-lg p-5 px-10">
+                    <div
+                      className={`${
+                        theme == "dark"
+                          ? "from-stone-600 to-stone-700"
+                          : "from-stone-300 to-stone-400"
+                      } z-30 bg-gradient-to-b border-2 border-stone-500 rounded-lg p-5 px-10`}
+                    >
                       <div className="flex gap-3 mb-5 items-center">
                         <img
                           src="https://cdn-icons-png.freepik.com/512/921/921676.png"
@@ -1146,7 +1333,7 @@ const Room = () => {
                           gameState.guest == null
                             ? "opacity-70"
                             : "opacity-100 cursor-pointer"
-                        }`}
+                        } ${theme == "dark" ? "bg-green-500" : "bg-green-300"}`}
                       >
                         Oyunu Başlat
                       </button>
