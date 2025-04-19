@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import fighters_url from "../assets/data/fighters.json";
 import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
 import return_img from "../assets/return.png";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "../context/ThemeContext";
 
 function SameScreenGame() {
   useEffect(() => {
     document.title = "MMA XOX"; // Sayfa başlığını değiştir
   }, []);
 
-  const [theme, setTheme] = useState("dark");
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   const [difficulty, setDifficulty]: any = useState("MEDIUM");
 
@@ -647,9 +648,7 @@ function SameScreenGame() {
         <div className="absolute z-30 top-3 left-3">
           {theme === "dark" ? (
             <div
-              onClick={() => {
-                setTheme(theme === "dark" ? "light" : "dark");
-              }}
+              onClick={toggleTheme}
               className="p-1 rounded-full bg-stone-700 border border-stone-800 cursor-pointer shadow-xl"
             >
               <img
@@ -659,9 +658,7 @@ function SameScreenGame() {
             </div>
           ) : (
             <div
-              onClick={() => {
-                setTheme(theme === "dark" ? "light" : "dark");
-              }}
+              onClick={toggleTheme}
               className="p-1 rounded-full bg-stone-300 border border-stone-400 cursor-pointer shadow-xl"
             >
               <img

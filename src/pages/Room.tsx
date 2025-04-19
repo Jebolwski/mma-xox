@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import {
   collection,
@@ -19,6 +19,7 @@ import return_img from "../assets/return.png";
 import fighters_url from "../assets/data/fighters.json";
 import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Room = () => {
   const { roomId } = useParams();
@@ -26,7 +27,7 @@ const Room = () => {
   const [searchParams] = useSearchParams();
   const role = searchParams.get("role");
   const playerName = searchParams.get("name");
-  const [theme, setTheme] = useState("dark");
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const [gameState, setGameState] = useState<any>(null);
   const [guest, setGuest] = useState<string | null>(null);
   const [turn, setTurn] = useState<string | null>(null);
@@ -36,74 +37,47 @@ const Room = () => {
   const [fighter00, setFighter00]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg:
-      theme === "dark"
-        ? "from-stone-700 to-stone-800"
-        : "from-stone-300 to-stone-400",
+    bg: "from-stone-400 to-stone-500",
   });
   const [fighter01, setFighter01]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg:
-      theme === "dark"
-        ? "from-stone-700 to-stone-800"
-        : "from-stone-300 to-stone-400",
+    bg: "from-stone-400 to-stone-500",
   });
   const [fighter02, setFighter02]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg:
-      theme === "dark"
-        ? "from-stone-700 to-stone-800"
-        : "from-stone-300 to-stone-400",
+    bg: "from-stone-400 to-stone-500",
   });
   const [fighter10, setFighter10]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg:
-      theme === "dark"
-        ? "from-stone-700 to-stone-800"
-        : "from-stone-300 to-stone-400",
+    bg: "from-stone-400 to-stone-500",
   });
   const [fighter11, setFighter11]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg:
-      theme === "dark"
-        ? "from-stone-700 to-stone-800"
-        : "from-stone-300 to-stone-400",
+    bg: "from-stone-400 to-stone-500",
   });
   const [fighter12, setFighter12]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg:
-      theme === "dark"
-        ? "from-stone-700 to-stone-800"
-        : "from-stone-300 to-stone-400",
+    bg: "from-stone-400 to-stone-500",
   });
   const [fighter20, setFighter20]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg:
-      theme === "dark"
-        ? "from-stone-700 to-stone-800"
-        : "from-stone-300 to-stone-400",
+    bg: "from-stone-400 to-stone-500",
   });
   const [fighter21, setFighter21]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg:
-      theme === "dark"
-        ? "from-stone-700 to-stone-800"
-        : "from-stone-300 to-stone-400",
+    bg: "from-stone-400 to-stone-500",
   });
   const [fighter22, setFighter22]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg:
-      theme === "dark"
-        ? "from-stone-700 to-stone-800"
-        : "from-stone-300 to-stone-400",
+    bg: "from-stone-400 to-stone-500",
   });
   const [filtersSelected, setFiltersSelected]: any = useState([]);
   const [pushFirestore, setPushFirestore]: any = useState(false);
@@ -123,6 +97,8 @@ const Room = () => {
   const [timerLength, setTimerLength] = useState("-2");
   const [hasExited, setHasExited] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+
+  console.log(positionsFighters);
 
   useEffect(() => {
     document.title = "MMA XOX - Online Game";
@@ -212,74 +188,47 @@ const Room = () => {
           fighter00: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg:
-              theme === "dark"
-                ? "from-stone-700 to-stone-800"
-                : "from-stone-300 to-stone-400",
+            bg: "from-stone-400 to-stone-500",
           },
           fighter01: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg:
-              theme === "dark"
-                ? "from-stone-700 to-stone-800"
-                : "from-stone-300 to-stone-400",
+            bg: "from-stone-400 to-stone-500",
           },
           fighter02: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg:
-              theme === "dark"
-                ? "from-stone-700 to-stone-800"
-                : "from-stone-300 to-stone-400",
+            bg: "from-stone-400 to-stone-500",
           },
           fighter10: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg:
-              theme === "dark"
-                ? "from-stone-700 to-stone-800"
-                : "from-stone-300 to-stone-400",
+            bg: "from-stone-400 to-stone-500",
           },
           fighter11: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg:
-              theme === "dark"
-                ? "from-stone-700 to-stone-800"
-                : "from-stone-300 to-stone-400",
+            bg: "from-stone-400 to-stone-500",
           },
           fighter12: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg:
-              theme === "dark"
-                ? "from-stone-700 to-stone-800"
-                : "from-stone-300 to-stone-400",
+            bg: "from-stone-400 to-stone-500",
           },
           fighter20: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg:
-              theme === "dark"
-                ? "from-stone-700 to-stone-800"
-                : "from-stone-300 to-stone-400",
+            bg: "from-stone-400 to-stone-500",
           },
           fighter21: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg:
-              theme === "dark"
-                ? "from-stone-700 to-stone-800"
-                : "from-stone-300 to-stone-400",
+            bg: "from-stone-400 to-stone-500",
           },
           fighter22: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg:
-              theme === "dark"
-                ? "from-stone-700 to-stone-800"
-                : "from-stone-300 to-stone-400",
+            bg: "from-stone-400 to-stone-500",
           },
         });
       };
@@ -447,10 +396,7 @@ const Room = () => {
     ) {
       setFighter00({
         ...fighter00,
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+        bg: "from-stone-400 to-stone-500",
       });
     }
     if (
@@ -459,10 +405,7 @@ const Room = () => {
     ) {
       setFighter01({
         ...fighter01,
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+        bg: "from-stone-400 to-stone-500",
       });
     }
     if (
@@ -471,10 +414,7 @@ const Room = () => {
     ) {
       setFighter02({
         ...fighter02,
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+        bg: "from-stone-400 to-stone-500",
       });
     }
     if (
@@ -483,10 +423,7 @@ const Room = () => {
     ) {
       setFighter10({
         ...fighter10,
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+        bg: "from-stone-400 to-stone-500",
       });
     }
     if (
@@ -495,10 +432,7 @@ const Room = () => {
     ) {
       setFighter11({
         ...fighter11,
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+        bg: "from-stone-400 to-stone-500",
       });
     }
     if (
@@ -507,10 +441,7 @@ const Room = () => {
     ) {
       setFighter12({
         ...fighter12,
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+        bg: "from-stone-400 to-stone-500",
       });
     }
     if (
@@ -519,10 +450,7 @@ const Room = () => {
     ) {
       setFighter20({
         ...fighter20,
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+        bg: "from-stone-400 to-stone-500",
       });
     }
     if (
@@ -531,10 +459,7 @@ const Room = () => {
     ) {
       setFighter21({
         ...fighter21,
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+        bg: "from-stone-400 to-stone-500",
       });
     }
     if (
@@ -543,10 +468,7 @@ const Room = () => {
     ) {
       setFighter22({
         ...fighter22,
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+        bg: "from-stone-400 to-stone-500",
       });
     }
   }, [theme]);
@@ -710,6 +632,8 @@ const Room = () => {
     }
   };
 
+  console.log(fighter00, fighter01, fighter02, fighter10);
+
   const toggleFighterPick = () => {
     if (role == "host" && gameState.turn == "blue") {
       toast.error("Its your opponents turn!");
@@ -738,74 +662,47 @@ const Room = () => {
       fighter00: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-300 to-stone-400",
+        bg: "from-stone-400 to-stone-500",
       },
       fighter01: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-300 to-stone-400",
+        bg: "from-stone-400 to-stone-500",
       },
       fighter02: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-300 to-stone-400",
+        bg: "from-stone-400 to-stone-500",
       },
       fighter10: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-300 to-stone-400",
+        bg: "from-stone-400 to-stone-500",
       },
       fighter11: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-300 to-stone-400",
+        bg: "from-stone-400 to-stone-500",
       },
       fighter12: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-300 to-stone-400",
+        bg: "from-stone-400 to-stone-500",
       },
       fighter20: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-300 to-stone-400",
+        bg: "from-stone-400 to-stone-500",
       },
       fighter21: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-300 to-stone-400",
+        bg: "from-stone-400 to-stone-500",
       },
       fighter22: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg:
-          theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-300 to-stone-400",
+        bg: "from-stone-400 to-stone-500",
       },
     });
 
@@ -825,15 +722,51 @@ const Room = () => {
       position25: {},
     });
     setFilters(null);
-    setFighter00({ url: "", text: "", bg: "" });
-    setFighter01({ url: "", text: "", bg: "" });
-    setFighter02({ url: "", text: "", bg: "" });
-    setFighter10({ url: "", text: "", bg: "" });
-    setFighter11({ url: "", text: "", bg: "" });
-    setFighter12({ url: "", text: "", bg: "" });
-    setFighter20({ url: "", text: "", bg: "" });
-    setFighter21({ url: "", text: "", bg: "" });
-    setFighter22({ url: "", text: "", bg: "" });
+    setFighter00({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-400 to-stone-500",
+    });
+    setFighter01({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-400 to-stone-500",
+    });
+    setFighter02({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-400 to-stone-500",
+    });
+    setFighter10({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-400 to-stone-500",
+    });
+    setFighter11({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-400 to-stone-500",
+    });
+    setFighter12({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-400 to-stone-500",
+    });
+    setFighter20({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-400 to-stone-500",
+    });
+    setFighter21({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-400 to-stone-500",
+    });
+    setFighter22({
+      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      text: "",
+      bg: "from-stone-400 to-stone-500",
+    });
     setTurn("red");
   };
 
@@ -878,7 +811,7 @@ const Room = () => {
       });
     } else {
       const bgColor =
-        turn === "red"
+        gameState.turn === "red"
           ? "from-red-800 to-red-900"
           : "from-blue-800 to-blue-900";
 
@@ -895,6 +828,7 @@ const Room = () => {
       };
 
       setterMap[selected]({ url: picture, text: name, bg: bgColor });
+      console.log(gameState.turn, "messi ronaldo");
 
       await updateDoc(roomRef, {
         [selected]: {
@@ -1001,8 +935,8 @@ const Room = () => {
       const cellC = board[c[0]][c[1]];
 
       if (
-        cellA !== "from-stone-700 to-stone-800" &&
-        cellA !== "from-stone-200 to-stone-300" && // Boş değilse
+        cellA !== "from-stone-400 to-stone-500" &&
+        cellA !== "from-stone-400 to-stone-500" && // Boş değilse
         cellA === cellB &&
         cellB === cellC
       ) {
@@ -1017,8 +951,8 @@ const Room = () => {
       .flat()
       .every(
         (cell) =>
-          cell !== "from-stone-700 to-stone-800" &&
-          cell !== "from-stone-200 to-stone-300"
+          cell !== "from-stone-400 to-stone-500" &&
+          cell !== "from-stone-400 to-stone-500"
       );
 
     if (isBoardFull) {
@@ -1106,7 +1040,7 @@ const Room = () => {
       {/* Tema değiştirme butonu */}
       <div className="absolute z-30 top-3 left-3">
         <div
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          onClick={toggleTheme}
           className={`p-1 rounded-full cursor-pointer shadow-xl ${
             theme === "dark"
               ? "bg-stone-700 border-stone-800"
@@ -1407,9 +1341,9 @@ const Room = () => {
                   <div
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
-                        ? "border-stone-600 bg-neutral-900"
-                        : "border-stone-500 bg-neutral-400"
-                    } rounded-lg text-center flex items-center justify-center`}
+                        ? "border-stone-500 bg-stone-700"
+                        : "border-stone-400 bg-stone-300"
+                    } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     <div>
                       <div className="flex items-center justify-center">
@@ -1420,7 +1354,7 @@ const Room = () => {
                       </div>
                       <p
                         className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
-                          theme === "dark" ? "text-white" : "text-white"
+                          theme === "dark" ? "text-white" : "text-black"
                         }`}
                       >
                         MMA XOX
@@ -1430,7 +1364,7 @@ const Room = () => {
                   <div
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
-                        ? "border-stone-600 bg-stone-800"
+                        ? "border-stone-500 bg-stone-700"
                         : "border-stone-400 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
@@ -1468,7 +1402,7 @@ const Room = () => {
                   <div
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
-                        ? "border-stone-600 bg-stone-800"
+                        ? "border-stone-500 bg-stone-700"
                         : "border-stone-400 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
@@ -1505,7 +1439,7 @@ const Room = () => {
                   <div
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
-                        ? "border-stone-600 bg-stone-800"
+                        ? "border-stone-500 bg-stone-700"
                         : "border-stone-400 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
@@ -1544,7 +1478,7 @@ const Room = () => {
                   <div
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
-                        ? "border-stone-600 bg-stone-800"
+                        ? "border-stone-500 bg-stone-700"
                         : "border-stone-400 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
@@ -1676,7 +1610,7 @@ const Room = () => {
                   <div
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
-                        ? "border-stone-600 bg-stone-800"
+                        ? "border-stone-500 bg-stone-700"
                         : "border-stone-400 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
@@ -1808,7 +1742,7 @@ const Room = () => {
                   <div
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
-                        ? "border-stone-600 bg-stone-800"
+                        ? "border-stone-500 bg-stone-700"
                         : "border-stone-400 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >

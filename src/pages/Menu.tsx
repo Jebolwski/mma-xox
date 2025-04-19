@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
-
+import { ThemeContext } from "../context/ThemeContext";
 const Menu = () => {
   const navigate = useNavigate();
-  const [theme, setTheme] = useState("dark");
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   const [playerName, setPlayerName] = useState("");
   const [roomCode, setRoomCode] = useState("");
@@ -90,9 +90,7 @@ const Menu = () => {
         <div className="absolute z-30 text-red-500 top-3 left-3">
           {theme === "dark" ? (
             <div
-              onClick={() => {
-                setTheme(theme === "dark" ? "light" : "dark");
-              }}
+              onClick={toggleTheme}
               className="p-1 rounded-full bg-stone-700 border border-stone-800 cursor-pointer shadow-xl"
             >
               <img
@@ -102,9 +100,7 @@ const Menu = () => {
             </div>
           ) : (
             <div
-              onClick={() => {
-                setTheme(theme === "dark" ? "light" : "dark");
-              }}
+              onClick={toggleTheme}
               className="p-1 rounded-full bg-stone-300 border border-stone-400 cursor-pointer shadow-xl"
             >
               <img
