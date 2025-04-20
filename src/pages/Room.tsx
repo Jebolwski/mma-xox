@@ -98,8 +98,6 @@ const Room = () => {
   const [hasExited, setHasExited] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
-  console.log(positionsFighters);
-
   useEffect(() => {
     document.title = "MMA XOX - Online Game";
     console.log(guest);
@@ -317,7 +315,6 @@ const Room = () => {
     const winner = checkWinner();
 
     if (winner) {
-      alert(winner);
       return;
     }
   }, [gameState]);
@@ -480,30 +477,106 @@ const Room = () => {
     let upd = async () => {
       await updateDoc(roomRef, {
         fighter00: fighter00,
+      });
+    };
+    upd();
+  }, [fighter00]);
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+    let upd = async () => {
+      await updateDoc(roomRef, {
         fighter01: fighter01,
+      });
+    };
+    upd();
+  }, [fighter01]);
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+    let upd = async () => {
+      await updateDoc(roomRef, {
         fighter02: fighter02,
+      });
+    };
+    upd();
+  }, [fighter02]);
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+    let upd = async () => {
+      await updateDoc(roomRef, {
         fighter10: fighter10,
+      });
+    };
+    upd();
+  }, [fighter10]);
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+    let upd = async () => {
+      await updateDoc(roomRef, {
         fighter11: fighter11,
+      });
+    };
+    upd();
+  }, [fighter11]);
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+    let upd = async () => {
+      await updateDoc(roomRef, {
         fighter12: fighter12,
+      });
+    };
+    upd();
+  }, [fighter12]);
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+    let upd = async () => {
+      await updateDoc(roomRef, {
         fighter20: fighter20,
+      });
+    };
+    upd();
+  }, [fighter20]);
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+    let upd = async () => {
+      await updateDoc(roomRef, {
         fighter21: fighter21,
+      });
+    };
+    upd();
+  }, [fighter21]);
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+    let upd = async () => {
+      await updateDoc(roomRef, {
         fighter22: fighter22,
       });
     };
-
     upd();
-  }, [
-    fighter00,
-    fighter01,
-    fighter02,
-    fighter02,
-    fighter10,
-    fighter11,
-    fighter12,
-    fighter20,
-    fighter21,
-    fighter22,
-  ]);
+  }, [fighter22]);
 
   const resetTimerFirestore = async () => {
     if (!roomId) return;
@@ -631,8 +704,6 @@ const Room = () => {
       setFighters(filteredFighters);
     }
   };
-
-  console.log(fighter00, fighter01, fighter02, fighter10);
 
   const toggleFighterPick = () => {
     if (role == "host" && gameState.turn == "blue") {
@@ -828,7 +899,6 @@ const Room = () => {
       };
 
       setterMap[selected]({ url: picture, text: name, bg: bgColor });
-      console.log(gameState.turn, "messi ronaldo");
 
       await updateDoc(roomRef, {
         [selected]: {
@@ -934,15 +1004,26 @@ const Room = () => {
       const cellB = board[b[0]][b[1]];
       const cellC = board[c[0]][c[1]];
 
+      if (!roomId) return;
+      const roomRef = doc(db, "rooms", roomId);
+
       if (
         cellA !== "from-stone-400 to-stone-500" &&
         cellA !== "from-stone-400 to-stone-500" && // Boş değilse
         cellA === cellB &&
         cellB === cellC
       ) {
-        return cellA.includes("red")
-          ? gameState.host + " Wins!"
-          : gameState.guest + " Wins!";
+        if (cellA.includes("red")) {
+          updateDoc(roomRef, {
+            winner: "red",
+          });
+          return "red";
+        } else {
+          updateDoc(roomRef, {
+            winner: "blue",
+          });
+          return "blue";
+        }
       }
     }
 
@@ -956,6 +1037,11 @@ const Room = () => {
       );
 
     if (isBoardFull) {
+      if (!roomId) return;
+      const roomRef = doc(db, "rooms", roomId);
+      updateDoc(roomRef, {
+        winner: "draw",
+      });
       return "Draw!"; // Beraberlik durumu
     }
 
@@ -1303,16 +1389,16 @@ const Room = () => {
                       <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold">
                         Game Finished!
                       </p>
-                      {gameState.winner == "Red" ? (
+                      {gameState.winner == "red" ? (
                         <>
                           <p className="text-red-500 font-semibold text-xl mt-4 text-center">
-                            Red Wins!
+                            {gameState.host} wins!
                           </p>
                         </>
-                      ) : gameState.winner == "Blue" ? (
+                      ) : gameState.winner == "blue" ? (
                         <>
                           <p className="text-blue-500 font-semibold text-xl mt-4 text-center">
-                            Blue Wins!
+                            {gameState.guest} wins!
                           </p>
                         </>
                       ) : (
@@ -1322,18 +1408,20 @@ const Room = () => {
                           </p>
                         </>
                       )}
-                      <div className="flex justify-center">
-                        <button
-                          onClick={restartGame}
-                          className={`bg-gradient-to-r cursor-pointer ${
-                            theme === "dark"
-                              ? "from-stone-500 to-stone-700 text-white border-stone-600"
-                              : "from-stone-300 to-stone-400 text-black border-stone-400"
-                          } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg mt-5`}
-                        >
-                          Play Again
-                        </button>
-                      </div>
+                      {role == "host" ? (
+                        <div className="flex justify-center">
+                          <button
+                            onClick={restartGame}
+                            className={`bg-gradient-to-r cursor-pointer ${
+                              theme === "dark"
+                                ? "from-stone-500 to-stone-700 text-white border-stone-600"
+                                : "from-stone-300 to-stone-400 text-black border-stone-400"
+                            } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg mt-5`}
+                          >
+                            Play Again
+                          </button>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 </div>
