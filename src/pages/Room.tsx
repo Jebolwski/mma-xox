@@ -1175,7 +1175,7 @@ const Room = () => {
       >
         <div className="w-fit">
           <div className="text-2xl mb-2 mt-16 text-center">
-            Oda Kodu: {roomId}
+            Room Code: {roomId}
           </div>
           {gameState.gameStarted == false &&
           gameState.guest != null &&
@@ -1382,9 +1382,9 @@ const Room = () => {
                     <div
                       className={`${
                         theme === "dark"
-                          ? "bg-stone-800 border-stone-700"
-                          : "bg-stone-300 border-stone-400"
-                      } border-2 w-72 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
+                          ? "from-stone-700 to-stone-800 border-stone-700 text-white"
+                          : "from-stone-200 to-stone-300 border-stone-400 text-black"
+                      } bg-gradient-to-r border-2 w-72 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
                     >
                       <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold">
                         Game Finished!
@@ -1414,9 +1414,9 @@ const Room = () => {
                             onClick={restartGame}
                             className={`bg-gradient-to-r cursor-pointer ${
                               theme === "dark"
-                                ? "from-stone-500 to-stone-700 text-white border-stone-600"
-                                : "from-stone-300 to-stone-400 text-black border-stone-400"
-                            } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg mt-5`}
+                                ? "from-green-500 to-green-700 text-white border-green-600"
+                                : "from-green-300 to-green-400 text-black border-green-400"
+                            } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200 mt-5`}
                           >
                             Play Again
                           </button>
@@ -1430,7 +1430,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-400 bg-stone-300"
+                        : "border-stone-500 bg-stone-400"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     <div>
@@ -1453,7 +1453,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-400 bg-stone-300"
+                        : "border-stone-500 bg-stone-400"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState != null &&
@@ -1491,7 +1491,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-400 bg-stone-300"
+                        : "border-stone-500 bg-stone-400"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState?.filtersSelected.length > 0 ? (
@@ -1528,7 +1528,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-400 bg-stone-300"
+                        : "border-stone-500 bg-stone-400"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState?.filtersSelected.length > 0 ? (
@@ -1567,7 +1567,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-400 bg-stone-300"
+                        : "border-stone-500 bg-stone-400"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState?.filtersSelected.length > 0 ? (
@@ -1603,9 +1603,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter00.bg ===
-                          "from-stone-700 to-stone-800" ||
-                        "from-stone-200 to-stone-300"
+                        gameState.fighter00.bg === "from-stone-400 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter00");
@@ -1634,9 +1632,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter01.bg ===
-                          "from-stone-700 to-stone-800" ||
-                        "from-stone-200 to-stone-300"
+                        gameState.fighter01.bg === "from-stone-400 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter01");
@@ -1665,9 +1661,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter02.bg ===
-                          "from-stone-700 to-stone-800" ||
-                        "from-stone-200 to-stone-300"
+                        gameState.fighter02.bg === "from-stone-400 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter02");
@@ -1699,7 +1693,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-400 bg-stone-300"
+                        : "border-stone-500 bg-stone-400"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState?.filtersSelected.length > 0 ? (
@@ -1735,9 +1729,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter10.bg ===
-                          "from-stone-700 to-stone-800" ||
-                        "from-stone-200 to-stone-300"
+                        gameState.fighter10.bg === "from-stone-400 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter10");
@@ -1766,9 +1758,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter11.bg ===
-                          "from-stone-700 to-stone-800" ||
-                        "from-stone-200 to-stone-300"
+                        gameState.fighter11.bg === "from-stone-400 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter11");
@@ -1797,9 +1787,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter12.bg ===
-                          "from-stone-700 to-stone-800" ||
-                        "from-stone-200 to-stone-300"
+                        gameState.fighter12.bg === "from-stone-400 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter12");
@@ -1831,7 +1819,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-400 bg-stone-300"
+                        : "border-stone-500 bg-stone-400"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState?.filtersSelected.length > 0 ? (
@@ -1867,9 +1855,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter20.bg ===
-                          "from-stone-700 to-stone-800" ||
-                        "from-stone-200 to-stone-300"
+                        gameState.fighter20.bg === "from-stone-400 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter20");
@@ -1898,9 +1884,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter21.bg ===
-                          "from-stone-700 to-stone-800" ||
-                        "from-stone-200 to-stone-300"
+                        gameState.fighter21.bg === "from-stone-400 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter21");
@@ -1929,9 +1913,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter22.bg ===
-                          "from-stone-700 to-stone-800" ||
-                        "from-stone-200 to-stone-300"
+                        gameState.fighter22.bg === "from-stone-400 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter22");

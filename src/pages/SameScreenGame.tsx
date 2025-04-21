@@ -477,23 +477,27 @@ function SameScreenGame() {
   };
 
   const toggleFighterPick = () => {
+    if (selected) {
+    }
     let div = document.querySelector(".select-fighter");
     div?.classList.toggle("hidden");
   };
 
   useEffect(() => {
-    const winner = checkWinner();
-    if (winner) {
-      if (winner == "Red Wins!") {
-        setGameWinner("Red");
-      } else if (winner == "Blue Wins!") {
-        setGameWinner("Blue");
-      } else if (winner == "Draw!") {
-        setGameWinner("Draw");
-      } else {
-        setGameWinner(null);
+    if (gameStart == true) {
+      const winner = checkWinner();
+      if (winner) {
+        if (winner == "Red Wins!") {
+          setGameWinner("Red");
+        } else if (winner == "Blue Wins!") {
+          setGameWinner("Blue");
+        } else if (winner == "Draw!") {
+          setGameWinner("Draw");
+        } else {
+          setGameWinner(null);
+        }
+        return;
       }
-      return;
     }
   }, [turn]);
 
@@ -992,7 +996,7 @@ function SameScreenGame() {
                   onClick={() => {
                     if (
                       fighter00.bg === "from-stone-700 to-stone-800" ||
-                      "from-stone-200 to-stone-300"
+                      fighter00.bg === "from-stone-200 to-stone-300"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter00");
@@ -1022,7 +1026,7 @@ function SameScreenGame() {
                   onClick={() => {
                     if (
                       fighter01.bg === "from-stone-700 to-stone-800" ||
-                      "from-stone-200 to-stone-300"
+                      fighter01.bg === "from-stone-200 to-stone-300"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter01");
@@ -1052,7 +1056,7 @@ function SameScreenGame() {
                   onClick={() => {
                     if (
                       fighter02.bg === "from-stone-700 to-stone-800" ||
-                      "from-stone-200 to-stone-300"
+                      fighter02.bg === "from-stone-200 to-stone-300"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter02");
@@ -1117,7 +1121,7 @@ function SameScreenGame() {
                   onClick={() => {
                     if (
                       fighter10.bg === "from-stone-700 to-stone-800" ||
-                      "from-stone-200 to-stone-300"
+                      fighter10.bg === "from-stone-200 to-stone-300"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter10");
@@ -1147,7 +1151,7 @@ function SameScreenGame() {
                   onClick={() => {
                     if (
                       fighter11.bg === "from-stone-700 to-stone-800" ||
-                      "from-stone-200 to-stone-300"
+                      fighter11.bg === "from-stone-200 to-stone-300"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter11");
@@ -1177,7 +1181,7 @@ function SameScreenGame() {
                   onClick={() => {
                     if (
                       fighter12.bg === "from-stone-700 to-stone-800" ||
-                      "from-stone-200 to-stone-300"
+                      fighter12.bg === "from-stone-200 to-stone-300"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter12");
@@ -1242,7 +1246,7 @@ function SameScreenGame() {
                   onClick={() => {
                     if (
                       fighter20.bg === "from-stone-700 to-stone-800" ||
-                      "from-stone-200 to-stone-300"
+                      fighter20.bg === "from-stone-200 to-stone-300"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter20");
@@ -1272,7 +1276,7 @@ function SameScreenGame() {
                   onClick={() => {
                     if (
                       fighter21.bg === "from-stone-700 to-stone-800" ||
-                      "from-stone-200 to-stone-300"
+                      fighter21.bg === "from-stone-200 to-stone-300"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter21");
@@ -1302,7 +1306,7 @@ function SameScreenGame() {
                   onClick={() => {
                     if (
                       fighter22.bg === "from-stone-700 to-stone-800" ||
-                      "from-stone-200 to-stone-300"
+                      fighter22.bg === "from-stone-200 to-stone-300"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter22");
