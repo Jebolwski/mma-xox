@@ -29,7 +29,7 @@ const Room = () => {
   const playerName = searchParams.get("name");
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [gameState, setGameState] = useState<any>(null);
-  const [guest, setGuest] = useState<string | null>(null);
+  const [guest, setGuest] = useState<any>({ prev: null, now: null });
   const [turn, setTurn] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [filters, setFilters]: any = useState();
@@ -103,8 +103,6 @@ const Room = () => {
     console.log(guest);
   }, []);
 
-  console.log(guest);
-
   useEffect(() => {
     if (!roomId) return;
 
@@ -128,16 +126,6 @@ const Room = () => {
         id: doc.id,
         positions: Object.keys(doc.data().positions || {}).length,
       }))[0];
-
-      const prevGuest = gameState?.guest;
-
-      // if (role === "host") {
-      //   if (prevGuest == null && updatedData?.guest != null) {
-      //     toast.success(updatedData?.guest + " oyuna katıldı!");
-      //   } else if (prevGuest != null && updatedData?.guest == null) {
-      //     toast.success(prevGuest + " oyundan çıktı!");
-      //   }
-      // }
 
       //firestore'daki sadece idli olan fightersPositions'ı fighters_url'den alan fonksiyon
       const getFightersByPositions = (positionsFighters: any) => {
@@ -168,7 +156,7 @@ const Room = () => {
         );
       }
 
-      setGuest(updatedData?.guest);
+      setGuest({ prev: guest.now, now: updatedData?.guest });
       setGameState(updatedData);
     });
 
@@ -324,13 +312,6 @@ const Room = () => {
   }, [gameState]);
 
   useEffect(() => {
-    if (gameState != null) {
-      console.log(gameState.guest, "gamestateguest");
-      console.log(guest, "guest");
-    }
-  }, [guest]);
-
-  useEffect(() => {
     const interval = setInterval(() => {
       if (gameState?.gameStarted == true) {
         if (!roomId) return;
@@ -353,6 +334,15 @@ const Room = () => {
 
     return () => clearInterval(interval);
   }, [gameState]);
+
+  // useEffect(() => {
+  //   console.log(guest);
+  //   if (guest.prev == null && guest.now != null) {
+  //     toast.success(guest.now + " oyuna katıldı!");
+  //   } else if (guest.prev != null && guest.now == null) {
+  //     toast.info(guest.prev + " oyundan çıktı!");
+  //   }
+  // }, [guest]);
 
   useEffect(() => {
     const handleBeforeUnload = async () => {
