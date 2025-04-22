@@ -37,47 +37,47 @@ const Room = () => {
   const [fighter00, setFighter00]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-400 to-stone-500",
+    bg: "from-stone-300 to-stone-500",
   });
   const [fighter01, setFighter01]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-400 to-stone-500",
+    bg: "from-stone-300 to-stone-500",
   });
   const [fighter02, setFighter02]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-400 to-stone-500",
+    bg: "from-stone-300 to-stone-500",
   });
   const [fighter10, setFighter10]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-400 to-stone-500",
+    bg: "from-stone-300 to-stone-500",
   });
   const [fighter11, setFighter11]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-400 to-stone-500",
+    bg: "from-stone-300 to-stone-500",
   });
   const [fighter12, setFighter12]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-400 to-stone-500",
+    bg: "from-stone-300 to-stone-500",
   });
   const [fighter20, setFighter20]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-400 to-stone-500",
+    bg: "from-stone-300 to-stone-500",
   });
   const [fighter21, setFighter21]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-400 to-stone-500",
+    bg: "from-stone-300 to-stone-500",
   });
   const [fighter22, setFighter22]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
-    bg: "from-stone-400 to-stone-500",
+    bg: "from-stone-300 to-stone-500",
   });
   const [filtersSelected, setFiltersSelected]: any = useState([]);
   const [pushFirestore, setPushFirestore]: any = useState(false);
@@ -103,6 +103,8 @@ const Room = () => {
     console.log(guest);
   }, []);
 
+  console.log(guest);
+
   useEffect(() => {
     if (!roomId) return;
 
@@ -127,13 +129,15 @@ const Room = () => {
         positions: Object.keys(doc.data().positions || {}).length,
       }))[0];
 
-      //if (role === "host") {
-      //  if (guest == null && updatedData?.guest != null) {
-      //    toast.success(updatedData?.guest + " oyuna katıldı!");
-      //  } else if (guest != null && updatedData?.guest == null) {
-      //    toast.success(guest + " oyundan çıktı!");
-      //  }
-      //}
+      const prevGuest = gameState?.guest;
+
+      // if (role === "host") {
+      //   if (prevGuest == null && updatedData?.guest != null) {
+      //     toast.success(updatedData?.guest + " oyuna katıldı!");
+      //   } else if (prevGuest != null && updatedData?.guest == null) {
+      //     toast.success(prevGuest + " oyundan çıktı!");
+      //   }
+      // }
 
       //firestore'daki sadece idli olan fightersPositions'ı fighters_url'den alan fonksiyon
       const getFightersByPositions = (positionsFighters: any) => {
@@ -186,47 +190,47 @@ const Room = () => {
           fighter00: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg: "from-stone-400 to-stone-500",
+            bg: "from-stone-300 to-stone-500",
           },
           fighter01: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg: "from-stone-400 to-stone-500",
+            bg: "from-stone-300 to-stone-500",
           },
           fighter02: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg: "from-stone-400 to-stone-500",
+            bg: "from-stone-300 to-stone-500",
           },
           fighter10: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg: "from-stone-400 to-stone-500",
+            bg: "from-stone-300 to-stone-500",
           },
           fighter11: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg: "from-stone-400 to-stone-500",
+            bg: "from-stone-300 to-stone-500",
           },
           fighter12: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg: "from-stone-400 to-stone-500",
+            bg: "from-stone-300 to-stone-500",
           },
           fighter20: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg: "from-stone-400 to-stone-500",
+            bg: "from-stone-300 to-stone-500",
           },
           fighter21: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg: "from-stone-400 to-stone-500",
+            bg: "from-stone-300 to-stone-500",
           },
           fighter22: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
-            bg: "from-stone-400 to-stone-500",
+            bg: "from-stone-300 to-stone-500",
           },
         });
       };
@@ -320,6 +324,13 @@ const Room = () => {
   }, [gameState]);
 
   useEffect(() => {
+    if (gameState != null) {
+      console.log(gameState.guest, "gamestateguest");
+      console.log(guest, "guest");
+    }
+  }, [guest]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       if (gameState?.gameStarted == true) {
         if (!roomId) return;
@@ -393,7 +404,7 @@ const Room = () => {
     ) {
       setFighter00({
         ...fighter00,
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       });
     }
     if (
@@ -402,7 +413,7 @@ const Room = () => {
     ) {
       setFighter01({
         ...fighter01,
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       });
     }
     if (
@@ -411,7 +422,7 @@ const Room = () => {
     ) {
       setFighter02({
         ...fighter02,
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       });
     }
     if (
@@ -420,7 +431,7 @@ const Room = () => {
     ) {
       setFighter10({
         ...fighter10,
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       });
     }
     if (
@@ -429,7 +440,7 @@ const Room = () => {
     ) {
       setFighter11({
         ...fighter11,
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       });
     }
     if (
@@ -438,7 +449,7 @@ const Room = () => {
     ) {
       setFighter12({
         ...fighter12,
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       });
     }
     if (
@@ -447,7 +458,7 @@ const Room = () => {
     ) {
       setFighter20({
         ...fighter20,
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       });
     }
     if (
@@ -456,7 +467,7 @@ const Room = () => {
     ) {
       setFighter21({
         ...fighter21,
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       });
     }
     if (
@@ -465,7 +476,7 @@ const Room = () => {
     ) {
       setFighter22({
         ...fighter22,
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       });
     }
   }, [theme]);
@@ -733,47 +744,47 @@ const Room = () => {
       fighter00: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       },
       fighter01: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       },
       fighter02: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       },
       fighter10: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       },
       fighter11: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       },
       fighter12: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       },
       fighter20: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       },
       fighter21: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       },
       fighter22: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",
-        bg: "from-stone-400 to-stone-500",
+        bg: "from-stone-300 to-stone-500",
       },
     });
 
@@ -796,47 +807,47 @@ const Room = () => {
     setFighter00({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-400 to-stone-500",
+      bg: "from-stone-300 to-stone-500",
     });
     setFighter01({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-400 to-stone-500",
+      bg: "from-stone-300 to-stone-500",
     });
     setFighter02({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-400 to-stone-500",
+      bg: "from-stone-300 to-stone-500",
     });
     setFighter10({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-400 to-stone-500",
+      bg: "from-stone-300 to-stone-500",
     });
     setFighter11({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-400 to-stone-500",
+      bg: "from-stone-300 to-stone-500",
     });
     setFighter12({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-400 to-stone-500",
+      bg: "from-stone-300 to-stone-500",
     });
     setFighter20({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-400 to-stone-500",
+      bg: "from-stone-300 to-stone-500",
     });
     setFighter21({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-400 to-stone-500",
+      bg: "from-stone-300 to-stone-500",
     });
     setFighter22({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
-      bg: "from-stone-400 to-stone-500",
+      bg: "from-stone-300 to-stone-500",
     });
     setTurn("red");
   };
@@ -1008,8 +1019,8 @@ const Room = () => {
       const roomRef = doc(db, "rooms", roomId);
 
       if (
-        cellA !== "from-stone-400 to-stone-500" &&
-        cellA !== "from-stone-400 to-stone-500" && // Boş değilse
+        cellA !== "from-stone-300 to-stone-500" &&
+        cellA !== "from-stone-300 to-stone-500" && // Boş değilse
         cellA === cellB &&
         cellB === cellC
       ) {
@@ -1032,8 +1043,8 @@ const Room = () => {
       .flat()
       .every(
         (cell) =>
-          cell !== "from-stone-400 to-stone-500" &&
-          cell !== "from-stone-400 to-stone-500"
+          cell !== "from-stone-300 to-stone-500" &&
+          cell !== "from-stone-300 to-stone-500"
       );
 
     if (isBoardFull) {
@@ -1256,7 +1267,7 @@ const Room = () => {
                     className={`${
                       theme === "dark"
                         ? "bg-stone-500 border-stone-700 text-stone-200"
-                        : "bg-gradient-to-b from-stone-300 to-stone-400 border-stone-400 text-stone-900"
+                        : "bg-gradient-to-b from-stone-300 to-stone-500 border-stone-400 text-stone-900"
                     } cursor-pointer xl:text-base text-sm px-2 rounded-xl shadow-lg border`}
                   >
                     Skip
@@ -1286,7 +1297,7 @@ const Room = () => {
                     className={`${
                       theme === "dark"
                         ? "bg-stone-500 border-stone-700 text-stone-200"
-                        : "bg-gradient-to-b from-stone-300 to-stone-400 border-stone-400 text-stone-900"
+                        : "bg-gradient-to-b from-stone-300 to-stone-500 border-stone-400 text-stone-900"
                     } cursor-pointer xl:text-base text-sm px-2 rounded-xl shadow-lg border`}
                   >
                     Skip
@@ -1303,7 +1314,7 @@ const Room = () => {
                       className={`${
                         theme == "dark"
                           ? "from-stone-600 to-stone-700"
-                          : "from-stone-300 to-stone-400"
+                          : "from-stone-300 to-stone-500"
                       } z-30 bg-gradient-to-b border-2 border-stone-500 rounded-lg p-5 px-10`}
                     >
                       <div className="flex gap-3 mb-5 items-center">
@@ -1321,7 +1332,7 @@ const Room = () => {
                         <select
                           value={difficulty}
                           onChange={(e) => setDifficulty(e.target.value)}
-                          className="text-stone-900 shadow-lg mt-1 focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2"
+                          className="text-stone-900 shadow-lg mt-1 focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-500 font-semibold rounded-lg px-2"
                         >
                           <option value="EASY">EASY</option>
                           <option value="MEDIUM">MEDIUM</option>
@@ -1333,7 +1344,7 @@ const Room = () => {
                         <select
                           value={timerLength}
                           onChange={(e) => setTimerLength(e.target.value)}
-                          className="text-stone-900 shadow-lg mt-1 focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2"
+                          className="text-stone-900 shadow-lg mt-1 focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-500 font-semibold rounded-lg px-2"
                         >
                           <option value="-2">No time limit</option>
                           <option value="20">20 Seconds</option>
@@ -1430,7 +1441,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-500 bg-stone-400"
+                        : "border-stone-500 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     <div>
@@ -1453,7 +1464,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-500 bg-stone-400"
+                        : "border-stone-500 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState != null &&
@@ -1491,7 +1502,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-500 bg-stone-400"
+                        : "border-stone-500 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState?.filtersSelected.length > 0 ? (
@@ -1528,7 +1539,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-500 bg-stone-400"
+                        : "border-stone-500 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState?.filtersSelected.length > 0 ? (
@@ -1567,7 +1578,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-500 bg-stone-400"
+                        : "border-stone-500 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState?.filtersSelected.length > 0 ? (
@@ -1603,7 +1614,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter00.bg === "from-stone-400 to-stone-500"
+                        gameState.fighter00.bg === "from-stone-300 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter00");
@@ -1612,7 +1623,7 @@ const Room = () => {
                       }
                     }}
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
-                      theme === "dark" ? "border-stone-600" : "border-stone-400"
+                      theme === "dark" ? "border-stone-700" : "border-stone-500"
                     } rounded-lg shadow-md bg-gradient-to-b ${
                       gameState.fighter00.bg
                     } text-center flex items-center justify-center`}
@@ -1632,7 +1643,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter01.bg === "from-stone-400 to-stone-500"
+                        gameState.fighter01.bg === "from-stone-300 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter01");
@@ -1641,7 +1652,7 @@ const Room = () => {
                       }
                     }}
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
-                      theme === "dark" ? "border-stone-600" : "border-stone-400"
+                      theme === "dark" ? "border-stone-700" : "border-stone-500"
                     } rounded-lg shadow-md bg-gradient-to-b ${
                       gameState.fighter01.bg
                     } text-center flex items-center justify-center`}
@@ -1661,7 +1672,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter02.bg === "from-stone-400 to-stone-500"
+                        gameState.fighter02.bg === "from-stone-300 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter02");
@@ -1670,7 +1681,7 @@ const Room = () => {
                       }
                     }}
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
-                      theme === "dark" ? "border-stone-600" : "border-stone-400"
+                      theme === "dark" ? "border-stone-700" : "border-stone-500"
                     } rounded-lg shadow-md bg-gradient-to-b ${
                       gameState.fighter02.bg
                     } text-center flex items-center justify-center`}
@@ -1693,7 +1704,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-500 bg-stone-400"
+                        : "border-stone-500 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState?.filtersSelected.length > 0 ? (
@@ -1729,7 +1740,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter10.bg === "from-stone-400 to-stone-500"
+                        gameState.fighter10.bg === "from-stone-300 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter10");
@@ -1738,7 +1749,7 @@ const Room = () => {
                       }
                     }}
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
-                      theme === "dark" ? "border-stone-600" : "border-stone-400"
+                      theme === "dark" ? "border-stone-700" : "border-stone-500"
                     } rounded-lg shadow-md bg-gradient-to-b ${
                       gameState.fighter10.bg
                     } text-center flex items-center justify-center`}
@@ -1758,7 +1769,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter11.bg === "from-stone-400 to-stone-500"
+                        gameState.fighter11.bg === "from-stone-300 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter11");
@@ -1767,7 +1778,7 @@ const Room = () => {
                       }
                     }}
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
-                      theme === "dark" ? "border-stone-600" : "border-stone-400"
+                      theme === "dark" ? "border-stone-700" : "border-stone-500"
                     } rounded-lg shadow-md bg-gradient-to-b ${
                       gameState.fighter11.bg
                     } text-center flex items-center justify-center`}
@@ -1787,7 +1798,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter12.bg === "from-stone-400 to-stone-500"
+                        gameState.fighter12.bg === "from-stone-300 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter12");
@@ -1796,7 +1807,7 @@ const Room = () => {
                       }
                     }}
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
-                      theme === "dark" ? "border-stone-600" : "border-stone-400"
+                      theme === "dark" ? "border-stone-700" : "border-stone-500"
                     } rounded-lg shadow-md bg-gradient-to-b ${
                       gameState.fighter12.bg
                     } text-center flex items-center justify-center`}
@@ -1819,7 +1830,7 @@ const Room = () => {
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                       theme === "dark"
                         ? "border-stone-500 bg-stone-700"
-                        : "border-stone-500 bg-stone-400"
+                        : "border-stone-500 bg-stone-300"
                     } rounded-lg text-center flex items-center justify-center p-1`}
                   >
                     {gameState?.filtersSelected.length > 0 ? (
@@ -1855,7 +1866,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter20.bg === "from-stone-400 to-stone-500"
+                        gameState.fighter20.bg === "from-stone-300 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter20");
@@ -1864,7 +1875,7 @@ const Room = () => {
                       }
                     }}
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
-                      theme === "dark" ? "border-stone-600" : "border-stone-400"
+                      theme === "dark" ? "border-stone-700" : "border-stone-500"
                     } rounded-lg shadow-md bg-gradient-to-b ${
                       gameState.fighter20.bg
                     } text-center flex items-center justify-center`}
@@ -1884,7 +1895,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter21.bg === "from-stone-400 to-stone-500"
+                        gameState.fighter21.bg === "from-stone-300 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter21");
@@ -1893,7 +1904,7 @@ const Room = () => {
                       }
                     }}
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
-                      theme === "dark" ? "border-stone-600" : "border-stone-400"
+                      theme === "dark" ? "border-stone-700" : "border-stone-500"
                     } rounded-lg shadow-md bg-gradient-to-b ${
                       gameState.fighter21.bg
                     } text-center flex items-center justify-center`}
@@ -1913,7 +1924,7 @@ const Room = () => {
                   <div
                     onClick={() => {
                       if (
-                        gameState.fighter22.bg === "from-stone-400 to-stone-500"
+                        gameState.fighter22.bg === "from-stone-300 to-stone-500"
                       ) {
                         toggleFighterPick();
                         setSelected("fighter22");
@@ -1922,7 +1933,7 @@ const Room = () => {
                       }
                     }}
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
-                      theme === "dark" ? "border-stone-600" : "border-stone-400"
+                      theme === "dark" ? "border-stone-700" : "border-stone-500"
                     } rounded-lg shadow-md bg-gradient-to-b ${
                       gameState.fighter22.bg
                     } text-center flex items-center justify-center`}
@@ -1967,7 +1978,7 @@ const Room = () => {
                             className={`flex items-center border cursor-pointer gap-6 my-3 px-2 pt-2 bg-gradient-to-r ${
                               theme === "dark"
                                 ? "from-stone-800 to-stone-900 border-stone-900 text-white"
-                                : "from-stone-300 to-stone-400 border-stone-400 text-black"
+                                : "from-stone-300 to-stone-500 border-stone-400 text-black"
                             } shadow-lg rounded-lg`}
                           >
                             <img
