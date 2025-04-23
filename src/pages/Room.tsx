@@ -280,6 +280,7 @@ const Room = () => {
         await updateDoc(roomRef, {
           gameStarted: gameStarted,
           difficulty: difficulty,
+          timer: timerLength,
           timerLength: timerLength,
           filtersSelected: updatedDataFilters,
           positionsFighters: updatedDataPositionFighters,
@@ -879,6 +880,7 @@ const Room = () => {
     if (!positionsFighters[positionKey].includes(fighter)) {
       notify();
       await updateDoc(roomRef, {
+        timerLength: gameState.timer,
         turn: gameState.turn === "red" ? "blue" : "red",
       });
     } else {
@@ -912,6 +914,7 @@ const Room = () => {
               : "from-blue-800 to-blue-900",
           fighterId: fighter.Id,
         },
+        timerLength: gameState.timer,
         turn: gameState.turn === "red" ? "blue" : "red",
       });
     }
