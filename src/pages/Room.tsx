@@ -29,7 +29,7 @@ const Room = () => {
   const playerName = searchParams.get("name");
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [gameState, setGameState] = useState<any>(null);
-  const [guest, setGuest] = useState<any>({ prev: null, now: null });
+  const [guest, setGuest] = useState<any>(null);
   const [turn, setTurn] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [filters, setFilters]: any = useState();
@@ -100,7 +100,6 @@ const Room = () => {
 
   useEffect(() => {
     document.title = "MMA XOX - Online Game";
-    console.log(guest);
   }, []);
 
   useEffect(() => {
@@ -156,7 +155,7 @@ const Room = () => {
         );
       }
 
-      setGuest({ prev: guest.now, now: updatedData?.guest });
+      setGuest(updatedData?.guest.now);
       setGameState(updatedData);
     });
 
@@ -171,7 +170,7 @@ const Room = () => {
         const roomRef = doc(db, "rooms", roomId!);
         await setDoc(roomRef, {
           host: playerName,
-          guest: null,
+          guest: { prev: null, now: null },
           turn: "red",
           gameStarted: false,
           filtersSelected: [],
@@ -230,13 +229,14 @@ const Room = () => {
     if (
       role === "guest" &&
       gameState &&
-      gameState?.guest == null &&
+      gameState?.guest.now == null &&
       !hasExited
     ) {
       const joinGame = async () => {
+        console.log("messi girdi");
         const roomRef = doc(db, "rooms", roomId!);
         await updateDoc(roomRef, {
-          guest: playerName,
+          guest: { prev: gameState.guest.now || null, now: playerName },
         });
       };
 
@@ -287,6 +287,7 @@ const Room = () => {
           turn: "red",
           gameEnded: false,
           winner: null,
+          guest: { prev: gameState.guest.now || null, now: guest },
         });
       } catch (error) {
         console.error("Firestore güncelleme hatası:", error);
@@ -336,14 +337,15 @@ const Room = () => {
     return () => clearInterval(interval);
   }, [gameState]);
 
-  // useEffect(() => {
-  //   console.log(guest);
-  //   if (guest.prev == null && guest.now != null) {
-  //     toast.success(guest.now + " oyuna katıldı!");
-  //   } else if (guest.prev != null && guest.now == null) {
-  //     toast.info(guest.prev + " oyundan çıktı!");
-  //   }
-  // }, [guest]);
+  useEffect(() => {
+    if (gameState != null && role == "host") {
+      if (gameState.guest.prev == null && gameState.guest.now != null) {
+        toast.success(gameState.guest.now + " oyuna katıldı!");
+      } else if (gameState.guest.prev != null && gameState.guest.now == null) {
+        toast.info(gameState.guest.prev + " oyundan çıktı!");
+      }
+    }
+  }, [gameState]);
 
   useEffect(() => {
     const handleBeforeUnload = async () => {
@@ -367,7 +369,7 @@ const Room = () => {
       } else if (role === "guest") {
         try {
           await updateDoc(roomRef, {
-            guest: null,
+            guest: { prev: null, now: null },
             gameStarted: false,
           });
         } catch (error) {
@@ -857,6 +859,7 @@ const Room = () => {
       toast.error("Its your opponents turn!");
       return;
     }
+    console.log(1, "a");
 
     if (!roomId) return;
 
@@ -873,12 +876,14 @@ const Room = () => {
       fighter21: "position15",
       fighter22: "position25",
     };
+    console.log(2, "a");
 
     if (!fighterMap[selected]) return;
 
     const positionKey = fighterMap[selected];
     if (!positionsFighters[positionKey].includes(fighter)) {
       notify();
+      console.log(3, "a");
       await updateDoc(roomRef, {
         timerLength: gameState.timer,
         turn: gameState.turn === "red" ? "blue" : "red",
@@ -902,6 +907,7 @@ const Room = () => {
       };
 
       setterMap[selected]({ url: picture, text: name, bg: bgColor });
+      console.log(4, "a");
 
       await updateDoc(roomRef, {
         [selected]: {
@@ -914,10 +920,12 @@ const Room = () => {
               : "from-blue-800 to-blue-900",
           fighterId: fighter.Id,
         },
+        guest: { prev: gameState?.guest.now, now: guest },
         timerLength: gameState.timer,
         turn: gameState.turn === "red" ? "blue" : "red",
       });
     }
+    console.log(5, "a");
 
     setTurn(turn === "red" ? "blue" : "red");
     //setTimer(timerLength);
@@ -1086,7 +1094,7 @@ const Room = () => {
         // Guest çıkarsa sadece guest'i null yap
         setHasExited(true); // Guest'in çıkış yaptığını işaretle
         await updateDoc(roomRef, {
-          guest: null,
+          guest: { prev: gameState.guest.now || null, now: null },
           gameStarted: false,
         });
         console.log(`${playerName} (guest) oyundan çıktı.`);
@@ -1182,14 +1190,14 @@ const Room = () => {
             Room Code: {roomId}
           </div>
           {gameState.gameStarted == false &&
-          gameState.guest != null &&
+          gameState.guest.now != null &&
           role == "guest" ? (
             <div className="text-2xl text-center">
               Host is setting up the game...
             </div>
           ) : null}
 
-          {gameState.guest == null ? (
+          {gameState.guest.now == null ? (
             <p className="text-2xl text-center">Rakip bekleniyor...</p>
           ) : null}
           <div className="text-center">
@@ -1246,7 +1254,9 @@ const Room = () => {
                 >
                   <p>
                     Turn :{" "}
-                    {gameState.turn == "red" ? gameState.host : gameState.guest}
+                    {gameState.turn == "red"
+                      ? gameState.host
+                      : gameState.guest.now}
                   </p>
                   <div
                     onClick={() => {
@@ -1276,7 +1286,9 @@ const Room = () => {
                 >
                   <p>
                     Turn :{" "}
-                    {gameState.turn == "red" ? gameState.host : gameState.guest}
+                    {gameState.turn == "red"
+                      ? gameState.host
+                      : gameState.guest.now}
                   </p>
                   <div
                     onClick={() => {
@@ -1299,7 +1311,7 @@ const Room = () => {
               )}
             </div>
             {role === "host" &&
-              gameState.guest != null &&
+              gameState.guest.now != null &&
               gameState?.gameStarted == false && (
                 <div className="absolute w-full h-full top-0 left-0">
                   <div className="flex w-full h-full justify-center items-center bg-[#00000092]">
@@ -1347,14 +1359,14 @@ const Room = () => {
                       </div>
                       <button
                         onClick={() => {
-                          if (gameState.guest != null) {
+                          if (gameState.guest.now != null) {
                             startGame();
                           } else {
                             toast.info("Oyuna katılımcı bulunamadı!");
                           }
                         }}
                         className={`bg-green-500 mt-3 duration-200 text-white px-6 py-1 rounded-lg hover:bg-green-600 ${
-                          gameState.guest == null
+                          gameState.guest.now == null
                             ? "opacity-70"
                             : "opacity-100 cursor-pointer"
                         } ${theme == "dark" ? "bg-green-500" : "bg-green-300"}`}
@@ -1367,7 +1379,7 @@ const Room = () => {
               )}
           </div>
           <div className="flex justify-center items-center">
-            {gameState?.gameStarted && gameState.guest != null ? (
+            {gameState?.gameStarted && gameState.guest.now != null ? (
               <div
                 className={`${
                   theme === "dark"
@@ -1402,7 +1414,7 @@ const Room = () => {
                       ) : gameState.winner == "blue" ? (
                         <>
                           <p className="text-blue-500 font-semibold text-xl mt-4 text-center">
-                            {gameState.guest} wins!
+                            {gameState.guest.now} wins!
                           </p>
                         </>
                       ) : (
