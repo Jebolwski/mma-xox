@@ -8,6 +8,7 @@ interface AdBannerProps {
 
 const AdBanner = ({ adSlot, style, className }: AdBannerProps) => {
   const adRef = useRef<HTMLDivElement>(null);
+  const adClient = import.meta.env.VITE_AD_CLIENT;
 
   useEffect(() => {
     if (window) {
@@ -29,7 +30,7 @@ const AdBanner = ({ adSlot, style, className }: AdBannerProps) => {
       <ins
         className="adsbygoogle"
         style={style || { display: "block" }}
-        data-ad-client="ca-pub-XXXXXXXXXXXXXXX" // <-- kendi AdSense client ID'nizi girin
+        data-ad-client={adClient}
         data-ad-slot={adSlot}
         data-ad-format="auto"
         data-full-width-responsive="true"
