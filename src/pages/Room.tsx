@@ -20,6 +20,8 @@ import fighters_url from "../assets/data/fighters.json";
 import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ThemeContext } from "../context/ThemeContext";
+import { useAdContext } from "../context/AdContext";
+import AdBanner from "../components/AdBanner";
 
 const Room = () => {
   const { roomId } = useParams();
@@ -28,6 +30,7 @@ const Room = () => {
   const role = searchParams.get("role");
   const playerName = searchParams.get("name");
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const { shouldShowAd, recordAdView } = useAdContext();
   const [gameState, setGameState] = useState<any>(null);
   const [guest, setGuest] = useState<any>(null);
   const [turn, setTurn] = useState<string | null>(null);
@@ -1029,11 +1032,19 @@ const Room = () => {
           updateDoc(roomRef, {
             winner: "red",
           });
+          // Oyun sonu reklamı göster
+          if (shouldShowAd()) {
+            recordAdView();
+          }
           return "red";
         } else {
           updateDoc(roomRef, {
             winner: "blue",
           });
+          // Oyun sonu reklamı göster
+          if (shouldShowAd()) {
+            recordAdView();
+          }
           return "blue";
         }
       }
@@ -1054,6 +1065,10 @@ const Room = () => {
       updateDoc(roomRef, {
         winner: "draw",
       });
+      // Oyun sonu reklamı göster
+      if (shouldShowAd()) {
+        recordAdView();
+      }
       return "Draw!"; // Beraberlik durumu
     }
 
@@ -1424,6 +1439,17 @@ const Room = () => {
                           </p>
                         </>
                       )}
+                      {/* Oyun sonu reklamı */}
+                      {shouldShowAd() && (
+                        <div className="mt-4">
+                          <AdBanner
+                            adSlot="0987654321"
+                            className="w-full"
+                            style={{ height: "250px" }}
+                          />
+                        </div>
+                      )}
+
                       {role == "host" ? (
                         <div className="flex justify-center">
                           <button

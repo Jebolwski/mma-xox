@@ -1,50 +1,127 @@
-# React + TypeScript + Vite
+# MMA XOX - Online Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MMA temalı XOX (Tic-Tac-Toe) oyunu. Firebase ile gerçek zamanlı çok oyunculu oyun deneyimi.
 
-Currently, two official plugins are available:
+## 🎮 Özellikler
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Gerçek Zamanlı Oyun**: Firebase Firestore ile canlı oyun deneyimi
+- **MMA Teması**: Gerçek MMA dövüşçüleri ile oynayın
+- **Filtre Sistemi**: Zorluk seviyelerine göre dövüşçü filtreleme
+- **Zamanlayıcı**: Opsiyonel zaman sınırı
+- **Tema Desteği**: Açık/koyu tema seçenekleri
+- **Responsive Tasarım**: Mobil ve masaüstü uyumlu
 
-## Expanding the ESLint configuration
+## 💰 Gelir Modeli
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Bu proje aşağıdaki gelir kaynakları ile desteklenmektedir:
 
-- Configure the top-level `parserOptions` property like this:
+### 1. Google AdSense Reklamları
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **Ana Sayfa Banner**: Üst kısımda reklam banner'ı
+- **Oyun Sonu Reklamları**: Oyun bittiğinde gösterilen reklamlar
+- **Akıllı Reklam Yönetimi**: Kullanıcı deneyimini bozmayan reklam yerleşimi
+
+### 2. Premium Üyelik Sistemi
+
+- **Reklamsız Deneyim**: Premium üyeler için reklam yok
+- **Özel Temalar**: Premium kullanıcılara özel tema seçenekleri
+- **Gelişmiş İstatistikler**: Detaylı oyun istatistikleri
+- **Öncelikli Destek**: Premium kullanıcı desteği
+
+### 3. Reklam Ayarları
+
+- **Kullanıcı Kontrolü**: Reklamları açma/kapama seçeneği
+- **Sıklık Ayarı**: Reklam gösterim sıklığını ayarlama
+- **Şeffaf Yönetim**: Kullanıcılar reklam ayarlarını kontrol edebilir
+
+## 🚀 Kurulum
+
+1. **Bağımlılıkları yükleyin:**
+
+```bash
+npm install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. **Firebase yapılandırması:**
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- `src/firebase.ts` dosyasında Firebase yapılandırmanızı güncelleyin
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+3. **Google AdSense:**
+
+- `public/index.html` dosyasında `YOUR_PUBLISHER_ID` yerine gerçek AdSense Publisher ID'nizi ekleyin
+- `src/components/AdBanner.tsx` dosyasında `YOUR_PUBLISHER_ID` yerine gerçek ID'nizi ekleyin
+
+4. **Geliştirme sunucusunu başlatın:**
+
+```bash
+npm run dev
 ```
+
+## 📊 Gelir Optimizasyonu
+
+### Reklam Yerleşimi Stratejileri
+
+- **Ana Sayfa**: Giriş deneyimini bozmayan üst banner
+- **Oyun Sonu**: Doğal reklam yerleşimi ile kullanıcı deneyimini koruma
+- **Akıllı Zamanlama**: Minimum 1 dakika aralıklarla reklam gösterimi
+
+### Premium Dönüşüm Stratejileri
+
+- **Freemium Model**: Temel özellikler ücretsiz, premium özellikler ücretli
+- **Değer Önerisi**: Reklamsız deneyim + ek özellikler
+- **Esnek Fiyatlandırma**: Aylık $4.99 premium üyelik
+
+## 🔧 Teknik Detaylar
+
+### Reklam Entegrasyonu
+
+- **AdContext**: Merkezi reklam yönetimi
+- **AdBanner**: Yeniden kullanılabilir reklam bileşeni
+- **Local Storage**: Kullanıcı tercihlerini saklama
+
+### Premium Sistem
+
+- **PremiumUpgrade**: Premium üyelik bileşeni
+- **AdSettings**: Reklam ayarları yönetimi
+- **Kullanıcı Tercihleri**: Local storage ile ayar saklama
+
+## 📈 Gelir Tahminleri
+
+### AdSense Gelirleri
+
+- **Sayfa Görüntüleme**: ~$1-3 RPM (1000 görüntüleme başına)
+- **Tıklama Oranı**: ~%1-2 CTR
+- **Aylık Tahmin**: 10,000 görüntüleme = $10-30
+
+### Premium Gelirleri
+
+- **Dönüşüm Oranı**: ~%2-5 kullanıcı premium üye olur
+- **Aylık Tahmin**: 1000 kullanıcı = 20-50 premium üye = $100-250
+
+## 🎯 Gelecek Planları
+
+- [ ] **Stripe Entegrasyonu**: Güvenli ödeme sistemi
+- [ ] **Analytics**: Detaylı kullanıcı analizi
+- [ ] **A/B Testing**: Reklam yerleşimi optimizasyonu
+- [ ] **Push Notifications**: Kullanıcı etkileşimi artırma
+- [ ] **Sosyal Medya**: Viral paylaşım özellikleri
+
+## 📝 Lisans
+
+Bu proje MIT lisansı altında lisanslanmıştır.
+
+## 🤝 Katkıda Bulunma
+
+1. Fork yapın
+2. Feature branch oluşturun (`git checkout -b feature/AmazingFeature`)
+3. Commit yapın (`git commit -m 'Add some AmazingFeature'`)
+4. Push yapın (`git push origin feature/AmazingFeature`)
+5. Pull Request açın
+
+## 📞 İletişim
+
+Proje hakkında sorularınız için: [your-email@example.com]
+
+---
+
+**Not**: Bu proje eğitim amaçlıdır. Gerçek gelir elde etmek için Google AdSense onayı ve premium ödeme sistemi entegrasyonu gereklidir.

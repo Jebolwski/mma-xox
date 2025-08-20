@@ -4,3 +4,111 @@
 :root {
   font-family: "Lato", sans-serif;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reklam bileşenleri için özel stiller */
+.ad-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  min-height: 90px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+}
+
+.dark .ad-banner {
+  background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+  border-color: #4b5563;
+}
+
+/* Reklam yükleme animasyonu */
+.ad-banner::before {
+  content: "Reklam yükleniyor...";
+  position: absolute;
+  color: #6b7280;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.dark .ad-banner::before {
+  color: #9ca3af;
+}
+
+/* Reklam yüklendiğinde placeholder'ı gizle */
+.ad-banner ins {
+  z-index: 1;
+  position: relative;
+}
+
+/* Premium badge stili */
+.premium-badge {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #92400e;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Reklam ayarları toggle butonu */
+.ad-toggle {
+  transition: all 0.3s ease;
+}
+
+.ad-toggle:checked {
+  background-color: #10b981;
+  border-color: #10b981;
+}
+
+.ad-toggle:checked::after {
+  transform: translateX(1.25rem);
+}
+
+/* Premium upgrade kartı hover efekti */
+.premium-card {
+  transition: all 0.3s ease;
+}
+
+.premium-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive reklam boyutları */
+@media (max-width: 768px) {
+  .ad-banner {
+    min-height: 60px;
+    margin: 5px 0;
+  }
+
+  .ad-banner::before {
+    font-size: 12px;
+  }
+}
+
+/* Reklam yükleme durumu için loading animasyonu */
+.ad-loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

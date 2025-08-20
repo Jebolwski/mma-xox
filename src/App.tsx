@@ -4,31 +4,34 @@ import "react-toastify/dist/ReactToastify.css";
 import Room from "./pages/Room";
 import Menu from "./pages/Menu";
 import SameScreenGame from "./pages/SameScreenGame";
-import { ThemeProvider } from "./context/ThemeContext"; // doğru path'e göre güncelle
+import { ThemeProvider } from "./context/ThemeContext";
+import { AdProvider } from "./context/AdContext";
 
 function App() {
   return (
     <ThemeProvider>
-      <Router>
-        <ToastContainer
-          position="bottom-right"
-          theme="dark"
-        />
-        <Routes>
-          <Route
-            path="/"
-            element={<Menu />}
+      <AdProvider>
+        <Router>
+          <ToastContainer
+            position="bottom-right"
+            theme="dark"
           />
-          <Route
-            path="/room/:roomId"
-            element={<Room />}
-          />
-          <Route
-            path="/same-screen"
-            element={<SameScreenGame />}
-          />
-        </Routes>
-      </Router>
+          <Routes>
+            <Route
+              path="/"
+              element={<Menu />}
+            />
+            <Route
+              path="/room/:roomId"
+              element={<Room />}
+            />
+            <Route
+              path="/same-screen"
+              element={<SameScreenGame />}
+            />
+          </Routes>
+        </Router>
+      </AdProvider>
     </ThemeProvider>
   );
 }
