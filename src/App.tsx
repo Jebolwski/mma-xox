@@ -6,6 +6,7 @@ import Menu from "./pages/Menu";
 import SameScreenGame from "./pages/SameScreenGame";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AdProvider } from "./context/AdContext";
+import Home from "./pages/Home";
 
 function App() {
   return (
@@ -19,6 +20,10 @@ function App() {
           <Routes>
             <Route
               path="/"
+              element={<Home />}
+            />
+            <Route
+              path="/menu"
               element={<Menu />}
             />
             <Route

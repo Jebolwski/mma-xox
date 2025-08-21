@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
+
 const Menu = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -111,6 +112,7 @@ const Menu = () => {
             </div>
           )}
         </div>
+
         <div className="flex items-center justify-center mb-6">
           <img
             src="https://cdn-icons-png.freepik.com/512/921/921676.png"
