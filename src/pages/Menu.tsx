@@ -4,6 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
+import { Link } from "react-router-dom";
+import return_img from "../assets/return.png";
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -112,7 +114,26 @@ const Menu = () => {
             </div>
           )}
         </div>
-
+        <div className="absolute z-30 top-3 right-3">
+          <div
+            className={`p-1 rounded-lg border border-stone-800 duration-300 cursor-pointer shadow-xl ${
+              theme === "dark"
+                ? "bg-stone-700 text-stone-200 hover:bg-stone-600"
+                : "bg-stone-200 text-stone-800 hover:bg-stone-300"
+            }`}
+          >
+            <Link
+              to={"/"}
+              className="flex gap-2"
+            >
+              <img
+                src={return_img}
+                className="w-6"
+              />
+              <p className="font-semibold">Back to home</p>
+            </Link>
+          </div>
+        </div>
         <div className="flex items-center justify-center mb-6">
           <img
             src="https://cdn-icons-png.freepik.com/512/921/921676.png"
@@ -128,26 +149,26 @@ const Menu = () => {
               onClick={handleLocalGame}
               className="w-full bg-red-500 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-red-600 duration-200"
             >
-              Tek Ekranda Oyna
+              Play on Same Screen
             </button>
             <button
               onClick={() => setShowCreateFields(true)}
               className="w-full bg-green-500 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-green-600 duration-200"
             >
-              Oda Oluştur
+              Create Room
             </button>
             <button
               onClick={() => setShowJoinFields(true)}
               className="w-full bg-blue-500 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-blue-600 duration-200"
             >
-              Odaya Katıl
+              Join Room
             </button>
           </div>
         ) : showCreateFields ? (
           <div className="space-y-4">
             <input
               type="text"
-              placeholder="İsminiz"
+              placeholder="Your name"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
               className={`${
@@ -165,13 +186,13 @@ const Menu = () => {
                     : "bg-stone-500 text-white"
                 } w-1/2 cursor-pointer py-2 rounded-lg font-semibold hover:bg-stone-600 transition`}
               >
-                Geri
+                Back
               </button>
               <button
                 onClick={handleCreateRoom}
                 className="w-1/2 bg-green-500 cursor-pointer text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition"
               >
-                Oda Oluştur
+                Create Room
               </button>
             </div>
           </div>
@@ -179,7 +200,7 @@ const Menu = () => {
           <div className="space-y-4">
             <input
               type="text"
-              placeholder="İsminiz"
+              placeholder="Your name"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
               className={`${
@@ -190,7 +211,7 @@ const Menu = () => {
             />
             <input
               type="text"
-              placeholder="Oda Kodu"
+              placeholder="Room code"
               value={roomCode}
               onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
               className={`${
@@ -208,13 +229,13 @@ const Menu = () => {
                     : "bg-stone-500 text-white"
                 } w-1/2 cursor-pointer py-2 rounded-lg font-semibold hover:bg-stone-600 transition`}
               >
-                Geri
+                Back
               </button>
               <button
                 onClick={handleJoinRoom}
                 className="w-1/2 bg-blue-500 cursor-pointer text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition"
               >
-                Odaya Katıl
+                Join Room
               </button>
             </div>
           </div>

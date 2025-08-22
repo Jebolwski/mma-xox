@@ -681,7 +681,7 @@ function SameScreenGame() {
             }`}
           >
             <Link
-              to={"/"}
+              to={"/menu"}
               className="flex gap-2"
             >
               <img

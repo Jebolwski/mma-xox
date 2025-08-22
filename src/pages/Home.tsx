@@ -14,7 +14,7 @@ const Home = () => {
           : "from-stone-200 to-stone-400"
       } relative`}
     >
-      {/* Tema değiştirme butonu */}
+      {/* Theme switch button */}
       <div className="absolute z-30 text-red-500 top-3 left-3">
         <div
           onClick={toggleTheme}
@@ -23,7 +23,7 @@ const Home = () => {
               ? "bg-stone-700 border-stone-800"
               : "bg-stone-300 border-stone-400"
           }`}
-          title="Tema değiştir"
+          title="Switch theme"
         >
           <img
             src={
@@ -32,7 +32,7 @@ const Home = () => {
                 : "https://clipart-library.com/img/1669853.png"
             }
             className="w-8"
-            alt={theme === "dark" ? "Açık Tema" : "Koyu Tema"}
+            alt={theme === "dark" ? "Light Theme" : "Dark Theme"}
           />
         </div>
       </div>
@@ -46,6 +46,7 @@ const Home = () => {
           alt="MMA XOX Logo"
           className="w-20 h-20 mb-4"
         />
+
         <h1
           className={`text-4xl font-bold mb-2 ${
             theme === "dark" ? "text-red-400" : "text-red-600"
@@ -58,27 +59,27 @@ const Home = () => {
             theme === "dark" ? "text-stone-200" : "text-stone-700"
           }`}
         >
-          MMA XOX, klasik XOX (Tic Tac Toe) oyununu dövüşçülerle ve arenayla
-          birleştirir!
+          MMA XOX combines the classic Tic Tac Toe game with fighters and an
+          arena!
           <br />
           <br />
-          Arkadaşlarınla veya tek ekranda oynayabilir, odalar kurup rakiplerini
-          davet edebilirsin.
+          Play with your friends or on a single screen, create rooms and invite
+          your rivals.
           <br />
           <br />
           <span className="font-semibold text-red-500">
-            Dövüşçünü seç, stratejini belirle ve arenada galip gel!
+            Choose your fighter, plan your strategy, and win in the arena!
           </span>
         </p>
         <button
           onClick={() => navigate("/menu")}
-          className={`px-8 py-3 rounded-lg text-lg font-semibold shadow-md transition ${
+          className={`px-8 py-3 rounded-lg cursor-pointer text-lg font-semibold shadow-md transition ${
             theme === "dark"
               ? "bg-red-700 hover:bg-red-800 text-white"
               : "bg-red-600 hover:bg-red-700 text-white"
           }`}
         >
-          Oyna
+          Play
         </button>
       </div>
     </div>
