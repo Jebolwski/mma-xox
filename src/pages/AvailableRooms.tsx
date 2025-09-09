@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   collection,
   query,
@@ -40,6 +40,10 @@ const AvailableRooms = () => {
   const handleJoinRoom = async () => {
     if (!guestName) {
       toast.error("Please enter your name!");
+      return;
+    }
+    if (!selectedRoom || typeof selectedRoom !== "string") {
+      toast.error("No room selected!");
       return;
     }
     try {
