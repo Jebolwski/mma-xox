@@ -11,6 +11,7 @@ import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import return_img from "../assets/return.png";
 
 const AvailableRooms = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -57,6 +58,10 @@ const AvailableRooms = () => {
     }
   };
 
+  const handleExit = async () => {
+    navigate("/menu");
+  };
+
   return (
     <div
       className={`w-[100vw] h-[100vh] ${
@@ -68,6 +73,26 @@ const AvailableRooms = () => {
         theme="dark"
       />
       <div>
+        <div
+          className="absolute z-30 top-3 right-3"
+          onClick={handleExit}
+        >
+          <div
+            className={`p-1 rounded-lg border border-stone-800 duration-300 cursor-pointer shadow-xl ${
+              theme === "dark"
+                ? "bg-stone-700 text-stone-200 hover:bg-stone-600"
+                : "bg-stone-200 text-stone-800 hover:bg-stone-300"
+            }`}
+          >
+            <div className="flex gap-2">
+              <img
+                src={return_img}
+                className="w-6"
+              />
+              <p className="font-semibold">Back to menu</p>
+            </div>
+          </div>
+        </div>
         <div className="absolute z-30 text-red-500 top-3 left-3">
           {theme === "dark" ? (
             <div
@@ -93,10 +118,12 @@ const AvailableRooms = () => {
         </div>
         <div className="flex w-full h-full justify-center">
           <div
-            className={`mt-16 p-4 rounded-lg ${
-              theme === "dark" ? "bg-stone-700" : "bg-stone-300"
+            className={`mt-16 p-4 rounded-lg border-2 shadow-md ${
+              theme === "dark"
+                ? "bg-stone-600 border-stone-700"
+                : "bg-stone-400/50 border-stone-300"
             }`}
-            style={{ maxHeight: "85vh", overflowY: "auto" }} // scroll ekledik
+            style={{ maxHeight: "85vh", overflowY: "auto" }}
           >
             <div
               className={`flex items-center justify-center mb-6 ${
@@ -127,29 +154,46 @@ const AvailableRooms = () => {
                     key={room.id}
                     className={`p-4 rounded-lg shadow-md border cursor-pointer ${
                       theme === "dark"
-                        ? "bg-stone-600 border-stone-700 text-white"
-                        : "bg-stone-400 border-stone-500 text-black"
+                        ? "bg-stone-500 border-stone-700 text-white"
+                        : "bg-stone-200 border-stone-400 text-black"
                     }`}
                     onClick={() => handleRoomClick(room.id)}
                   >
-                    <div>
-                      <span className="font-semibold">Room Code:</span>{" "}
+                    <div className="flex gap-2 items-center">
+                      <div className="font-semibold flex gap-1 items-center">
+                        <img
+                          src="https://www.svgrepo.com/show/309807/number-symbol.svg"
+                          className="h-4"
+                        />
+                        Room:
+                      </div>
                       {room.id}
                     </div>
-                    <div>
-                      <span className="font-semibold">Host:</span> {room.host}
+                    <div className="flex gap-2 items-center mt-1">
+                      <div className="font-semibold flex gap-1 items-center">
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/512/9131/9131478.png"
+                          className="h-4"
+                        />
+                        Host:
+                      </div>
+                      {room.host}
                     </div>
                   </li>
                 ))}
               </ul>
             )}
-            {/* Modal veya input alanı */}
-            {selectedRoom && (
+          </div>
+          {/* Modal/input alanı scroll dışında */}
+          {selectedRoom && (
+            <div
+              className={`fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 z-50`}
+            >
               <div
-                className={`mt-6 flex flex-col items-center p-2 rounded-md shadow-md border ${
+                className={`p-6 rounded-lg shadow-lg border ${
                   theme === "dark"
-                    ? "bg-stone-600 border-stone-700"
-                    : "bg-stone-400 border-stone-500"
+                    ? "bg-stone-500 border-stone-700"
+                    : "bg-stone-200 border-stone-500"
                 }`}
               >
                 <div
@@ -167,8 +211,8 @@ const AvailableRooms = () => {
                   onChange={(e) => setGuestName(e.target.value)}
                   className={`mb-2 px-4 py-2 rounded-lg border w-full outline-none ${
                     theme === "dark"
-                      ? "bg-stone-500 border-stone-500 text-white"
-                      : "bg-stone-300 border-stone-400 text-black"
+                      ? "bg-stone-600 border-stone-500 text-white"
+                      : "bg-stone-200 border-stone-500 text-black"
                   }`}
                 />
                 <div className="flex w-full justify-between">
@@ -177,7 +221,7 @@ const AvailableRooms = () => {
                     className={`px-4 py-2 rounded-lg font-semibold duration-200 cursor-pointer ${
                       theme === "dark"
                         ? "bg-stone-700 hover:bg-stone-800 text-white"
-                        : "bg-stone-500 hover:bg-stone-300 text-black"
+                        : "bg-stone-400 hover:bg-stone-300 text-black"
                     }`}
                   >
                     Cancel
@@ -194,8 +238,8 @@ const AvailableRooms = () => {
                   </button>
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

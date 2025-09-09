@@ -159,7 +159,7 @@ const Menu = () => {
               onClick={handleAvailableRooms}
               className="w-full bg-purple-500 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-purple-600 duration-200"
             >
-              See avaliable rooms
+              See Avaliable Rooms
             </button>
             <button
               onClick={() => setShowCreateFields(true)}
