@@ -20,6 +20,10 @@ const Menu = () => {
     navigate("/same-screen");
   };
 
+  const handleAvailableRooms = () => {
+    navigate("/available-rooms");
+  };
+
   const handleCreateRoom = async () => {
     if (!playerName) {
       toast.error("Lütfen isminizi girin!");
@@ -150,6 +154,12 @@ const Menu = () => {
               className="w-full bg-red-500 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-red-600 duration-200"
             >
               Play on Same Screen
+            </button>
+            <button
+              onClick={handleAvailableRooms}
+              className="w-full bg-purple-500 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-purple-600 duration-200"
+            >
+              See avaliable rooms
             </button>
             <button
               onClick={() => setShowCreateFields(true)}

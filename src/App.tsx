@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Room from "./pages/Room";
 import Menu from "./pages/Menu";
+import AvailableRooms from "./pages/AvailableRooms";
 import SameScreenGame from "./pages/SameScreenGame";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AdProvider } from "./context/AdContext";
@@ -33,6 +34,10 @@ function App() {
             <Route
               path="/same-screen"
               element={<SameScreenGame />}
+            />
+            <Route
+              path="/available-rooms"
+              element={<AvailableRooms />}
             />
           </Routes>
         </Router>
