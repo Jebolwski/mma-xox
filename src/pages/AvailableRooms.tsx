@@ -24,7 +24,7 @@ const AvailableRooms = () => {
       const roomsRef = collection(db, "rooms");
       const q = query(roomsRef, where("guest.now", "==", null));
       const querySnapshot = await getDocs(q);
-      const roomList = [];
+      const roomList: any = [];
       querySnapshot.forEach((doc) => {
         roomList.push({ id: doc.id, ...doc.data() });
       });
@@ -33,7 +33,7 @@ const AvailableRooms = () => {
     fetchRooms();
   }, []);
 
-  const handleRoomClick = (roomId) => {
+  const handleRoomClick = (roomId: any) => {
     setSelectedRoom(roomId);
   };
 
@@ -118,7 +118,7 @@ const AvailableRooms = () => {
               </p>
             ) : (
               <ul className="space-y-4">
-                {rooms.map((room) => (
+                {rooms.map((room: any) => (
                   <li
                     key={room.id}
                     className={`p-4 rounded-lg shadow-md border cursor-pointer ${
