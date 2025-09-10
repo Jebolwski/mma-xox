@@ -1,9 +1,21 @@
 import fighters from "../assets/data/fighters.json";
+import usaFlag from "../assets/usa_flag.png";
+import nigeriaFlag from "../assets/nigeria_flag.jpg";
+import russiaFlag from "../assets/russia_flag.jpg";
+import polandFlag from "../assets/poland_flag.jpg";
+import australiaFlag from "../assets/austraila_flag.png";
+import brazilFlag from "../assets/brazil_flag.png";
+import orthodoxStance from "../assets/orthodox.png";
+import southpawStance from "../assets/southpaw.png";
+import switchStance from "../assets/southpaw.png";
+import undefeated from "../assets/undefeated.png";
+import title from "../assets/title.png";
+
 import { Fighter, Filter, FilterDifficulty } from '../interfaces/Fighter';
 const Filters = (): FilterDifficulty => {
     let filters_easy: Filter[] = [{
         "id": 1,
-        "filter_image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Brazilian_flag_icon_square.svg/640px-Brazilian_flag_icon_square.svg.png",
+        "filter_image": brazilFlag,
         "filter_text": "Brazilian",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -11,7 +23,7 @@ const Filters = (): FilterDifficulty => {
         })
     }, {
         "id": 2,
-        "filter_image": "https://clipart-library.com/images/6cyoELkei.png",
+        "filter_image": undefeated,
         "filter_text": "Undefeated",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -19,7 +31,7 @@ const Filters = (): FilterDifficulty => {
         })
     }, {
         "id": 3,
-        "filter_image": "https://pngimg.com/d/ufc_PNG66.png",
+        "filter_image": title,
         "filter_text": "Been in Title Fight",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -107,7 +119,7 @@ const Filters = (): FilterDifficulty => {
         })
     }, {
         "id": 12,
-        "filter_image": "https://vectorflags.s3.amazonaws.com/flags/us-square-01.png",
+        "filter_image": usaFlag,
         "filter_text": "USA",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -134,7 +146,7 @@ const Filters = (): FilterDifficulty => {
     }];
     let filters_medium: Filter[] = [{
         "id": 1,
-        "filter_image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Brazilian_flag_icon_square.svg/640px-Brazilian_flag_icon_square.svg.png",
+        "filter_image": brazilFlag,
         "filter_text": "Brazilian",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -142,7 +154,7 @@ const Filters = (): FilterDifficulty => {
         })
     }, {
         "id": 2,
-        "filter_image": "https://clipart-library.com/images/6cyoELkei.png",
+        "filter_image": undefeated,
         "filter_text": "Undefeated",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -150,7 +162,7 @@ const Filters = (): FilterDifficulty => {
         })
     }, {
         "id": 3,
-        "filter_image": "https://pngimg.com/d/ufc_PNG66.png",
+        "filter_image": title,
         "filter_text": "Been in Title Fight",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -238,7 +250,7 @@ const Filters = (): FilterDifficulty => {
         })
     }, {
         "id": 12,
-        "filter_image": "https://vectorflags.s3.amazonaws.com/flags/us-square-01.png",
+        "filter_image": usaFlag,
         "filter_text": "USA",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -246,7 +258,7 @@ const Filters = (): FilterDifficulty => {
         })
     }, {
         "id": 13,
-        "filter_image": "https://static.vecteezy.com/system/resources/previews/004/712/176/non_2x/poland-square-national-flag-vector.jpg",
+        "filter_image": polandFlag,
         "filter_text": "Poland",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -254,7 +266,7 @@ const Filters = (): FilterDifficulty => {
         })
     }, {
         "id": 14,
-        "filter_image": "https://static.vecteezy.com/system/resources/previews/004/712/747/non_2x/nigeria-square-national-flag-vector.jpg",
+        "filter_image": nigeriaFlag,
         "filter_text": "Nigeria",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -262,7 +274,7 @@ const Filters = (): FilterDifficulty => {
         })
     }, {
         "id": 15,
-        "filter_image": "https://vectorflags.s3.amazonaws.com/flags/au-square-01.png",
+        "filter_image": australiaFlag,
         "filter_text": "Australia",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -271,7 +283,7 @@ const Filters = (): FilterDifficulty => {
     },
     {
         "id": 16,
-        "filter_image": "https://static.vecteezy.com/system/resources/previews/004/711/931/non_2x/russia-square-national-flag-vector.jpg",
+        "filter_image": russiaFlag,
         "filter_text": "Russia",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -341,7 +353,7 @@ const Filters = (): FilterDifficulty => {
     let filters_hard: Filter[] = [
         {
             "id": 1,
-            "filter_image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Brazilian_flag_icon_square.svg/640px-Brazilian_flag_icon_square.svg.png",
+            "filter_image": brazilFlag,
             "filter_text": "Brazilian",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -349,7 +361,7 @@ const Filters = (): FilterDifficulty => {
             })
         }, {
             "id": 2,
-            "filter_image": "https://clipart-library.com/images/6cyoELkei.png",
+            "filter_image": undefeated,
             "filter_text": "Undefeated",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -357,7 +369,7 @@ const Filters = (): FilterDifficulty => {
             })
         }, {
             "id": 3,
-            "filter_image": "https://pngimg.com/d/ufc_PNG66.png",
+            "filter_image": title,
             "filter_text": "Been in Title Fight",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -445,7 +457,7 @@ const Filters = (): FilterDifficulty => {
             })
         }, {
             "id": 12,
-            "filter_image": "https://vectorflags.s3.amazonaws.com/flags/us-square-01.png",
+            "filter_image": usaFlag,
             "filter_text": "USA",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -453,7 +465,7 @@ const Filters = (): FilterDifficulty => {
             })
         }, {
             "id": 13,
-            "filter_image": "https://static.vecteezy.com/system/resources/previews/004/712/176/non_2x/poland-square-national-flag-vector.jpg",
+            "filter_image": polandFlag,
             "filter_text": "Poland",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -461,7 +473,7 @@ const Filters = (): FilterDifficulty => {
             })
         }, {
             "id": 14,
-            "filter_image": "https://static.vecteezy.com/system/resources/previews/004/712/747/non_2x/nigeria-square-national-flag-vector.jpg",
+            "filter_image": nigeriaFlag,
             "filter_text": "Nigeria",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -469,7 +481,7 @@ const Filters = (): FilterDifficulty => {
             })
         }, {
             "id": 15,
-            "filter_image": "https://vectorflags.s3.amazonaws.com/flags/au-square-01.png",
+            "filter_image": australiaFlag,
             "filter_text": "Australia",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -478,7 +490,7 @@ const Filters = (): FilterDifficulty => {
         },
         {
             "id": 16,
-            "filter_image": "https://static.vecteezy.com/system/resources/previews/004/711/931/non_2x/russia-square-national-flag-vector.jpg",
+            "filter_image": russiaFlag,
             "filter_text": "Russia",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -495,7 +507,7 @@ const Filters = (): FilterDifficulty => {
         },
         {
             "id": 18,
-            "filter_image": "https://clipart-library.com/2024/gambar-karate/gambar-karate-12.png",
+            "filter_image": orthodoxStance,
             "filter_text": "Orthodox",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -503,7 +515,7 @@ const Filters = (): FilterDifficulty => {
             })
         }, {
             "id": 19,
-            "filter_image": "https://clipart-library.com/2024/gambar-karate/gambar-karate-12.png",
+            "filter_image": switchStance,
             "filter_text": "Switch",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
@@ -511,7 +523,7 @@ const Filters = (): FilterDifficulty => {
             })
         }, {
             "id": 20,
-            "filter_image": "https://clipart-library.com/2024/gambar-karate/gambar-karate-12.png",
+            "filter_image": southpawStance,
             "filter_text": "Southpaw",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {

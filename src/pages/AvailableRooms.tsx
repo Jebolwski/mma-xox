@@ -18,6 +18,7 @@ const AvailableRooms = () => {
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [guestName, setGuestName] = useState("");
+  const [cahRefresh, setCahRefresh] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,6 +61,28 @@ const AvailableRooms = () => {
 
   const handleExit = async () => {
     navigate("/menu");
+  };
+
+  const handleRefresh = async () => {
+    if (!cahRefresh) {
+      toast.error("Please wait 5 seconds before refreshing again!");
+      return;
+    }
+    setCahRefresh(false);
+    console.log("cahRefresh:", false);
+    setTimeout(() => {
+      setCahRefresh(true);
+      console.log("cahRefresh:", true);
+    }, 5000);
+
+    const roomsRef = collection(db, "rooms");
+    const q = query(roomsRef, where("guest.now", "==", null));
+    const querySnapshot = await getDocs(q);
+    const roomList: any = [];
+    querySnapshot.forEach((doc) => {
+      roomList.push({ id: doc.id, ...doc.data() });
+    });
+    setRooms(roomList);
   };
 
   return (
@@ -118,7 +141,7 @@ const AvailableRooms = () => {
         </div>
         <div className="flex w-full h-full justify-center">
           <div
-            className={`mt-16 p-4 rounded-lg border-2 shadow-md ${
+            className={`mt-16 p-4 rounded-lg border-2 shadow-md relative ${
               theme === "dark"
                 ? "bg-stone-600 border-stone-700"
                 : "bg-stone-400/50 border-stone-300"
@@ -126,16 +149,40 @@ const AvailableRooms = () => {
             style={{ maxHeight: "85vh", overflowY: "auto" }}
           >
             <div
-              className={`flex items-center justify-center mb-6 ${
+              className={`flex items-center justify-between mb-2 ${
                 theme === "dark" ? "text-white" : "text-black"
               }`}
             >
-              <img
-                src="https://cdn-icons-png.freepik.com/512/921/921676.png"
-                alt="logo"
-                className="w-12 h-12 mr-3"
-              />
-              <h1 className="text-3xl font-bold">MMA XOX</h1>
+              <div className="flex items-center gap-3">
+                <img
+                  src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                  alt="logo"
+                  className="w-12 h-12"
+                />
+                <h1 className="text-3xl font-bold">MMA XOX</h1>
+              </div>
+            </div>
+            <div
+              className={`flex justify-between items-center mb-2 ${
+                theme === "dark" ? "text-white" : "text-black"
+              }`}
+            >
+              <p className="text-lg font-semibold italic">Available Rooms</p>
+              <div
+                onClick={handleRefresh}
+                className={`duration-200 ${
+                  cahRefresh
+                    ? "opacity-100 cursor-pointer"
+                    : "opacity-20 cursor-not-allowed"
+                } `}
+                title="Refresh available rooms"
+              >
+                <img
+                  src="https://icons.veryicon.com/png/o/miscellaneous/wasteapp/refresh-348.png"
+                  alt="refresh"
+                  className="w-8"
+                />
+              </div>
             </div>
             {rooms.length === 0 ? (
               <p
@@ -154,8 +201,8 @@ const AvailableRooms = () => {
                     key={room.id}
                     className={`p-4 rounded-lg shadow-md border cursor-pointer ${
                       theme === "dark"
-                        ? "bg-stone-500 border-stone-700 text-white"
-                        : "bg-stone-200 border-stone-400 text-black"
+                        ? "bg-gradient-to-r from-stone-600 to-stone-500 border-stone-700 text-white"
+                        : "bg-gradient-to-r from-stone-300 to-stone-200 border-stone-400 text-black"
                     }`}
                     onClick={() => handleRoomClick(room.id)}
                   >

@@ -10,7 +10,7 @@ const Home = () => {
     <div
       className={`w-screen h-screen flex items-center justify-center bg-gradient-to-br ${
         theme === "dark"
-          ? "from-stone-800 to-stone-900"
+          ? "from-stone-700 to-stone-900"
           : "from-stone-200 to-stone-400"
       } relative`}
     >
@@ -38,7 +38,7 @@ const Home = () => {
       </div>
       <div
         className={`rounded-xl shadow-2xl p-10 max-w-lg w-full flex flex-col items-center ${
-          theme === "dark" ? "bg-stone-800" : "bg-white"
+          theme === "dark" ? "bg-stone-700" : "bg-stone-100"
         }`}
       >
         <img

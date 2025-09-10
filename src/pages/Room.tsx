@@ -1213,7 +1213,7 @@ const Room = () => {
           ) : null}
 
           {gameState.guest.now == null ? (
-            <p className="text-2xl text-center">Rakip bekleniyor...</p>
+            <p className="text-2xl text-center">Waiting for an opponent...</p>
           ) : null}
           <div className="text-center">
             <div>
