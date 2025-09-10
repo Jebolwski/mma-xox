@@ -10,6 +10,7 @@ import {
   documentId,
   runTransaction,
   where,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
@@ -111,7 +112,7 @@ const Room = () => {
     const collectionRef = collection(db, "rooms");
     const q = query(collectionRef, where(documentId(), "==", roomId));
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
+    const unsubscribe = onSnapshot(q, async (snapshot) => {
       if (snapshot.empty) {
         console.log("Belge bulunamadı");
         if (role === "guest") {
@@ -128,6 +129,29 @@ const Room = () => {
         id: doc.id,
         positions: Object.keys(doc.data().positions || {}).length,
       }))[0];
+
+      // Odanın 3 saatten eski ve guest.now null ise sil
+      if (updatedData.createdAt && updatedData.guest?.now == null) {
+        const createdAtDate =
+          updatedData.createdAt.seconds * 1000 +
+          Math.floor(updatedData.createdAt.nanoseconds / 1000000);
+        const now = Date.now();
+        const threeHours = 3 * 60 * 60 * 1000;
+        if (now - createdAtDate > threeHours) {
+          const roomRef = doc(db, "rooms", roomId);
+          try {
+            await runTransaction(db, async (transaction) => {
+              const roomDoc = await transaction.get(roomRef);
+              if (!roomDoc.exists()) return;
+              transaction.delete(roomRef);
+              console.log("Oda 3 saatten eski ve guest yok, otomatik silindi.");
+            });
+          } catch (error) {
+            console.error("Oda otomatik silinirken hata:", error);
+          }
+          return;
+        }
+      }
 
       //firestore'daki sadece idli olan fightersPositions'ı fighters_url'den alan fonksiyon
       const getFightersByPositions = (positionsFighters: any) => {
@@ -177,6 +201,7 @@ const Room = () => {
           turn: "red",
           gameStarted: false,
           filtersSelected: [],
+          createdAt: serverTimestamp(), // <--- EKLENDİ
           fighter00: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
