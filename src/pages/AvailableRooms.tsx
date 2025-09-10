@@ -19,10 +19,12 @@ const AvailableRooms = () => {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [guestName, setGuestName] = useState("");
   const [cahRefresh, setCahRefresh] = useState(true);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRooms = async () => {
+      setLoading(true);
       const roomsRef = collection(db, "rooms");
       const q = query(roomsRef, where("guest.now", "==", null));
       const querySnapshot = await getDocs(q);
@@ -31,6 +33,7 @@ const AvailableRooms = () => {
         roomList.push({ id: doc.id, ...doc.data() });
       });
       setRooms(roomList);
+      setLoading(false);
     };
     fetchRooms();
   }, []);
@@ -70,6 +73,7 @@ const AvailableRooms = () => {
     }
     setCahRefresh(false);
     console.log("cahRefresh:", false);
+    setLoading(true);
     setTimeout(() => {
       setCahRefresh(true);
       console.log("cahRefresh:", true);
@@ -83,7 +87,22 @@ const AvailableRooms = () => {
       roomList.push({ id: doc.id, ...doc.data() });
     });
     setRooms(roomList);
+    setLoading(false);
   };
+
+  // Skeleton component
+  const SkeletonRoom = () => (
+    <div
+      className={`p-4 rounded-lg shadow-md border cursor-pointer animate-pulse ${
+        theme === "dark"
+          ? "bg-gradient-to-r from-stone-600 to-stone-500 border-stone-700 text-white"
+          : "bg-gradient-to-r from-stone-300 to-stone-200 border-stone-400 text-black"
+      }`}
+    >
+      <div className="h-4 w-1/3 bg-stone-400 rounded mb-2"></div>
+      <div className="h-4 w-1/2 bg-stone-400 rounded"></div>
+    </div>
+  );
 
   return (
     <div
@@ -184,7 +203,15 @@ const AvailableRooms = () => {
                 />
               </div>
             </div>
-            {rooms.length === 0 ? (
+            {loading ? (
+              <ul className="space-y-4">
+                {[...Array(3)].map((_, i) => (
+                  <li key={i}>
+                    <SkeletonRoom />
+                  </li>
+                ))}
+              </ul>
+            ) : rooms.length === 0 ? (
               <p
                 className={
                   theme === "dark"
