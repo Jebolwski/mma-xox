@@ -90,231 +90,336 @@ const AvailableRooms = () => {
     setLoading(false);
   };
 
-  // Skeleton component
   const SkeletonRoom = () => (
     <div
       className={`p-4 rounded-lg shadow-md border cursor-pointer animate-pulse ${
         theme === "dark"
-          ? "bg-gradient-to-r from-stone-600 to-stone-500 border-stone-700 text-white"
-          : "bg-gradient-to-r from-stone-300 to-stone-200 border-stone-400 text-black"
+          ? "bg-slate-800/90 border-slate-600 text-slate-200"
+          : "bg-white/90 border-slate-300 text-slate-700"
       }`}
     >
-      <div className="h-4 w-1/3 bg-stone-400 rounded mb-2"></div>
-      <div className="h-4 w-1/2 bg-stone-400 rounded"></div>
+      <div
+        className={`h-4 w-1/3 rounded mb-2 ${
+          theme === "dark" ? "bg-slate-600" : "bg-slate-300"
+        }`}
+      ></div>
+      <div
+        className={`h-4 w-1/2 rounded ${
+          theme === "dark" ? "bg-slate-600" : "bg-slate-300"
+        }`}
+      ></div>
     </div>
   );
 
   return (
     <div
-      className={`w-[100vw] h-[100vh] ${
-        theme === "dark" ? "bg-stone-800" : "bg-stone-200"
+      className={`min-h-screen relative overflow-hidden transition-all duration-1000 ${
+        theme === "dark"
+          ? "bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900"
+          : "bg-gradient-to-b from-blue-400 via-blue-300 to-green-400"
       }`}
     >
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Mountains */}
+        <div
+          className={`absolute bottom-0 left-0 w-full h-64 ${
+            theme === "dark" ? "bg-slate-700" : "bg-green-600"
+          } clip-path-mountain opacity-80`}
+          style={{
+            clipPath:
+              "polygon(0% 100%, 15% 60%, 25% 80%, 35% 40%, 50% 70%, 65% 30%, 80% 60%, 100% 50%, 100% 100%)",
+          }}
+        />
+
+        {/* Floating particles */}
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className={`absolute w-1 h-1 ${
+              theme === "dark" ? "bg-yellow-300" : "bg-white"
+            } rounded-full animate-pulse`}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 60}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 2}s`,
+            }}
+          />
+        ))}
+      </div>
+
       <ToastContainer
         position="bottom-right"
         theme="dark"
       />
-      <div>
-        <div
-          className="absolute z-30 top-3 right-3"
-          onClick={handleExit}
-        >
+
+      {/* Theme Toggle */}
+      <div className="absolute z-30 text-red-500 top-3 left-3">
+        {theme === "dark" ? (
           <div
-            className={`p-1 rounded-lg border border-stone-800 duration-300 cursor-pointer shadow-xl ${
-              theme === "dark"
-                ? "bg-stone-700 text-stone-200 hover:bg-stone-600"
-                : "bg-stone-200 text-stone-800 hover:bg-stone-300"
-            }`}
+            onClick={toggleTheme}
+            className="p-1 rounded-full bg-stone-700 border border-stone-800 cursor-pointer shadow-xl"
           >
-            <div className="flex gap-2">
-              <img
-                src={return_img}
-                className="w-6"
-              />
-              <p className="font-semibold">Back to menu</p>
-            </div>
+            <img
+              src="https://clipart-library.com/images/6iypd9jin.png"
+              className="w-8"
+            />
+          </div>
+        ) : (
+          <div
+            onClick={toggleTheme}
+            className="p-1 rounded-full bg-stone-300 border border-stone-400 cursor-pointer shadow-xl"
+          >
+            <img
+              src="https://clipart-library.com/img/1669853.png"
+              className="w-8"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Back Button */}
+      <div
+        className="absolute z-30 top-3 right-3"
+        onClick={handleExit}
+      >
+        <div
+          className={`p-2 rounded-xl border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
+            theme === "dark"
+              ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
+              : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
+          }`}
+        >
+          <div className="flex gap-2 items-center">
+            <img
+              src={return_img || "/placeholder.svg"}
+              className="w-6"
+            />
+            <p className="font-semibold">Back to menu</p>
           </div>
         </div>
-        <div className="absolute z-30 text-red-500 top-3 left-3">
-          {theme === "dark" ? (
-            <div
-              onClick={toggleTheme}
-              className="p-1 rounded-full bg-stone-700 border border-stone-800 cursor-pointer shadow-xl"
-            >
-              <img
-                src="https://clipart-library.com/images/6iypd9jin.png"
-                className="w-8"
-              />
-            </div>
-          ) : (
-            <div
-              onClick={toggleTheme}
-              className="p-1 rounded-full bg-stone-300 border border-stone-400 cursor-pointer shadow-xl"
-            >
-              <img
-                src="https://clipart-library.com/img/1669853.png"
-                className="w-8"
-              />
-            </div>
-          )}
-        </div>
-        <div className="flex w-full h-full justify-center">
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 flex justify-center items-center min-h-screen px-4">
+        <div
+          className={`mt-8 p-6 rounded-2xl border-4 shadow-2xl backdrop-blur-md transition-all duration-300 ${
+            theme === "dark"
+              ? "bg-slate-800/90 border-red-500 shadow-red-500/20"
+              : "bg-white/90 border-red-600 shadow-red-600/20"
+          }`}
+          style={{
+            maxHeight: "85vh",
+            overflowY: "auto",
+            maxWidth: "400px",
+            width: "100%",
+          }}
+        >
           <div
-            className={`mt-16 p-4 rounded-lg border-2 shadow-md relative ${
-              theme === "dark"
-                ? "bg-stone-600 border-stone-700"
-                : "bg-stone-400/50 border-stone-300"
+            className={`flex items-center justify-between mb-4 ${
+              theme === "dark" ? "text-slate-200" : "text-slate-700"
             }`}
-            style={{ maxHeight: "85vh", overflowY: "auto" }}
           >
-            <div
-              className={`flex items-center justify-between mb-2 ${
-                theme === "dark" ? "text-white" : "text-black"
-              }`}
-            >
-              <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
+              <div className="relative">
                 <img
                   src="https://cdn-icons-png.freepik.com/512/921/921676.png"
                   alt="logo"
                   className="w-12 h-12"
                 />
-                <h1 className="text-3xl font-bold">MMA XOX</h1>
+              </div>
+              <div>
+                <h1
+                  className={`text-2xl font-black tracking-wider ${
+                    theme === "dark" ? "text-red-400" : "text-red-600"
+                  } drop-shadow-lg`}
+                  style={{
+                    textShadow:
+                      theme === "dark"
+                        ? "2px 2px 0px #7f1d1d, 4px 4px 0px #450a0a"
+                        : "2px 2px 0px #dc2626, 4px 4px 0px #991b1b",
+                  }}
+                >
+                  MMA
+                </h1>
+                <h2
+                  className={`text-xl font-black tracking-widest ${
+                    theme === "dark" ? "text-yellow-400" : "text-yellow-600"
+                  } drop-shadow-lg -mt-1`}
+                  style={{
+                    textShadow:
+                      theme === "dark"
+                        ? "1px 1px 0px #a16207, 2px 2px 0px #713f12"
+                        : "1px 1px 0px #d97706, 2px 2px 0px #92400e",
+                  }}
+                >
+                  XOX
+                </h2>
               </div>
             </div>
+          </div>
+
+          <div
+            className={`flex justify-between items-center mb-4 ${
+              theme === "dark" ? "text-slate-200" : "text-slate-700"
+            }`}
+          >
+            <p className="text-xl font-bold italic">Available Rooms</p>
             <div
-              className={`flex justify-between items-center mb-2 ${
-                theme === "dark" ? "text-white" : "text-black"
+              onClick={handleRefresh}
+              className={`p-2 rounded-lg transition-all duration-200 ${
+                cahRefresh
+                  ? `cursor-pointer hover:scale-110 ${
+                      theme === "dark"
+                        ? "hover:bg-slate-700/50"
+                        : "hover:bg-slate-200/50"
+                    }`
+                  : "opacity-20 cursor-not-allowed"
+              }`}
+              title="Refresh available rooms"
+            >
+              <img
+                src="https://icons.veryicon.com/png/o/miscellaneous/wasteapp/refresh-348.png"
+                alt="refresh"
+                className="w-8"
+              />
+            </div>
+          </div>
+
+          {loading ? (
+            <ul className="space-y-4">
+              {[...Array(3)].map((_, i) => (
+                <li key={i}>
+                  <SkeletonRoom />
+                </li>
+              ))}
+            </ul>
+          ) : rooms.length === 0 ? (
+            <div
+              className={`text-center py-8 px-4 rounded-xl border-2 border-dashed ${
+                theme === "dark"
+                  ? "text-slate-300 border-slate-600"
+                  : "text-slate-600 border-slate-400"
               }`}
             >
-              <p className="text-lg font-semibold italic">Available Rooms</p>
-              <div
-                onClick={handleRefresh}
-                className={`duration-200 ${
-                  cahRefresh
-                    ? "opacity-100 cursor-pointer"
-                    : "opacity-20 cursor-not-allowed"
-                } `}
-                title="Refresh available rooms"
-              >
-                <img
-                  src="https://icons.veryicon.com/png/o/miscellaneous/wasteapp/refresh-348.png"
-                  alt="refresh"
-                  className="w-8"
-                />
-              </div>
-            </div>
-            {loading ? (
-              <ul className="space-y-4">
-                {[...Array(3)].map((_, i) => (
-                  <li key={i}>
-                    <SkeletonRoom />
-                  </li>
-                ))}
-              </ul>
-            ) : rooms.length === 0 ? (
-              <p
-                className={
-                  theme === "dark"
-                    ? "text-white text-center"
-                    : "text-black text-center"
-                }
-              >
-                No available rooms.
+              <p className="text-lg font-semibold">No available rooms.</p>
+              <p className="text-sm opacity-75 mt-1">
+                Check back later or create a new room!
               </p>
-            ) : (
-              <ul className="space-y-4">
-                {rooms.map((room: any) => (
-                  <li
-                    key={room.id}
-                    className={`p-4 rounded-lg shadow-md border cursor-pointer ${
-                      theme === "dark"
-                        ? "bg-gradient-to-r from-stone-600 to-stone-500 border-stone-700 text-white"
-                        : "bg-gradient-to-r from-stone-300 to-stone-200 border-stone-400 text-black"
-                    }`}
-                    onClick={() => handleRoomClick(room.id)}
-                  >
-                    <div className="flex gap-2 items-center">
-                      <div className="font-semibold flex gap-1 items-center">
-                        <img
-                          src="https://www.svgrepo.com/show/309807/number-symbol.svg"
-                          className="h-4"
-                        />
-                        Room:
-                      </div>
-                      {room.id}
-                    </div>
-                    <div className="flex gap-2 items-center mt-1">
-                      <div className="font-semibold flex gap-1 items-center">
-                        <img
-                          src="https://cdn-icons-png.flaticon.com/512/9131/9131478.png"
-                          className="h-4"
-                        />
-                        Host:
-                      </div>
-                      {room.host}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          {/* Modal/input alanı scroll dışında */}
-          {selectedRoom && (
-            <div
-              className={`fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 z-50`}
-            >
-              <div
-                className={`p-6 rounded-lg shadow-lg border ${
-                  theme === "dark"
-                    ? "bg-stone-500 border-stone-700"
-                    : "bg-stone-200 border-stone-500"
-                }`}
-              >
-                <div
-                  className={`mb-2 text-lg text-center font-semibold ${
-                    theme === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  Joining Room:{" "}
-                  <span className="text-red-500">{selectedRoom}</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter your name"
-                  value={guestName}
-                  onChange={(e) => setGuestName(e.target.value)}
-                  className={`mb-2 px-4 py-2 rounded-lg border w-full outline-none ${
-                    theme === "dark"
-                      ? "bg-stone-600 border-stone-500 text-white"
-                      : "bg-stone-200 border-stone-500 text-black"
-                  }`}
-                />
-                <div className="flex w-full justify-between">
-                  <button
-                    onClick={() => setSelectedRoom(null)}
-                    className={`px-4 py-2 rounded-lg font-semibold duration-200 cursor-pointer ${
-                      theme === "dark"
-                        ? "bg-stone-700 hover:bg-stone-800 text-white"
-                        : "bg-stone-400 hover:bg-stone-300 text-black"
-                    }`}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleJoinRoom}
-                    className={`px-4 py-2 rounded-lg cursor-pointer duration-200 font-semibold ${
-                      theme === "dark"
-                        ? "bg-green-700 hover:bg-green-600 text-white"
-                        : "bg-green-500 hover:bg-green-600 text-white"
-                    }`}
-                  >
-                    Join Room
-                  </button>
-                </div>
-              </div>
             </div>
+          ) : (
+            <ul className="space-y-4">
+              {rooms.map((room: any) => (
+                <li
+                  key={room.id}
+                  className={`p-4 rounded-xl shadow-lg border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer backdrop-blur-sm ${
+                    theme === "dark"
+                      ? "bg-slate-700/80 border-slate-600 text-slate-200 hover:bg-slate-600/80 hover:border-slate-500"
+                      : "bg-white/80 border-slate-300 text-slate-700 hover:bg-white hover:border-slate-400"
+                  }`}
+                  onClick={() => handleRoomClick(room.id)}
+                >
+                  <div className="flex gap-2 items-center">
+                    <div className="font-semibold flex gap-2 items-center">
+                      <img
+                        src="https://www.svgrepo.com/show/309807/number-symbol.svg"
+                        className="h-4"
+                      />
+                      Room:
+                    </div>
+                    <span
+                      className={`font-mono ${
+                        theme === "dark" ? "text-yellow-400" : "text-red-600"
+                      }`}
+                    >
+                      {room.id}
+                    </span>
+                  </div>
+                  <div className="flex gap-2 items-center mt-2">
+                    <div className="font-semibold flex gap-2 items-center">
+                      <img
+                        src="https://cdn-icons-png.flaticon.com/512/9131/9131478.png"
+                        className="h-4"
+                      />
+                      Host:
+                    </div>
+                    <span
+                      className={`font-semibold ${
+                        theme === "dark" ? "text-green-400" : "text-green-600"
+                      }`}
+                    >
+                      {room.host}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
           )}
         </div>
+
+        {selectedRoom && (
+          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+            <div
+              className={`p-8 rounded-2xl shadow-2xl border-4 backdrop-blur-md transition-all duration-300 animate-bounce-slow ${
+                theme === "dark"
+                  ? "bg-slate-800/95 border-red-500 shadow-red-500/30"
+                  : "bg-white/95 border-red-600 shadow-red-600/30"
+              }`}
+            >
+              <div
+                className={`mb-4 text-xl text-center font-bold ${
+                  theme === "dark" ? "text-slate-200" : "text-slate-700"
+                }`}
+              >
+                Joining Room:{" "}
+                <span
+                  className={`${
+                    theme === "dark" ? "text-red-400" : "text-red-600"
+                  } font-mono`}
+                >
+                  {selectedRoom}
+                </span>
+              </div>
+              <input
+                type="text"
+                placeholder="Enter your name"
+                value={guestName}
+                onChange={(e) => setGuestName(e.target.value)}
+                className={`mb-4 px-4 py-3 rounded-xl border-2 w-full outline-none transition-all duration-200 focus:scale-105 ${
+                  theme === "dark"
+                    ? "bg-slate-700/80 border-slate-600 text-slate-200 focus:border-red-400 placeholder-slate-400"
+                    : "bg-white/80 border-slate-300 text-slate-700 focus:border-red-500 placeholder-slate-500"
+                }`}
+              />
+              <div className="flex w-full justify-between gap-4">
+                <button
+                  onClick={() => setSelectedRoom(null)}
+                  className={`px-6 py-3 rounded-xl font-bold cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95 ${
+                    theme === "dark"
+                      ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
+                      : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
+                  }`}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleJoinRoom}
+                  className={`px-6 py-3 rounded-xl font-bold cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95 ${
+                    theme === "dark"
+                      ? "bg-green-600 hover:bg-green-500 text-white border-2 border-green-500 shadow-lg shadow-green-600/30"
+                      : "bg-green-500 hover:bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-500/30"
+                  }`}
+                  style={{
+                    textShadow: "1px 1px 2px rgba(0,0,0,0.3)",
+                  }}
+                >
+                  Join Room
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

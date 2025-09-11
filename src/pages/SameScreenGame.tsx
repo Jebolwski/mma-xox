@@ -641,56 +641,120 @@ function SameScreenGame() {
   return (
     <>
       <div
-        className={`w-[100vw] h-[100vh] ${
-          theme === "dark" ? "bg-stone-800" : "bg-stone-200"
+        className={`w-[100vw] h-[100vh] min-h-screen relative overflow-hidden transition-all duration-1000 ${
+          theme === "dark"
+            ? "bg-gradient-to-br from-stone-900 via-indigo-900 to-stone-800"
+            : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
         }`}
       >
         <ToastContainer
           position="bottom-right"
           theme="dark"
         />
-        <div className="absolute z-30 top-3 left-3">
-          {theme === "dark" ? (
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Mountains */}
+          <div className="absolute bottom-0 left-0 w-full h-64 overflow-hidden">
             <div
-              onClick={toggleTheme}
-              className="p-1 rounded-full bg-stone-700 border border-stone-800 cursor-pointer shadow-xl"
-            >
+              className={`absolute bottom-0 left-0 w-full h-full transition-all duration-1000 ${
+                theme === "dark"
+                  ? "bg-gradient-to-t from-slate-800/80 to-transparent"
+                  : "bg-gradient-to-t from-slate-300/60 to-transparent"
+              }`}
+              style={{
+                clipPath:
+                  "polygon(0% 100%, 0% 60%, 15% 65%, 25% 45%, 35% 55%, 50% 35%, 65% 50%, 80% 30%, 90% 40%, 100% 25%, 100% 100%)",
+              }}
+            />
+            <div
+              className={`absolute bottom-0 left-0 w-full h-3/4 transition-all duration-1000 ${
+                theme === "dark"
+                  ? "bg-gradient-to-t from-slate-700/60 to-transparent"
+                  : "bg-gradient-to-t from-slate-400/40 to-transparent"
+              }`}
+              style={{
+                clipPath:
+                  "polygon(0% 100%, 0% 80%, 20% 70%, 30% 60%, 45% 65%, 60% 45%, 75% 55%, 85% 40%, 95% 50%, 100% 35%, 100% 100%)",
+              }}
+            />
+          </div>
+          {/* Floating particles */}
+          {[
+            { left: "10%", top: "20%", delay: "0s", duration: "3s" },
+            { left: "85%", top: "15%", delay: "0.5s", duration: "4s" },
+            { left: "25%", top: "40%", delay: "1s", duration: "3.5s" },
+            { left: "70%", top: "35%", delay: "1.5s", duration: "4.5s" },
+            { left: "45%", top: "10%", delay: "2s", duration: "3s" },
+            { left: "15%", top: "60%", delay: "2.5s", duration: "4s" },
+            { left: "90%", top: "55%", delay: "0.2s", duration: "3.8s" },
+            { left: "35%", top: "75%", delay: "0.8s", duration: "4.2s" },
+            { left: "60%", top: "25%", delay: "1.2s", duration: "3.3s" },
+            { left: "5%", top: "45%", delay: "1.8s", duration: "4.7s" },
+            { left: "80%", top: "70%", delay: "0.3s", duration: "3.6s" },
+            { left: "50%", top: "5%", delay: "0.9s", duration: "4.1s" },
+            { left: "20%", top: "85%", delay: "1.4s", duration: "3.9s" },
+            { left: "75%", top: "80%", delay: "1.9s", duration: "4.4s" },
+            { left: "40%", top: "50%", delay: "0.6s", duration: "3.7s" },
+            { left: "95%", top: "30%", delay: "1.1s", duration: "4.3s" },
+            { left: "30%", top: "90%", delay: "1.6s", duration: "3.4s" },
+            { left: "65%", top: "60%", delay: "2.1s", duration: "4.6s" },
+            { left: "8%", top: "75%", delay: "0.4s", duration: "3.2s" },
+            { left: "55%", top: "40%", delay: "1.3s", duration: "4.8s" },
+          ].map((particle, i) => (
+            <div
+              key={i}
+              className={`absolute w-2 h-2 rounded-full ${
+                theme === "dark" ? "bg-purple-400/20" : "bg-blue-400/30"
+              } animate-pulse`}
+              style={{
+                left: particle.left,
+                top: particle.top,
+                animationDelay: particle.delay,
+                animationDuration: particle.duration,
+              }}
+            />
+          ))}
+        </div>
+        <div className="absolute z-30 top-6 left-6">
+          <div
+            onClick={toggleTheme}
+            className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
+              theme === "dark"
+                ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
+                : "bg-white/80 border-slate-200/50 hover:bg-white/90"
+            } shadow-xl hover:scale-110`}
+          >
+            {theme === "dark" ? (
               <img
                 src="https://clipart-library.com/images/6iypd9jin.png"
-                className="w-8"
+                className="w-6 h-6"
+                alt="Light mode"
               />
-            </div>
-          ) : (
-            <div
-              onClick={toggleTheme}
-              className="p-1 rounded-full bg-stone-300 border border-stone-400 cursor-pointer shadow-xl"
-            >
+            ) : (
               <img
                 src="https://clipart-library.com/img/1669853.png"
-                className="w-8"
+                className="w-6 h-6"
+                alt="Dark mode"
               />
-            </div>
-          )}
-        </div>
-        <div className="absolute z-30 top-3 right-3">
-          <div
-            className={`p-1 rounded-lg border border-stone-800 duration-300 cursor-pointer shadow-xl ${
-              theme === "dark"
-                ? "bg-stone-700 text-stone-200 hover:bg-stone-600"
-                : "bg-stone-200 text-stone-800 hover:bg-stone-300"
-            }`}
-          >
-            <Link
-              to={"/menu"}
-              className="flex gap-2"
-            >
-              <img
-                src={return_img}
-                className="w-6"
-              />
-              <p className="font-semibold">Back to menu</p>
-            </Link>
+            )}
           </div>
+        </div>
+        <div className="absolute z-30 top-6 right-6">
+          <Link
+            to="/menu"
+            className={`flex items-center gap-2 px-4 py-3 rounded-full transition-all duration-300 backdrop-blur-md border ${
+              theme === "dark"
+                ? "bg-slate-800/80 border-slate-600/50 text-slate-200 hover:bg-slate-700/80"
+                : "bg-white/80 border-slate-200/50 text-slate-800 hover:bg-white/90"
+            } shadow-xl hover:scale-105`}
+          >
+            <img
+              src={return_img || "/placeholder.svg"}
+              className="w-5 h-5"
+              alt="Return"
+            />
+            <span className="font-semibold">Back to Menu</span>
+          </Link>
         </div>
         <div className="flex w-full h-full justify-center">
           <div>
@@ -705,16 +769,16 @@ function SameScreenGame() {
                 </p>
               ) : null}
             </div>
-            <div className="flex justify-between items-center gap-3 flex-wrap text-right pt-2">
+            <div className="flex justify-between items-center gap-3 flex-wrap text-right pt-2 relative z-30">
               <div
                 onClick={() => {
                   restartGame();
                 }}
-                className={`${
+                className={`cursor-pointer flex gap-4 xl:text-base text-sm font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
                   theme === "dark"
-                    ? "bg-stone-600 border-stone-500 text-stone-200"
-                    : "bg-stone-300 border-stone-400 text-stone-800"
-                } bg-stone-300 cursor-pointer flex gap-4 text-red-600 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl`}
+                    ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-white"
+                    : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80"
+                }`}
               >
                 Restart Game
               </div>
@@ -731,11 +795,11 @@ function SameScreenGame() {
               </div>
               {turn == "red" ? (
                 <div
-                  className={`${
+                  className={`cursor-pointer flex gap-4 xl:text-base text-sm font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
-                      ? "bg-stone-600 border-stone-500 text-red-400"
-                      : "bg-stone-300 border-stone-400 text-red-600"
-                  } bg-stone-300 flex gap-4 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl`}
+                      ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-red-400"
+                      : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-red-600"
+                  }`}
                 >
                   <p>Turn : Red</p>
                   <div
@@ -754,11 +818,11 @@ function SameScreenGame() {
                 </div>
               ) : (
                 <div
-                  className={`${
+                  className={`cursor-pointer flex gap-4 xl:text-base text-sm font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
-                      ? "bg-stone-600 border-stone-500 text-blue-400"
-                      : "bg-stone-300 border-stone-400 text-blue-600"
-                  } bg-stone-300 flex gap-4 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl`}
+                      ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-blue-400"
+                      : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-blue-600"
+                  }`}
                 >
                   <p>Turn : Blue</p>
                   <div
@@ -780,9 +844,9 @@ function SameScreenGame() {
             <div
               className={`${
                 theme === "dark"
-                  ? "bg-stone-500 text-stone-200 border-stone-600"
-                  : "bg-stone-300 text-stone-700 border-stone-400"
-              } rounded-lg border relative h-fit mt-3 shadow-xl`}
+                  ? "bg-indigo-900/50 text-stone-200 shadow-indigo-800/20 border-indigo-900"
+                  : "bg-indigo-200/50 text-stone-700 shadow-indigo-100/20 border-indigo-200"
+              } rounded-lg border-2 shadow-md relative h-fit mt-3 shadow-xl`}
             >
               <div
                 className={`${gameWinner == null ? "hidden" : "absolute"} ${
