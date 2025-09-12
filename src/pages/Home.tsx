@@ -120,9 +120,8 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Game Description */}
         <div
-          className={`max-w-2xl mx-auto mb-12 p-6 rounded-xl backdrop-blur-md border-2 ${
+          className={`max-w-2xl mx-auto mb-10 p-6 rounded-xl backdrop-blur-md border-2 ${
             theme === "dark"
               ? "bg-slate-800/80 border-slate-600 text-slate-200"
               : "bg-white/80 border-slate-300 text-slate-700"

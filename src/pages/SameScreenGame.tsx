@@ -758,7 +758,7 @@ function SameScreenGame() {
         </div>
         <div className="flex w-full h-full justify-center">
           <div>
-            <div className="mt-16">
+            <div className="mt-38">
               {gameStart == true && parseInt(timerLength) >= 0 ? (
                 <p
                   className={`xl:text-xl md:hidden block lg:text-lg text-base font-semibold ${
@@ -769,12 +769,12 @@ function SameScreenGame() {
                 </p>
               ) : null}
             </div>
-            <div className="flex justify-between items-center gap-3 flex-wrap text-right pt-2 relative z-30">
+            <div className="flex justify-between items-center gap-3 flex-wrap text-right pt-2 relative">
               <div
                 onClick={() => {
                   restartGame();
                 }}
-                className={`cursor-pointer flex gap-4 xl:text-base text-sm font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
+                className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
                   theme === "dark"
                     ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-white"
                     : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80"
@@ -795,7 +795,7 @@ function SameScreenGame() {
               </div>
               {turn == "red" ? (
                 <div
-                  className={`cursor-pointer flex gap-4 xl:text-base text-sm font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
+                  className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
                       ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-red-400"
                       : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-red-600"
@@ -809,16 +809,16 @@ function SameScreenGame() {
                     }}
                     className={`${
                       theme === "dark"
-                        ? "bg-stone-500 border-stone-700 text-stone-200"
-                        : "bg-gradient-to-b from-stone-300 to-stone-400 border-stone-400 text-stone-900"
-                    } cursor-pointer xl:text-base text-sm px-2 rounded-xl shadow-lg border`}
+                        ? "bg-slate-500 border-slate-700 text-slate-200"
+                        : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
+                    } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
                   >
                     Skip
                   </div>
                 </div>
               ) : (
                 <div
-                  className={`cursor-pointer flex gap-4 xl:text-base text-sm font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
+                  className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
                       ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-blue-400"
                       : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-blue-600"
@@ -832,9 +832,9 @@ function SameScreenGame() {
                     }}
                     className={`${
                       theme === "dark"
-                        ? "bg-stone-500 border-stone-700 text-stone-200"
-                        : "bg-gradient-to-b from-stone-300 to-stone-400 border-stone-400 text-stone-900"
-                    } cursor-pointer xl:text-base text-sm px-2 rounded-xl shadow-lg border`}
+                        ? "bg-slate-500 border-slate-700 text-slate-200"
+                        : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
+                    } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
                   >
                     Skip
                   </div>
@@ -1468,57 +1468,122 @@ function SameScreenGame() {
         >
           <div className="flex w-full h-full justify-center items-center bg-[#00000092]">
             <div
-              className={`z-10 absolute bg-gradient-to-b ${
+              className={`z-40 absolute backdrop-blur-md bg-gradient-to-b ${
                 theme === "dark"
-                  ? "from-stone-600 to-stone-700 border-stone-500 text-stone-100"
-                  : "from-stone-300 to-stone-400 border-stone-200 text-stone-800"
-              } shadow-lg py-5 px-10 border-2 rounded-lg`}
+                  ? "from-indigo-900/90 to-indigo-900/90 border-indigo-700/50 text-indigo-100"
+                  : "from-indigo-100/90 to-sky-200/90 border-indigo-300/50 text-indigo-900"
+              } shadow-2xl py-6 px-12 border-2 rounded-xl transition-all duration-300 hover:shadow-indigo-500/20`}
             >
               <div className="flex gap-3 items-center">
                 <img
                   src="https://cdn-icons-png.freepik.com/512/921/921676.png"
                   alt="logo"
-                  className="w-10"
+                  className="w-10 drop-shadow-lg"
                 />
-                <h1 className="font-semibold text-2xl">MMA XOX</h1>
+                <h1 className="font-bold text-2xl bg-gradient-to-r from-indigo-400 to-indigo-400 bg-clip-text text-transparent">
+                  MMA XOX
+                </h1>
               </div>
               <div className="flex text-center justify-center">
-                <div className="mt-5">
-                  <h2 className="font-semibold text-lg">CHOOSE DIFFICULTY</h2>
+                <div className="mt-6">
+                  <h2 className="font-semibold text-lg mb-2">
+                    CHOOSE DIFFICULTY
+                  </h2>
                   <select
                     defaultValue={"MEDIUM"}
                     onChange={(e) => {
                       setDifficulty(e.target.value);
                     }}
-                    className="text-stone-900 shadow-lg focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2 mt-1"
+                    className={`${
+                      theme === "dark"
+                        ? "text-indigo-100 bg-gradient-to-r from-indigo-800 to-indigo-800 border-indigo-600"
+                        : "text-indigo-900 bg-gradient-to-r from-indigo-200 to-sky-300 border-indigo-400"
+                    } shadow-lg focus:outline-0 cursor-pointer border-2 font-semibold rounded-lg px-3 py-1 transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-indigo-400`}
                   >
-                    <option value="EASY">EASY</option>
-                    <option value="MEDIUM">MEDIUM</option>
-                    <option value="HARD">HARD</option>
+                    <option
+                      value="EASY"
+                      className={`${
+                        theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                      }`}
+                    >
+                      EASY
+                    </option>
+                    <option
+                      value="MEDIUM"
+                      className={`${
+                        theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                      }`}
+                    >
+                      MEDIUM
+                    </option>
+                    <option
+                      value="HARD"
+                      className={`${
+                        theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                      }`}
+                    >
+                      HARD
+                    </option>
                   </select>
                 </div>
               </div>
               <div className="flex text-center justify-center">
-                <div className="mt-5">
-                  <h2 className="font-semibold text-lg">TIMER</h2>
+                <div className="mt-6">
+                  <h2 className="font-semibold text-lg mb-2">TIMER</h2>
                   <select
                     onChange={(e) => {
                       setTimerLength(e.target.value);
                     }}
                     defaultValue={"30"}
-                    className="text-stone-900 shadow-lg focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-400 font-semibold rounded-lg px-2 mt-1"
+                    className={`${
+                      theme === "dark"
+                        ? "text-indigo-100 bg-gradient-to-r from-indigo-800 to-indigo-800 border-indigo-600"
+                        : "text-indigo-900 bg-gradient-to-r from-indigo-200 to-sky-300 border-indigo-400"
+                    } shadow-lg focus:outline-0 cursor-pointer border-2 font-semibold rounded-lg px-3 py-1 transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-indigo-400`}
                   >
-                    <option value="-2">No time limit</option>
-                    <option value="20">20 seconds</option>
-                    <option value="30">30 seconds</option>
-                    <option value="40">40 seconds</option>
+                    <option
+                      value="-2"
+                      className={`${
+                        theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                      }`}
+                    >
+                      No time limit
+                    </option>
+                    <option
+                      value="20"
+                      className={`${
+                        theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                      }`}
+                    >
+                      20 seconds
+                    </option>
+                    <option
+                      value="30"
+                      className={`${
+                        theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                      }`}
+                    >
+                      30 seconds
+                    </option>
+                    <option
+                      value="40"
+                      className={`${
+                        theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                      }`}
+                    >
+                      40 seconds
+                    </option>
                   </select>
                 </div>
               </div>
               <div className="flex justify-center">
                 <button
                   onClick={startGame}
-                  className="border border-stone-300 bg-gradient-to-r from-stone-200 to-stone-400 text-stone-800 mt-5 text-xl hover:shadow-xl px-4 shadow-md duration-300 cursor-pointer rounded-lg font-semibold"
+                  className={`${
+                    theme === "dark"
+                      ? "border-indigo-600 bg-gradient-to-r from-indigo-700 to-indigo-700 text-indigo-100 hover:from-indigo-600 hover:to-indigo-600"
+                      : "border-indigo-400 bg-gradient-to-r from-indigo-300 to-sky-400 text-indigo-900 hover:from-indigo-400 hover:to-sky-500"
+                  } border-2 mt-6 text-xl hover:shadow-2xl px-6 py-2 shadow-lg duration-300 cursor-pointer rounded-xl font-bold transform hover:scale-105 transition-all focus:ring-2 focus:ring-blue-400`}
                 >
                   PLAY!
                 </button>
