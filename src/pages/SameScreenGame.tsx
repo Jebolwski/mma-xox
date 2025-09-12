@@ -758,7 +758,7 @@ function SameScreenGame() {
         </div>
         <div className="flex w-full h-full justify-center">
           <div>
-            <div className="mt-38">
+            <div className="mt-32">
               {gameStart == true && parseInt(timerLength) >= 0 ? (
                 <p
                   className={`xl:text-xl md:hidden block lg:text-lg text-base font-semibold ${

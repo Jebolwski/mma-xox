@@ -155,7 +155,7 @@ const AvailableRooms = () => {
       />
 
       {/* Theme Toggle */}
-      <div className="absolute z-30 text-red-500 top-3 left-3">
+      <div className="absolute z-30 text-red-500 top-6 left-6">
         {theme === "dark" ? (
           <div
             onClick={toggleTheme}
@@ -181,11 +181,11 @@ const AvailableRooms = () => {
 
       {/* Back Button */}
       <div
-        className="absolute z-30 top-3 right-3"
+        className="absolute z-30 top-6 right-6"
         onClick={handleExit}
       >
         <div
-          className={`p-2 rounded-xl border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
+          className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
             theme === "dark"
               ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
               : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"

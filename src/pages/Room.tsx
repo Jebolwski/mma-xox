@@ -1167,22 +1167,82 @@ const Room = () => {
   return (
     <div
       className={`${
-        theme === "dark" ? "bg-stone-800" : "bg-stone-200"
-      } min-h-[100vh]`}
+        theme === "dark"
+          ? "bg-gradient-to-br from-blue-900 via-indigo-900 to-blue-800"
+          : "bg-gradient-to-br from-blue-100 via-sky-50 to-indigo-100"
+      } min-h-[100vh] relative overflow-hidden`}
     >
+      {/* Animated Mountains */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className={`absolute bottom-0 left-0 w-full h-32 ${
+            theme === "dark" ? "bg-blue-800/30" : "bg-blue-200/30"
+          } transform rotate-1 -mb-4`}
+          style={{
+            clipPath: "polygon(0 100%, 100% 100%, 85% 0, 0 20%)",
+          }}
+        />
+        <div
+          className={`absolute bottom-0 right-0 w-full h-40 ${
+            theme === "dark" ? "bg-indigo-700/20" : "bg-indigo-300/20"
+          } transform -rotate-1 -mb-6`}
+          style={{
+            clipPath: "polygon(15% 0, 100% 30%, 100% 100%, 0 100%)",
+          }}
+        />
+      </div>
+
+      {/* Floating Particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[
+          { left: 10, top: 20, delay: 0, duration: 3 },
+          { left: 20, top: 40, delay: 1, duration: 4 },
+          { left: 80, top: 10, delay: 2, duration: 3.5 },
+          { left: 70, top: 60, delay: 0.5, duration: 4.5 },
+          { left: 30, top: 70, delay: 1.5, duration: 3 },
+          { left: 90, top: 30, delay: 2.5, duration: 4 },
+          { left: 5, top: 80, delay: 0.8, duration: 3.8 },
+          { left: 60, top: 15, delay: 1.8, duration: 4.2 },
+          { left: 40, top: 90, delay: 2.2, duration: 3.2 },
+          { left: 85, top: 70, delay: 0.3, duration: 4.8 },
+          { left: 15, top: 50, delay: 1.3, duration: 3.6 },
+          { left: 75, top: 85, delay: 2.8, duration: 4.4 },
+          { left: 50, top: 5, delay: 0.6, duration: 3.4 },
+          { left: 25, top: 25, delay: 1.6, duration: 4.6 },
+          { left: 95, top: 50, delay: 2.6, duration: 3.8 },
+          { left: 35, top: 35, delay: 0.9, duration: 4.1 },
+          { left: 65, top: 75, delay: 1.9, duration: 3.7 },
+          { left: 45, top: 45, delay: 2.9, duration: 4.3 },
+          { left: 55, top: 65, delay: 0.4, duration: 3.9 },
+          { left: 8, top: 12, delay: 1.4, duration: 4.7 },
+        ].map((particle, i) => (
+          <div
+            key={i}
+            className={`absolute w-1 h-1 ${
+              theme === "dark" ? "bg-blue-300" : "bg-white"
+            } rounded-full animate-pulse`}
+            style={{
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              animationDelay: `${particle.delay}s`,
+              animationDuration: `${particle.duration}s`,
+            }}
+          />
+        ))}
+      </div>
       <ToastContainer
         position="bottom-right"
         theme="dark"
       />
 
       {/* Tema değiştirme butonu */}
-      <div className="absolute z-30 top-3 left-3">
+      <div className="absolute z-30 top-6 left-6">
         <div
           onClick={toggleTheme}
-          className={`p-1 rounded-full cursor-pointer shadow-xl ${
+          className={`p-1 rounded-full cursor-pointer shadow-xl backdrop-blur-sm ${
             theme === "dark"
-              ? "bg-stone-700 border-stone-800"
-              : "bg-stone-300 border-stone-400"
+              ? "bg-blue-800/80 border-blue-700"
+              : "bg-blue-200/80 border-blue-300"
           } border`}
         >
           <img
@@ -1199,19 +1259,19 @@ const Room = () => {
 
       {/* Geri dönüş butonu */}
       <div
-        className="absolute z-30 top-3 right-3"
+        className="absolute z-30 top-6 right-6"
         onClick={handleExit}
       >
         <div
-          className={`p-1 rounded-lg border border-stone-800 duration-300 cursor-pointer shadow-xl ${
+          className={`rounded-full px-4 py-3 border duration-300 cursor-pointer shadow-xl backdrop-blur-sm ${
             theme === "dark"
-              ? "bg-stone-700 text-stone-200 hover:bg-stone-600"
-              : "bg-stone-200 text-stone-800 hover:bg-stone-300"
+              ? "bg-gradient-to-r from-blue-800/80 to-indigo-800/80 text-blue-100 hover:from-blue-700/80 hover:to-indigo-700/80 border-blue-700"
+              : "bg-gradient-to-r from-blue-200/80 to-indigo-200/80 text-blue-800 hover:from-blue-300/80 hover:to-indigo-300/80 border-blue-300"
           }`}
         >
           <div className="flex gap-2">
             <img
-              src={return_img}
+              src={return_img || "/placeholder.svg"}
               className="w-6"
             />
             <p className="font-semibold">Back to menu</p>
@@ -1226,7 +1286,7 @@ const Room = () => {
         }`}
       >
         <div className="w-fit">
-          <div className="text-2xl mb-2 mt-16 text-center">
+          <div className="text-2xl mb-2 mt-28 text-center">
             Room Code: {roomId}
           </div>
           {gameState.gameStarted == false &&
@@ -1262,11 +1322,11 @@ const Room = () => {
                 onClick={() => {
                   restartGame();
                 }}
-                className={`${
+                className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
                   theme === "dark"
-                    ? "bg-stone-600 border-stone-500 text-stone-200"
-                    : "bg-stone-300 border-stone-400 text-stone-800"
-                } bg-stone-300 cursor-pointer flex gap-4 text-red-600 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl`}
+                    ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-white"
+                    : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80"
+                }`}
               >
                 Restart Game
               </div>
@@ -1286,11 +1346,11 @@ const Room = () => {
               </div>
               {gameState?.turn == "red" ? (
                 <div
-                  className={`${
+                  className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
-                      ? "bg-stone-600 border-stone-500 text-red-400"
-                      : "bg-stone-300 border-stone-400 text-red-600"
-                  } bg-stone-300 flex gap-4 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl`}
+                      ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-red-400"
+                      : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-red-600"
+                  }`}
                 >
                   <p>
                     Turn :{" "}
@@ -1309,20 +1369,20 @@ const Room = () => {
                     }}
                     className={`${
                       theme === "dark"
-                        ? "bg-stone-500 border-stone-700 text-stone-200"
-                        : "bg-gradient-to-b from-stone-300 to-stone-500 border-stone-400 text-stone-900"
-                    } cursor-pointer xl:text-base text-sm px-2 rounded-xl shadow-lg border`}
+                        ? "bg-slate-500 border-slate-700 text-slate-200"
+                        : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
+                    } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
                   >
                     Skip
                   </div>
                 </div>
               ) : (
                 <div
-                  className={`${
+                  className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
-                      ? "bg-stone-600 border-stone-500 text-blue-400"
-                      : "bg-stone-300 border-stone-400 text-blue-600"
-                  } bg-stone-300 flex gap-4 xl:text-base text-sm border border-stone-400 font-semibold w-fit px-5 py-1 rounded-lg shadow-xl`}
+                      ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-blue-400"
+                      : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-blue-600"
+                  }`}
                 >
                   <p>
                     Turn :{" "}
@@ -1341,9 +1401,9 @@ const Room = () => {
                     }}
                     className={`${
                       theme === "dark"
-                        ? "bg-stone-500 border-stone-700 text-stone-200"
-                        : "bg-gradient-to-b from-stone-300 to-stone-500 border-stone-400 text-stone-900"
-                    } cursor-pointer xl:text-base text-sm px-2 rounded-xl shadow-lg border`}
+                        ? "bg-slate-500 border-slate-700 text-slate-200"
+                        : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
+                    } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
                   >
                     Skip
                   </div>
@@ -1358,45 +1418,123 @@ const Room = () => {
                     <div
                       className={`${
                         theme == "dark"
-                          ? "from-stone-600 to-stone-700"
-                          : "from-stone-300 to-stone-500"
-                      } z-30 bg-gradient-to-b border-2 border-stone-500 rounded-lg p-5 px-10`}
+                          ? "from-indigo-700 to-indigo-800 border-indigo-600"
+                          : "from-indigo-100 to-indigo-200 border-indigo-300"
+                      } z-30 bg-gradient-to-b border-2 rounded-lg p-5 px-10`}
                     >
-                      <div className="flex gap-3 mb-5 items-center">
+                      <div className="flex gap-3 items-center">
                         <img
                           src="https://cdn-icons-png.freepik.com/512/921/921676.png"
                           alt="logo"
-                          className="w-10"
+                          className="w-10 drop-shadow-lg"
                         />
-                        <h1 className="font-semibold text-2xl">MMA XOX</h1>
+                        <h1 className="font-bold text-2xl bg-gradient-to-r from-indigo-400 to-indigo-400 bg-clip-text text-transparent">
+                          MMA XOX
+                        </h1>
                       </div>
-                      <div className="mb-4">
-                        <h2 className="font-semibold text-lg">
-                          CHOOSE DIFFICULTY
-                        </h2>
-                        <select
-                          value={difficulty}
-                          onChange={(e) => setDifficulty(e.target.value)}
-                          className="text-stone-900 shadow-lg mt-1 focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-500 font-semibold rounded-lg px-2"
-                        >
-                          <option value="EASY">EASY</option>
-                          <option value="MEDIUM">MEDIUM</option>
-                          <option value="HARD">HARD</option>
-                        </select>
+                      <div className="flex text-center justify-center">
+                        <div className="mt-6">
+                          <div className="mb-4">
+                            <h2 className="font-semibold text-lg mb-2">
+                              CHOOSE DIFFICULTY
+                            </h2>
+                            <select
+                              value={difficulty}
+                              onChange={(e) => setDifficulty(e.target.value)}
+                              className={`${
+                                theme === "dark"
+                                  ? "text-indigo-100 bg-gradient-to-r from-indigo-800 to-indigo-800 border-indigo-600"
+                                  : "text-indigo-900 bg-gradient-to-r from-indigo-200 to-sky-300 border-indigo-400"
+                              } shadow-lg focus:outline-0 cursor-pointer border-2 font-semibold rounded-lg px-3 py-1 transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-indigo-400`}
+                            >
+                              <option
+                                value="EASY"
+                                className={`${
+                                  theme === "dark"
+                                    ? "bg-indigo-800"
+                                    : "bg-sky-100"
+                                }`}
+                              >
+                                EASY
+                              </option>
+                              <option
+                                value="MEDIUM"
+                                className={`${
+                                  theme === "dark"
+                                    ? "bg-indigo-800"
+                                    : "bg-sky-100"
+                                }`}
+                              >
+                                MEDIUM
+                              </option>
+                              <option
+                                value="HARD"
+                                className={`${
+                                  theme === "dark"
+                                    ? "bg-indigo-800"
+                                    : "bg-sky-100"
+                                }`}
+                              >
+                                HARD
+                              </option>
+                            </select>
+                          </div>
+                          <div className="mb-3">
+                            <h2 className="font-semibold text-lg">TIMER</h2>
+                            <select
+                              value={timerLength}
+                              onChange={(e) => setTimerLength(e.target.value)}
+                              className={`${
+                                theme === "dark"
+                                  ? "text-indigo-100 bg-gradient-to-r from-indigo-800 to-indigo-800 border-indigo-600"
+                                  : "text-indigo-900 bg-gradient-to-r from-indigo-200 to-sky-300 border-indigo-400"
+                              } shadow-lg focus:outline-0 cursor-pointer border-2 font-semibold rounded-lg px-3 py-1 transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-indigo-400`}
+                            >
+                              <option
+                                value="-2"
+                                className={`${
+                                  theme === "dark"
+                                    ? "bg-indigo-800"
+                                    : "bg-sky-100"
+                                }`}
+                              >
+                                No time limit
+                              </option>
+                              <option
+                                value="20"
+                                className={`${
+                                  theme === "dark"
+                                    ? "bg-indigo-800"
+                                    : "bg-sky-100"
+                                }`}
+                              >
+                                20 Seconds
+                              </option>
+                              <option
+                                value="30"
+                                className={`${
+                                  theme === "dark"
+                                    ? "bg-indigo-800"
+                                    : "bg-sky-100"
+                                }`}
+                              >
+                                30 Seconds
+                              </option>
+                              <option
+                                value="40"
+                                className={`${
+                                  theme === "dark"
+                                    ? "bg-indigo-800"
+                                    : "bg-sky-100"
+                                }`}
+                              >
+                                40 Seconds
+                              </option>
+                            </select>
+                          </div>
+                        </div>
                       </div>
-                      <div className="mb-3">
-                        <h2 className="font-semibold text-lg">TIMER</h2>
-                        <select
-                          value={timerLength}
-                          onChange={(e) => setTimerLength(e.target.value)}
-                          className="text-stone-900 shadow-lg mt-1 focus:outline-0 cursor-pointer border border-stone-500 bg-gradient-to-r from-stone-300 to-stone-500 font-semibold rounded-lg px-2"
-                        >
-                          <option value="-2">No time limit</option>
-                          <option value="20">20 Seconds</option>
-                          <option value="30">30 Seconds</option>
-                          <option value="40">40 Seconds</option>
-                        </select>
-                      </div>
+
                       <button
                         onClick={() => {
                           if (gameState.guest.now != null) {
@@ -1405,26 +1543,30 @@ const Room = () => {
                             toast.info("Oyuna katılımcı bulunamadı!");
                           }
                         }}
-                        className={`bg-green-500 mt-3 duration-200 text-white px-6 py-1 rounded-lg hover:bg-green-600 ${
+                        className={`${
+                          theme === "dark"
+                            ? "border-indigo-600 bg-gradient-to-r from-indigo-700 to-indigo-700 text-indigo-100 hover:from-indigo-600 hover:to-indigo-600"
+                            : "border-indigo-400 bg-gradient-to-r from-indigo-300 to-sky-400 text-indigo-900 hover:from-indigo-400 hover:to-sky-500"
+                        } ${
                           gameState.guest.now == null
                             ? "opacity-70"
                             : "opacity-100 cursor-pointer"
-                        } ${theme == "dark" ? "bg-green-500" : "bg-green-300"}`}
+                        } border-2 mt-6 text-xl hover:shadow-2xl px-6 py-2 shadow-lg duration-300 cursor-pointer rounded-xl font-bold transform hover:scale-105 transition-all focus:ring-2 focus:ring-blue-400`}
                       >
-                        Oyunu Başlat
+                        PLAY!
                       </button>
                     </div>
                   </div>
                 </div>
               )}
           </div>
-          <div className="flex justify-center items-center">
+          <div className="w-full flex justify-center items-center">
             {gameState?.gameStarted && gameState.guest.now != null ? (
               <div
                 className={`${
                   theme === "dark"
-                    ? "bg-stone-500 text-stone-200 border-stone-600"
-                    : "bg-stone-300 text-stone-700 border-stone-400"
+                    ? "bg-indigo-700/50 text-stone-200 shadow-indigo-800/20 border-indigo-900"
+                    : "bg-indigo-200/50 text-stone-700 shadow-indigo-100/20 border-indigo-200"
                 } rounded-lg border relative h-fit mt-3 shadow-xl w-fit`}
               >
                 <div
