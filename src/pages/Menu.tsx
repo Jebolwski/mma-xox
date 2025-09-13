@@ -6,7 +6,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
-import { Link } from "react-router-dom";
 import return_img from "../assets/return.png";
 
 const Menu = () => {
