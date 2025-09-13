@@ -47,28 +47,29 @@ const Home = () => {
       </div>
 
       {/* Theme Toggle */}
-      <div className="absolute z-30 text-red-500 top-3 left-3">
-        {theme === "dark" ? (
-          <div
-            onClick={toggleTheme}
-            className="p-1 rounded-full bg-stone-700 border border-stone-800 cursor-pointer shadow-xl"
-          >
+      <div className="absolute z-30 top-6 left-6">
+        <div
+          onClick={toggleTheme}
+          className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
+            theme === "dark"
+              ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
+              : "bg-white/80 border-slate-200/50 hover:bg-white/90"
+          } shadow-xl hover:scale-110`}
+        >
+          {theme === "dark" ? (
             <img
               src="https://clipart-library.com/images/6iypd9jin.png"
-              className="w-8"
+              className="w-6 h-6"
+              alt="Light mode"
             />
-          </div>
-        ) : (
-          <div
-            onClick={toggleTheme}
-            className="p-1 rounded-full bg-stone-300 border border-stone-400 cursor-pointer shadow-xl"
-          >
+          ) : (
             <img
               src="https://clipart-library.com/img/1669853.png"
-              className="w-8"
+              className="w-6 h-6"
+              alt="Dark mode"
             />
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Main Content */}

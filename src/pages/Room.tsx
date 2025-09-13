@@ -1239,21 +1239,25 @@ const Room = () => {
       <div className="absolute z-30 top-6 left-6">
         <div
           onClick={toggleTheme}
-          className={`p-1 rounded-full cursor-pointer shadow-xl backdrop-blur-sm ${
+          className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
             theme === "dark"
-              ? "bg-blue-800/80 border-blue-700"
-              : "bg-blue-200/80 border-blue-300"
-          } border`}
+              ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
+              : "bg-white/80 border-slate-200/50 hover:bg-white/90"
+          } shadow-xl hover:scale-110`}
         >
-          <img
-            src={
-              theme === "dark"
-                ? "https://clipart-library.com/images/6iypd9jin.png"
-                : "https://clipart-library.com/img/1669853.png"
-            }
-            className="w-8"
-            alt="theme"
-          />
+          {theme === "dark" ? (
+            <img
+              src="https://clipart-library.com/images/6iypd9jin.png"
+              className="w-6 h-6"
+              alt="Light mode"
+            />
+          ) : (
+            <img
+              src="https://clipart-library.com/img/1669853.png"
+              className="w-6 h-6"
+              alt="Dark mode"
+            />
+          )}
         </div>
       </div>
 
