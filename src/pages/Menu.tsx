@@ -26,6 +26,10 @@ const Menu = () => {
     navigate("/available-rooms");
   };
 
+  const handleExit = async () => {
+    navigate("/");
+  };
+
   const handleCreateRoom = async () => {
     if (!playerName) {
       toast.error("Lütfen isminizi girin!");
@@ -156,22 +160,26 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className="absolute z-30 top-6 right-6">
-        <Link
-          to="/"
-          className={`flex items-center gap-2 px-4 py-3 rounded-full transition-all duration-300 backdrop-blur-md border ${
+      {/* Back Button */}
+      <div
+        className="absolute z-30 top-6 right-6"
+        onClick={handleExit}
+      >
+        <div
+          className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
             theme === "dark"
-              ? "bg-slate-800/80 border-slate-600/50 text-slate-200 hover:bg-slate-700/80"
-              : "bg-white/80 border-slate-200/50 text-slate-800 hover:bg-white/90"
-          } shadow-xl hover:scale-105`}
+              ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
+              : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
+          }`}
         >
-          <img
-            src={return_img || "/placeholder.svg"}
-            className="w-5 h-5"
-            alt="Return"
-          />
-          <span className="font-semibold">Back to Home</span>
-        </Link>
+          <div className="flex gap-2 items-center">
+            <img
+              src={return_img || "/placeholder.svg"}
+              className="w-6"
+            />
+            <p className="font-semibold">Back to home</p>
+          </div>
+        </div>
       </div>
 
       <div className="flex items-center justify-center min-h-screen p-6">

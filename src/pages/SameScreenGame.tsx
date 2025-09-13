@@ -4,13 +4,17 @@ import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
 import return_img from "../assets/return.png";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 
 function SameScreenGame() {
   useEffect(() => {
     document.title = "MMA XOX"; // Sayfa başlığını değiştir
   }, []);
+  const navigate = useNavigate();
+  const handleExit = async () => {
+    navigate("/menu");
+  };
 
   const { theme, toggleTheme } = useContext(ThemeContext);
 
@@ -739,22 +743,25 @@ function SameScreenGame() {
             )}
           </div>
         </div>
-        <div className="absolute z-30 top-6 right-6">
-          <Link
-            to="/menu"
-            className={`flex items-center gap-2 px-4 py-3 rounded-full transition-all duration-300 backdrop-blur-md border ${
+        <div
+          className="absolute z-30 top-6 right-6"
+          onClick={handleExit}
+        >
+          <div
+            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
               theme === "dark"
-                ? "bg-slate-800/80 border-slate-600/50 text-slate-200 hover:bg-slate-700/80"
-                : "bg-white/80 border-slate-200/50 text-slate-800 hover:bg-white/90"
-            } shadow-xl hover:scale-105`}
+                ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
+                : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
+            }`}
           >
-            <img
-              src={return_img || "/placeholder.svg"}
-              className="w-5 h-5"
-              alt="Return"
-            />
-            <span className="font-semibold">Back to Menu</span>
-          </Link>
+            <div className="flex gap-2 items-center">
+              <img
+                src={return_img || "/placeholder.svg"}
+                className="w-6"
+              />
+              <p className="font-semibold">Back to menu</p>
+            </div>
+          </div>
         </div>
         <div className="flex w-full h-full justify-center">
           <div>
