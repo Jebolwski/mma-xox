@@ -17,7 +17,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import return_img from "../assets/return.png";
 //import { Link } from "react-router-dom";
+import win from "../assets/sounds/win.mp3";
+import draw from "../assets/sounds/draw.mp3";
 import fighters_url from "../assets/data/fighters.json";
+import wrong from "../assets/sounds/wrong.mp3";
+import correct from "../assets/sounds/correct.mp3";
 import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ThemeContext } from "../context/ThemeContext";
@@ -911,6 +915,7 @@ const Room = () => {
     const positionKey = fighterMap[selected];
     if (!positionsFighters[positionKey].includes(fighter)) {
       notify();
+      new Audio(wrong).play(); // ❌ Yanlış seçim sesi
       console.log(3, "a");
       await updateDoc(roomRef, {
         timerLength: gameState.timer,
@@ -937,6 +942,7 @@ const Room = () => {
       setterMap[selected]({ url: picture, text: name, bg: bgColor });
       console.log(4, "a");
 
+      new Audio(correct).play(); // ✅ Doğru seçim sesi
       await updateDoc(roomRef, {
         [selected]: {
           // selected değişkenini key olarak kullan (fighter01, fighter02 vs.)
@@ -1058,6 +1064,7 @@ const Room = () => {
             winner: "red",
           });
           // Oyun sonu reklamı göster
+          new Audio(win).play();
           if (shouldShowAd()) {
             recordAdView();
           }
@@ -1066,6 +1073,7 @@ const Room = () => {
           updateDoc(roomRef, {
             winner: "blue",
           });
+          new Audio(win).play();
           // Oyun sonu reklamı göster
           if (shouldShowAd()) {
             recordAdView();
@@ -1090,6 +1098,7 @@ const Room = () => {
       updateDoc(roomRef, {
         winner: "draw",
       });
+      new Audio(draw).play(); // 🔊 Beraberlik sesi
       // Oyun sonu reklamı göster
       if (shouldShowAd()) {
         recordAdView();

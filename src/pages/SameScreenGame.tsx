@@ -4,6 +4,10 @@ import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
 import return_img from "../assets/return.png";
+import wrong from "../assets/sounds/wrong.mp3";
+import win from "../assets/sounds/win.mp3";
+import draw from "../assets/sounds/draw.mp3";
+import correct from "../assets/sounds/correct.mp3";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 
@@ -248,6 +252,7 @@ function SameScreenGame() {
     const positionKey = fighterMap[selected];
     if (!positionsFighters[positionKey].includes(fighter)) {
       notify();
+      new Audio(wrong).play(); // ❌ Yanlış seçim sesi
     } else {
       const bgColor =
         turn === "red"
@@ -266,6 +271,8 @@ function SameScreenGame() {
       };
 
       setterMap[selected]({ url: picture, text: name, bg: bgColor });
+
+      new Audio(correct).play(); // ✅ Doğru seçim sesi
 
       const winner = checkWinner();
       if (winner) {
@@ -493,10 +500,13 @@ function SameScreenGame() {
       if (winner) {
         if (winner == "Red Wins!") {
           setGameWinner("Red");
+          new Audio(win).play(); // 🔊 Kazanan sesi
         } else if (winner == "Blue Wins!") {
           setGameWinner("Blue");
+          new Audio(win).play(); // 🔊 Kazanan sesi
         } else if (winner == "Draw!") {
           setGameWinner("Draw");
+          new Audio(draw).play(); // 🔊 Berabere sesi
         } else {
           setGameWinner(null);
         }
