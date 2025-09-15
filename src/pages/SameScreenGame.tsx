@@ -10,6 +10,8 @@ import draw from "../assets/sounds/draw.mp3";
 import correct from "../assets/sounds/correct.mp3";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use"; // pencere boyutu almak için
 
 function SameScreenGame() {
   useEffect(() => {
@@ -21,6 +23,8 @@ function SameScreenGame() {
   };
 
   const { theme, toggleTheme } = useContext(ThemeContext);
+
+  const { width, height } = useWindowSize();
 
   const [difficulty, setDifficulty]: any = useState("MEDIUM");
 
@@ -34,6 +38,8 @@ function SameScreenGame() {
   const [selected, setSelected]: any = useState();
 
   const [filters, setFilters]: any = useState();
+
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const [positionsFighters, setPositionsFighters]: any = useState({
     position03: {},
@@ -500,13 +506,15 @@ function SameScreenGame() {
       if (winner) {
         if (winner == "Red Wins!") {
           setGameWinner("Red");
-          new Audio(win).play(); // 🔊 Kazanan sesi
+          new Audio(win).play();
+          setShowConfetti(true);
         } else if (winner == "Blue Wins!") {
           setGameWinner("Blue");
-          new Audio(win).play(); // 🔊 Kazanan sesi
+          new Audio(win).play();
+          setShowConfetti(true);
         } else if (winner == "Draw!") {
           setGameWinner("Draw");
-          new Audio(draw).play(); // 🔊 Berabere sesi
+          new Audio(draw).play();
         } else {
           setGameWinner(null);
         }
@@ -661,6 +669,15 @@ function SameScreenGame() {
             : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
         }`}
       >
+        {showConfetti && (
+          <Confetti
+            width={width}
+            height={height}
+            recycle={false}
+            numberOfPieces={400}
+          />
+        )}
+
         <ToastContainer
           position="bottom-right"
           theme="dark"

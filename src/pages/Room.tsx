@@ -27,6 +27,8 @@ import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ThemeContext } from "../context/ThemeContext";
 import { useAdContext } from "../context/AdContext";
 import AdBanner from "../components/AdBanner";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
 
 const Room = () => {
   const { roomId } = useParams();
@@ -42,6 +44,8 @@ const Room = () => {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [filters, setFilters]: any = useState();
   const [selected, setSelected]: any = useState();
+  const [showConfetti, setShowConfetti] = useState(false);
+
   const [fighter00, setFighter00]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
@@ -105,6 +109,16 @@ const Room = () => {
   const [timerLength, setTimerLength] = useState("-2");
   const [hasExited, setHasExited] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const { width, height } = useWindowSize();
+  useEffect(() => {
+    if (gameState?.winner && gameState.winner !== "draw") {
+      setShowConfetti(true);
+      // 6 saniye sonra kapatmak istersen:
+      setTimeout(() => setShowConfetti(false), 12000);
+    } else {
+      setShowConfetti(false);
+    }
+  }, [gameState?.winner]);
 
   useEffect(() => {
     document.title = "MMA XOX - Online Game";
@@ -1181,6 +1195,15 @@ const Room = () => {
           : "bg-gradient-to-br from-blue-100 via-sky-50 to-indigo-100"
       } min-h-[100vh] relative overflow-hidden`}
     >
+      {showConfetti && (
+        <Confetti
+          width={width}
+          height={height}
+          recycle={false}
+          numberOfPieces={400}
+        />
+      )}
+
       {/* Animated Mountains */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
