@@ -39,6 +39,8 @@ function SameScreenGame() {
 
   const [filters, setFilters]: any = useState();
 
+  const [score, setScore] = useState({ red: 0, blue: 0, draw: 0 });
+
   const [showConfetti, setShowConfetti] = useState(false);
 
   const [positionsFighters, setPositionsFighters]: any = useState({
@@ -507,14 +509,17 @@ function SameScreenGame() {
         if (winner == "Red Wins!") {
           setGameWinner("Red");
           new Audio(win).play();
+          setScore((prev) => ({ ...prev, red: prev.red + 1 })); // 🔴 Red skor +1
           setShowConfetti(true);
         } else if (winner == "Blue Wins!") {
           setGameWinner("Blue");
           new Audio(win).play();
           setShowConfetti(true);
+          setScore((prev) => ({ ...prev, blue: prev.blue + 1 })); // 🔵 Blue skor +1
         } else if (winner == "Draw!") {
           setGameWinner("Draw");
           new Audio(draw).play();
+          setScore((prev) => ({ ...prev, draw: prev.draw + 1 })); // ➕ Draw sayacı
         } else {
           setGameWinner(null);
         }
@@ -929,6 +934,13 @@ function SameScreenGame() {
                         Play Again
                       </button>
                     </div>
+                    <p className="text-center mt-2 font-semibold text-lg">
+                      Score: <span className="text-red-500">{score.red}</span> -{" "}
+                      <span className="text-blue-500">{score.blue}</span>
+                      <span className="text-stone-500 ml-2">
+                        Draw: {score.draw}
+                      </span>
+                    </p>
                   </div>
                 </div>
               </div>

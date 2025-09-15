@@ -113,8 +113,6 @@ const Room = () => {
   useEffect(() => {
     if (gameState?.winner && gameState.winner !== "draw") {
       setShowConfetti(true);
-      // 6 saniye sonra kapatmak istersen:
-      setTimeout(() => setShowConfetti(false), 12000);
     } else {
       setShowConfetti(false);
     }
