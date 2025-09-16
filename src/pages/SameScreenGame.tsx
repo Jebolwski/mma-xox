@@ -888,16 +888,18 @@ function SameScreenGame() {
               } rounded-lg border-2 shadow-md relative h-fit mt-3 shadow-xl`}
             >
               <div
-                className={`${gameWinner == null ? "hidden" : "absolute"} ${
-                  theme === "dark" ? "bg-[#00000061]" : "bg-[#ffffff61]"
-                }  rounded-lg w-full h-full`}
+                className={`
+                  ${gameWinner == null ? "hidden" : "absolute"} 
+                  ${
+                    theme === "dark" ? "bg-[#00000061]" : "bg-[#ffffff61]"
+                  }  rounded-lg w-full h-full`}
               >
                 <div className="flex justify-center mt-12">
                   <div
                     className={`${
                       theme === "dark"
-                        ? "bg-stone-800 border-stone-700"
-                        : "bg-stone-300 border-stone-400"
+                        ? "bg-gradient-to-r from-indigo-800 to-indigo-900 border-indigo-700 shadow-indigo-900"
+                        : "bg-gradient-to-r from-indigo-100 to-sky-200 border-indigo-300 shadow-indigo-300/50"
                     } border-2 w-72 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
                   >
                     <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold">
@@ -917,7 +919,13 @@ function SameScreenGame() {
                       </>
                     ) : (
                       <>
-                        <p className="text-stone-100 font-semibold text-xl mt-4 text-center">
+                        <p
+                          className={`${
+                            theme === "dark"
+                              ? "text-stone-100"
+                              : "text-stone-700"
+                          } font-semibold text-xl mt-4 text-center`}
+                        >
                           Draw!
                         </p>
                       </>
@@ -927,8 +935,8 @@ function SameScreenGame() {
                         onClick={restartGame}
                         className={`bg-gradient-to-r cursor-pointer ${
                           theme === "dark"
-                            ? "from-stone-500 to-stone-700 text-white border-stone-600"
-                            : "from-stone-300 to-stone-400 text-black border-stone-400"
+                            ? "from-indigo-500 to-indigo-700 text-white border-indigo-600"
+                            : "from-indigo-200 to-sky-300 text-black border-indigo-400"
                         } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg mt-5`}
                       >
                         Play Again
@@ -937,7 +945,11 @@ function SameScreenGame() {
                     <p className="text-center mt-2 font-semibold text-lg">
                       Score: <span className="text-red-500">{score.red}</span> -{" "}
                       <span className="text-blue-500">{score.blue}</span>
-                      <span className="text-stone-500 ml-2">
+                      <span
+                        className={`${
+                          theme === "dark" ? "text-stone-100" : "text-stone-700"
+                        } ml-2`}
+                      >
                         Draw: {score.draw}
                       </span>
                     </p>

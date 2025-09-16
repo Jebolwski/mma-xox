@@ -1614,8 +1614,8 @@ const Room = () => {
                     <div
                       className={`${
                         theme === "dark"
-                          ? "from-stone-700 to-stone-800 border-stone-700 text-white"
-                          : "from-stone-200 to-stone-300 border-stone-400 text-black"
+                          ? "bg-gradient-to-r from-indigo-800 to-indigo-900 border-indigo-700 shadow-indigo-900"
+                          : "bg-gradient-to-r from-indigo-100 to-sky-200 border-indigo-300 shadow-indigo-300/50"
                       } bg-gradient-to-r border-2 w-72 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
                     >
                       <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold">
@@ -1657,8 +1657,8 @@ const Room = () => {
                             onClick={restartGame}
                             className={`bg-gradient-to-r cursor-pointer ${
                               theme === "dark"
-                                ? "from-green-500 to-green-700 text-white border-green-600"
-                                : "from-green-300 to-green-400 text-black border-green-400"
+                                ? "from-sky-600 to-indigo-700 text-white border-indigo-600"
+                                : "from-indigo-200 to-sky-300 text-black border-indigo-400"
                             } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200 mt-5`}
                           >
                             Play Again
