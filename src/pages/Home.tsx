@@ -75,9 +75,9 @@ const Home = () => {
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
         {/* Game Logo */}
-        <div className="mb-8 text-center animate-bounce-slow">
+        <div className="lg:mb-8 mb-6 text-center animate-bounce-slow">
           <div
-            className={`relative inline-block p-6 rounded-2xl shadow-2xl backdrop-blur-md border-4 ${
+            className={`relative inline-block p-6 px-4 rounded-2xl shadow-2xl backdrop-blur-md border-4 ${
               theme === "dark"
                 ? "bg-slate-800/90 border-red-500 shadow-red-500/20"
                 : "bg-white/90 border-red-600 shadow-red-600/20"
@@ -122,7 +122,7 @@ const Home = () => {
         </div>
 
         <div
-          className={`max-w-2xl mx-auto mb-10 p-6 rounded-xl backdrop-blur-md border-2 ${
+          className={`max-w-2xl mx-auto lg:mb-10 mb-6 p-6 rounded-xl backdrop-blur-md border-2 ${
             theme === "dark"
               ? "bg-slate-800/80 border-slate-600 text-slate-200"
               : "bg-white/80 border-slate-300 text-slate-700"
