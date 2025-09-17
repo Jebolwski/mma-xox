@@ -69,8 +69,7 @@ const Menu = () => {
 
       const roomData = roomDoc.data();
 
-      if (roomData.guest !== null) {
-        console.log(roomData.guest);
+      if (roomData.guest.now !== null) {
         toast.error("Bu oda dolu! Başka bir oda deneyin.");
         return;
       }
