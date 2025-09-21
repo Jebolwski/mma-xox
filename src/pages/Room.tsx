@@ -1297,10 +1297,10 @@ const Room = () => {
         onClick={handleExit}
       >
         <div
-          className={`rounded-full px-4 py-3 border duration-300 cursor-pointer shadow-xl backdrop-blur-sm ${
+          className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
             theme === "dark"
-              ? "bg-gradient-to-r from-blue-800/80 to-indigo-800/80 text-blue-100 hover:from-blue-700/80 hover:to-indigo-700/80 border-blue-700"
-              : "bg-gradient-to-r from-blue-200/80 to-indigo-200/80 text-blue-800 hover:from-blue-300/80 hover:to-indigo-300/80 border-blue-300"
+              ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
+              : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
           }`}
         >
           <div className="flex gap-2">

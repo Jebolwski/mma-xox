@@ -61,6 +61,8 @@ function SameScreenGame() {
 
   const [fighters, setFigters]: any = useState();
 
+  const [playWithAI, setPlayWithAI] = useState(false);
+
   const [fighter00, setFighter00]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
@@ -236,7 +238,9 @@ function SameScreenGame() {
     input.value = "";
   };
 
-  const updateBox = (fighter: Fighter) => {
+  const updateBox = (fighter: Fighter, selectedParam: string | null) => {
+    console.log("fighter came", fighter, selected);
+
     let picture =
       fighter.Picture === "Unknown"
         ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
@@ -255,9 +259,15 @@ function SameScreenGame() {
       fighter22: "position25",
     };
 
-    if (!fighterMap[selected]) return;
+    let selectedBox = selected;
 
-    const positionKey = fighterMap[selected];
+    if (selectedParam) {
+      selectedBox = selectedParam;
+    }
+
+    if (!fighterMap[selectedBox]) return;
+
+    const positionKey = fighterMap[selectedBox];
     if (!positionsFighters[positionKey].includes(fighter)) {
       notify();
       new Audio(wrong).play(); // ❌ Yanlış seçim sesi
@@ -278,13 +288,12 @@ function SameScreenGame() {
         fighter22: setFighter22,
       };
 
-      setterMap[selected]({ url: picture, text: name, bg: bgColor });
+      setterMap[selectedBox]({ url: picture, text: name, bg: bgColor });
 
       new Audio(correct).play(); // ✅ Doğru seçim sesi
 
       const winner = checkWinner();
       if (winner) {
-        alert(winner); // Kazananı bildir
         return;
       }
     }
@@ -502,6 +511,76 @@ function SameScreenGame() {
     div?.classList.toggle("hidden");
   };
 
+  const makeAIMove = () => {
+    let winna = checkWinner();
+    if (winna != null) return;
+    // Boş kutuları bul (sadece taşsız kutular)
+    const emptyBoxes = [
+      { key: "fighter00", state: fighter00 },
+      { key: "fighter01", state: fighter01 },
+      { key: "fighter02", state: fighter02 },
+      { key: "fighter10", state: fighter10 },
+      { key: "fighter11", state: fighter11 },
+      { key: "fighter12", state: fighter12 },
+      { key: "fighter20", state: fighter20 },
+      { key: "fighter21", state: fighter21 },
+      { key: "fighter22", state: fighter22 },
+    ].filter(
+      (box) =>
+        box.state.bg === "from-stone-700 to-stone-800" ||
+        box.state.bg === "from-stone-200 to-stone-300"
+    );
+
+    if (emptyBoxes.length === 0) return;
+    // Rastgele bir kutu seç
+    const randomBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
+
+    // O kutuya uygun dövüşçüleri bul
+    const fighterMap: { [key: string]: keyof typeof positionsFighters } = {
+      fighter00: "position03",
+      fighter01: "position13",
+      fighter02: "position23",
+      fighter10: "position04",
+      fighter11: "position14",
+      fighter12: "position24",
+      fighter20: "position05",
+      fighter21: "position15",
+      fighter22: "position25",
+    };
+    const positionKey = fighterMap[randomBox.key];
+    const possibleFighters = positionsFighters[positionKey];
+
+    if (!possibleFighters || possibleFighters.length === 0) return;
+
+    let randomFighter: any;
+
+    // %15 ihtimalle yanlış dövüşçü seçsin
+    if (Math.random() < 0.15) {
+      // Tüm dövüşçülerden (fighters_url) possibleFighters'ta olmayan rastgele birini seç
+      const wrongFighters = fighters_url.filter(
+        (f: any) => !possibleFighters.some((pf: any) => pf.Id === f.Id)
+      );
+      if (wrongFighters.length > 0) {
+        randomFighter =
+          wrongFighters[Math.floor(Math.random() * wrongFighters.length)];
+      } else {
+        // Eğer yanlış dövüşçü yoksa yine doğru dövüşçü seç
+        randomFighter =
+          possibleFighters[Math.floor(Math.random() * possibleFighters.length)];
+      }
+    } else {
+      // Doğru dövüşçü seç
+      randomFighter =
+        possibleFighters[Math.floor(Math.random() * possibleFighters.length)];
+    }
+
+    setSelected(randomBox.key);
+
+    setTimeout(() => {
+      updateBox(randomFighter, randomBox.key);
+    }, 300);
+  };
+
   useEffect(() => {
     if (gameStart == true) {
       const winner = checkWinner();
@@ -662,6 +741,14 @@ function SameScreenGame() {
 
     return () => clearInterval(interval); // Eski intervali temizle
   }, [timer]);
+
+  useEffect(() => {
+    if (playWithAI && turn === "blue" && gameStart && !gameWinner) {
+      setTimeout(() => {
+        makeAIMove();
+      }, 700); // AI'nın düşünüyormuş gibi gecikmeli oynaması için
+    }
+  }, [turn, playWithAI, gameStart, gameWinner]);
 
   const notify = () => toast.error("Fighter doesnt meet the requirements.");
 
@@ -1519,6 +1606,7 @@ function SameScreenGame() {
             </div>
           </div>
         </div>
+
         <div
           className={`${
             gameStart ? "hidden" : "absolute"
@@ -1634,14 +1722,48 @@ function SameScreenGame() {
                   </select>
                 </div>
               </div>
+              <div className="mt-4 flex justify-center">
+                <label className="font-semibold text-lg mb-2 flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={playWithAI}
+                    onChange={() => setPlayWithAI((prev) => !prev)}
+                    className="peer appearance-none w-5 h-5 border-2 rounded-md transition-all duration-200
+        focus:outline-none
+        checked:bg-gradient-to-br
+        checked:from-indigo-500 checked:to-blue-500
+        checked:border-indigo-600
+        dark:checked:from-indigo-400 dark:checked:to-blue-400
+        border-indigo-400
+        dark:border-indigo-600
+        bg-white
+        dark:bg-stone-900
+        mr-2"
+                  />
+                  <span
+                    className={`
+        w-5 h-5 absolute pointer-events-none
+        flex items-center justify-center
+        text-white
+        text-base
+        left-0
+        peer-checked:opacity-100
+        opacity-0
+        transition
+      `}
+                    style={{ marginLeft: "2px" }}
+                  ></span>
+                  AI'ya karşı oyna
+                </label>
+              </div>
               <div className="flex justify-center">
                 <button
                   onClick={startGame}
                   className={`${
                     theme === "dark"
-                      ? "border-indigo-600 bg-gradient-to-r from-indigo-700 to-indigo-700 text-indigo-100 hover:from-indigo-600 hover:to-indigo-600"
+                      ? "border-indigo-600 bg-gradient-to-r from-indigo-700 to-sky-700 text-indigo-100 hover:from-indigo-600 hover:to-sky-600"
                       : "border-indigo-400 bg-gradient-to-r from-indigo-300 to-sky-400 text-indigo-900 hover:from-indigo-400 hover:to-sky-500"
-                  } border-2 mt-6 text-xl hover:shadow-2xl px-6 py-2 shadow-lg duration-300 cursor-pointer rounded-xl font-bold transform hover:scale-105 transition-all focus:ring-2 focus:ring-blue-400`}
+                  } border-2 mt-4 text-xl hover:shadow-2xl px-6 py-2 shadow-lg duration-300 cursor-pointer rounded-xl font-bold transform hover:scale-105 transition-all focus:ring-2 focus:ring-blue-400`}
                 >
                   PLAY!
                 </button>

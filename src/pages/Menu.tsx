@@ -230,25 +230,25 @@ const Menu = () => {
             <div className="space-y-4">
               <button
                 onClick={handleLocalGame}
-                className="w-full bg-gradient-to-r from-red-500 to-red-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm"
+                className="w-full bg-gradient-to-r from-red-500 to-red-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
               >
                 Play on Same Screen
               </button>
               <button
                 onClick={handleAvailableRooms}
-                className="w-full bg-gradient-to-r from-purple-500 to-purple-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-purple-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm"
+                className="w-full bg-gradient-to-r from-purple-500 to-purple-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-purple-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
               >
                 See Available Rooms
               </button>
               <button
                 onClick={() => setShowCreateFields(true)}
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm"
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
               >
                 Create Room
               </button>
               <button
                 onClick={() => setShowJoinFields(true)}
-                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm"
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
               >
                 Join Room
               </button>
