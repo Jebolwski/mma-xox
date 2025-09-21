@@ -1563,7 +1563,7 @@ function SameScreenGame() {
                       {fighters.map((fighter: any, key: any) => (
                         <div
                           onClick={() => {
-                            updateBox(fighter);
+                            updateBox(fighter, null);
                           }}
                           key={key}
                           className={`flex items-center border cursor-pointer gap-6 my-3 px-2 pt-2 bg-gradient-to-r ${
