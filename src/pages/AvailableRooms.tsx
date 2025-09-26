@@ -12,6 +12,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import return_img from "../assets/return.png";
+import refresh from "../assets/refresh.png";
 
 const AvailableRooms = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -281,7 +282,7 @@ const AvailableRooms = () => {
               title="Refresh available rooms"
             >
               <img
-                src="https://icons.veryicon.com/png/o/miscellaneous/wasteapp/refresh-348.png"
+                src={refresh}
                 alt="refresh"
                 className="w-8"
               />
