@@ -13,7 +13,7 @@
     "@tailwindcss/vite": "^4.0.6",
     "@types/react-router-dom": "^5.3.3",
     "express": "^4.21.2",
-    "firebase": "^11.5.0",
+    "firebase": "^11.10.0",
     "react": "^19.0.0",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",

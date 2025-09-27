@@ -146,7 +146,8 @@ const Home = () => {
         </div>
 
         {/* Menu Buttons */}
-        <div className="flex flex-col justify-center gap-4 max-w-md">
+
+        <div className="flex flex-wrap justify-center gap-4 max-w-md">
           <div
             onClick={() => {
               navigate("/menu");
@@ -161,6 +162,20 @@ const Home = () => {
             }}
           >
             🎮 PLAY
+          </div>
+
+          <div
+            onClick={() => navigate("/login")}
+            className={`w-fit px-10 py-3 text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
+              theme === "dark"
+                ? "bg-blue-600 hover:bg-blue-700 border-blue-400 text-white shadow-lg shadow-blue-600/30"
+                : "bg-blue-500 hover:bg-blue-600 border-blue-300 text-white shadow-lg shadow-blue-500/30"
+            }`}
+            style={{
+              textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
+            }}
+          >
+            🔐 LOGIN
           </div>
         </div>
       </div>
