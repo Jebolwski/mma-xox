@@ -130,9 +130,9 @@ const Room = () => {
 
     const unsubscribe = onSnapshot(q, async (snapshot) => {
       if (snapshot.empty) {
-        console.log("Belge bulunamadı");
+        console.log("Document not found");
         if (role === "guest") {
-          toast.info("Host oyundan çıktı!");
+          toast.info("Host has left the game!");
           setTimeout(() => {
             navigate("/");
           }, 1500);
@@ -384,9 +384,9 @@ const Room = () => {
   useEffect(() => {
     if (gameState != null && role == "host") {
       if (gameState.guest.prev == null && gameState.guest.now != null) {
-        toast.success(gameState.guest.now + " oyuna katıldı!");
+        toast.success(gameState.guest.now + " joined the game!");
       } else if (gameState.guest.prev != null && gameState.guest.now == null) {
-        toast.info(gameState.guest.prev + " oyundan çıktı!");
+        toast.info(gameState.guest.prev + " left the game!");
       }
     }
   }, [gameState]);
@@ -1147,7 +1147,7 @@ const Room = () => {
         });
 
         // Toast mesajını göster ve 1.5 saniye sonra yönlendir
-        toast.success("Oda başarıyla silindi!");
+        toast.success("Room deleted successfully!");
         setTimeout(() => {
           navigate("/");
         }, 1500);
@@ -1167,7 +1167,7 @@ const Room = () => {
         "Hata detayı:",
         error instanceof Error ? error.message : "Bilinmeyen hata"
       );
-      toast.error("Çıkış yapılırken bir hata oluştu!");
+      toast.error("An error occurred while exiting!");
       // Hata durumunda da ana sayfaya yönlendir
       navigate("/");
     } finally {
@@ -1574,7 +1574,7 @@ const Room = () => {
                           if (gameState.guest.now != null) {
                             startGame();
                           } else {
-                            toast.info("Oyuna katılımcı bulunamadı!");
+                            toast.info("No participant found for the game!");
                           }
                         }}
                         className={`${

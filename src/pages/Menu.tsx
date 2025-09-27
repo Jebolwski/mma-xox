@@ -40,7 +40,7 @@ const Menu = () => {
 
   const handleCreateRoom = async () => {
     if (!playerName) {
-      toast.error("Lütfen isminizi girin!");
+      toast.error("Please enter your name!");
       return;
     }
     const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -56,14 +56,14 @@ const Menu = () => {
 
       navigate(`/room/${newRoomId}?role=host&name=${playerName}`);
     } catch (error) {
-      toast.error("Oda oluşturulurken bir hata oluştu!");
+      toast.error("An error occurred while creating the room!");
       console.error(error);
     }
   };
 
   const handleJoinRoom = async () => {
     if (!playerName || !roomCode) {
-      toast.error("Lütfen tüm alanları doldurun!");
+      toast.error("Please fill in all fields!");
       return;
     }
 
@@ -72,27 +72,27 @@ const Menu = () => {
       const roomDoc = await getDoc(roomRef);
 
       if (!roomDoc.exists()) {
-        toast.error("Bu kodda bir oda bulunamadı!");
+        toast.error("No room found with this code!");
         return;
       }
 
       const roomData = roomDoc.data();
 
       if (roomData.guest.now !== null) {
-        toast.error("Bu oda dolu! Başka bir oda deneyin.");
+        toast.error("This room is full! Please try another room.");
         return;
       }
 
       navigate(`/room/${roomCode}?role=guest&name=${playerName}`);
     } catch (error) {
-      toast.error("Odaya katılırken bir hata oluştu!");
+      toast.error("An error occurred while joining the room!");
       console.error(error);
     }
   };
 
   const handleRandomMatch = async () => {
     if (!playerName) {
-      toast.error("Lütfen isminizi girin!");
+      toast.error("Please enter your name!");
       return;
     }
 
@@ -103,7 +103,7 @@ const Menu = () => {
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        toast.error("Şu anda müsait oda bulunmuyor!");
+        toast.error("No available rooms found!");
         return;
       }
 
@@ -118,9 +118,9 @@ const Menu = () => {
 
       // Seçilen odaya guest olarak katıl
       navigate(`/room/${randomRoom.id}?role=guest&name=${playerName}`);
-      toast.success(`${randomRoom.host} ile eşleştin!`);
+      toast.success(`You got matched with ${randomRoom.host}!`);
     } catch (error) {
-      toast.error("Rastgele maç bulunurken bir hata oluştu!");
+      toast.error("An error occurred while finding a random match!");
       console.error(error);
     }
   };
