@@ -146,7 +146,6 @@ const Home = () => {
         </div>
 
         {/* Menu Buttons */}
-
         <div className="flex flex-wrap justify-center gap-4 max-w-md">
           <div
             onClick={() => {
@@ -154,14 +153,14 @@ const Home = () => {
             }}
             className={`w-fit px-10 py-3 text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
               theme === "dark"
-                ? "bg-red-600 hover:bg-red-700 border-red-400 text-white shadow-lg shadow-red-600/30"
-                : "bg-red-500 hover:bg-red-600 border-red-300 text-white shadow-lg shadow-red-500/30"
+                ? "bg-green-600 hover:bg-green-700 border-green-400 text-white shadow-lg shadow-green-600/30"
+                : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
             }`}
             style={{
               textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
             }}
           >
-            🎮 PLAY
+            🎮 PLAY AS GUEST
           </div>
 
           <div

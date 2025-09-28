@@ -151,7 +151,7 @@ const Login = () => {
               className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 ${
                 loading
                   ? "opacity-50 cursor-not-allowed"
-                  : "hover:scale-105 hover:shadow-xl"
+                  : "hover:scale-105 cursor-pointer hover:shadow-xl"
               } ${
                 isSignUp
                   ? "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
@@ -165,7 +165,7 @@ const Login = () => {
           <div className="mt-6 text-center">
             <button
               onClick={() => setIsSignUp(!isSignUp)}
-              className={`text-sm hover:underline transition-colors duration-200 ${
+              className={`text-sm hover:underline transition-colors cursor-pointer duration-200 ${
                 theme === "dark"
                   ? "text-purple-400 hover:text-purple-300"
                   : "text-indigo-600 hover:text-indigo-500"

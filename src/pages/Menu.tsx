@@ -15,10 +15,12 @@ import {
 import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
+import { useAuth } from "../context/AuthContext";
 
 const Menu = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const { currentUser, logout } = useAuth(); // EKLENDI
 
   const [playerName, setPlayerName] = useState("");
   const [roomCode, setRoomCode] = useState("");
@@ -125,6 +127,16 @@ const Menu = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully!");
+      navigate("/"); // Home'a git
+    } catch (error) {
+      toast.error("Failed to logout");
+    }
+  };
+
   return (
     <>
       <ToastContainer
@@ -184,6 +196,55 @@ const Menu = () => {
           ))}
         </div>
 
+        {/* Back Button / User Info - Sağ üstte */}
+        <div className="absolute z-30 top-6 right-6">
+          {currentUser ? (
+            // Giriş yapmış kullanıcı için username ve logout
+            <div className="flex items-center gap-3">
+              <div
+                className={`px-4 py-2 rounded-xl backdrop-blur-md border ${
+                  theme === "dark"
+                    ? "bg-slate-800/80 border-slate-600/50 text-white"
+                    : "bg-white/80 border-slate-200/50 text-slate-800"
+                } shadow-lg`}
+              >
+                <span className="text-sm font-medium">
+                  👤 {currentUser.email}
+                </span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className={`px-4 py-2 rounded-xl cursor-pointer backdrop-blur-md border transition-all duration-300 hover:scale-105 ${
+                  theme === "dark"
+                    ? "bg-red-600/80 border-red-500/50 text-white hover:bg-red-500/80"
+                    : "bg-red-500/80 border-red-400/50 text-white hover:bg-red-600/80"
+                } shadow-lg`}
+              >
+                🚪 Logout
+              </button>
+            </div>
+          ) : (
+            // Giriş yapmamış kullanıcı için back to home butonu
+            <div
+              onClick={handleExit}
+              className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
+                theme === "dark"
+                  ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
+                  : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
+              }`}
+            >
+              <div className="flex gap-2 items-center">
+                <img
+                  src={return_img || "/placeholder.svg"}
+                  className="w-6"
+                />
+                <p className="font-semibold">Back to home</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Theme Toggle - Sol üstte kalacak */}
         <div className="absolute z-30 top-6 left-6">
           <div
             onClick={toggleTheme}
@@ -206,28 +267,6 @@ const Menu = () => {
                 alt="Dark mode"
               />
             )}
-          </div>
-        </div>
-
-        {/* Back Button */}
-        <div
-          className="absolute z-30 top-6 right-6"
-          onClick={handleExit}
-        >
-          <div
-            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
-              theme === "dark"
-                ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
-                : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
-            }`}
-          >
-            <div className="flex gap-2 items-center">
-              <img
-                src={return_img || "/placeholder.svg"}
-                className="w-6"
-              />
-              <p className="font-semibold">Back to home</p>
-            </div>
           </div>
         </div>
 
