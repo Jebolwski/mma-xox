@@ -1149,7 +1149,7 @@ const Room = () => {
         // Toast mesajını göster ve 1.5 saniye sonra yönlendir
         toast.success("Room deleted successfully!");
         setTimeout(() => {
-          navigate("/");
+          navigate("/menu");
         }, 1500);
       } else if (role === "guest") {
         // Guest çıkarsa sadece guest'i null yap
@@ -1159,7 +1159,7 @@ const Room = () => {
           gameStarted: false,
         });
         console.log(`${playerName} (guest) oyundan çıktı.`);
-        navigate("/");
+        navigate("/menu");
       }
     } catch (error) {
       console.error("Çıkış yapılırken hata oluştu:", error);
@@ -1169,7 +1169,7 @@ const Room = () => {
       );
       toast.error("An error occurred while exiting!");
       // Hata durumunda da ana sayfaya yönlendir
-      navigate("/");
+      navigate("/menu");
     } finally {
       setIsExiting(false);
     }

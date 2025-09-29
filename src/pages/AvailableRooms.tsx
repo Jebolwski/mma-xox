@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext"; // EKLENDI
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import return_img from "../assets/return.png";
@@ -16,12 +17,23 @@ import refresh from "../assets/refresh.png";
 
 const AvailableRooms = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const { currentUser } = useAuth(); // EKLENDI
   const [rooms, setRooms] = useState([]);
-  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [guestName, setGuestName] = useState("");
   const [cahRefresh, setCahRefresh] = useState(true);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // Kullanıcı adını otomatik al
+  const getPlayerName = () => {
+    if (currentUser) {
+      // Giriş yapmış kullanıcı için email'den username al
+      return currentUser.email?.split("@")[0] || "User";
+    }
+    // Guest kullanıcı için manuel girilen ismi kullan
+    return guestName;
+  };
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -44,22 +56,46 @@ const AvailableRooms = () => {
   };
 
   const handleJoinRoom = async () => {
-    if (!guestName) {
+    const finalPlayerName = getPlayerName();
+
+    // Guest kullanıcı için isim kontrolü
+    if (!currentUser && !guestName) {
       toast.error("Please enter your name!");
       return;
     }
+
     if (!selectedRoom || typeof selectedRoom !== "string") {
       toast.error("No room selected!");
       return;
     }
+
     try {
       const roomRef = doc(db, "rooms", selectedRoom);
       await updateDoc(roomRef, {
-        guest: { now: guestName },
+        guest: { now: finalPlayerName },
       });
-      navigate(`/room/${selectedRoom}?role=guest&name=${guestName}`);
+      navigate(`/room/${selectedRoom}?role=guest&name=${finalPlayerName}`);
     } catch (error) {
       toast.error("Failed to join the room!");
+    }
+  };
+
+  // Eğer giriş yapmış kullanıcıysa direkt join et
+  const handleDirectJoin = async (roomId: string) => {
+    if (currentUser) {
+      const finalPlayerName = getPlayerName();
+      try {
+        const roomRef = doc(db, "rooms", roomId);
+        await updateDoc(roomRef, {
+          guest: { now: finalPlayerName },
+        });
+        navigate(`/room/${roomId}?role=guest&name=${finalPlayerName}`);
+      } catch (error) {
+        toast.error("Failed to join the room!");
+      }
+    } else {
+      // Guest kullanıcı için modal aç
+      setSelectedRoom(roomId);
     }
   };
 
@@ -152,7 +188,7 @@ const AvailableRooms = () => {
 
       <ToastContainer
         position="bottom-right"
-        theme="dark"
+        theme={theme === "dark" ? "dark" : "light"}
       />
 
       {/* Theme Toggle */}
@@ -320,7 +356,7 @@ const AvailableRooms = () => {
                       ? "bg-slate-700/80 border-slate-600 text-slate-200 hover:bg-slate-600/80 hover:border-slate-500"
                       : "bg-white/80 border-slate-300 text-slate-700 hover:bg-white hover:border-slate-400"
                   }`}
-                  onClick={() => handleRoomClick(room.id)}
+                  onClick={() => handleDirectJoin(room.id)} // DEĞİŞTİRİLDİ
                 >
                   <div className="flex gap-2 items-center">
                     <div className="font-semibold flex gap-2 items-center">
@@ -354,13 +390,21 @@ const AvailableRooms = () => {
                       {room.host}
                     </span>
                   </div>
+
+                  {/* Giriş yapmış kullanıcı için bilgi göster */}
+                  {currentUser && (
+                    <div className="mt-2 text-xs opacity-75">
+                      Click to join as: <strong>{getPlayerName()}</strong>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
           )}
         </div>
 
-        {selectedRoom && (
+        {/* Modal sadece guest kullanıcılar için görünür */}
+        {selectedRoom && !currentUser && (
           <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
             <div
               className={`p-8 rounded-2xl shadow-2xl border-4 backdrop-blur-md transition-all duration-300 animate-bounce-slow ${

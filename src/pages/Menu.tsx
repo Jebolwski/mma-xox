@@ -40,23 +40,36 @@ const Menu = () => {
     navigate("/");
   };
 
+  // Kullanıcı adını otomatik al
+  const getPlayerName = () => {
+    if (currentUser) {
+      // Giriş yapmış kullanıcı için email'den username al
+      return currentUser.email?.split("@")[0] || "User";
+    }
+    // Guest kullanıcı için manuel girilen ismi kullan
+    return playerName;
+  };
+
   const handleCreateRoom = async () => {
-    if (!playerName) {
+    const finalPlayerName = getPlayerName();
+
+    if (!currentUser && !playerName) {
       toast.error("Please enter your name!");
       return;
     }
+
     const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
 
     try {
       await setDoc(doc(db, "rooms", newRoomId), {
-        host: playerName,
+        host: finalPlayerName,
         guest: null,
         turn: "red",
         gameStarted: false,
         createdAt: new Date().toISOString(),
       });
 
-      navigate(`/room/${newRoomId}?role=host&name=${playerName}`);
+      navigate(`/room/${newRoomId}?role=host&name=${finalPlayerName}`);
     } catch (error) {
       toast.error("An error occurred while creating the room!");
       console.error(error);
@@ -64,8 +77,15 @@ const Menu = () => {
   };
 
   const handleJoinRoom = async () => {
-    if (!playerName || !roomCode) {
-      toast.error("Please fill in all fields!");
+    const finalPlayerName = getPlayerName();
+
+    if (!currentUser && !playerName) {
+      toast.error("Please enter your name!");
+      return;
+    }
+
+    if (!roomCode) {
+      toast.error("Please enter room code!");
       return;
     }
 
@@ -80,12 +100,12 @@ const Menu = () => {
 
       const roomData = roomDoc.data();
 
-      if (roomData.guest.now !== null) {
+      if (roomData.guest && roomData.guest.now !== null) {
         toast.error("This room is full! Please try another room.");
         return;
       }
 
-      navigate(`/room/${roomCode}?role=guest&name=${playerName}`);
+      navigate(`/room/${roomCode}?role=guest&name=${finalPlayerName}`);
     } catch (error) {
       toast.error("An error occurred while joining the room!");
       console.error(error);
@@ -93,7 +113,9 @@ const Menu = () => {
   };
 
   const handleRandomMatch = async () => {
-    if (!playerName) {
+    const finalPlayerName = getPlayerName();
+
+    if (!currentUser && !playerName) {
       toast.error("Please enter your name!");
       return;
     }
@@ -119,7 +141,7 @@ const Menu = () => {
         availableRooms[Math.floor(Math.random() * availableRooms.length)];
 
       // Seçilen odaya guest olarak katıl
-      navigate(`/room/${randomRoom.id}?role=guest&name=${playerName}`);
+      navigate(`/room/${randomRoom.id}?role=guest&name=${finalPlayerName}`);
       toast.success(`You got matched with ${randomRoom.host}!`);
     } catch (error) {
       toast.error("An error occurred while finding a random match!");
@@ -214,13 +236,19 @@ const Menu = () => {
               </div>
               <button
                 onClick={handleLogout}
-                className={`px-4 py-2 rounded-xl cursor-pointer backdrop-blur-md border transition-all duration-300 hover:scale-105 ${
+                className={`px-4 py-2 bg-red-600/70 rounded-xl cursor-pointer backdrop-blur-md border transition-all duration-300 ${
                   theme === "dark"
-                    ? "bg-red-600/80 border-red-500/50 text-white hover:bg-red-500/80"
-                    : "bg-red-500/80 border-red-400/50 text-white hover:bg-red-600/80"
+                    ? "border-red-500/50 text-white hover:bg-red-600/80"
+                    : "border-red-400/50 text-white hover:bg-red-600/80"
                 } shadow-lg`}
               >
-                🚪 Logout
+                <div className="flex gap-2">
+                  <img
+                    src={return_img || "/placeholder.svg"}
+                    className="w-6"
+                  />
+                  <p>Logout</p>
+                </div>
               </button>
             </div>
           ) : (
@@ -350,17 +378,36 @@ const Menu = () => {
               </div>
             ) : showRandomFields ? (
               <div className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  value={playerName}
-                  onChange={(e) => setPlayerName(e.target.value)}
-                  className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
-                    theme === "dark"
-                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
-                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
-                  }`}
-                />
+                {/* Sadece guest kullanıcılar için isim input'u göster */}
+                {!currentUser && (
+                  <input
+                    type="text"
+                    placeholder="Your name"
+                    value={playerName}
+                    onChange={(e) => setPlayerName(e.target.value)}
+                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                      theme === "dark"
+                        ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                        : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                    }`}
+                  />
+                )}
+
+                {/* Giriş yapmış kullanıcılar için bilgi göster */}
+                {currentUser && (
+                  <div
+                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm ${
+                      theme === "dark"
+                        ? "bg-slate-700/80 border-slate-600/50 text-white"
+                        : "bg-white/80 border-slate-300/50 text-slate-800"
+                    }`}
+                  >
+                    <span className="text-sm">
+                      Playing as: <strong>{getPlayerName()}</strong>
+                    </span>
+                  </div>
+                )}
+
                 <div className="flex gap-3">
                   <button
                     onClick={() => setShowRandomFields(false)}
@@ -382,17 +429,36 @@ const Menu = () => {
               </div>
             ) : showCreateFields ? (
               <div className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  value={playerName}
-                  onChange={(e) => setPlayerName(e.target.value)}
-                  className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
-                    theme === "dark"
-                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
-                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
-                  }`}
-                />
+                {/* Sadece guest kullanıcılar için isim input'u göster */}
+                {!currentUser && (
+                  <input
+                    type="text"
+                    placeholder="Your name"
+                    value={playerName}
+                    onChange={(e) => setPlayerName(e.target.value)}
+                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                      theme === "dark"
+                        ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                        : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                    }`}
+                  />
+                )}
+
+                {/* Giriş yapmış kullanıcılar için bilgi göster */}
+                {currentUser && (
+                  <div
+                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm ${
+                      theme === "dark"
+                        ? "bg-slate-700/80 border-slate-600/50 text-white"
+                        : "bg-white/80 border-slate-300/50 text-slate-800"
+                    }`}
+                  >
+                    <span className="text-sm">
+                      Creating room as: <strong>{getPlayerName()}</strong>
+                    </span>
+                  </div>
+                )}
+
                 <div className="flex gap-3">
                   <button
                     onClick={() => setShowCreateFields(false)}
@@ -414,17 +480,36 @@ const Menu = () => {
               </div>
             ) : (
               <div className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  value={playerName}
-                  onChange={(e) => setPlayerName(e.target.value)}
-                  className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
-                    theme === "dark"
-                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
-                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
-                  }`}
-                />
+                {/* Sadece guest kullanıcılar için isim input'u göster */}
+                {!currentUser && (
+                  <input
+                    type="text"
+                    placeholder="Your name"
+                    value={playerName}
+                    onChange={(e) => setPlayerName(e.target.value)}
+                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                      theme === "dark"
+                        ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                        : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                    }`}
+                  />
+                )}
+
+                {/* Giriş yapmış kullanıcılar için bilgi göster */}
+                {currentUser && (
+                  <div
+                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm ${
+                      theme === "dark"
+                        ? "bg-slate-700/80 border-slate-600/50 text-white"
+                        : "bg-white/80 border-slate-300/50 text-slate-800"
+                    }`}
+                  >
+                    <span className="text-sm">
+                      Joining as: <strong>{getPlayerName()}</strong>
+                    </span>
+                  </div>
+                )}
+
                 <input
                   type="text"
                   placeholder="Room code"

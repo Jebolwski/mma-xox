@@ -1,11 +1,24 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
+
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully!");
+    } catch (error) {
+      toast.error("Failed to logout");
+    }
   };
 
   return (
@@ -71,6 +84,21 @@ const Home = () => {
           )}
         </div>
       </div>
+
+      {/* User Info - Sağ üstte */}
+      {currentUser && (
+        <div className="absolute z-30 top-6 right-6">
+          <div
+            className={`px-4 py-2 rounded-xl backdrop-blur-md border ${
+              theme === "dark"
+                ? "bg-slate-800/80 border-slate-600/50 text-white"
+                : "bg-white/80 border-slate-200/50 text-slate-800"
+            } shadow-lg`}
+          >
+            <span className="text-sm font-medium">👤 {currentUser.email}</span>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
@@ -147,35 +175,69 @@ const Home = () => {
 
         {/* Menu Buttons */}
         <div className="flex flex-wrap justify-center gap-4 max-w-md">
-          <div
-            onClick={() => {
-              navigate("/menu");
-            }}
-            className={`w-fit px-10 py-3 text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
-              theme === "dark"
-                ? "bg-green-600 hover:bg-green-700 border-green-400 text-white shadow-lg shadow-green-600/30"
-                : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
-            }`}
-            style={{
-              textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
-            }}
-          >
-            🎮 PLAY AS GUEST
-          </div>
+          {currentUser ? (
+            // Giriş yapmış kullanıcı için PLAY ve LOGOUT butonları
+            <>
+              <div
+                onClick={() => navigate("/menu")}
+                className={`w-fit px-10 py-3 text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
+                  theme === "dark"
+                    ? "bg-green-600 hover:bg-green-700 border-green-400 text-white shadow-lg shadow-green-600/30"
+                    : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
+                }`}
+                style={{
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
+                }}
+              >
+                🎮 PLAY
+              </div>
 
-          <div
-            onClick={() => navigate("/login")}
-            className={`w-fit px-10 py-3 text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
-              theme === "dark"
-                ? "bg-blue-600 hover:bg-blue-700 border-blue-400 text-white shadow-lg shadow-blue-600/30"
-                : "bg-blue-500 hover:bg-blue-600 border-blue-300 text-white shadow-lg shadow-blue-500/30"
-            }`}
-            style={{
-              textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
-            }}
-          >
-            🔐 LOGIN
-          </div>
+              <div
+                onClick={handleLogout}
+                className={`w-fit px-10 py-3 text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
+                  theme === "dark"
+                    ? "bg-red-600 hover:bg-red-700 border-red-400 text-white shadow-lg shadow-red-600/30"
+                    : "bg-red-500 hover:bg-red-600 border-red-300 text-white shadow-lg shadow-red-500/30"
+                }`}
+                style={{
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
+                }}
+              >
+                🚪 LOGOUT
+              </div>
+            </>
+          ) : (
+            // Giriş yapmamış kullanıcı için PLAY AS GUEST ve LOGIN butonları
+            <>
+              <div
+                onClick={() => navigate("/menu")}
+                className={`w-fit px-10 py-3 text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
+                  theme === "dark"
+                    ? "bg-green-600 hover:bg-green-700 border-green-400 text-white shadow-lg shadow-green-600/30"
+                    : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
+                }`}
+                style={{
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
+                }}
+              >
+                🎮 PLAY AS GUEST
+              </div>
+
+              <div
+                onClick={() => navigate("/login")}
+                className={`w-fit px-10 py-3 text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
+                  theme === "dark"
+                    ? "bg-blue-600 hover:bg-blue-700 border-blue-400 text-white shadow-lg shadow-blue-600/30"
+                    : "bg-blue-500 hover:bg-blue-600 border-blue-300 text-white shadow-lg shadow-blue-500/30"
+                }`}
+                style={{
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
+                }}
+              >
+                🔐 LOGIN
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
