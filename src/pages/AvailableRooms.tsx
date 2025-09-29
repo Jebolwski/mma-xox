@@ -51,9 +51,9 @@ const AvailableRooms = () => {
     fetchRooms();
   }, []);
 
-  const handleRoomClick = (roomId: any) => {
-    setSelectedRoom(roomId);
-  };
+  // const handleRoomClick = (roomId: any) => {
+  //   setSelectedRoom(roomId);
+  // };
 
   const handleJoinRoom = async () => {
     const finalPlayerName = getPlayerName();
