@@ -222,7 +222,7 @@ const Menu = () => {
         <div className="absolute z-30 top-6 right-6">
           {currentUser ? (
             // Giriş yapmış kullanıcı için username ve logout
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap justify-end items-center gap-3">
               <div
                 className={`px-4 py-2 rounded-xl backdrop-blur-md border ${
                   theme === "dark"
@@ -231,7 +231,7 @@ const Menu = () => {
                 } shadow-lg`}
               >
                 <span className="text-sm font-medium">
-                  👤 {currentUser.email}
+                  👤 {currentUser.email?.split("@")[0] || "User"}
                 </span>
               </div>
               <button
@@ -245,9 +245,9 @@ const Menu = () => {
                 <div className="flex gap-2">
                   <img
                     src={return_img || "/placeholder.svg"}
-                    className="w-6"
+                    className="lg:w-6 w-5"
                   />
-                  <p>Logout</p>
+                  <p className="lg:block hidden">Logout</p>
                 </div>
               </button>
             </div>
@@ -285,13 +285,13 @@ const Menu = () => {
             {theme === "dark" ? (
               <img
                 src="https://clipart-library.com/images/6iypd9jin.png"
-                className="w-6 h-6"
+                className="lg:w-6 lg:h-6 w-5 h-5"
                 alt="Light mode"
               />
             ) : (
               <img
                 src="https://clipart-library.com/img/1669853.png"
-                className="w-6 h-6"
+                className="lg:w-6 lg:h-6 w-5 h-5"
                 alt="Dark mode"
               />
             )}
