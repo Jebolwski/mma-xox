@@ -7,6 +7,8 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { toast, ToastContainer } from "react-toastify";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,13 +25,43 @@ const Login = () => {
       toast.error("Please fill all fields!");
       return;
     }
+    console.log("messi aminake");
 
     setLoading(true);
     try {
       if (isSignUp) {
-        await createUserWithEmailAndPassword(auth, email, password);
+        // Sign up işlemi
+        const result = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        // Firestore'a kullanıcı profili oluştur
+        const userRef = doc(db, "users", result.user.email!);
+        const defaultStats = {
+          points: 100,
+          totalGames: 0,
+          wins: 0,
+          losses: 0,
+          draws: 0,
+          winRate: 0,
+          level: "Silver",
+          createdAt: new Date().toISOString(),
+          lastActive: new Date().toISOString(),
+        };
+
+        await setDoc(userRef, {
+          email: result.user.email,
+          username: result.user.email?.split("@")[0] || "User",
+          stats: defaultStats,
+          createdAt: new Date().toISOString(),
+          lastActive: new Date().toISOString(),
+        });
+
         toast.success("Account created successfully!");
       } else {
+        // Sign in işlemi
         await signInWithEmailAndPassword(auth, email, password);
         toast.success("Logged in successfully!");
       }

@@ -39,7 +39,11 @@ const AvailableRooms = () => {
     const fetchRooms = async () => {
       setLoading(true);
       const roomsRef = collection(db, "rooms");
-      const q = query(roomsRef, where("guest.now", "==", null));
+      const q = query(
+        roomsRef,
+        where("guest.now", "==", null), // DOĞRU
+        where("isRankedRoom", "==", false)
+      );
       const querySnapshot = await getDocs(q);
       const roomList: any = [];
       querySnapshot.forEach((doc) => {
@@ -73,6 +77,7 @@ const AvailableRooms = () => {
       const roomRef = doc(db, "rooms", selectedRoom);
       await updateDoc(roomRef, {
         guest: { now: finalPlayerName },
+        guestJoinMethod: "available-rooms", // EKLENDI
       });
       navigate(`/room/${selectedRoom}?role=guest&name=${finalPlayerName}`);
     } catch (error) {
@@ -88,6 +93,7 @@ const AvailableRooms = () => {
         const roomRef = doc(db, "rooms", roomId);
         await updateDoc(roomRef, {
           guest: { now: finalPlayerName },
+          guestJoinMethod: "available-rooms", // EKLENDI
         });
         navigate(`/room/${roomId}?role=guest&name=${finalPlayerName}`);
       } catch (error) {
@@ -117,7 +123,11 @@ const AvailableRooms = () => {
     }, 5000);
 
     const roomsRef = collection(db, "rooms");
-    const q = query(roomsRef, where("guest.now", "==", null));
+    const q = query(
+      roomsRef,
+      where("guest.now", "==", null),
+      where("isRankedRoom", "==", false) // EKLENDI - ranked odaları gösterme
+    );
     const querySnapshot = await getDocs(q);
     const roomList: any = [];
     querySnapshot.forEach((doc) => {

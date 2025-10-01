@@ -11,6 +11,7 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
@@ -27,6 +28,8 @@ const Menu = () => {
   const [showJoinFields, setShowJoinFields] = useState(false);
   const [showCreateFields, setShowCreateFields] = useState(false);
   const [showRandomFields, setShowRandomFields] = useState(false);
+  const [isRankedRoom, setIsRankedRoom] = useState(false); // EKLENDI
+  const [showRankedConfirm, setShowRankedConfirm] = useState(false); // EKLENDI
 
   const handleLocalGame = () => {
     navigate("/same-screen");
@@ -63,13 +66,20 @@ const Menu = () => {
     try {
       await setDoc(doc(db, "rooms", newRoomId), {
         host: finalPlayerName,
+        hostJoinMethod: "create",
         guest: null,
+        guestJoinMethod: null,
+        isRankedRoom: currentUser ? isRankedRoom : false,
         turn: "red",
         gameStarted: false,
         createdAt: new Date().toISOString(),
       });
 
-      navigate(`/room/${newRoomId}?role=host&name=${finalPlayerName}`);
+      // URL'e ranked bilgisini ekle
+      const rankedParam = currentUser && isRankedRoom ? "&ranked=true" : "";
+      navigate(
+        `/room/${newRoomId}?role=host&name=${finalPlayerName}${rankedParam}`
+      );
     } catch (error) {
       toast.error("An error occurred while creating the room!");
       console.error(error);
@@ -105,6 +115,12 @@ const Menu = () => {
         return;
       }
 
+      // Odaya katıl ve guestJoinMethod'u set et
+      await updateDoc(roomRef, {
+        guest: { now: finalPlayerName },
+        guestJoinMethod: "direct-code", // EKLENDI
+      });
+
       navigate(`/room/${roomCode}?role=guest&name=${finalPlayerName}`);
     } catch (error) {
       toast.error("An error occurred while joining the room!");
@@ -112,6 +128,7 @@ const Menu = () => {
     }
   };
 
+  // Random Match (Puansız) - mevcut fonksiyonu güncelle
   const handleRandomMatch = async () => {
     const finalPlayerName = getPlayerName();
 
@@ -121,17 +138,21 @@ const Menu = () => {
     }
 
     try {
-      // Müsait odaları getir
+      // Sadece NON-RANKED odaları ara
       const roomsRef = collection(db, "rooms");
-      const q = query(roomsRef, where("guest.now", "==", null));
+      const q = query(
+        roomsRef,
+        where("guest.now", "==", null), // DOĞRU
+        where("isRankedRoom", "==", false)
+      );
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        toast.error("No available rooms found!");
+        toast.error("No available casual rooms found!");
         return;
       }
 
-      // Rastgele bir oda seç
+      // Rastgele bir casual oda seç
       const availableRooms: any[] = [];
       querySnapshot.forEach((doc) => {
         availableRooms.push({ id: doc.id, ...doc.data() });
@@ -140,13 +161,66 @@ const Menu = () => {
       const randomRoom =
         availableRooms[Math.floor(Math.random() * availableRooms.length)];
 
-      // Seçilen odaya guest olarak katıl
+      // Odaya katılırken guestJoinMethod'u set et
+      await updateDoc(doc(db, "rooms", randomRoom.id), {
+        guest: { now: finalPlayerName },
+        guestJoinMethod: "random",
+      });
+
       navigate(`/room/${randomRoom.id}?role=guest&name=${finalPlayerName}`);
       toast.success(`You got matched with ${randomRoom.host}!`);
     } catch (error) {
       toast.error("An error occurred while finding a random match!");
       console.error(error);
     }
+  };
+
+  // Yeni Ranked Match fonksiyonu
+  const handleRankedMatch = async () => {
+    const finalPlayerName = getPlayerName();
+
+    try {
+      // Sadece RANKED odaları ara
+      const roomsRef = collection(db, "rooms");
+      const q = query(
+        roomsRef,
+        where("guest.now", "==", null), // DOĞRU - burada hata vardı
+        where("isRankedRoom", "==", true)
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        toast.error("No available ranked rooms found!");
+        return;
+      }
+
+      // Rastgele bir ranked oda seç
+      const availableRooms: any[] = [];
+      querySnapshot.forEach((doc) => {
+        availableRooms.push({ id: doc.id, ...doc.data() });
+      });
+
+      const randomRoom =
+        availableRooms[Math.floor(Math.random() * availableRooms.length)];
+
+      // Odaya katılırken guestJoinMethod'u set et
+      await updateDoc(doc(db, "rooms", randomRoom.id), {
+        guest: { now: finalPlayerName },
+        guestJoinMethod: "random",
+      });
+
+      navigate(`/room/${randomRoom.id}?role=guest&name=${finalPlayerName}`);
+      toast.success(`Ranked match found! Playing against ${randomRoom.host}!`);
+    } catch (error) {
+      toast.error("An error occurred while finding a ranked match!");
+      console.error(error);
+    }
+  };
+
+  // Ranked onay fonksiyonu
+  const handleRankedConfirm = () => {
+    setShowRankedConfirm(false);
+    handleRankedMatch();
   };
 
   const handleLogout = async () => {
@@ -224,7 +298,8 @@ const Menu = () => {
             // Giriş yapmış kullanıcı için username ve logout
             <div className="flex flex-wrap justify-end items-center gap-3">
               <div
-                className={`px-4 py-2 rounded-xl backdrop-blur-md border ${
+                onClick={() => navigate("/profile")}
+                className={`px-4 py-2 rounded-xl backdrop-blur-md border cursor-pointer ${
                   theme === "dark"
                     ? "bg-slate-800/80 border-slate-600/50 text-white"
                     : "bg-white/80 border-slate-200/50 text-slate-800"
@@ -352,7 +427,22 @@ const Menu = () => {
                   onClick={() => setShowRandomFields(true)}
                   className="w-full bg-gradient-to-r from-orange-500 to-orange-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
                 >
-                  🎲 Random Match
+                  🎲 Random Match (Casual)
+                </button>
+
+                {/* YENİ RANKED BUTONU */}
+                <button
+                  onClick={() =>
+                    currentUser ? setShowRankedConfirm(true) : null
+                  }
+                  disabled={!currentUser}
+                  className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg ${
+                    currentUser
+                      ? "bg-gradient-to-r from-yellow-500 to-yellow-600 cursor-pointer text-white hover:from-yellow-600 hover:to-yellow-700 hover:shadow-xl hover:scale-102"
+                      : "bg-gray-400 cursor-not-allowed text-gray-200"
+                  } backdrop-blur-sm`}
+                >
+                  🏆 Ranked Match {!currentUser && "(Login Required)"}
                 </button>
 
                 <button
@@ -375,6 +465,16 @@ const Menu = () => {
                 >
                   Join Room
                 </button>
+
+                {/* YENİ PROFİL BUTONU - Sadece giriş yapmış kullanıcılar için */}
+                {currentUser && (
+                  <button
+                    onClick={() => navigate("/profile")}
+                    className="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-indigo-600 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
+                  >
+                    👤 My Profile
+                  </button>
+                )}
               </div>
             ) : showRandomFields ? (
               <div className="space-y-4">
@@ -459,9 +559,53 @@ const Menu = () => {
                   </div>
                 )}
 
+                {/* Ranked Room Checkbox - Sadece giriş yapmış kullanıcılar için */}
+                {currentUser && (
+                  <div className="flex items-center gap-3">
+                    <label className="flex items-center gap-2 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={isRankedRoom}
+                        onChange={(e) => setIsRankedRoom(e.target.checked)}
+                        className={`appearance-none w-5 h-5 border-2 rounded-md transition-all duration-200
+              focus:outline-none
+              checked:bg-gradient-to-br
+              checked:from-green-500 checked:to-green-600
+              checked:border-green-600
+              border-slate-400
+              ${
+                theme === "dark"
+                  ? "dark:border-slate-600 bg-slate-900"
+                  : "bg-white"
+              }`}
+                      />
+                      <span
+                        className={`
+              w-5 h-5 absolute pointer-events-none
+              flex items-center justify-center
+              text-white
+              text-sm
+              peer-checked:opacity-100
+              opacity-0
+              transition
+            `}
+                        style={{ marginLeft: "2px" }}
+                      >
+                        ✓
+                      </span>
+                      <span className="text-sm font-medium">
+                        🏆 Ranked Room (Only for random matches)
+                      </span>
+                    </label>
+                  </div>
+                )}
+
                 <div className="flex gap-3">
                   <button
-                    onClick={() => setShowCreateFields(false)}
+                    onClick={() => {
+                      setShowCreateFields(false);
+                      setIsRankedRoom(false); // Reset checkbox
+                    }}
                     className={`w-1/2 py-3 rounded-xl font-semibold transition-all cursor-pointer duration-300 backdrop-blur-sm ${
                       theme === "dark"
                         ? "bg-slate-600/80 text-white hover:bg-slate-500/80"
@@ -544,6 +688,92 @@ const Menu = () => {
           </div>
         </div>
       </div>
+
+      {/* YENİ RANKED CONFIRMATION MODAL */}
+      {showRankedConfirm && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+          <div
+            className={`p-8 rounded-2xl shadow-2xl border-4 backdrop-blur-md transition-all duration-300 max-w-md w-full mx-4 ${
+              theme === "dark"
+                ? "bg-slate-800/95 border-yellow-500 shadow-yellow-500/30"
+                : "bg-white/95 border-yellow-600 shadow-yellow-600/30"
+            }`}
+          >
+            <div className="text-center">
+              <div className="text-6xl mb-4">🏆</div>
+              <h2
+                className={`text-2xl font-bold mb-4 ${
+                  theme === "dark" ? "text-slate-200" : "text-slate-700"
+                }`}
+              >
+                Ranked Match
+              </h2>
+              <p
+                className={`mb-6 ${
+                  theme === "dark" ? "text-slate-300" : "text-slate-600"
+                }`}
+              >
+                You're about to enter a <strong>ranked match</strong> where your
+                points will be affected based on the result.
+              </p>
+              <div
+                className={`p-4 rounded-lg mb-6 ${
+                  theme === "dark"
+                    ? "bg-slate-700/50 border border-slate-600"
+                    : "bg-slate-100 border border-slate-300"
+                }`}
+              >
+                <div className="text-sm space-y-1">
+                  <div className="flex justify-between">
+                    <span>🏅 Win:</span>
+                    <span className="text-green-500 font-semibold">
+                      +10 points
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>❌ Loss:</span>
+                    <span className="text-red-500 font-semibold">
+                      -3 points
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>🤝 Draw:</span>
+                    <span className="text-yellow-500 font-semibold">
+                      +2 points
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <p
+                className={`text-sm mb-6 ${
+                  theme === "dark" ? "text-slate-400" : "text-slate-500"
+                }`}
+              >
+                Are you sure you want to proceed?
+              </p>
+            </div>
+
+            <div className="flex gap-4">
+              <button
+                onClick={() => setShowRankedConfirm(false)}
+                className={`flex-1 py-3 rounded-xl font-bold transition-all duration-200 hover:scale-105 ${
+                  theme === "dark"
+                    ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
+                    : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
+                }`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleRankedConfirm}
+                className="flex-1 py-3 rounded-xl font-bold transition-all duration-200 hover:scale-105 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white shadow-lg shadow-yellow-600/30"
+              >
+                Let's Go! 🚀
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

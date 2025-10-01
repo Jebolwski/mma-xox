@@ -36,6 +36,7 @@ const Room = () => {
   const [searchParams] = useSearchParams();
   const role = searchParams.get("role");
   const playerName = searchParams.get("name");
+  const isRanked = searchParams.get("ranked") === "true"; // EKLENDI
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { shouldShowAd, recordAdView } = useAdContext();
   const [gameState, setGameState] = useState<any>(null);
@@ -213,11 +214,14 @@ const Room = () => {
         const roomRef = doc(db, "rooms", roomId!);
         await setDoc(roomRef, {
           host: playerName,
+          hostJoinMethod: "create",
           guest: { prev: null, now: null },
+          guestJoinMethod: null,
+          isRankedRoom: isRanked, // URL'den gelen değeri kullan
           turn: "red",
           gameStarted: false,
           filtersSelected: [],
-          createdAt: serverTimestamp(), // <--- EKLENDİ
+          createdAt: serverTimestamp(),
           fighter00: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
@@ -267,7 +271,7 @@ const Room = () => {
       };
       initializeGame();
     }
-  }, [roomId, role, playerName]);
+  }, [roomId, role, playerName, isRanked]); // isRanked'i dependency'e ekle
 
   useEffect(() => {
     if (

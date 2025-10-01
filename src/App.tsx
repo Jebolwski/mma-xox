@@ -7,6 +7,7 @@ import Menu from "./pages/Menu";
 import SameScreenGame from "./pages/SameScreenGame";
 import Room from "./pages/Room";
 import AvailableRooms from "./pages/AvailableRooms";
+import Profile from "./pages/Profile"; // EKLENDI
 import { ThemeProvider } from "./context/ThemeContext";
 import { AdProvider } from "./context/AdContext";
 import { AuthProvider } from "./context/AuthContext"; // EKLENDI
@@ -30,6 +31,11 @@ function App() {
                 path="/menu"
                 element={<Menu />}
               />
+              <Route
+                path="/profile"
+                element={<Profile />}
+              />{" "}
+              {/* EKLENDI */}
               <Route
                 path="/same-screen"
                 element={<SameScreenGame />}
