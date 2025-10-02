@@ -1383,18 +1383,35 @@ const Room = () => {
                 gameState?.gameStarted == true ? "flex" : "hidden"
               } justify-between items-center gap-3 flex-wrap text-right pt-2`}
             >
-              <div
-                onClick={() => {
-                  restartGame();
-                }}
-                className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
-                  theme === "dark"
-                    ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-white"
-                    : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80"
-                }`}
-              >
-                Restart Game
-              </div>
+              {/* Restart Game butonu - sadece casual maçlarda göster */}
+              {!gameState?.isRankedRoom && (
+                <div
+                  onClick={() => {
+                    restartGame();
+                  }}
+                  className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
+                    theme === "dark"
+                      ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-white"
+                      : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80"
+                  }`}
+                >
+                  Restart Game
+                </div>
+              )}
+
+              {/* Ranked maçlarda bilgi göster */}
+              {gameState?.isRankedRoom && (
+                <div
+                  className={`flex gap-2 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 ${
+                    theme === "dark"
+                      ? "bg-gradient-to-r from-yellow-700/80 to-yellow-600/80 border-yellow-500/30 text-yellow-100"
+                      : "bg-gradient-to-r from-yellow-200/80 to-yellow-300/80 border-yellow-400/30 text-yellow-800"
+                  }`}
+                >
+                  🏆 <span>Ranked Match</span>
+                </div>
+              )}
+
               <div>
                 {gameState?.gameStarted == true &&
                 parseInt(gameState?.timerLength) >= 0 ? (
@@ -1409,6 +1426,7 @@ const Room = () => {
                   </p>
                 ) : null}
               </div>
+              {/* Turn bilgisi ve Skip butonu */}
               {gameState?.turn == "red" ? (
                 <div
                   className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
@@ -1707,8 +1725,8 @@ const Room = () => {
                         }}
                         className={`${
                           theme === "dark"
-                            ? "border-indigo-600 bg-gradient-to-r from-indigo-700 to-indigo-700 text-indigo-100 hover:from-indigo-600 hover:to-indigo-600"
-                            : "border-indigo-400 bg-gradient-to-r from-indigo-300 to-sky-400 text-indigo-900 hover:from-indigo-400 hover:to-sky-500"
+                            ? "border-indigo-600 bg-gradient-to-r from-green-700 to-green-700 text-green-100 hover:from-green-600 hover:to-green-600"
+                            : "border-green-400 bg-gradient-to-r from-green-300 to-green-400 text-green-900 hover:from-green-400 hover:to-green-500"
                         } ${
                           gameState.guest.now == null
                             ? "opacity-70"
