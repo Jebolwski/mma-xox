@@ -30,6 +30,8 @@ import AdBanner from "../components/AdBanner";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 
+import { useAuth } from "../context/AuthContext"; // Add this import if you have an AuthContext
+
 const Room = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
@@ -39,6 +41,7 @@ const Room = () => {
   const isRanked = searchParams.get("ranked") === "true"; // EKLENDI
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { shouldShowAd, recordAdView } = useAdContext();
+  const { currentUser } = useAuth(); // Get currentUser from AuthContext
   const [gameState, setGameState] = useState<any>(null);
   const [guest, setGuest] = useState<any>(null);
   const [turn, setTurn] = useState<string | null>(null);
@@ -214,10 +217,14 @@ const Room = () => {
         const roomRef = doc(db, "rooms", roomId!);
         await setDoc(roomRef, {
           host: playerName,
+          hostEmail: currentUser?.email || null,
           hostJoinMethod: "create",
           guest: { prev: null, now: null },
+          guestEmail: null,
           guestJoinMethod: null,
-          isRankedRoom: isRanked, // URL'den gelen değeri kullan
+          isRankedRoom: isRanked,
+          hostReady: false, // EKLENDI
+          guestReady: false, // EKLENDI
           turn: "red",
           gameStarted: false,
           filtersSelected: [],
@@ -291,6 +298,26 @@ const Room = () => {
       joinGame();
     }
   }, [gameState, role, playerName, roomId, hasExited]);
+
+  useEffect(() => {
+    if (
+      gameState?.isRankedRoom &&
+      gameState?.hostReady &&
+      gameState?.guestReady &&
+      !gameState?.gameStarted &&
+      role === "host"
+    ) {
+      setDifficulty("MEDIUM");
+      setTimerLength("30");
+      startGame();
+      toast.success("🏆 Both players ready! Starting ranked match...");
+    }
+  }, [
+    gameState?.hostReady,
+    gameState?.guestReady,
+    gameState?.gameStarted,
+    role,
+  ]);
 
   useEffect(() => {
     if (!roomId) return;
@@ -1455,10 +1482,8 @@ const Room = () => {
                   <div className="flex w-full h-full justify-center items-center bg-[#00000092]">
                     <div
                       className={`${
-                        theme == "dark"
-                          ? "from-indigo-700 to-indigo-800 border-indigo-600"
-                          : "from-indigo-100 to-indigo-200 border-indigo-300"
-                      } z-30 bg-gradient-to-b border-2 rounded-lg p-5 px-10`}
+                        theme == "dark" ? "" : ""
+                      } z-30 bg-gradient-to-b rounded-lg p-5 px-10`}
                     >
                       <div className="flex gap-3 items-center">
                         <img
@@ -1467,115 +1492,214 @@ const Room = () => {
                           className="w-10 drop-shadow-lg"
                         />
                         <h1 className="font-bold text-2xl bg-gradient-to-r from-indigo-400 to-indigo-400 bg-clip-text text-transparent">
-                          MMA XOX
+                          MMA XOX {gameState?.isRankedRoom && "🏆"}
                         </h1>
                       </div>
                       <div className="flex text-center justify-center">
                         <div className="mt-6">
-                          <div className="mb-4">
-                            <h2 className="font-semibold text-lg mb-2">
-                              CHOOSE DIFFICULTY
-                            </h2>
-                            <select
-                              value={difficulty}
-                              onChange={(e) => setDifficulty(e.target.value)}
-                              className={`${
-                                theme === "dark"
-                                  ? "text-indigo-100 bg-gradient-to-r from-indigo-800 to-indigo-800 border-indigo-600"
-                                  : "text-indigo-900 bg-gradient-to-r from-indigo-200 to-sky-300 border-indigo-400"
-                              } shadow-lg focus:outline-0 cursor-pointer border-2 font-semibold rounded-lg px-3 py-1 transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-indigo-400`}
-                            >
-                              <option
-                                value="EASY"
+                          {/* Sadece casual maçlarda zorluk seçimi göster */}
+                          {!gameState?.isRankedRoom && (
+                            <div className="mb-4">
+                              <h2 className="font-semibold text-lg mb-2">
+                                CHOOSE DIFFICULTY
+                              </h2>
+                              <select
+                                value={difficulty}
+                                onChange={(e) => setDifficulty(e.target.value)}
                                 className={`${
                                   theme === "dark"
-                                    ? "bg-indigo-800"
-                                    : "bg-sky-100"
+                                    ? "text-indigo-100 bg-gradient-to-r from-indigo-800 to-indigo-800 border-indigo-600"
+                                    : "text-indigo-900 bg-gradient-to-r from-indigo-200 to-sky-300 border-indigo-400"
+                                } shadow-lg focus:outline-0 cursor-pointer border-2 font-semibold rounded-lg px-3 py-1 transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-indigo-400`}
+                              >
+                                <option
+                                  value="EASY"
+                                  className={`${
+                                    theme === "dark"
+                                      ? "bg-indigo-800"
+                                      : "bg-sky-100"
+                                  }`}
+                                >
+                                  EASY
+                                </option>
+                                <option
+                                  value="MEDIUM"
+                                  className={`${
+                                    theme === "dark"
+                                      ? "bg-indigo-800"
+                                      : "bg-sky-100"
+                                  }`}
+                                >
+                                  MEDIUM
+                                </option>
+                                <option
+                                  value="HARD"
+                                  className={`${
+                                    theme === "dark"
+                                      ? "bg-indigo-800"
+                                      : "bg-sky-100"
+                                  }`}
+                                >
+                                  HARD
+                                </option>
+                              </select>
+                            </div>
+                          )}
+
+                          {/* Ranked maçlarda bilgi göster */}
+                          {gameState?.isRankedRoom && (
+                            <div className="mb-4">
+                              <div
+                                className={`p-4 rounded-lg border-2 ${
+                                  theme === "dark"
+                                    ? "bg-yellow-900/30 border-yellow-600"
+                                    : "bg-yellow-100/50 border-yellow-400"
                                 }`}
                               >
-                                EASY
-                              </option>
-                              <option
-                                value="MEDIUM"
+                                <h2 className="font-semibold text-lg mb-2 flex items-center justify-center gap-2">
+                                  🏆{" "}
+                                  <span className="text-yellow-600">
+                                    Ranked Match
+                                  </span>
+                                </h2>
+                                <div className="space-y-2 text-sm">
+                                  <div className="flex justify-between items-center">
+                                    <span>Difficulty:</span>
+                                    <span className="font-bold text-orange-500">
+                                      MEDIUM
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between items-center">
+                                    <span>Timer:</span>
+                                    <span className="font-bold text-blue-500">
+                                      30 Seconds
+                                    </span>
+                                  </div>
+                                  <p
+                                    className={`text-xs mt-2 ${
+                                      theme === "dark"
+                                        ? "text-yellow-400"
+                                        : "text-yellow-700"
+                                    }`}
+                                  >
+                                    Settings are fixed for competitive fairness
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Ranked maçlarda ready status göster */}
+                          {gameState?.isRankedRoom && (
+                            <div className="mb-4">
+                              <div
+                                className={`p-3 rounded-lg border ${
+                                  theme === "dark"
+                                    ? "bg-slate-700/50 border-slate-600"
+                                    : "bg-slate-100 border-slate-300"
+                                }`}
+                              >
+                                <div className="space-y-2 text-sm">
+                                  <div className="flex justify-between items-center">
+                                    <span>You ({gameState.host}):</span>
+                                    <span
+                                      className={`font-semibold ${
+                                        gameState.hostReady
+                                          ? "text-green-500"
+                                          : "text-orange-500"
+                                      }`}
+                                    >
+                                      {gameState.hostReady
+                                        ? "✅ Ready"
+                                        : "⏳ Waiting..."}
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between items-center">
+                                    <span>Guest ({gameState.guest.now}):</span>
+                                    <span
+                                      className={`font-semibold ${
+                                        gameState.guestReady
+                                          ? "text-green-500"
+                                          : "text-orange-500"
+                                      }`}
+                                    >
+                                      {gameState.guestReady
+                                        ? "✅ Ready"
+                                        : "⏳ Waiting..."}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Timer seçimi - sadece casual maçlarda */}
+                          {!gameState?.isRankedRoom && (
+                            <div className="mb-3">
+                              <h2 className="font-semibold text-lg">TIMER</h2>
+                              <select
+                                value={timerLength}
+                                onChange={(e) => setTimerLength(e.target.value)}
                                 className={`${
                                   theme === "dark"
-                                    ? "bg-indigo-800"
-                                    : "bg-sky-100"
-                                }`}
+                                    ? "text-indigo-100 bg-gradient-to-r from-indigo-800 to-indigo-800 border-indigo-600"
+                                    : "text-indigo-900 bg-gradient-to-r from-indigo-200 to-sky-300 border-indigo-400"
+                                } shadow-lg focus:outline-0 cursor-pointer border-2 font-semibold rounded-lg px-3 py-1 transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-indigo-400`}
                               >
-                                MEDIUM
-                              </option>
-                              <option
-                                value="HARD"
-                                className={`${
-                                  theme === "dark"
-                                    ? "bg-indigo-800"
-                                    : "bg-sky-100"
-                                }`}
-                              >
-                                HARD
-                              </option>
-                            </select>
-                          </div>
-                          <div className="mb-3">
-                            <h2 className="font-semibold text-lg">TIMER</h2>
-                            <select
-                              value={timerLength}
-                              onChange={(e) => setTimerLength(e.target.value)}
-                              className={`${
-                                theme === "dark"
-                                  ? "text-indigo-100 bg-gradient-to-r from-indigo-800 to-indigo-800 border-indigo-600"
-                                  : "text-indigo-900 bg-gradient-to-r from-indigo-200 to-sky-300 border-indigo-400"
-                              } shadow-lg focus:outline-0 cursor-pointer border-2 font-semibold rounded-lg px-3 py-1 transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-indigo-400`}
-                            >
-                              <option
-                                value="-2"
-                                className={`${
-                                  theme === "dark"
-                                    ? "bg-indigo-800"
-                                    : "bg-sky-100"
-                                }`}
-                              >
-                                No time limit
-                              </option>
-                              <option
-                                value="20"
-                                className={`${
-                                  theme === "dark"
-                                    ? "bg-indigo-800"
-                                    : "bg-sky-100"
-                                }`}
-                              >
-                                20 Seconds
-                              </option>
-                              <option
-                                value="30"
-                                className={`${
-                                  theme === "dark"
-                                    ? "bg-indigo-800"
-                                    : "bg-sky-100"
-                                }`}
-                              >
-                                30 Seconds
-                              </option>
-                              <option
-                                value="40"
-                                className={`${
-                                  theme === "dark"
-                                    ? "bg-indigo-800"
-                                    : "bg-sky-100"
-                                }`}
-                              >
-                                40 Seconds
-                              </option>
-                            </select>
-                          </div>
+                                <option
+                                  value="-2"
+                                  className={`${
+                                    theme === "dark"
+                                      ? "bg-indigo-800"
+                                      : "bg-sky-100"
+                                  }`}
+                                >
+                                  No time limit
+                                </option>
+                                <option
+                                  value="20"
+                                  className={`${
+                                    theme === "dark"
+                                      ? "bg-indigo-800"
+                                      : "bg-sky-100"
+                                  }`}
+                                >
+                                  20 Seconds
+                                </option>
+                                <option
+                                  value="30"
+                                  className={`${
+                                    theme === "dark"
+                                      ? "bg-indigo-800"
+                                      : "bg-sky-100"
+                                  }`}
+                                >
+                                  30 Seconds
+                                </option>
+                                <option
+                                  value="40"
+                                  className={`${
+                                    theme === "dark"
+                                      ? "bg-indigo-800"
+                                      : "bg-sky-100"
+                                  }`}
+                                >
+                                  40 Seconds
+                                </option>
+                              </select>
+                            </div>
+                          )}
                         </div>
                       </div>
 
                       <button
                         onClick={() => {
                           if (gameState.guest.now != null) {
+                            // Ranked maçlarda otomatik ayarlar
+                            if (gameState?.isRankedRoom) {
+                              setDifficulty("MEDIUM");
+                              setTimerLength("30");
+                            }
                             startGame();
                           } else {
                             toast.info("No participant found for the game!");
@@ -1591,7 +1715,9 @@ const Room = () => {
                             : "opacity-100 cursor-pointer"
                         } border-2 mt-6 text-xl hover:shadow-2xl px-6 py-2 shadow-lg duration-300 cursor-pointer rounded-xl font-bold transform hover:scale-105 transition-all focus:ring-2 focus:ring-blue-400`}
                       >
-                        PLAY!
+                        {gameState?.isRankedRoom
+                          ? "START RANKED MATCH! 🏆"
+                          : "PLAY!"}
                       </button>
                     </div>
                   </div>
@@ -2253,6 +2379,404 @@ const Room = () => {
           </div>
         </div>
       </div>
+
+      {/* GUEST READY MODAL - Yeni eklenen kısım */}
+      {role === "guest" &&
+        gameState.guest.now != null &&
+        gameState?.gameStarted == false &&
+        gameState?.isRankedRoom && (
+          <div className="absolute w-full h-full top-0 left-0">
+            <div className="flex w-full h-full justify-center items-center bg-[#00000092]">
+              <div
+                className={`${
+                  theme == "dark"
+                    ? "from-indigo-700 to-indigo-800 border-indigo-600"
+                    : "from-indigo-100 to-indigo-200 border-indigo-300"
+                } z-30 bg-gradient-to-b border-2 rounded-lg p-5 px-10`}
+              >
+                <div className="flex gap-3 items-center">
+                  <img
+                    src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                    alt="logo"
+                    className="w-10 drop-shadow-lg"
+                  />
+                  <h1 className="font-bold text-2xl bg-gradient-to-r from-indigo-400 to-indigo-400 bg-clip-text text-transparent">
+                    MMA XOX 🏆
+                  </h1>
+                </div>
+                <div className="flex text-center justify-center">
+                  <div className="mt-6">
+                    {/* Ranked maç bilgisi */}
+                    <div className="mb-4">
+                      <div
+                        className={`p-4 rounded-lg border-2 ${
+                          theme === "dark"
+                            ? "bg-yellow-900/30 border-yellow-600"
+                            : "bg-yellow-100/50 border-yellow-400"
+                        }`}
+                      >
+                        <h2 className="font-semibold text-lg mb-2 flex items-center justify-center gap-2">
+                          🏆{" "}
+                          <span className="text-yellow-600">Ranked Match</span>
+                        </h2>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between items-center">
+                            <span>Difficulty:</span>
+                            <span className="font-bold text-orange-500">
+                              MEDIUM
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span>Timer:</span>
+                            <span className="font-bold text-blue-500">
+                              30 Seconds
+                            </span>
+                          </div>
+                          <p
+                            className={`text-xs mt-2 ${
+                              theme === "dark"
+                                ? "text-yellow-400"
+                                : "text-yellow-700"
+                            }`}
+                          >
+                            Settings are fixed for competitive fairness
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Ready status */}
+                    <div className="mb-4">
+                      <div
+                        className={`p-3 rounded-lg border ${
+                          theme === "dark"
+                            ? "bg-slate-700/50 border-slate-600"
+                            : "bg-slate-100 border-slate-300"
+                        }`}
+                      >
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between items-center">
+                            <span>Host ({gameState.host}):</span>
+                            <span
+                              className={`font-semibold ${
+                                gameState.hostReady
+                                  ? "text-green-500"
+                                  : "text-orange-500"
+                              }`}
+                            >
+                              {gameState.hostReady
+                                ? "✅ Ready"
+                                : "⏳ Setting up..."}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span>You ({gameState.guest.now}):</span>
+                            <span
+                              className={`font-semibold ${
+                                gameState.guestReady
+                                  ? "text-green-500"
+                                  : "text-orange-500"
+                              }`}
+                            >
+                              {gameState.guestReady
+                                ? "✅ Ready"
+                                : "⏳ Waiting..."}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={async () => {
+                    if (!roomId) return;
+                    const roomRef = doc(db, "rooms", roomId);
+                    await updateDoc(roomRef, {
+                      guestReady: true,
+                    });
+                    toast.success("You are ready! Waiting for host...");
+                  }}
+                  disabled={gameState.guestReady}
+                  className={`${
+                    gameState.guestReady
+                      ? "opacity-50 cursor-not-allowed"
+                      : "cursor-pointer hover:scale-105"
+                  } ${
+                    theme === "dark"
+                      ? "border-indigo-600 bg-gradient-to-r from-green-700 to-green-700 text-green-100 hover:from-green-600 hover:to-green-600"
+                      : "border-green-400 bg-gradient-to-r from-green-300 to-green-400 text-green-900 hover:from-green-400 hover:to-green-500"
+                  } border-2 mt-6 text-xl hover:shadow-2xl px-6 py-2 shadow-lg duration-300 rounded-xl font-bold transform transition-all focus:ring-2 focus:ring-green-400 w-full`}
+                >
+                  {gameState.guestReady
+                    ? "✅ Ready! Waiting for host..."
+                    : "🚀 I'm Ready!"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+      {/* HOST SETUP MODAL - Güncellenmiş hali */}
+      {role === "host" &&
+        gameState.guest.now != null &&
+        gameState?.gameStarted == false && (
+          <div className="absolute w-full h-full top-0 left-0">
+            <div className="flex w-full h-full justify-center items-center bg-[#00000092]">
+              <div
+                className={`${
+                  theme == "dark"
+                    ? "from-indigo-700 to-indigo-800 border-indigo-600"
+                    : "from-indigo-100 to-indigo-200 border-indigo-300"
+                } z-30 bg-gradient-to-b border-2 rounded-lg p-5 px-10`}
+              >
+                <div className="flex gap-3 items-center">
+                  <img
+                    src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                    alt="logo"
+                    className="w-10 drop-shadow-lg"
+                  />
+                  <h1 className="font-bold text-2xl bg-gradient-to-r from-indigo-400 to-indigo-400 bg-clip-text text-transparent">
+                    MMA XOX {gameState?.isRankedRoom && "🏆"}
+                  </h1>
+                </div>
+                <div className="flex text-center justify-center">
+                  <div className="mt-6">
+                    {/* Sadece casual maçlarda zorluk seçimi göster */}
+                    {!gameState?.isRankedRoom && (
+                      <div className="mb-4">
+                        <h2 className="font-semibold text-lg mb-2">
+                          CHOOSE DIFFICULTY
+                        </h2>
+                        <select
+                          value={difficulty}
+                          onChange={(e) => setDifficulty(e.target.value)}
+                          className={`${
+                            theme === "dark"
+                              ? "text-indigo-100 bg-gradient-to-r from-indigo-800 to-indigo-800 border-indigo-600"
+                              : "text-indigo-900 bg-gradient-to-r from-indigo-200 to-sky-300 border-indigo-400"
+                          } shadow-lg focus:outline-0 cursor-pointer border-2 font-semibold rounded-lg px-3 py-1 transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-indigo-400`}
+                        >
+                          <option
+                            value="EASY"
+                            className={`${
+                              theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                            }`}
+                          >
+                            EASY
+                          </option>
+                          <option
+                            value="MEDIUM"
+                            className={`${
+                              theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                            }`}
+                          >
+                            MEDIUM
+                          </option>
+                          <option
+                            value="HARD"
+                            className={`${
+                              theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                            }`}
+                          >
+                            HARD
+                          </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* Ranked maçlarda bilgi göster */}
+                    {gameState?.isRankedRoom && (
+                      <div className="mb-4">
+                        <div
+                          className={`p-4 rounded-lg border-2 ${
+                            theme === "dark"
+                              ? "bg-yellow-900/30 border-yellow-600"
+                              : "bg-yellow-100/50 border-yellow-400"
+                          }`}
+                        >
+                          <h2 className="font-semibold text-lg mb-2 flex items-center justify-center gap-2">
+                            🏆{" "}
+                            <span className="text-yellow-600">
+                              Ranked Match
+                            </span>
+                          </h2>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between items-center">
+                              <span>Difficulty:</span>
+                              <span className="font-bold text-orange-500">
+                                MEDIUM
+                              </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span>Timer:</span>
+                              <span className="font-bold text-blue-500">
+                                30 Seconds
+                              </span>
+                            </div>
+                            <p
+                              className={`text-xs mt-2 ${
+                                theme === "dark"
+                                  ? "text-yellow-400"
+                                  : "text-yellow-700"
+                              }`}
+                            >
+                              Settings are fixed for competitive fairness
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Ranked maçlarda ready status göster */}
+                    {gameState?.isRankedRoom && (
+                      <div className="mb-4">
+                        <div
+                          className={`p-3 rounded-lg border ${
+                            theme === "dark"
+                              ? "bg-slate-700/50 border-slate-600"
+                              : "bg-slate-100 border-slate-300"
+                          }`}
+                        >
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between items-center">
+                              <span>You ({gameState.host}):</span>
+                              <span
+                                className={`font-semibold ${
+                                  gameState.hostReady
+                                    ? "text-green-500"
+                                    : "text-orange-500"
+                                }`}
+                              >
+                                {gameState.hostReady
+                                  ? "✅ Ready"
+                                  : "⏳ Waiting..."}
+                              </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span>Guest ({gameState.guest.now}):</span>
+                              <span
+                                className={`font-semibold ${
+                                  gameState.guestReady
+                                    ? "text-green-500"
+                                    : "text-orange-500"
+                                }`}
+                              >
+                                {gameState.guestReady
+                                  ? "✅ Ready"
+                                  : "⏳ Waiting..."}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Timer seçimi - sadece casual maçlarda */}
+                    {!gameState?.isRankedRoom && (
+                      <div className="mb-3">
+                        <h2 className="font-semibold text-lg">TIMER</h2>
+                        <select
+                          value={timerLength}
+                          onChange={(e) => setTimerLength(e.target.value)}
+                          className={`${
+                            theme === "dark"
+                              ? "text-indigo-100 bg-gradient-to-r from-indigo-800 to-indigo-800 border-indigo-600"
+                              : "text-indigo-900 bg-gradient-to-r from-indigo-200 to-sky-300 border-indigo-400"
+                          } shadow-lg focus:outline-0 cursor-pointer border-2 font-semibold rounded-lg px-3 py-1 transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-indigo-400`}
+                        >
+                          <option
+                            value="-2"
+                            className={`${
+                              theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                            }`}
+                          >
+                            No time limit
+                          </option>
+                          <option
+                            value="20"
+                            className={`${
+                              theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                            }`}
+                          >
+                            20 Seconds
+                          </option>
+                          <option
+                            value="30"
+                            className={`${
+                              theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                            }`}
+                          >
+                            30 Seconds
+                          </option>
+                          <option
+                            value="40"
+                            className={`${
+                              theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
+                            }`}
+                          >
+                            40 Seconds
+                          </option>
+                        </select>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  onClick={async () => {
+                    if (gameState.guest.now != null) {
+                      // Ranked maçlarda otomatik ayarlar
+                      if (gameState?.isRankedRoom) {
+                        setDifficulty("MEDIUM");
+                        setTimerLength("30");
+
+                        // Host ready durumunu işaretle
+                        if (!roomId) return;
+                        const roomRef = doc(db, "rooms", roomId);
+                        await updateDoc(roomRef, {
+                          hostReady: true,
+                        });
+
+                        // Her iki taraf da ready ise oyunu başlat
+                        if (gameState.guestReady) {
+                          startGame();
+                        } else {
+                          toast.success("You are ready! Waiting for guest...");
+                        }
+                      } else {
+                        // Casual maçlarda direkt başlat
+                        startGame();
+                      }
+                    } else {
+                      toast.info("No participant found for the game!");
+                    }
+                  }}
+                  disabled={gameState?.isRankedRoom && gameState.hostReady}
+                  className={`${
+                    gameState?.isRankedRoom && gameState.hostReady
+                      ? "opacity-50 cursor-not-allowed"
+                      : "cursor-pointer hover:scale-105"
+                  } ${
+                    theme === "dark"
+                      ? "border-indigo-600 bg-gradient-to-r from-green-700 to-green-700 text-green-100 hover:from-green-600 hover:to-green-600"
+                      : "border-green-400 bg-gradient-to-r from-green-300 to-green-400 text-green-900 hover:from-green-400 hover:to-green-500"
+                  } border-2 mt-6 text-xl hover:shadow-2xl px-6 py-2 shadow-lg duration-300 rounded-xl font-bold transform transition-all focus:ring-2 focus:ring-green-400 w-full
+                   ${
+                     gameState.guest.now == null ? "opacity-70" : "opacity-100"
+                   } border-2 mt-6 text-xl hover:shadow-2xl px-6 py-2 shadow-lg duration-300 rounded-xl font-bold transform transition-all focus:ring-2 focus:ring-blue-400`}
+                >
+                  {gameState?.isRankedRoom
+                    ? gameState.hostReady
+                      ? "✅ Ready! Waiting for guest..."
+                      : "🚀 I'm Ready!"
+                    : "PLAY!"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 };

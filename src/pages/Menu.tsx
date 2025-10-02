@@ -594,7 +594,7 @@ const Menu = () => {
                         ✓
                       </span>
                       <span className="text-sm font-medium">
-                        🏆 Ranked Room (Only for random matches)
+                        🏆 Ranked Room (Only for ranked matches)
                       </span>
                     </label>
                   </div>
