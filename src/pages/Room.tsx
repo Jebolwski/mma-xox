@@ -1344,6 +1344,35 @@ const Room = () => {
         </div>
       </div>
 
+      {/* Kullanıcı adı gösterimi - üst orta */}
+      {currentUser && (
+        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-30">
+          <div
+            className={`px-4 py-2 rounded-full transition-all duration-300 backdrop-blur-md border shadow-xl ${
+              theme === "dark"
+                ? "bg-slate-800/80 border-slate-600/50 text-white"
+                : "bg-white/80 border-slate-200/50 text-slate-700"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <div
+                className={`w-3 h-3 rounded-full ${
+                  theme === "dark" ? "bg-green-400" : "bg-green-500"
+                } animate-pulse`}
+              ></div>
+              <span className="font-semibold text-sm">
+                {currentUser.displayName ||
+                  currentUser.email?.split("@")[0] ||
+                  "Player"}
+              </span>
+              {gameState?.isRankedRoom && (
+                <div className="text-yellow-500 text-xs">🏆</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Oyun alanı */}
       <div
         className={`flex flex-col items-center justify-center h-full ${
