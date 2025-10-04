@@ -28,6 +28,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import { useAdContext } from "../context/AdContext";
 import AdBanner from "../components/AdBanner";
 import Confetti from "react-confetti";
+import { getDoc, increment } from "firebase/firestore";
 import { useWindowSize } from "react-use";
 
 import { useAuth } from "../context/AuthContext"; // Add this import if you have an AuthContext
@@ -114,9 +115,15 @@ const Room = () => {
   const [hasExited, setHasExited] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const { width, height } = useWindowSize();
+
   useEffect(() => {
     if (gameState?.winner && gameState.winner !== "draw") {
       setShowConfetti(true);
+      console.log("messi işte");
+
+      updatePlayerStats(gameState.winner); // BURAYA EKLE
+    } else if (gameState?.winner === "draw") {
+      updatePlayerStats("draw"); // BERABERLIK İÇİN DE EKLE
     } else {
       setShowConfetti(false);
     }
@@ -292,12 +299,14 @@ const Room = () => {
         const roomRef = doc(db, "rooms", roomId!);
         await updateDoc(roomRef, {
           guest: { prev: gameState.guest.now || null, now: playerName },
+          guestEmail: currentUser?.email || null, // BURAYA EKLEDİK
+          guestJoinMethod: "direct-link", // İsterseniz bunu da ekleyebilirsiniz
         });
       };
 
       joinGame();
     }
-  }, [gameState, role, playerName, roomId, hasExited]);
+  }, [gameState, role, playerName, roomId, hasExited, currentUser]); // currentUser'ı dependency'lere de ekle
 
   useEffect(() => {
     if (
@@ -389,6 +398,11 @@ const Room = () => {
   }, [gameState]);
 
   useEffect(() => {
+    // Oyun bitmişse timer'ı durdur
+    if (gameState?.winner) {
+      return;
+    }
+
     const interval = setInterval(() => {
       if (gameState?.gameStarted == true) {
         if (!roomId) return;
@@ -410,7 +424,7 @@ const Room = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [gameState]);
+  }, [gameState, timerLength, roomId]); // gameState dependency'sine gameState.winner da dahil
 
   useEffect(() => {
     if (gameState != null && role == "host") {
@@ -656,6 +670,117 @@ const Room = () => {
     };
     upd();
   }, [fighter22]);
+
+  const updatePlayerStats = async (winner: string) => {
+    if (!gameState?.isRankedRoom) {
+      console.log("Bu casual maç, puan güncellenmeyecek");
+      return;
+    }
+
+    try {
+      const hostEmail = gameState.hostEmail;
+      const guestEmail = gameState.guestEmail;
+      console.log(hostEmail, guestEmail);
+
+      if (hostEmail && guestEmail) {
+        const hostRef = doc(db, "users", hostEmail);
+        const guestRef = doc(db, "users", guestEmail);
+        console.log("come aqui");
+
+        if (winner === "red") {
+          // Host wins
+          await updateDoc(hostRef, {
+            "stats.points": increment(10),
+            "stats.wins": increment(1),
+            "stats.totalGames": increment(1),
+            "stats.lastActive": new Date().toISOString(),
+          });
+
+          await updateDoc(guestRef, {
+            "stats.points": increment(-3),
+            "stats.losses": increment(1),
+            "stats.totalGames": increment(1),
+            "stats.lastActive": new Date().toISOString(),
+          });
+
+          toast.success("🏆 Ranked match completed! Points updated.");
+        } else if (winner === "blue") {
+          // Guest wins
+          await updateDoc(hostRef, {
+            "stats.points": increment(-3),
+            "stats.losses": increment(1),
+            "stats.totalGames": increment(1),
+            "stats.lastActive": new Date().toISOString(),
+          });
+
+          await updateDoc(guestRef, {
+            "stats.points": increment(10),
+            "stats.wins": increment(1),
+            "stats.totalGames": increment(1),
+            "stats.lastActive": new Date().toISOString(),
+          });
+
+          toast.success("🏆 Ranked match completed! Points updated.");
+        } else if (winner === "draw") {
+          // Draw
+          await updateDoc(hostRef, {
+            "stats.points": increment(2),
+            "stats.draws": increment(1),
+            "stats.totalGames": increment(1),
+            "stats.lastActive": new Date().toISOString(),
+          });
+
+          await updateDoc(guestRef, {
+            "stats.points": increment(2),
+            "stats.draws": increment(1),
+            "stats.totalGames": increment(1),
+            "stats.lastActive": new Date().toISOString(),
+          });
+
+          toast.success("🤝 Ranked match completed! Points updated.");
+        }
+
+        // Win rate'leri güncelle
+        await updateWinRates(hostEmail, guestEmail);
+      }
+    } catch (error) {
+      console.error("Puan güncelleme hatası:", error);
+      toast.error("Failed to update player stats");
+    }
+  };
+
+  // Win rate güncelleme fonksiyonu
+  const updateWinRates = async (hostEmail: string, guestEmail: string) => {
+    try {
+      const hostDoc = await getDoc(doc(db, "users", hostEmail));
+      if (hostDoc.exists()) {
+        const hostStats = hostDoc.data().stats;
+        const hostWinRate =
+          hostStats.totalGames > 0
+            ? (hostStats.wins / hostStats.totalGames) * 100
+            : 0;
+
+        await updateDoc(doc(db, "users", hostEmail), {
+          "stats.winRate": Math.round(hostWinRate * 100) / 100,
+        });
+      }
+
+      const guestDoc = await getDoc(doc(db, "users", guestEmail));
+      if (guestDoc.exists()) {
+        const guestStats = guestDoc.data().stats;
+        const guestWinRate =
+          guestStats.totalGames > 0
+            ? (guestStats.wins / guestStats.totalGames) * 100
+            : 0;
+
+        await updateDoc(doc(db, "users", guestEmail), {
+          "stats.winRate": Math.round(guestWinRate * 100) / 100,
+        });
+      }
+    } catch (error) {
+      console.error("Win rate güncelleme hatası:", error);
+    }
+  };
 
   const resetTimerFirestore = async () => {
     if (!roomId) return;
@@ -1055,7 +1180,6 @@ const Room = () => {
         [2, 1],
         [2, 2],
       ],
-
       // Dikey Kazanma
       [
         [0, 0],
@@ -1072,7 +1196,6 @@ const Room = () => {
         [1, 2],
         [2, 2],
       ],
-
       // Çapraz Kazanma
       [
         [0, 0],
@@ -1098,7 +1221,6 @@ const Room = () => {
 
       if (
         cellA !== "from-stone-300 to-stone-500" &&
-        cellA !== "from-stone-300 to-stone-500" && // Boş değilse
         cellA === cellB &&
         cellB === cellC
       ) {
@@ -1106,7 +1228,7 @@ const Room = () => {
           updateDoc(roomRef, {
             winner: "red",
           });
-          // Oyun sonu reklamı göster
+          // updatePlayerStats("red"); KALDIR
           new Audio(win).play();
           if (shouldShowAd()) {
             recordAdView();
@@ -1116,8 +1238,8 @@ const Room = () => {
           updateDoc(roomRef, {
             winner: "blue",
           });
+          // updatePlayerStats("blue"); KALDIR
           new Audio(win).play();
-          // Oyun sonu reklamı göster
           if (shouldShowAd()) {
             recordAdView();
           }
@@ -1129,11 +1251,7 @@ const Room = () => {
     // 🎯 Beraberlik kontrolü
     const isBoardFull = board
       .flat()
-      .every(
-        (cell) =>
-          cell !== "from-stone-300 to-stone-500" &&
-          cell !== "from-stone-300 to-stone-500"
-      );
+      .every((cell) => cell !== "from-stone-300 to-stone-500");
 
     if (isBoardFull) {
       if (!roomId) return;
@@ -1141,15 +1259,15 @@ const Room = () => {
       updateDoc(roomRef, {
         winner: "draw",
       });
-      new Audio(draw).play(); // 🔊 Beraberlik sesi
-      // Oyun sonu reklamı göster
+      // updatePlayerStats("draw"); KALDIR
+      new Audio(draw).play();
       if (shouldShowAd()) {
         recordAdView();
       }
-      return "Draw!"; // Beraberlik durumu
+      return "Draw!";
     }
 
-    return null; // Oyun devam ediyor
+    return null;
   };
 
   const handleExit = async () => {
