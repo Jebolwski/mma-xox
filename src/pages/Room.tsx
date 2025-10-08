@@ -230,8 +230,10 @@ const Room = () => {
           guestEmail: null,
           guestJoinMethod: null,
           isRankedRoom: isRanked,
-          hostReady: false, // EKLENDI
-          guestReady: false, // EKLENDI
+          hostReady: false,
+          guestReady: false,
+          hostWantsRematch: false, // EKLE
+          guestWantsRematch: false, // EKLE
           turn: "red",
           gameStarted: false,
           filtersSelected: [],
@@ -333,33 +335,50 @@ const Room = () => {
 
     const updateGameState = async () => {
       try {
-        await getFilters();
+        // getFilters artık hesaplanan değerleri döndürüyor
+        const result = await getFilters();
+
+        if (!result) {
+          console.error("getFilters failed to produce filters.");
+          return;
+        }
+
+        const { filters_arr, newPositions } = result;
 
         const roomRef = doc(db, "rooms", roomId);
-        const updatedDataFilters = filtersSelected.map(
+
+        const updatedDataFilters = filters_arr.map(
           ({ filter_fighters, ...rest }: any) => rest
         );
 
         let updatedDataPositionFighters: any = {};
-
-        updatedDataPositionFighters.position03 =
-          positionsFighters.position03.map((fighter: Fighter) => fighter.Id);
-        updatedDataPositionFighters.position04 =
-          positionsFighters.position04.map((fighter: Fighter) => fighter.Id);
-        updatedDataPositionFighters.position05 =
-          positionsFighters.position05.map((fighter: Fighter) => fighter.Id);
-        updatedDataPositionFighters.position13 =
-          positionsFighters.position13.map((fighter: Fighter) => fighter.Id);
-        updatedDataPositionFighters.position14 =
-          positionsFighters.position14.map((fighter: Fighter) => fighter.Id);
-        updatedDataPositionFighters.position15 =
-          positionsFighters.position15.map((fighter: Fighter) => fighter.Id);
-        updatedDataPositionFighters.position23 =
-          positionsFighters.position23.map((fighter: Fighter) => fighter.Id);
-        updatedDataPositionFighters.position24 =
-          positionsFighters.position24.map((fighter: Fighter) => fighter.Id);
-        updatedDataPositionFighters.position25 =
-          positionsFighters.position25.map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position03 = (
+          newPositions.position03 || []
+        ).map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position04 = (
+          newPositions.position04 || []
+        ).map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position05 = (
+          newPositions.position05 || []
+        ).map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position13 = (
+          newPositions.position13 || []
+        ).map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position14 = (
+          newPositions.position14 || []
+        ).map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position15 = (
+          newPositions.position15 || []
+        ).map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position23 = (
+          newPositions.position23 || []
+        ).map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position24 = (
+          newPositions.position24 || []
+        ).map((fighter: Fighter) => fighter.Id);
+        updatedDataPositionFighters.position25 = (
+          newPositions.position25 || []
+        ).map((fighter: Fighter) => fighter.Id);
 
         await updateDoc(roomRef, {
           gameStarted: gameStarted,
@@ -371,14 +390,17 @@ const Room = () => {
           turn: "red",
           gameEnded: false,
           winner: null,
-          guest: { prev: gameState.guest.now || null, now: guest },
+          guest: { prev: gameState?.guest.now || null, now: guest || null },
         });
+
+        // yazma tamamlandıktan sonra tekrar tetiklememek için pushFirestore'u false yap
+        setPushFirestore(false);
       } catch (error) {
         console.error("Firestore güncelleme hatası:", error);
       }
     };
 
-    if (gameStarted) {
+    if (gameStarted && pushFirestore) {
       updateGameState();
     }
   }, [pushFirestore]);
@@ -388,6 +410,29 @@ const Room = () => {
       getFilters();
     }
   }, [filters]);
+
+  console.log(filtersSelected, gameState?.filtersSelected);
+
+  useEffect(() => {
+    if (
+      gameState?.isRankedRoom &&
+      gameState?.hostWantsRematch &&
+      gameState?.guestWantsRematch &&
+      gameState?.winner
+    ) {
+      // 2 saniye bekle sonra yeni maçı başlat
+      const timer = setTimeout(() => {
+        startNewRankedMatch();
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [
+    gameState?.hostWantsRematch,
+    gameState?.guestWantsRematch,
+    gameState?.winner,
+    gameState?.gameStarted,
+  ]);
 
   useEffect(() => {
     const winner = checkWinner();
@@ -805,6 +850,8 @@ const Room = () => {
   const startGame = async () => {
     if (!roomId) return;
 
+    const roomRef = doc(db, "rooms", roomId);
+
     let f: FilterDifficulty = Filters();
 
     if (difficulty == "EASY") {
@@ -816,9 +863,109 @@ const Room = () => {
     }
 
     setGameStarted(true);
+
+    // ✅ FIRESTORE'A DA YAZALIM
+    await updateDoc(roomRef, {
+      gameStarted: true,
+      difficulty: difficulty,
+      timerLength: timerLength,
+    });
+
+    setPushFirestore(true);
+  };
+
+  // Room.tsx - fonksiyonların arasına ekle
+
+  const startNewRankedMatch = async () => {
+    if (!roomId) return;
+
+    const roomRef = doc(db, "rooms", roomId);
+
+    // Oyunu sıfırla ama ranked ayarları koru
+    await updateDoc(roomRef, {
+      gameStarted: false,
+      gameEnded: false,
+      winner: null,
+      turn: "red",
+      timerLength: "30", // Ranked için sabit
+      difficulty: "MEDIUM", // Ranked için sabit
+      filtersSelected: [],
+      positionsFighters: {},
+      hostReady: false,
+      guestReady: false,
+      hostWantsRematch: false, // SIFIRLA
+      guestWantsRematch: false, // SIFIRLA
+      fighter00: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg: "from-stone-300 to-stone-500",
+      },
+      fighter01: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg: "from-stone-300 to-stone-500",
+      },
+      fighter02: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg: "from-stone-300 to-stone-500",
+      },
+      fighter10: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg: "from-stone-300 to-stone-500",
+      },
+      fighter11: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg: "from-stone-300 to-stone-500",
+      },
+      fighter12: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg: "from-stone-300 to-stone-500",
+      },
+      fighter20: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg: "from-stone-300 to-stone-500",
+      },
+      fighter21: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg: "from-stone-300 to-stone-500",
+      },
+      fighter22: {
+        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        text: "",
+        bg: "from-stone-300 to-stone-500",
+      },
+    });
+
+    // Local state'leri de sıfırla
+    setGameStarted(false);
+    setShowConfetti(false);
+
+    toast.success("🏆 New ranked match starting!");
   };
 
   const getFilters = async () => {
+    // Eğer state'teki filters boşsa fallback al
+    let activeFilters: any = filters;
+    if (
+      !activeFilters ||
+      (Array.isArray(activeFilters) && activeFilters.length === 0)
+    ) {
+      const all = Filters();
+      activeFilters =
+        difficulty === "EASY"
+          ? all.easy
+          : difficulty === "HARD"
+          ? all.hard
+          : all.medium;
+      setFilters(activeFilters);
+    }
+
     let isDone: boolean = false;
     let finish = 0;
 
@@ -826,9 +973,9 @@ const Room = () => {
       finish += 1;
       let filters_arr: any = [];
       while (filters_arr.length < 6) {
-        let random_index = Math.floor(Math.random() * filters.length);
-        if (!filters_arr.includes(filters[random_index])) {
-          filters_arr.push(filters[random_index]);
+        let random_index = Math.floor(Math.random() * activeFilters.length);
+        if (!filters_arr.includes(activeFilters[random_index])) {
+          filters_arr.push(activeFilters[random_index]);
         }
       }
 
@@ -839,29 +986,33 @@ const Room = () => {
         continue;
       }
 
-      let newPositions = { ...positionsFighters }; // Yeni state nesnesi oluştur
+      let newPositions: any = {
+        position03: [],
+        position04: [],
+        position05: [],
+        position13: [],
+        position14: [],
+        position15: [],
+        position23: [],
+        position24: [],
+        position25: [],
+      };
 
       for (let i = 0; i < 3; i++) {
-        let intersection3 =
-          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
-            filters_arr[3]?.filter_fighters?.some(
-              (fighter2: Fighter) => fighter1.Id === fighter2.Id
-            )
-          ) || [];
+        const a = filters_arr[i]?.filter_fighters || [];
+        const b3 = filters_arr[3]?.filter_fighters || [];
+        const b4 = filters_arr[4]?.filter_fighters || [];
+        const b5 = filters_arr[5]?.filter_fighters || [];
 
-        let intersection4 =
-          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
-            filters_arr[4]?.filter_fighters?.some(
-              (fighter2: Fighter) => fighter1.Id === fighter2.Id
-            )
-          ) || [];
-
-        let intersection5 =
-          filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
-            filters_arr[5]?.filter_fighters?.some(
-              (fighter2: Fighter) => fighter1.Id === fighter2.Id
-            )
-          ) || [];
+        let intersection3 = a.filter((fighter1: Fighter) =>
+          b3.some((fighter2: Fighter) => fighter1.Id === fighter2.Id)
+        );
+        let intersection4 = a.filter((fighter1: Fighter) =>
+          b4.some((fighter2: Fighter) => fighter1.Id === fighter2.Id)
+        );
+        let intersection5 = a.filter((fighter1: Fighter) =>
+          b5.some((fighter2: Fighter) => fighter1.Id === fighter2.Id)
+        );
 
         if (
           intersection3.length < 2 ||
@@ -892,12 +1043,16 @@ const Room = () => {
       }
 
       if (isDone) {
+        // update local UI state
         setPositionsFighters(newPositions);
         setFiltersSelected(filters_arr);
-        setPushFirestore(true);
-        break;
+        // return the computed values so caller doğrudan kullanabilir
+        return { filters_arr, newPositions };
       }
     }
+
+    // eğer bulunamadıysa null döndür
+    return null;
   };
 
   const filterByName = (name: string) => {
@@ -996,6 +1151,9 @@ const Room = () => {
       position24: {},
       position25: {},
     });
+
+    console.log(filtersSelected);
+
     setFilters(null);
     setFighter00({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
@@ -1258,6 +1416,7 @@ const Room = () => {
       const roomRef = doc(db, "rooms", roomId);
       updateDoc(roomRef, {
         winner: "draw",
+        gameStarted: false, // OYUNU BITIR
       });
       // updatePlayerStats("draw"); KALDIR
       new Audio(draw).play();
@@ -1350,7 +1509,6 @@ const Room = () => {
           numberOfPieces={400}
         />
       )}
-
       {/* Animated Mountains */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
@@ -1370,7 +1528,6 @@ const Room = () => {
           }}
         />
       </div>
-
       {/* Floating Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[
@@ -1413,7 +1570,6 @@ const Room = () => {
         position="bottom-right"
         theme="dark"
       />
-
       {/* Tema değiştirme butonu */}
       <div className="absolute z-30 top-6 left-6">
         <div
@@ -1439,7 +1595,6 @@ const Room = () => {
           )}
         </div>
       </div>
-
       {/* Geri dönüş butonu */}
       <div
         className="absolute z-30 top-6 right-6"
@@ -1461,7 +1616,6 @@ const Room = () => {
           </div>
         </div>
       </div>
-
       {/* Kullanıcı adı gösterimi - üst orta */}
       {currentUser && (
         <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-30">
@@ -1491,6 +1645,195 @@ const Room = () => {
         </div>
       )}
 
+      {/* Winner Overlay */}
+      <div
+        className={`${gameState.winner == null ? "hidden" : "absolute"} ${
+          theme === "dark" ? "bg-[#00000061]" : "bg-[#ffffff61]"
+        }  rounded-lg w-full h-full z-40`}
+      >
+        <div className="flex justify-center mt-12">
+          <div
+            className={`${
+              theme === "dark"
+                ? "bg-gradient-to-r from-indigo-800 to-indigo-900 border-indigo-700 shadow-indigo-900 text-white"
+                : "bg-gradient-to-r from-indigo-100 to-sky-200 border-indigo-300 shadow-indigo-300/50"
+            } bg-gradient-to-r border-2 w-80 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
+          >
+            <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold">
+              Game Finished!
+            </p>
+            {gameState.winner == "red" ? (
+              <p className="text-red-500 font-semibold text-xl mt-4 text-center">
+                {gameState.host} wins! 🏆
+              </p>
+            ) : gameState.winner == "blue" ? (
+              <p className="text-blue-500 font-semibold text-xl mt-4 text-center">
+                {gameState.guest.now} wins! 🏆
+              </p>
+            ) : (
+              <p
+                className={`${
+                  theme === "dark" ? "text-stone-100" : "text-stone-700"
+                } font-semibold text-xl mt-4 text-center`}
+              >
+                Draw! 🤝
+              </p>
+            )}
+
+            {/* Oyun sonu reklamı */}
+            {shouldShowAd() && (
+              <div className="mt-4">
+                <AdBanner
+                  adSlot="0987654321"
+                  className="w-full"
+                  style={{ height: "250px" }}
+                />
+              </div>
+            )}
+
+            {/* CASUAL MAÇLAR - Sadece host Play Again görsün */}
+            {!gameState?.isRankedRoom && role == "host" && (
+              <div className="flex justify-center">
+                <button
+                  onClick={restartGame}
+                  className={`bg-gradient-to-r cursor-pointer ${
+                    theme === "dark"
+                      ? "from-sky-600 to-indigo-700 text-white border-indigo-600"
+                      : "from-indigo-200 to-sky-300 text-black border-indigo-400"
+                  } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200 mt-5`}
+                >
+                  Play Again
+                </button>
+              </div>
+            )}
+
+            {/* RANKED MAÇLAR - Her iki oyuncuya da seçenek sun */}
+            {gameState?.isRankedRoom && (
+              <div className="mt-4 z-40">
+                <div
+                  className={`text-center mb-4 px-4 py-2 rounded-lg ${
+                    theme === "dark"
+                      ? "bg-yellow-900/30 border border-yellow-600"
+                      : "bg-yellow-100 border border-yellow-400"
+                  }`}
+                >
+                  <p className="text-sm text-yellow-600 font-semibold">
+                    🏆 Ranked Match Completed
+                  </p>
+                  <p
+                    className={`text-xs mt-1 ${
+                      theme === "dark" ? "text-yellow-400" : "text-yellow-700"
+                    }`}
+                  >
+                    Points have been updated!
+                  </p>
+                </div>
+
+                {/* Play Again Status */}
+                <div
+                  className={`p-3 rounded-lg border mb-4 ${
+                    theme === "dark"
+                      ? "bg-slate-700/50 border-slate-600"
+                      : "bg-slate-100 border-slate-300"
+                  }`}
+                >
+                  <h3 className="text-sm font-semibold mb-2 text-center">
+                    Play Again?
+                  </h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between items-center">
+                      <span>{gameState.host}:</span>
+                      <span
+                        className={`font-semibold ${
+                          gameState.hostWantsRematch
+                            ? "text-green-500"
+                            : "text-orange-500"
+                        }`}
+                      >
+                        {gameState.hostWantsRematch
+                          ? "✅ Yes"
+                          : "⏳ Deciding..."}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>{gameState.guest.now}:</span>
+                      <span
+                        className={`font-semibold ${
+                          gameState.guestWantsRematch
+                            ? "text-green-500"
+                            : "text-orange-500"
+                        }`}
+                      >
+                        {gameState.guestWantsRematch
+                          ? "✅ Yes"
+                          : "⏳ Deciding..."}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-3 justify-center">
+                  {/* Play Again Button */}
+                  {((role === "host" && !gameState.hostWantsRematch) ||
+                    (role === "guest" && !gameState.guestWantsRematch)) && (
+                    <button
+                      onClick={async () => {
+                        if (!roomId) return;
+                        const roomRef = doc(db, "rooms", roomId);
+
+                        if (role === "host") {
+                          await updateDoc(roomRef, {
+                            hostWantsRematch: true,
+                          });
+                        } else {
+                          await updateDoc(roomRef, {
+                            guestWantsRematch: true,
+                          });
+                        }
+
+                        toast.success("Waiting for opponent's decision...");
+                      }}
+                      className={`px-4 py-2 rounded-lg font-semibold cursor-pointer transition-all duration-200 ${
+                        theme === "dark"
+                          ? "bg-green-600 hover:bg-green-700 text-white"
+                          : "bg-green-500 hover:bg-green-600 text-white"
+                      }`}
+                    >
+                      Play Again
+                    </button>
+                  )}
+
+                  {/* Return to Menu Button */}
+                  <button
+                    onClick={() => navigate("/menu")}
+                    className={`px-4 py-2 rounded-lg font-semibold cursor-pointer transition-all duration-200 ${
+                      theme === "dark"
+                        ? "bg-red-600 hover:bg-red-700 text-white"
+                        : "bg-red-500 hover:bg-red-600 text-white"
+                    }`}
+                  >
+                    Return to Menu
+                  </button>
+                </div>
+
+                {/* Both want rematch message */}
+                {gameState.hostWantsRematch && gameState.guestWantsRematch && (
+                  <div className="text-center mt-3">
+                    <p
+                      className={`text-sm font-semibold ${
+                        theme === "dark" ? "text-green-400" : "text-green-600"
+                      }`}
+                    >
+                      🎮 Starting new ranked match...
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
       {/* Oyun alanı */}
       <div
         className={`flex flex-col items-center justify-center h-full ${
@@ -1650,7 +1993,7 @@ const Room = () => {
                         theme == "dark" ? "" : ""
                       } z-30 bg-gradient-to-b rounded-lg p-5 px-10`}
                     >
-                      <div className="flex gap-3 items-center">
+                      <div className="flex gap-3 items-center justify-center">
                         <img
                           src="https://cdn-icons-png.freepik.com/512/921/921676.png"
                           alt="logo"
@@ -1898,71 +2241,6 @@ const Room = () => {
                     : "bg-indigo-200/50 text-stone-700 shadow-indigo-100/20 border-indigo-200"
                 } rounded-lg border relative h-fit mt-3 shadow-xl w-fit`}
               >
-                <div
-                  className={`${
-                    gameState.winner == null ? "hidden" : "absolute"
-                  } ${
-                    theme === "dark" ? "bg-[#00000061]" : "bg-[#ffffff61]"
-                  }  rounded-lg w-full h-full`}
-                >
-                  <div className="flex justify-center mt-12">
-                    <div
-                      className={`${
-                        theme === "dark"
-                          ? "bg-gradient-to-r from-indigo-800 to-indigo-900 border-indigo-700 shadow-indigo-900"
-                          : "bg-gradient-to-r from-indigo-100 to-sky-200 border-indigo-300 shadow-indigo-300/50"
-                      } bg-gradient-to-r border-2 w-72 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
-                    >
-                      <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold">
-                        Game Finished!
-                      </p>
-                      {gameState.winner == "red" ? (
-                        <>
-                          <p className="text-red-500 font-semibold text-xl mt-4 text-center">
-                            {gameState.host} wins!
-                          </p>
-                        </>
-                      ) : gameState.winner == "blue" ? (
-                        <>
-                          <p className="text-blue-500 font-semibold text-xl mt-4 text-center">
-                            {gameState.guest.now} wins!
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          <p className="text-stone-100 font-semibold text-xl mt-4 text-center">
-                            Draw!
-                          </p>
-                        </>
-                      )}
-                      {/* Oyun sonu reklamı */}
-                      {shouldShowAd() && (
-                        <div className="mt-4">
-                          <AdBanner
-                            adSlot="0987654321"
-                            className="w-full"
-                            style={{ height: "250px" }}
-                          />
-                        </div>
-                      )}
-
-                      {role == "host" ? (
-                        <div className="flex justify-center">
-                          <button
-                            onClick={restartGame}
-                            className={`bg-gradient-to-r cursor-pointer ${
-                              theme === "dark"
-                                ? "from-sky-600 to-indigo-700 text-white border-indigo-600"
-                                : "from-indigo-200 to-sky-300 text-black border-indigo-400"
-                            } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200 mt-5`}
-                          >
-                            Play Again
-                          </button>
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
                 <div className={`flex gap-[2px] text-white`}>
                   <div
                     className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
@@ -2544,7 +2822,6 @@ const Room = () => {
           </div>
         </div>
       </div>
-
       {/* GUEST READY MODAL - Yeni eklenen kısım */}
       {role === "guest" &&
         gameState.guest.now != null &&
@@ -2559,7 +2836,7 @@ const Room = () => {
                     : "from-indigo-100 to-indigo-200 border-indigo-300"
                 } z-30 bg-gradient-to-b border-2 rounded-lg p-5 px-10`}
               >
-                <div className="flex gap-3 items-center">
+                <div className="flex gap-3 items-center justify-center">
                   <img
                     src="https://cdn-icons-png.freepik.com/512/921/921676.png"
                     alt="logo"
@@ -2682,7 +2959,6 @@ const Room = () => {
             </div>
           </div>
         )}
-
       {/* HOST SETUP MODAL - Güncellenmiş hali */}
       {role === "host" &&
         gameState.guest.now != null &&
@@ -2696,7 +2972,7 @@ const Room = () => {
                     : "from-indigo-100 to-indigo-200 border-indigo-300"
                 } z-30 bg-gradient-to-b border-2 rounded-lg p-5 px-10`}
               >
-                <div className="flex gap-3 items-center">
+                <div className="flex gap-3 items-center justify-center">
                   <img
                     src="https://cdn-icons-png.freepik.com/512/921/921676.png"
                     alt="logo"
