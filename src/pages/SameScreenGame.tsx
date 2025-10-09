@@ -928,19 +928,21 @@ function SameScreenGame() {
                   }`}
                 >
                   <p>Turn : Red</p>
-                  <div
-                    onClick={() => {
-                      setTurn("blue");
-                      setTimer(timerLength);
-                    }}
-                    className={`${
-                      theme === "dark"
-                        ? "bg-slate-500 border-slate-700 text-slate-200"
-                        : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
-                    } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
-                  >
-                    Skip
-                  </div>
+                  {!playWithAI && (
+                    <div
+                      onClick={() => {
+                        setTurn("blue");
+                        setTimer(timerLength);
+                      }}
+                      className={`${
+                        theme === "dark"
+                          ? "bg-slate-500 border-slate-700 text-slate-200"
+                          : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
+                      } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
+                    >
+                      Skip
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div
@@ -951,19 +953,21 @@ function SameScreenGame() {
                   }`}
                 >
                   <p>Turn : Blue</p>
-                  <div
-                    onClick={() => {
-                      setTurn("red");
-                      setTimer(timerLength);
-                    }}
-                    className={`${
-                      theme === "dark"
-                        ? "bg-slate-500 border-slate-700 text-slate-200"
-                        : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
-                    } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
-                  >
-                    Skip
-                  </div>
+                  {!playWithAI && (
+                    <div
+                      onClick={() => {
+                        setTurn("red");
+                        setTimer(timerLength);
+                      }}
+                      className={`${
+                        theme === "dark"
+                          ? "bg-slate-500 border-slate-700 text-slate-200"
+                          : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
+                      } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
+                    >
+                      Skip
+                    </div>
+                  )}
                 </div>
               )}
             </div>
