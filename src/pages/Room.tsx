@@ -411,8 +411,6 @@ const Room = () => {
     }
   }, [filters]);
 
-  console.log(filtersSelected, gameState?.filtersSelected);
-
   useEffect(() => {
     if (
       gameState?.isRankedRoom &&
@@ -1840,7 +1838,7 @@ const Room = () => {
           theme == "dark" ? "text-white" : "text-black"
         }`}
       >
-        <div className="w-fit">
+        <div className="w-fit mb-4">
           <div className="text-2xl mb-2 mt-28 text-center">
             Room Code: {roomId}
           </div>
@@ -2008,7 +2006,13 @@ const Room = () => {
                           {/* Sadece casual maçlarda zorluk seçimi göster */}
                           {!gameState?.isRankedRoom && (
                             <div className="mb-4">
-                              <h2 className="font-semibold text-lg mb-2">
+                              <h2
+                                className={`font-semibold text-lg mb-2 ${
+                                  theme === "dark"
+                                    ? "text-white"
+                                    : "text-slate-800"
+                                }`}
+                              >
                                 CHOOSE DIFFICULTY
                               </h2>
                               <select
@@ -2987,7 +2991,11 @@ const Room = () => {
                     {/* Sadece casual maçlarda zorluk seçimi göster */}
                     {!gameState?.isRankedRoom && (
                       <div className="mb-4">
-                        <h2 className="font-semibold text-lg mb-2">
+                        <h2
+                          className={`font-semibold text-lg mb-2 ${
+                            theme === "dark" ? "text-white" : "text-slate-800"
+                          }`}
+                        >
                           CHOOSE DIFFICULTY
                         </h2>
                         <select
@@ -3117,7 +3125,13 @@ const Room = () => {
                     {/* Timer seçimi - sadece casual maçlarda */}
                     {!gameState?.isRankedRoom && (
                       <div className="mb-3">
-                        <h2 className="font-semibold text-lg">TIMER</h2>
+                        <h2
+                          className={`${
+                            theme === "dark" ? "text-white" : "text-slate-800"
+                          } font-semibold text-lg`}
+                        >
+                          TIMER
+                        </h2>
                         <select
                           value={timerLength}
                           onChange={(e) => setTimerLength(e.target.value)}

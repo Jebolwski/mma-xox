@@ -11,6 +11,7 @@ import Profile from "./pages/Profile"; // EKLENDI
 import { ThemeProvider } from "./context/ThemeContext";
 import { AdProvider } from "./context/AdContext";
 import { AuthProvider } from "./context/AuthContext"; // EKLENDI
+import WorldRanking from "./pages/WorldRanking";
 
 function App() {
   return (
@@ -39,6 +40,10 @@ function App() {
               <Route
                 path="/same-screen"
                 element={<SameScreenGame />}
+              />
+              <Route
+                path="/world-ranking"
+                element={<WorldRanking />}
               />
               <Route
                 path="/room/:roomId"

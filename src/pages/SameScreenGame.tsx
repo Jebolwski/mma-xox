@@ -755,7 +755,7 @@ function SameScreenGame() {
   return (
     <>
       <div
-        className={`w-[100vw] h-[100vh] min-h-screen relative overflow-hidden transition-all duration-1000 ${
+        className={`w-screen min-h-screen relative overflow-x-hidden overflow-y-auto transition-all duration-1000 ${
           theme === "dark"
             ? "bg-gradient-to-br from-stone-900 via-indigo-900 to-stone-800"
             : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
@@ -775,7 +775,7 @@ function SameScreenGame() {
           theme="dark"
         />
         {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Mountains */}
           <div className="absolute bottom-0 left-0 w-full h-64 overflow-hidden">
             <div
@@ -882,7 +882,7 @@ function SameScreenGame() {
             </div>
           </div>
         </div>
-        <div className="flex w-full h-full justify-center">
+        <div className="flex w-full justify-center">
           <div>
             <div className="mt-32">
               {gameStart == true && parseInt(timerLength) >= 0 ? (

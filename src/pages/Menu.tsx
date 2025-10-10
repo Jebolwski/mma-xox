@@ -465,6 +465,16 @@ const Menu = () => {
                 >
                   Join Room
                 </button>
+                <button
+                  onClick={() => navigate("/world-ranking")}
+                  className={`px-5 py-2 rounded-xl w-full py-4 cursor-pointer font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm ${
+                    theme === "dark"
+                      ? "bg-slate-700 hover:bg-slate-600 text-white"
+                      : "bg-slate-600 text-white"
+                  }`}
+                >
+                  View World Ranking
+                </button>
 
                 {/* YENİ PROFİL BUTONU - Sadece giriş yapmış kullanıcılar için */}
                 {currentUser && (

@@ -25,44 +25,79 @@ const Profile = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [tiersOpen, setTiersOpen] = useState(false);
+
+  useEffect(() => {
+    if (!tiersOpen) return;
+    const onKey = (e: KeyboardEvent) =>
+      e.key === "Escape" && setTiersOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [tiersOpen]);
+
+  // Basit rank kademeleri (puan aralıkları ve ikonlar)
+  const RANK_TIERS = [
+    {
+      name: "Bronze",
+      min: 0,
+      max: 99,
+      icon: "🥉",
+      color: "from-orange-400 to-orange-600",
+      note: "Yeni başlayanlar için.",
+    },
+    {
+      name: "Silver",
+      min: 100,
+      max: 299,
+      icon: "🥈",
+      color: "from-gray-300 to-gray-500",
+      note: "Temel deneyim sahibi.",
+    },
+    {
+      name: "Gold",
+      min: 300,
+      max: 599,
+      icon: "🥇",
+      color: "from-yellow-400 to-yellow-600",
+      note: "İleri seviye oyuncu.",
+    },
+    {
+      name: "Diamond",
+      min: 600,
+      max: Infinity,
+      icon: "💎",
+      color: "from-cyan-400 to-blue-600",
+      note: "En yüksek kademe.",
+    },
+  ];
 
   // Level hesaplama fonksiyonu
   const calculateLevel = (points: number) => {
-    if (points >= 600)
-      return {
-        name: "Diamond",
-        color: "from-cyan-400 to-blue-600",
-        icon: "💎",
-      };
-    if (points >= 300)
-      return {
-        name: "Gold",
-        color: "from-yellow-400 to-yellow-600",
-        icon: "🥇",
-      };
-    if (points >= 100)
-      return { name: "Silver", color: "from-gray-300 to-gray-500", icon: "🥈" };
-    return {
-      name: "Bronze",
-      color: "from-orange-400 to-orange-600",
-      icon: "🥉",
-    };
+    const tier = RANK_TIERS.slice()
+      .reverse()
+      .find((tier) => points >= tier.min);
+    return tier || RANK_TIERS[0];
   };
 
   // Progress bar hesaplama
   const calculateProgress = (points: number) => {
-    if (points >= 600) return 100;
-    if (points >= 300) return ((points - 300) / 300) * 100;
-    if (points >= 100) return ((points - 100) / 200) * 100;
-    return (points / 100) * 100;
+    const tier = RANK_TIERS.slice()
+      .reverse()
+      .find((tier) => points >= tier.min);
+    if (!tier) return 0;
+    const { min, max } = tier;
+    return ((points - min) / (max - min)) * 100;
   };
 
   // Sonraki level için gerekli puan
   const getNextLevelPoints = (points: number) => {
-    if (points >= 600) return "Max Level";
-    if (points >= 300) return `${600 - points} points to Diamond`;
-    if (points >= 100) return `${300 - points} points to Gold`;
-    return `${100 - points} points to Silver`;
+    const tier = RANK_TIERS.slice()
+      .reverse()
+      .find((tier) => points >= tier.min);
+    if (!tier) return "Max Level";
+    const nextTier = RANK_TIERS[RANK_TIERS.indexOf(tier) - 1];
+    if (!nextTier) return "Max Level";
+    return `${nextTier.min - points} points to ${nextTier.name}`;
   };
 
   useEffect(() => {
@@ -123,7 +158,11 @@ const Profile = () => {
             : "bg-gradient-to-br from-blue-400 via-blue-300 to-green-400"
         }`}
       >
-        <div className="text-2xl font-semibold animate-pulse">
+        <div
+          className={`text-2xl font-semibold animate-pulse ${
+            theme === "dark" ? "text-white" : "text-slate-800"
+          }`}
+        >
           Loading Profile...
         </div>
       </div>
@@ -229,7 +268,7 @@ const Profile = () => {
       {/* Main Content */}
       <div className="relative z-10 flex justify-center items-center min-h-screen p-6">
         <div
-          className={`max-w-2xl w-full rounded-2xl backdrop-blur-md border-4 shadow-2xl p-8 ${
+          className={`max-w-2xl w-full rounded-2xl backdrop-blur-md border-4 shadow-2xl p-8 mt-8 ${
             theme === "dark"
               ? "bg-slate-800/90 border-slate-600 text-white"
               : "bg-white/90 border-slate-300 text-slate-800"
@@ -414,6 +453,123 @@ const Profile = () => {
           >
             Member since: {new Date(userStats.createdAt).toLocaleDateString()}
           </div>
+
+          {/* Rank kademeleri butonu (modal açar) */}
+          <div className="mt-8 text-center">
+            <button
+              onClick={() => setTiersOpen(true)}
+              className={`px-5 py-2 rounded-lg cursor-pointer font-semibold shadow-md transition ${
+                theme === "dark"
+                  ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+                  : "bg-indigo-500 hover:bg-indigo-600 text-white"
+              }`}
+            >
+              Rank kademelerini gör
+            </button>
+          </div>
+
+          {/* Rank Modal */}
+          {tiersOpen && (
+            <div className="fixed inset-0 z-50">
+              {/* Arkaplan (tüm sayfayı kapla) */}
+              <div
+                className={`absolute inset-0 rounded-xl ${
+                  theme === "dark" ? "bg-black/70" : "bg-black/40"
+                }`}
+                onClick={() => setTiersOpen(false)}
+              />
+
+              {/* Merkezleyici katman */}
+              <div className="relative z-10 flex min-h-screen items-center justify-center p-4">
+                {/* İçerik kutusu */}
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  className={`w-full max-w-3xl rounded-2xl -mt-42 border shadow-2xl ${
+                    theme === "dark"
+                      ? "bg-slate-800 border-slate-700 text-slate-100"
+                      : "bg-white border-slate-300 text-slate-800"
+                  } max-h-[85vh] overflow-y-auto`}
+                >
+                  <div className="flex justify-between items-center p-5 pb-3 sticky top-0 bg-inherit">
+                    <h3 className="text-xl font-semibold">Rank Kademeleri</h3>
+                    <button
+                      onClick={() => setTiersOpen(false)}
+                      className={`px-3 py-1 cursor-pointer rounded-md text-sm ${
+                        theme === "dark"
+                          ? "bg-slate-700 hover:bg-slate-600"
+                          : "bg-slate-200 hover:bg-slate-300"
+                      }`}
+                      aria-label="Close"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <div className="p-5 pt-0">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {RANK_TIERS.map((tier) => (
+                        <div
+                          key={tier.name}
+                          className={`rounded-xl p-3 border ${
+                            theme === "dark"
+                              ? "bg-slate-800/70 border-slate-700"
+                              : "bg-white/80 border-slate-300"
+                          }`}
+                        >
+                          {/* Başlık: ikon + küçük nötr etiket (İngilizce) */}
+                          <div className="flex flex-col items-center gap-2">
+                            <div
+                              className={`w-12 h-12 rounded-full grid place-items-center text-xl text-white shadow-md bg-gradient-to-br ${tier.color}`}
+                            >
+                              <span>{tier.icon}</span>
+                            </div>
+                            <div
+                              className={`text-[11px] font-medium tracking-wider uppercase ${
+                                theme === "dark"
+                                  ? "text-slate-300"
+                                  : "text-slate-600"
+                              }`}
+                            >
+                              {tier.name}
+                            </div>
+                          </div>
+
+                          {/* İçerik */}
+                          <div
+                            className={`mt-3 text-sm text-center ${
+                              theme === "dark"
+                                ? "text-slate-300"
+                                : "text-slate-700"
+                            }`}
+                          >
+                            <div>
+                              Points range:
+                              <span className="font-semibold">
+                                {" "}
+                                {tier.max === Infinity
+                                  ? `${tier.min}+`
+                                  : `${tier.min}–${tier.max}`}
+                              </span>
+                            </div>
+                            <div
+                              className={`text-xs mt-1 ${
+                                theme === "dark"
+                                  ? "text-slate-400"
+                                  : "text-slate-600"
+                              }`}
+                            >
+                              {tier.note}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
