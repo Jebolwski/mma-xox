@@ -11,7 +11,7 @@ import correct from "../assets/sounds/correct.mp3";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import Confetti from "react-confetti";
-import { useWindowSize } from "react-use"; // pencere boyutu almak için
+import { useWindowSize } from "react-use";
 
 function SameScreenGame() {
   useEffect(() => {

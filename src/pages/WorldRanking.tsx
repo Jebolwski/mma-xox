@@ -143,6 +143,27 @@ export default function WorldRanking() {
           : "bg-gradient-to-br from-blue-400 via-blue-300 to-green-400"
       }`}
     >
+      {/* Background sparkles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(24)].map((_, i) => (
+          <div
+            key={i}
+            className={`absolute rounded-full ${
+              theme === "dark" ? "bg-yellow-300/80" : "bg-white/90"
+            } animate-pulse`}
+            style={{
+              width: `${Math.random() * 3 + 2}px`,
+              height: `${Math.random() * 3 + 2}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 90}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 3}s`,
+              opacity: 0.8,
+            }}
+          />
+        ))}
+      </div>
+
       <div className="absolute z-30 top-6 left-6">
         <div
           onClick={toggleTheme}
@@ -257,6 +278,14 @@ export default function WorldRanking() {
                 currentUser &&
                 (r.email === currentUser.email ||
                   r.username === currentUser.email?.split("@")[0]);
+              const trophy =
+                rank === 1
+                  ? "🥇"
+                  : rank === 2
+                  ? "🥈"
+                  : rank === 3
+                  ? "🥉"
+                  : null;
               const record = `${r.wins}-${r.losses}-${r.draws}`;
               return (
                 <div
@@ -274,7 +303,17 @@ export default function WorldRanking() {
                   }`}
                 >
                   <div className="font-semibold">#{rank}</div>
-                  <div className="col-span-2 truncate">{r.username}</div>
+                  <div className="col-span-2 truncate flex items-center gap-2">
+                    {trophy && (
+                      <span
+                        className="text-lg"
+                        aria-label="trophy"
+                      >
+                        {trophy}
+                      </span>
+                    )}
+                    <span className="truncate">{r.username}</span>
+                  </div>
                   <div className="text-right font-semibold">{r.points}</div>
                   <div className="text-right tabular-nums">{record}</div>
                   <div className="text-right">{r.winRate?.toFixed(1)}%</div>

@@ -475,6 +475,12 @@ const Menu = () => {
                 >
                   View World Ranking
                 </button>
+                <button
+                  onClick={() => navigate("/friends")}
+                  className="w-full bg-gradient-to-r from-pink-500 to-pink-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-pink-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
+                >
+                  👥 Friends
+                </button>
 
                 {/* YENİ PROFİL BUTONU - Sadece giriş yapmış kullanıcılar için */}
                 {currentUser && (

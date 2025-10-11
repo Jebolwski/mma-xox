@@ -12,6 +12,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import { AdProvider } from "./context/AdContext";
 import { AuthProvider } from "./context/AuthContext"; // EKLENDI
 import WorldRanking from "./pages/WorldRanking";
+import Friends from "./pages/Friends";
 
 function App() {
   return (
@@ -44,6 +45,10 @@ function App() {
               <Route
                 path="/world-ranking"
                 element={<WorldRanking />}
+              />
+              <Route
+                path="/friends"
+                element={<Friends />}
               />
               <Route
                 path="/room/:roomId"
