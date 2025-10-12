@@ -538,9 +538,7 @@ const Menu = () => {
                         <div className="absolute inset-0 z-20 grid place-items-center pointer-events-none">
                           <div className="w-[180%] rotate-12">
                             <div
-                              className={`flex items-center justify-center py-2 text-[10px] sm:text-xs md:text-sm font-extrabold uppercase tracking-widest text-black shadow-xl border border-black/40 ${
-                                theme === "dark" ? "text-white" : "text-black"
-                              }`}
+                              className={`flex items-center justify-center py-2 text-[10px] sm:text-xs md:text-sm font-extrabold uppercase tracking-widest text-black shadow-xl border border-black/40 text-white`}
                               style={{
                                 background:
                                   "repeating-linear-gradient(135deg,#facc15 0px,#facc15 12px,#111 12px,#111 24px)",
