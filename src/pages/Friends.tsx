@@ -12,6 +12,8 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import { ToastContainer, toast } from "react-toastify";
+
 import {
   sendFriendRequest,
   acceptFriendRequest,
@@ -38,7 +40,13 @@ export default function Friends() {
   const [incoming, setIncoming] = useState<Req[]>([]);
   const [sent, setSent] = useState<Req[]>([]);
   const [friends, setFriends] = useState<string[]>([]);
+  const [docFriends, setDocFriends] = useState<string[]>([]);
+  const [acceptedFriends, setAcceptedFriends] = useState<string[]>([]);
   const [addEmail, setAddEmail] = useState("");
+
+  const [friendsLoading, setFriendsLoading] = useState(true);
+  const [docLoaded, setDocLoaded] = useState(false);
+  const [acceptedLoaded, setAcceptedLoaded] = useState(false);
 
   // Yıldızları bir kez üret (re-render'da zıplamasın)
   const stars = useMemo(
@@ -97,27 +105,36 @@ export default function Friends() {
     };
   }, [me]);
 
+  // me değişince loading'i tekrar aç
+  useEffect(() => {
+    setFriendsLoading(true);
+    setDocLoaded(false);
+    setAcceptedLoaded(false);
+    setFriends([]);
+    setDocFriends([]);
+    setAcceptedFriends([]);
+  }, [me]);
+
   // Friends list (users/{email}.friends)
   useEffect(() => {
     if (!me) return;
     const ref = doc(db, "users", me);
     const unsub = onSnapshot(ref, (snap) => {
       const list: string[] = (snap.data()?.friends as string[]) || [];
-      setFriends(list);
+      setDocFriends(list);
+      setDocLoaded(true);
     });
     return () => unsub();
   }, [me]);
 
+  // Accepted friendRequests -> iki yönden topla
   useEffect(() => {
     if (!me) return;
-    // accepted -> ben gönderdim (karşı taraf arkadaşım)
     const qAcceptedOut = query(
       collection(db, "friendRequests"),
       where("fromEmail", "==", me),
       where("status", "==", "accepted")
     );
-
-    // accepted -> bana gönderildi (gönderen arkadaşım)
     const qAcceptedIn = query(
       collection(db, "friendRequests"),
       where("toEmail", "==", me),
@@ -126,20 +143,25 @@ export default function Friends() {
 
     let out: string[] = [];
     let inn: string[] = [];
+    let outLoaded = false;
+    let inLoaded = false;
 
-    const merge = () => {
-      // unique list
+    const mergeLocal = () => {
       const uniq = Array.from(new Set([...out, ...inn]));
-      setFriends(uniq);
+      setAcceptedFriends(uniq);
     };
 
     const unsubA = onSnapshot(qAcceptedOut, (snap) => {
       out = snap.docs.map((d) => (d.data() as any).toEmail as string);
-      merge();
+      outLoaded = true;
+      mergeLocal();
+      if (outLoaded && inLoaded) setAcceptedLoaded(true);
     });
     const unsubB = onSnapshot(qAcceptedIn, (snap) => {
       inn = snap.docs.map((d) => (d.data() as any).fromEmail as string);
-      merge();
+      inLoaded = true;
+      mergeLocal();
+      if (outLoaded && inLoaded) setAcceptedLoaded(true);
     });
 
     return () => {
@@ -147,6 +169,13 @@ export default function Friends() {
       unsubB();
     };
   }, [me]);
+
+  // İki kaynağı birleştir ve friends'e yaz
+  useEffect(() => {
+    const merged = Array.from(new Set([...docFriends, ...acceptedFriends]));
+    setFriends(merged);
+    if (docLoaded && acceptedLoaded) setFriendsLoading(false);
+  }, [docFriends, acceptedFriends, docLoaded, acceptedLoaded]);
 
   const canUse = useMemo(() => !!me, [me]);
 
@@ -158,6 +187,10 @@ export default function Friends() {
           : "bg-gradient-to-br from-blue-400 via-blue-300 to-green-400"
       }`}
     >
+      <ToastContainer
+        position="bottom-right"
+        theme="dark"
+      />
       {/* Background stars & soft glows */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {/* soft glows */}
@@ -277,7 +310,7 @@ export default function Friends() {
                   try {
                     await sendFriendRequest(me, addEmail);
                     setAddEmail("");
-                    alert("Request sent");
+                    toast.success("Friend request sent");
                   } catch (e: any) {
                     alert(e.message || "Failed");
                   }
@@ -350,7 +383,7 @@ export default function Friends() {
                   <div className="truncate">{r.toEmail}</div>
                   <button
                     onClick={() => cancelFriendRequest(r.id)}
-                    className="px-3 py-1 rounded-lg bg-slate-500 text-white text-sm"
+                    className="px-3 py-1 rounded-lg bg-slate-500 text-white text-sm cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -370,37 +403,45 @@ export default function Friends() {
             }`}
           >
             <div className="font-semibold mb-3">Friends ({friends.length})</div>
-            {friends.length === 0 && (
+            {friendsLoading && (
+              <div className="flex items-center gap-2 text-sm opacity-70">
+                <span className="w-3 h-3 rounded-full border-2 border-current border-t-transparent animate-spin" />
+                Loading friends...
+              </div>
+            )}
+            {!friendsLoading && friends.length === 0 && (
               <div className="text-sm opacity-70">No friends yet</div>
             )}
-            <div className="space-y-2">
-              {friends.map((e) => (
-                <div
-                  key={e}
-                  className="flex items-center justify-between py-2 border-b last:border-none border-slate-600/30"
-                >
-                  <div className="truncate">{e}</div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() =>
-                        navigate(
-                          `/available-rooms?invite=${encodeURIComponent(e)}`
-                        )
-                      }
-                      className="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm cursor-pointer"
-                    >
-                      Invite
-                    </button>
-                    <button
-                      onClick={() => removeFriend(me, e)}
-                      className="px-3 py-1 rounded-lg bg-red-600 text-white text-sm cursor-pointer"
-                    >
-                      Remove
-                    </button>
+            {!friendsLoading && friends.length > 0 && (
+              <div className="space-y-2">
+                {friends.map((e) => (
+                  <div
+                    key={e}
+                    className="flex items-center justify-between py-2 border-b last:border-none border-slate-600/30"
+                  >
+                    <div className="truncate">{e}</div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() =>
+                          navigate(
+                            `/available-rooms?invite=${encodeURIComponent(e)}`
+                          )
+                        }
+                        className="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm cursor-pointer"
+                      >
+                        Invite
+                      </button>
+                      <button
+                        onClick={() => removeFriend(me, e)}
+                        className="px-3 py-1 rounded-lg bg-red-600 text-white text-sm cursor-pointer"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

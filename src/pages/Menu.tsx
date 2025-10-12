@@ -31,6 +31,94 @@ const Menu = () => {
   const [isRankedRoom, setIsRankedRoom] = useState(false); // EKLENDI
   const [showRankedConfirm, setShowRankedConfirm] = useState(false); // EKLENDI
 
+  // Grid görünüm mü? (form ekranlarında max-w-md kalsın)
+  const isGrid =
+    !showJoinFields &&
+    !showCreateFields &&
+    !showRandomFields &&
+    !showRankedConfirm;
+
+  const tiles = [
+    {
+      key: "local",
+      title: "Same Screen",
+      subtitle: "Play locally",
+      icon: "🎮",
+      gradient: "from-red-500 to-red-600",
+      onClick: () => handleLocalGame(),
+    },
+    {
+      key: "random",
+      title: "Random Match",
+      subtitle: "Casual",
+      icon: "🎲",
+      gradient: "from-orange-500 to-orange-600",
+      onClick: () => setShowRandomFields(true),
+    },
+    {
+      key: "ranked",
+      title: "Ranked",
+      subtitle: currentUser ? "Compete for points" : "Login required",
+      icon: "🏆",
+      gradient: "from-yellow-500 to-yellow-600",
+      disabled: !currentUser,
+      onClick: () => (currentUser ? setShowRankedConfirm(true) : null),
+    },
+    {
+      key: "available",
+      title: "Available Rooms",
+      subtitle: "Browse public rooms",
+      icon: "🗂️",
+      gradient: "from-purple-500 to-purple-600",
+      onClick: () => handleAvailableRooms(),
+    },
+    {
+      key: "create",
+      title: "Create Room",
+      subtitle: "Host a new game",
+      icon: "➕",
+      gradient: "from-green-500 to-green-600",
+      onClick: () => setShowCreateFields(true),
+    },
+    {
+      key: "join",
+      title: "Join Room",
+      subtitle: "Enter room code",
+      icon: "🔑",
+      gradient: "from-blue-500 to-blue-600",
+      onClick: () => setShowJoinFields(true),
+    },
+    {
+      key: "ranking",
+      title: "World Ranking",
+      subtitle: "Global leaderboard",
+      icon: "🌍",
+      gradient: "from-indigo-500 to-indigo-600",
+      onClick: () => navigate("/world-ranking"),
+    },
+    {
+      key: "friends",
+      title: "Friends",
+      subtitle: currentUser ? "Requests & invites" : "Login required",
+      icon: "👥",
+      disabled: !currentUser,
+      gradient: "from-pink-500 to-pink-600",
+      onClick: () => (currentUser ? navigate("/friends") : null),
+    },
+    // Her zaman göster; login yoksa disabled
+    {
+      key: "profile",
+      title: "My Profile",
+      subtitle: currentUser
+        ? currentUser.email?.split("@")[0] || "User"
+        : "Login required",
+      icon: "👤",
+      gradient: "from-sky-500 to-sky-600",
+      disabled: !currentUser,
+      onClick: () => (currentUser ? navigate("/profile") : null),
+    },
+  ];
+
   const handleLocalGame = () => {
     navigate("/same-screen");
   };
@@ -234,14 +322,17 @@ const Menu = () => {
   };
 
   return (
-    <>
+    <div className="overflow-x-hidden">
       <ToastContainer
         position="bottom-right"
         theme={theme === "dark" ? "dark" : "light"}
         style={{ zIndex: 9999 }}
       />
 
-      <div className="relative w-screen h-screen overflow-hidden">
+      <div
+        className="relative w-screen min-h-[100svh] overflow-x-hidden pb-24 lg:pb-0"
+        style={{ WebkitOverflowScrolling: "touch", minHeight: "100dvh" }}
+      >
         <div
           className={`absolute inset-0 transition-all duration-1000 ${
             theme === "dark"
@@ -275,7 +366,7 @@ const Menu = () => {
           />
         </div>
 
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
@@ -373,9 +464,11 @@ const Menu = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-center min-h-screen p-6">
+        <div className="relative z-10 flex items-center justify-center min-h-full p-6">
           <div
-            className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-md transition-all duration-300 ${
+            className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full mt-24 ${
+              isGrid ? "max-w-5xl" : "max-w-md"
+            } transition-all duration-300 ${
               theme === "dark"
                 ? "bg-slate-800/90 border-slate-600/50 text-slate-100"
                 : "bg-white/90 border-slate-200/50 text-slate-800"
@@ -414,83 +507,48 @@ const Menu = () => {
               </div>
             </div>
 
-            {!showJoinFields && !showCreateFields && !showRandomFields ? (
-              <div className="space-y-4">
-                <button
-                  onClick={handleLocalGame}
-                  className="w-full bg-gradient-to-r from-red-500 to-red-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
-                >
-                  Play on Same Screen
-                </button>
-
-                <button
-                  onClick={() => setShowRandomFields(true)}
-                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
-                >
-                  🎲 Random Match (Casual)
-                </button>
-
-                {/* YENİ RANKED BUTONU */}
-                <button
-                  onClick={() =>
-                    currentUser ? setShowRankedConfirm(true) : null
-                  }
-                  disabled={!currentUser}
-                  className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg ${
-                    currentUser
-                      ? "bg-gradient-to-r from-yellow-500 to-yellow-600 cursor-pointer text-white hover:from-yellow-600 hover:to-yellow-700 hover:shadow-xl hover:scale-102"
-                      : "bg-gray-400 cursor-not-allowed text-gray-200"
-                  } backdrop-blur-sm`}
-                >
-                  🏆 Ranked Match {!currentUser && "(Login Required)"}
-                </button>
-
-                <button
-                  onClick={handleAvailableRooms}
-                  className="w-full bg-gradient-to-r from-purple-500 to-purple-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-purple-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
-                >
-                  See Available Rooms
-                </button>
-
-                <button
-                  onClick={() => setShowCreateFields(true)}
-                  className="w-full bg-gradient-to-r from-green-500 to-green-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
-                >
-                  Create Room
-                </button>
-
-                <button
-                  onClick={() => setShowJoinFields(true)}
-                  className="w-full bg-gradient-to-r from-blue-500 to-blue-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
-                >
-                  Join Room
-                </button>
-                <button
-                  onClick={() => navigate("/world-ranking")}
-                  className={`px-5 py-2 rounded-xl w-full py-4 cursor-pointer font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm ${
-                    theme === "dark"
-                      ? "bg-slate-700 hover:bg-slate-600 text-white"
-                      : "bg-slate-600 text-white"
-                  }`}
-                >
-                  View World Ranking
-                </button>
-                <button
-                  onClick={() => navigate("/friends")}
-                  className="w-full bg-gradient-to-r from-pink-500 to-pink-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-pink-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
-                >
-                  👥 Friends
-                </button>
-
-                {/* YENİ PROFİL BUTONU - Sadece giriş yapmış kullanıcılar için */}
-                {currentUser && (
-                  <button
-                    onClick={() => navigate("/profile")}
-                    className="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 cursor-pointer text-white py-4 rounded-xl font-semibold hover:from-indigo-600 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-102 backdrop-blur-sm"
-                  >
-                    👤 My Profile
-                  </button>
-                )}
+            {isGrid ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {tiles.map((t) => {
+                  const disabled = !!t.disabled;
+                  const base =
+                    "relative overflow-hidden rounded-2xl h-40 p-5 select-none transition-all";
+                  const state = disabled
+                    ? "opacity-60 cursor-not-allowed"
+                    : "cursor-pointer hover:scale-[1.02] hover:shadow-xl";
+                  const bg = `bg-gradient-to-br ${t.gradient}`;
+                  return (
+                    <div
+                      key={t.key}
+                      role="button"
+                      tabIndex={disabled ? -1 : 0}
+                      aria-disabled={disabled}
+                      onClick={() => !disabled && t.onClick()}
+                      onKeyDown={(e) => {
+                        if (!disabled && (e.key === "Enter" || e.key === " ")) {
+                          e.preventDefault();
+                          t.onClick();
+                        }
+                      }}
+                      className={`${base} ${bg} ${state} shadow-lg`}
+                    >
+                      {/* üst parlama */}
+                      <div className="absolute -top-10 -right-10 w-36 h-36 rounded-full bg-white/10 blur-2xl" />
+                      {/* içerik */}
+                      <div className="flex h-full flex-col justify-between">
+                        <div className="text-3xl drop-shadow-sm">{t.icon}</div>
+                        <div>
+                          <div className="text-white font-extrabold text-xl leading-tight">
+                            {t.title}
+                          </div>
+                          <div className="text-white/90 text-sm">
+                            {t.subtitle}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             ) : showRandomFields ? (
               <div className="space-y-4">
@@ -790,7 +848,7 @@ const Menu = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

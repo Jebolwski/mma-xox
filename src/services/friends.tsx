@@ -10,6 +10,7 @@ import {
   where,
   arrayUnion,
   arrayRemove,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -74,6 +75,33 @@ export async function cancelFriendRequest(reqId: string) {
 }
 
 export async function removeFriend(aEmail: string, bEmail: string) {
-  await updateDoc(doc(db, "users", aEmail), { friends: arrayRemove(bEmail) });
-  await updateDoc(doc(db, "users", bEmail), { friends: arrayRemove(aEmail) });
+  const a = (aEmail || "").trim().toLowerCase();
+  const b = (bEmail || "").trim().toLowerCase();
+
+  // 1) Accepted friendRequests'leri iki yönde de bul ve sil
+  const col = collection(db, "friendRequests");
+  const q1 = query(
+    col,
+    where("fromEmail", "==", a),
+    where("toEmail", "==", b),
+    where("status", "==", "accepted")
+  );
+  const q2 = query(
+    col,
+    where("fromEmail", "==", b),
+    where("toEmail", "==", a),
+    where("status", "==", "accepted")
+  );
+
+  const [s1, s2] = await Promise.all([getDocs(q1), getDocs(q2)]);
+  const all = [...s1.docs, ...s2.docs];
+  await Promise.all(all.map((d) => deleteDoc(d.ref)));
+
+  // 2) (Opsiyonel) users.{friends} temizliği – kullanıyorsan tut
+  try {
+    await updateDoc(doc(db, "users", a), { friends: arrayRemove(b) });
+  } catch {}
+  try {
+    await updateDoc(doc(db, "users", b), { friends: arrayRemove(a) });
+  } catch {}
 }
