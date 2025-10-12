@@ -1648,7 +1648,6 @@ const Room = () => {
                   currentUser?.email?.split("@")[0] ||
                   ""}
               </span>
-              <span className="font-semibold text-sm">{myDisplayName}</span>
               {gameState?.isRankedRoom && (
                 <div className="text-yellow-500 text-xs">🏆</div>
               )}

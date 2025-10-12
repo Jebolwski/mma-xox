@@ -212,7 +212,7 @@ const Login = () => {
           <div className="mt-8 text-center">
             <button
               onClick={() => navigate("/")}
-              className={`text-sm px-4 py-2 rounded-lg transition-all duration-300 ${
+              className={`text-sm px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ${
                 theme === "dark"
                   ? "text-slate-400 hover:text-slate-300 hover:bg-slate-700/50"
                   : "text-slate-600 hover:text-slate-500 hover:bg-slate-200/50"
