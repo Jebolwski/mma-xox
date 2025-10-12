@@ -51,11 +51,6 @@ const Room = () => {
   const [selected, setSelected]: any = useState();
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const myDisplayName =
-    currentUser?.displayName ||
-    currentUser?.email?.split("@")[0] ||
-    playerName ||
-    "Player";
   // Ranked bilgisini gameState yokken de (URL paramından) anlayalım
   const isRankedRoom = (gameState?.isRankedRoom ?? isRanked) === true;
 
