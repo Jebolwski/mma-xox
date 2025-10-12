@@ -51,6 +51,18 @@ const Room = () => {
   const [selected, setSelected]: any = useState();
   const [showConfetti, setShowConfetti] = useState(false);
 
+  const myDisplayName =
+    currentUser?.displayName ||
+    currentUser?.email?.split("@")[0] ||
+    playerName ||
+    "Player";
+  // Ranked bilgisini gameState yokken de (URL paramından) anlayalım
+  const isRankedRoom = (gameState?.isRankedRoom ?? isRanked) === true;
+
+  // Banner görünürlüğü: login varsa daima; değilse sadece casual (host veya guest)
+  const showUserBanner =
+    !!currentUser || (!isRankedRoom && (role === "host" || role === "guest"));
+
   const [fighter00, setFighter00]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
@@ -1615,7 +1627,7 @@ const Room = () => {
         </div>
       </div>
       {/* Kullanıcı adı gösterimi - üst orta */}
-      {currentUser && (
+      {showUserBanner && (
         <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-30">
           <div
             className={`px-4 py-2 rounded-full transition-all duration-300 backdrop-blur-md border shadow-xl ${
@@ -1629,12 +1641,14 @@ const Room = () => {
                 className={`w-3 h-3 rounded-full ${
                   theme === "dark" ? "bg-green-400" : "bg-green-500"
                 } animate-pulse`}
-              ></div>
+              />{" "}
               <span className="font-semibold text-sm">
-                {currentUser.displayName ||
-                  currentUser.email?.split("@")[0] ||
-                  "Player"}
+                {" "}
+                {currentUser?.displayName ||
+                  currentUser?.email?.split("@")[0] ||
+                  ""}
               </span>
+              <span className="font-semibold text-sm">{myDisplayName}</span>
               {gameState?.isRankedRoom && (
                 <div className="text-yellow-500 text-xs">🏆</div>
               )}

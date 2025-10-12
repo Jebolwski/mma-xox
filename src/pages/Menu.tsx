@@ -58,7 +58,7 @@ const Menu = () => {
     {
       key: "ranked",
       title: "Ranked",
-      subtitle: currentUser ? "Compete for points" : "Login required",
+      subtitle: "Compete for points",
       icon: "🏆",
       gradient: "from-yellow-500 to-yellow-600",
       disabled: !currentUser,
@@ -99,7 +99,7 @@ const Menu = () => {
     {
       key: "friends",
       title: "Friends",
-      subtitle: currentUser ? "Requests & invites" : "Login required",
+      subtitle: "Requests & invites",
       icon: "👥",
       disabled: !currentUser,
       gradient: "from-pink-500 to-pink-600",
@@ -109,9 +109,7 @@ const Menu = () => {
     {
       key: "profile",
       title: "My Profile",
-      subtitle: currentUser
-        ? currentUser.email?.split("@")[0] || "User"
-        : "Login required",
+      subtitle: "See your stats",
       icon: "👤",
       gradient: "from-sky-500 to-sky-600",
       disabled: !currentUser,
@@ -534,8 +532,28 @@ const Menu = () => {
                     >
                       {/* üst parlama */}
                       <div className="absolute -top-10 -right-10 w-36 h-36 rounded-full bg-white/10 blur-2xl" />
+
+                      {/* DO-NOT-CROSS band (yalnızca disabled kartlarda) */}
+                      {disabled && (
+                        <div className="absolute inset-0 z-20 grid place-items-center pointer-events-none">
+                          <div className="w-[180%] rotate-12">
+                            <div
+                              className={`flex items-center justify-center py-2 text-[10px] sm:text-xs md:text-sm font-extrabold uppercase tracking-widest text-black shadow-xl border border-black/40 ${
+                                theme === "dark" ? "text-white" : "text-black"
+                              }`}
+                              style={{
+                                background:
+                                  "repeating-linear-gradient(135deg,#facc15 0px,#facc15 12px,#111 12px,#111 24px)",
+                              }}
+                            >
+                              LOGIN REQUIRED
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       {/* içerik */}
-                      <div className="flex h-full flex-col justify-between">
+                      <div className="flex h-full flex-col justify-between relative z-10">
                         <div className="text-3xl drop-shadow-sm">{t.icon}</div>
                         <div>
                           <div className="text-white font-extrabold text-xl leading-tight">
