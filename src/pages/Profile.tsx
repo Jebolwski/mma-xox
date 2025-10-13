@@ -268,7 +268,7 @@ const Profile = () => {
       {/* Main Content */}
       <div className="relative z-10 flex justify-center items-center min-h-screen p-6">
         <div
-          className={`max-w-2xl w-full rounded-2xl backdrop-blur-md border-4 shadow-2xl p-8 mt-8 ${
+          className={`max-w-2xl w-full rounded-2xl backdrop-blur-md border-4 shadow-2xl p-8 lg:mt-8 mt-20 ${
             theme === "dark"
               ? "bg-slate-800/90 border-slate-600 text-white"
               : "bg-white/90 border-slate-300 text-slate-800"

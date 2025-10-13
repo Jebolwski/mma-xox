@@ -261,15 +261,7 @@ export default function Friends() {
         </div>
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-10">
-        <h1
-          className={`text-2xl font-bold text-center mb-8 ${
-            theme === "dark" ? "text-white" : "text-slate-800"
-          }`}
-        >
-          Friends
-        </h1>
-
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-10 pt-24">
         {!canUse && (
           <div
             className={`rounded-xl p-4 mb-6 border text-center ${
