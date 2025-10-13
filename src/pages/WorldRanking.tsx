@@ -210,17 +210,7 @@ export default function WorldRanking() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-center mb-10">
-          <h1
-            className={`text-2xl font-bold ${
-              theme === "dark" ? "text-white" : "text-slate-800"
-            }`}
-          >
-            World Ranking
-          </h1>
-        </div>
-
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {currentUser && myRank && (
           <div
             className={`mb-6 rounded-xl p-4 border ${

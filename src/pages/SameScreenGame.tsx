@@ -42,6 +42,7 @@ function SameScreenGame() {
   const [score, setScore] = useState({ red: 0, blue: 0, draw: 0 });
 
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showRestartModal, setShowRestartModal] = useState(false);
 
   const [positionsFighters, setPositionsFighters]: any = useState({
     position03: {},
@@ -218,8 +219,9 @@ function SameScreenGame() {
     // Oyuncuların seçtiği dövüşçüleri sıfırla
     setFigters([]);
 
-    // Yeni rastgele dövüşçüleri belirle
-    getFilters();
+    // Filtreleri yeni oyunda seçilecek; ekran açıldığında üretilecek
+    setFiltersSelected([]);
+    setShowConfetti(false);
 
     setGameWinner(null);
   };
@@ -729,18 +731,15 @@ function SameScreenGame() {
   }, [gameStart]);
 
   useEffect(() => {
+    if (!gameStart || parseInt(timerLength) < 0) return;
     if (timer <= 0) {
       setTurn((prevTurn: any) => (prevTurn === "red" ? "blue" : "red"));
       setTimer(timerLength);
-      return; // Yeni interval başlatmadan çık
+      return;
     }
-
-    const interval = setInterval(() => {
-      setTimer((prev: any) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(interval); // Eski intervali temizle
-  }, [timer]);
+    const interval = setInterval(() => setTimer((prev: any) => prev - 1), 1000);
+    return () => clearInterval(interval);
+  }, [timer, gameStart, timerLength]);
 
   useEffect(() => {
     if (playWithAI && turn === "blue" && gameStart && !gameWinner) {
@@ -897,9 +896,7 @@ function SameScreenGame() {
             </div>
             <div className="flex justify-between items-center gap-3 flex-wrap text-right pt-2 relative">
               <div
-                onClick={() => {
-                  restartGame();
-                }}
+                onClick={() => setShowRestartModal(true)}
                 className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
                   theme === "dark"
                     ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-white"
@@ -1775,6 +1772,88 @@ function SameScreenGame() {
             </div>
           </div>
         </div>
+
+        {/* Restart Modal */}
+        {showRestartModal && (
+          <div className="fixed inset-0 z-50">
+            {/* backdrop */}
+            <div
+              className={`${
+                theme === "dark" ? "bg-black/60" : "bg-black/40"
+              } absolute inset-0`}
+              onClick={() => setShowRestartModal(false)}
+            />
+            {/* center */}
+            <div className="relative z-10 flex min-h-screen items-center justify-center p-4">
+              <div
+                className={`relative w-full max-w-md rounded-2xl border shadow-2xl ${
+                  theme === "dark"
+                    ? "bg-slate-900 border-slate-700 text-slate-100"
+                    : "bg-white border-slate-200 text-slate-800"
+                }`}
+              >
+                {/* close icon */}
+                <button
+                  onClick={() => setShowRestartModal(false)}
+                  aria-label="Close restart modal"
+                  className={`absolute right-3 top-3 rounded-md px-2 py-1 text-sm ${
+                    theme === "dark"
+                      ? "bg-slate-700 hover:bg-slate-600"
+                      : "bg-slate-200 hover:bg-slate-300"
+                  }`}
+                >
+                  ✕
+                </button>
+
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <img
+                      src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                      alt="logo"
+                      className="w-8"
+                    />
+                    <h3 className="text-lg font-bold">Restart game?</h3>
+                  </div>
+                  <p
+                    className={`text-sm ${
+                      theme === "dark" ? "text-slate-300" : "text-slate-600"
+                    }`}
+                  >
+                    New filters will be generated. Current board will reset.
+                  </p>
+
+                  <div className="mt-5 flex items-center justify-end gap-2">
+                    <button
+                      onClick={() => setShowRestartModal(false)}
+                      className={`px-4 py-2 rounded-lg cursor-pointer border ${
+                        theme === "dark"
+                          ? "bg-slate-800 border-slate-600 text-slate-200 hover:bg-slate-700"
+                          : "bg-white border-slate-300 text-slate-800 hover:bg-slate-50"
+                      }`}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => {
+                        // Tahtayı sıfırla ve başlangıç overlay’ine dön (zorluk/süre seçilecek)
+                        restartGame();
+                        setShowRestartModal(false);
+                        // Timer ve filtreler, Start ekranındaki PLAY! ile set edilecek
+                      }}
+                      className={`px-5 py-2 rounded-lg font-bold cursor-pointer shadow-lg border bg-gradient-to-r ${
+                        theme === "dark"
+                          ? "from-indigo-600 to-blue-700 border-indigo-500 text-white hover:from-indigo-500 hover:to-blue-600"
+                          : "from-indigo-300 to-sky-400 border-indigo-400 text-indigo-900 hover:from-indigo-400 hover:to-sky-500"
+                      }`}
+                    >
+                      PLAY!
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

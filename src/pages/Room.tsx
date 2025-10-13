@@ -1623,7 +1623,7 @@ const Room = () => {
       </div>
       {/* Kullanıcı adı gösterimi - üst orta */}
       {showUserBanner && (
-        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-30">
+        <div className="absolute top-24 lg:top-6 left-1/2 transform -translate-x-1/2 z-30">
           <div
             className={`px-4 py-2 rounded-full transition-all duration-300 backdrop-blur-md border shadow-xl ${
               theme === "dark"
@@ -1641,7 +1641,8 @@ const Room = () => {
                 {" "}
                 {currentUser?.displayName ||
                   currentUser?.email?.split("@")[0] ||
-                  ""}
+                  playerName ||
+                  "Player"}
               </span>
               {gameState?.isRankedRoom && (
                 <div className="text-yellow-500 text-xs">🏆</div>
@@ -1847,7 +1848,7 @@ const Room = () => {
         }`}
       >
         <div className="w-fit mb-4">
-          <div className="text-2xl mb-2 mt-28 text-center">
+          <div className="text-2xl mb-2 mt-42 lg:mt-28 text-center">
             Room Code: {roomId}
           </div>
           {gameState.gameStarted == false &&
@@ -1877,7 +1878,7 @@ const Room = () => {
             <div
               className={`${
                 gameState?.gameStarted == true ? "flex" : "hidden"
-              } justify-between items-center gap-3 flex-wrap text-right pt-2`}
+              } justify-between items-center gap-3 flex-wrap text-right pt-2 px-4 md:px-0`}
             >
               {/* Restart Game butonu - sadece casual maçlarda göster */}
               {!gameState?.isRankedRoom && (

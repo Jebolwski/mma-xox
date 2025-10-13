@@ -129,20 +129,26 @@ const Menu = () => {
     navigate("/");
   };
 
+  const NAME_MAX = 16;
+
   // Kullanıcı adını otomatik al
+  const sanitizeGuestName = (name: string) => {
+    const trimmed = (name || "").trim().replace(/\s+/g, " ");
+    if (!trimmed) return "";
+    return trimmed.slice(0, NAME_MAX);
+  };
   const getPlayerName = () => {
     if (currentUser) {
-      // Giriş yapmış kullanıcı için email'den username al
-      return currentUser.email?.split("@")[0] || "User";
+      // Email prefix çok uzunsa gösterim için kısalt
+      const u = currentUser.email?.split("@")[0] || "User";
+      return u.slice(0, NAME_MAX);
     }
-    // Guest kullanıcı için manuel girilen ismi kullan
-    return playerName;
+    return sanitizeGuestName(playerName);
   };
 
   const handleCreateRoom = async () => {
     const finalPlayerName = getPlayerName();
-
-    if (!currentUser && !playerName) {
+    if (!currentUser && !finalPlayerName) {
       toast.error("Please enter your name!");
       return;
     }
@@ -174,8 +180,7 @@ const Menu = () => {
 
   const handleJoinRoom = async () => {
     const finalPlayerName = getPlayerName();
-
-    if (!currentUser && !playerName) {
+    if (!currentUser && !finalPlayerName) {
       toast.error("Please enter your name!");
       return;
     }
@@ -217,8 +222,7 @@ const Menu = () => {
   // Random Match (Puansız) - mevcut fonksiyonu güncelle
   const handleRandomMatch = async () => {
     const finalPlayerName = getPlayerName();
-
-    if (!currentUser && !playerName) {
+    if (!currentUser && !finalPlayerName) {
       toast.error("Please enter your name!");
       return;
     }
@@ -570,17 +574,29 @@ const Menu = () => {
               <div className="space-y-4">
                 {/* Sadece guest kullanıcılar için isim input'u göster */}
                 {!currentUser && (
-                  <input
-                    type="text"
-                    placeholder="Your name"
-                    value={playerName}
-                    onChange={(e) => setPlayerName(e.target.value)}
-                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
-                      theme === "dark"
-                        ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
-                        : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
-                    }`}
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Your name"
+                      value={playerName}
+                      onChange={(e) =>
+                        setPlayerName(e.target.value.slice(0, NAME_MAX))
+                      }
+                      maxLength={NAME_MAX}
+                      className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                        theme === "dark"
+                          ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                          : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                      }`}
+                    />
+                    <div
+                      className={`mt-1 text-right text-xs ${
+                        theme === "dark" ? "text-slate-400" : "text-slate-500"
+                      }`}
+                    >
+                      {playerName.length}/{NAME_MAX}
+                    </div>
+                  </div>
                 )}
 
                 {/* Giriş yapmış kullanıcılar için bilgi göster */}
@@ -621,17 +637,29 @@ const Menu = () => {
               <div className="space-y-4">
                 {/* Sadece guest kullanıcılar için isim input'u göster */}
                 {!currentUser && (
-                  <input
-                    type="text"
-                    placeholder="Your name"
-                    value={playerName}
-                    onChange={(e) => setPlayerName(e.target.value)}
-                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
-                      theme === "dark"
-                        ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
-                        : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
-                    }`}
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Your name"
+                      value={playerName}
+                      onChange={(e) =>
+                        setPlayerName(e.target.value.slice(0, NAME_MAX))
+                      }
+                      maxLength={NAME_MAX}
+                      className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                        theme === "dark"
+                          ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                          : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                      }`}
+                    />
+                    <div
+                      className={`mt-1 text-right text-xs ${
+                        theme === "dark" ? "text-slate-400" : "text-slate-500"
+                      }`}
+                    >
+                      {playerName.length}/{NAME_MAX}
+                    </div>
+                  </div>
                 )}
 
                 {/* Giriş yapmış kullanıcılar için bilgi göster */}
@@ -716,17 +744,29 @@ const Menu = () => {
               <div className="space-y-4">
                 {/* Sadece guest kullanıcılar için isim input'u göster */}
                 {!currentUser && (
-                  <input
-                    type="text"
-                    placeholder="Your name"
-                    value={playerName}
-                    onChange={(e) => setPlayerName(e.target.value)}
-                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
-                      theme === "dark"
-                        ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
-                        : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
-                    }`}
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Your name"
+                      value={playerName}
+                      onChange={(e) =>
+                        setPlayerName(e.target.value.slice(0, NAME_MAX))
+                      }
+                      maxLength={NAME_MAX}
+                      className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                        theme === "dark"
+                          ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                          : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                      }`}
+                    />
+                    <div
+                      className={`mt-1 text-right text-xs ${
+                        theme === "dark" ? "text-slate-400" : "text-slate-500"
+                      }`}
+                    >
+                      {playerName.length}/{NAME_MAX}
+                    </div>
+                  </div>
                 )}
 
                 {/* Giriş yapmış kullanıcılar için bilgi göster */}
