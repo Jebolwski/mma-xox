@@ -99,13 +99,13 @@ const Login = () => {
           {theme === "dark" ? (
             <img
               src="https://clipart-library.com/images/6iypd9jin.png"
-              className="w-6 h-6"
+              className="lg:w-6 lg:h-6 w-5 h-5"
               alt="Light mode"
             />
           ) : (
             <img
               src="https://clipart-library.com/img/1669853.png"
-              className="w-6 h-6"
+              className="lg:w-6 lg:h-6 w-5 h-5"
               alt="Dark mode"
             />
           )}

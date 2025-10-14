@@ -72,13 +72,13 @@ const Home = () => {
           {theme === "dark" ? (
             <img
               src="https://clipart-library.com/images/6iypd9jin.png"
-              className="w-6 h-6"
+              className="lg:w-6 lg:h-6 w-5 h-5"
               alt="Light mode"
             />
           ) : (
             <img
               src="https://clipart-library.com/img/1669853.png"
-              className="w-6 h-6"
+              className="lg:w-6 lg:h-6 w-5 h-5"
               alt="Dark mode"
             />
           )}
@@ -101,7 +101,7 @@ const Home = () => {
       )}
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pt-24 pb-12 lg:pt-0">
         {/* Game Logo */}
         <div className="lg:mb-8 mb-6 text-center animate-bounce-slow">
           <div

@@ -413,7 +413,7 @@ const Menu = () => {
                 <div className="flex gap-2">
                   <img
                     src={return_img || "/placeholder.svg"}
-                    className="lg:w-6 w-5"
+                    className="lg:w-6 lg:h-6 w-5 h-5"
                   />
                   <p className="lg:block hidden">Logout</p>
                 </div>
