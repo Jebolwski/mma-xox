@@ -1,5 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
+import { Timestamp } from "firebase/firestore";
 import {
   collection,
   onSnapshot,
@@ -30,6 +31,7 @@ import AdBanner from "../components/AdBanner";
 import Confetti from "react-confetti";
 import { getDoc, increment } from "firebase/firestore";
 import { useWindowSize } from "react-use";
+import { ROOM_TTL_MS } from "../services/roomCleanup";
 
 import { useAuth } from "../context/AuthContext"; // Add this import if you have an AuthContext
 
@@ -245,6 +247,8 @@ const Room = () => {
           gameStarted: false,
           filtersSelected: [],
           createdAt: serverTimestamp(),
+          lastActivityAt: serverTimestamp(),
+          expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
           fighter00: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
             text: "",
@@ -310,6 +314,8 @@ const Room = () => {
           guest: { prev: gameState.guest.now || null, now: playerName },
           guestEmail: currentUser?.email || null, // BURAYA EKLEDİK
           guestJoinMethod: "direct-link", // İsterseniz bunu da ekleyebilirsiniz
+          lastActivityAt: serverTimestamp(),
+          expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
         });
       };
 
@@ -398,6 +404,8 @@ const Room = () => {
           gameEnded: false,
           winner: null,
           guest: { prev: gameState?.guest.now || null, now: guest || null },
+          lastActivityAt: serverTimestamp(),
+          expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
         });
 
         // yazma tamamlandıktan sonra tekrar tetiklememek için pushFirestore'u false yap
@@ -839,6 +847,8 @@ const Room = () => {
 
     await updateDoc(roomRef, {
       timerLength: timerLength,
+      lastActivityAt: serverTimestamp(),
+      expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
     });
   };
 
@@ -849,6 +859,8 @@ const Room = () => {
 
     await updateDoc(roomRef, {
       turn: gameState.turn == "red" ? "blue" : "red",
+      lastActivityAt: serverTimestamp(),
+      expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
     });
   };
 
@@ -874,6 +886,8 @@ const Room = () => {
       gameStarted: true,
       difficulty: difficulty,
       timerLength: timerLength,
+      lastActivityAt: serverTimestamp(),
+      expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
     });
 
     setPushFirestore(true);
@@ -945,6 +959,8 @@ const Room = () => {
         text: "",
         bg: "from-stone-300 to-stone-500",
       },
+      lastActivityAt: serverTimestamp(),
+      expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
     });
 
     // Local state'leri de sıfırla
@@ -1251,6 +1267,8 @@ const Room = () => {
       await updateDoc(roomRef, {
         timerLength: gameState.timer,
         turn: gameState.turn === "red" ? "blue" : "red",
+        lastActivityAt: serverTimestamp(),
+        expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
       });
     } else {
       const bgColor =
@@ -1288,6 +1306,8 @@ const Room = () => {
         guest: { prev: gameState?.guest.now, now: guest },
         timerLength: gameState.timer,
         turn: gameState.turn === "red" ? "blue" : "red",
+        lastActivityAt: serverTimestamp(),
+        expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
       });
     }
     console.log(5, "a");
@@ -2950,6 +2970,8 @@ const Room = () => {
                     const roomRef = doc(db, "rooms", roomId);
                     await updateDoc(roomRef, {
                       guestReady: true,
+                      lastActivityAt: serverTimestamp(),
+                      expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
                     });
                     toast.success("You are ready! Waiting for host...");
                   }}
@@ -3201,6 +3223,10 @@ const Room = () => {
                         const roomRef = doc(db, "rooms", roomId);
                         await updateDoc(roomRef, {
                           hostReady: true,
+                          lastActivityAt: serverTimestamp(),
+                          expireAt: Timestamp.fromMillis(
+                            Date.now() + ROOM_TTL_MS
+                          ),
                         });
 
                         // Her iki taraf da ready ise oyunu başlat

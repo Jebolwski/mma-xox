@@ -14,6 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import return_img from "../assets/return.png";
 import refresh from "../assets/refresh.png";
+import { cleanupStaleRooms } from "../services/roomCleanup";
 
 const AvailableRooms = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -54,6 +55,17 @@ const AvailableRooms = () => {
     };
     fetchRooms();
   }, []);
+
+  useEffect(() => {
+    // oturum başına bir kere dene
+    const last = Number(localStorage.getItem("cleanupAt") || 0);
+
+    if (Date.now() - last > 5 * 60 * 1000) {
+      // 5 dk throttling
+      cleanupStaleRooms(50, !!currentUser).catch(() => {});
+      localStorage.setItem("cleanupAt", String(Date.now()));
+    }
+  }, [currentUser]);
 
   // const handleRoomClick = (roomId: any) => {
   //   setSelectedRoom(roomId);
@@ -115,11 +127,9 @@ const AvailableRooms = () => {
       return;
     }
     setCahRefresh(false);
-    console.log("cahRefresh:", false);
     setLoading(true);
     setTimeout(() => {
       setCahRefresh(true);
-      console.log("cahRefresh:", true);
     }, 5000);
 
     const roomsRef = collection(db, "rooms");

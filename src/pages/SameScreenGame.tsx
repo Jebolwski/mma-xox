@@ -64,6 +64,9 @@ function SameScreenGame() {
 
   const [playWithAI, setPlayWithAI] = useState(false);
 
+  const isGameOver = gameWinner !== null;
+  const canSkip = !playWithAI && gameStart && !isGameOver;
+
   const [fighter00, setFighter00]: any = useState({
     url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
     text: "",
@@ -731,15 +734,24 @@ function SameScreenGame() {
   }, [gameStart]);
 
   useEffect(() => {
-    if (!gameStart || parseInt(timerLength) < 0) return;
+    // Oyun başlamadıysa, süre sınırsızsa veya oyun bittiyse timer çalışmasın
+    if (!gameStart || parseInt(timerLength) < 0 || gameWinner !== null) return;
+
     if (timer <= 0) {
-      setTurn((prevTurn: any) => (prevTurn === "red" ? "blue" : "red"));
-      setTimer(timerLength);
+      // Oyun bitmişse turn değiştirme
+      if (gameWinner === null) {
+        setTurn((prev: any) => (prev === "red" ? "blue" : "red"));
+        setTimer(timerLength);
+      }
       return;
     }
-    const interval = setInterval(() => setTimer((prev: any) => prev - 1), 1000);
+
+    const interval = setInterval(() => {
+      setTimer((prev: any) => (gameWinner !== null ? prev : prev - 1));
+    }, 1000);
+
     return () => clearInterval(interval);
-  }, [timer, gameStart, timerLength]);
+  }, [timer, gameStart, timerLength, gameWinner]);
 
   useEffect(() => {
     if (playWithAI && turn === "blue" && gameStart && !gameWinner) {
@@ -894,14 +906,25 @@ function SameScreenGame() {
                 </p>
               ) : null}
             </div>
-            <div className="flex justify-between items-center gap-3 flex-wrap text-right pt-2 relative">
+            <div
+              className={`flex justify-between items-center gap-3 flex-wrap text-right pt-2 relative ${
+                gameWinner != null ? "opacity-70" : "opacity-100"
+              }`}
+            >
               <div
-                onClick={() => setShowRestartModal(true)}
-                className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
+                onClick={() => {
+                  if (!isGameOver) setShowRestartModal(true);
+                }}
+                className={`flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
                   theme === "dark"
                     ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-white"
                     : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80"
+                } ${
+                  isGameOver
+                    ? "opacity-50 cursor-not-allowed pointer-events-none"
+                    : "cursor-pointer"
                 }`}
+                aria-disabled={isGameOver}
               >
                 Restart Game
               </div>
@@ -925,9 +948,10 @@ function SameScreenGame() {
                   }`}
                 >
                   <p>Turn : Red</p>
-                  {!playWithAI && (
+                  {canSkip && (
                     <div
                       onClick={() => {
+                        if (isGameOver) return;
                         setTurn("blue");
                         setTimer(timerLength);
                       }}
@@ -950,9 +974,10 @@ function SameScreenGame() {
                   }`}
                 >
                   <p>Turn : Blue</p>
-                  {!playWithAI && (
+                  {canSkip && (
                     <div
                       onClick={() => {
+                        if (isGameOver) return;
                         setTurn("red");
                         setTimer(timerLength);
                       }}
