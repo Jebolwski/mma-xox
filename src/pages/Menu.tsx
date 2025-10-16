@@ -17,11 +17,14 @@ import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
 import { useAuth } from "../context/AuthContext";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 const Menu = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { currentUser, logout } = useAuth(); // EKLENDI
+
+  usePageTitle("MMA XOX - Menu");
 
   const [playerName, setPlayerName] = useState("");
   const [roomCode, setRoomCode] = useState("");

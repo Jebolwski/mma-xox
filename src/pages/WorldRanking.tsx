@@ -15,6 +15,7 @@ import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 type Row = {
   id: string;
@@ -35,6 +36,8 @@ export default function WorldRanking() {
   const { currentUser } = useAuth();
   const { theme, toggleTheme } = useContext(ThemeContext);
   // ...existing code...
+
+  usePageTitle("MMA XOX - World Ranking");
 
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);

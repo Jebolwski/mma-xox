@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import return_img from "../assets/return.png";
 import refresh from "../assets/refresh.png";
 import { cleanupStaleRooms } from "../services/roomCleanup";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 const AvailableRooms = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -35,6 +36,8 @@ const AvailableRooms = () => {
     // Guest kullanıcı için manuel girilen ismi kullan
     return guestName;
   };
+
+  usePageTitle("MMA XOX - Available Rooms");
 
   useEffect(() => {
     const fetchRooms = async () => {

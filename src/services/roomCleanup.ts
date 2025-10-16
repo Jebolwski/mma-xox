@@ -3,7 +3,7 @@ import {
     collection, query, where, getDocs, Timestamp, writeBatch,
 } from "firebase/firestore";
 
-export const ROOM_TTL_MS = 6 * 60 * 60 * 1000; // 6 saat
+export const ROOM_TTL_MS = 1 * 60 * 60 * 1000; // 6 saat
 
 export async function cleanupStaleRooms(limit = 50, includeRanked = false) {
     const roomsRef = collection(db, "rooms");

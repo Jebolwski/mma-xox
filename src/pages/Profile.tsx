@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { ToastContainer, toast } from "react-toastify";
 import return_img from "../assets/return.png";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 interface UserStats {
   points: number;
@@ -26,6 +27,8 @@ const Profile = () => {
   const [userStats, setUserStats] = useState<UserStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [tiersOpen, setTiersOpen] = useState(false);
+
+  usePageTitle("MMA XOX - Profile");
 
   useEffect(() => {
     if (!tiersOpen) return;
@@ -480,7 +483,7 @@ const Profile = () => {
               />
 
               {/* Merkezleyici katman */}
-              <div className="relative z-10 flex min-h-screen items-center justify-center p-4">
+              <div className="relative z-10 flex min-h-screen items-center justify-center p-4 lg:mt-0 mt-5">
                 {/* İçerik kutusu */}
                 <div
                   role="dialog"

@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
-
+import { usePageTitle } from "../hooks/usePageTitle";
 const Home = () => {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
+
+  usePageTitle("MMA XOX - Home");
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");

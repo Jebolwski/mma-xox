@@ -13,6 +13,7 @@ import {
   where,
   serverTimestamp,
 } from "firebase/firestore";
+import { usePageTitle } from "../hooks/usePageTitle";
 import { db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -52,6 +53,8 @@ const Room = () => {
   const [filters, setFilters]: any = useState();
   const [selected, setSelected]: any = useState();
   const [showConfetti, setShowConfetti] = useState(false);
+
+  usePageTitle(roomId ? `MMA XOX - Room ${roomId}` : "MMA XOX • Room");
 
   // Ranked bilgisini gameState yokken de (URL paramından) anlayalım
   const isRankedRoom = (gameState?.isRankedRoom ?? isRanked) === true;

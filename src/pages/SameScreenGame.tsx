@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 function SameScreenGame() {
   useEffect(() => {
@@ -21,6 +22,8 @@ function SameScreenGame() {
   const handleExit = async () => {
     navigate("/menu");
   };
+
+  usePageTitle("MMA XOX - Single Player");
 
   const { theme, toggleTheme } = useContext(ThemeContext);
 
@@ -613,10 +616,6 @@ function SameScreenGame() {
   }, [turn]);
 
   useEffect(() => {
-    console.log(fighter00.bg);
-    console.log(fighter01.bg);
-    console.log(fighter02.bg);
-
     if (
       fighter00.bg != "from-red-800 to-red-900" &&
       fighter00.bg != "from-blue-800 to-blue-900"
