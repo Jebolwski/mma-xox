@@ -519,32 +519,8 @@ function SameScreenGame() {
     div?.classList.toggle("hidden");
   };
 
-  const makeAIMove = () => {
-    let winna = checkWinner();
-    if (winna != null) return;
-    // Boş kutuları bul (sadece taşsız kutular)
-    const emptyBoxes = [
-      { key: "fighter00", state: fighter00 },
-      { key: "fighter01", state: fighter01 },
-      { key: "fighter02", state: fighter02 },
-      { key: "fighter10", state: fighter10 },
-      { key: "fighter11", state: fighter11 },
-      { key: "fighter12", state: fighter12 },
-      { key: "fighter20", state: fighter20 },
-      { key: "fighter21", state: fighter21 },
-      { key: "fighter22", state: fighter22 },
-    ].filter(
-      (box) =>
-        box.state.bg === "from-stone-700 to-stone-800" ||
-        box.state.bg === "from-stone-200 to-stone-300"
-    );
-
-    if (emptyBoxes.length === 0) return;
-    // Rastgele bir kutu seç
-    const randomBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
-
-    // O kutuya uygun dövüşçüleri bul
-    const fighterMap: { [key: string]: keyof typeof positionsFighters } = {
+  const positionKeyOf = (key: string): keyof typeof positionsFighters => {
+    const map: Record<string, keyof typeof positionsFighters> = {
       fighter00: "position03",
       fighter01: "position13",
       fighter02: "position23",
@@ -555,38 +531,204 @@ function SameScreenGame() {
       fighter21: "position15",
       fighter22: "position25",
     };
-    const positionKey = fighterMap[randomBox.key];
-    const possibleFighters = positionsFighters[positionKey];
+    return map[key];
+  };
 
+  const ownerOf = (bg: string | undefined) => {
+    if (!bg) return null;
+    if (bg.includes("red")) return "red";
+    if (bg.includes("blue")) return "blue";
+    return null;
+  };
+
+  // Key -> state map
+  const stateByKey: Record<string, any> = {
+    fighter00,
+    fighter01,
+    fighter02,
+    fighter10,
+    fighter11,
+    fighter12,
+    fighter20,
+    fighter21,
+    fighter22,
+  };
+
+  // 3x3 grid key haritası (AI kontrolleri için)
+  const gridKeys: string[][] = [
+    ["fighter00", "fighter01", "fighter02"],
+    ["fighter10", "fighter11", "fighter12"],
+    ["fighter20", "fighter21", "fighter22"],
+  ];
+
+  // Kazanma pattern’leri (checkWinner’daki ile uyumlu)
+  const winPatternsAI: [number, number][][] = [
+    [
+      [0, 0],
+      [0, 1],
+      [0, 2],
+    ],
+    [
+      [1, 0],
+      [1, 1],
+      [1, 2],
+    ],
+    [
+      [2, 0],
+      [2, 1],
+      [2, 2],
+    ],
+    [
+      [0, 0],
+      [1, 0],
+      [2, 0],
+    ],
+    [
+      [0, 1],
+      [1, 1],
+      [2, 1],
+    ],
+    [
+      [0, 2],
+      [1, 2],
+      [2, 2],
+    ],
+    [
+      [0, 0],
+      [1, 1],
+      [2, 2],
+    ],
+    [
+      [0, 2],
+      [1, 1],
+      [2, 0],
+    ],
+  ];
+
+  // Belirli renge (blue/red) ait kazanma veya blok hamlesi bul
+  const findLineMove = (target: "blue" | "red"): string | null => {
+    for (const pattern of winPatternsAI) {
+      const owners = pattern.map(([r, c]) =>
+        ownerOf(stateByKey[gridKeys[r][c]].bg)
+      );
+      const emptiesIdx = owners
+        .map((o, i) => (o === null ? i : -1))
+        .filter((i) => i >= 0);
+      if (emptiesIdx.length !== 1) continue; // sadece 1 boş olmalı
+      const others = owners.filter((o) => o !== null) as ("blue" | "red")[];
+      if (others.length === 2 && others.every((o) => o === target)) {
+        const [ei] = emptiesIdx;
+        const [r, c] = winPatternsAI[0]; // dummy to satisfy TS (we'll override below)
+      }
+    }
+    // yeniden yaz: return boş kare key'i
+    for (const pattern of winPatternsAI) {
+      const owners = pattern.map(([r, c]) =>
+        ownerOf(stateByKey[gridKeys[r][c]].bg)
+      );
+      const emptyIndex = owners.findIndex((o) => o === null);
+      if (emptyIndex < 0) continue;
+      const nonEmpty = owners.filter((o) => o !== null) as ("blue" | "red")[];
+      if (nonEmpty.length === 2 && nonEmpty.every((o) => o === target)) {
+        const [r, c] = pattern[emptyIndex];
+        return gridKeys[r][c];
+      }
+    }
+    return null;
+  };
+
+  const chooseValidKey = (candidates: string[]): string | null => {
+    for (const k of candidates) {
+      const posKey = positionKeyOf(k);
+      const list = positionsFighters[posKey] || [];
+      if (list.length > 0 && ownerOf(stateByKey[k].bg) === null) return k;
+    }
+    return null;
+  };
+
+  const chooseWrongFighterForPosition = (
+    posKey: keyof typeof positionsFighters
+  ): Fighter | null => {
+    const allowed: Fighter[] = (positionsFighters[posKey] as Fighter[]) || [];
+    const allowedIds = new Set(allowed.map((f: any) => f.Id));
+    const pool = (fighters_url as any as Fighter[]).filter(
+      (f: any) => !allowedIds.has(f.Id)
+    );
+    if (pool.length === 0) return null;
+    return pool[Math.floor(Math.random() * pool.length)];
+  };
+
+  const pickSmartKey = (): string | null => {
+    // 1) Mavi kazanabiliyor mu?
+    const winKey = findLineMove("blue");
+    if (winKey) return winKey;
+
+    // 2) Kırmızıyı blokla
+    const blockKey = findLineMove("red");
+    if (blockKey) return blockKey;
+
+    // 3) Merkez
+    const center = chooseValidKey(["fighter11"]);
+    if (center) return center;
+
+    // 4) Köşeler
+    const corner = chooseValidKey([
+      "fighter00",
+      "fighter02",
+      "fighter20",
+      "fighter22",
+    ]);
+    if (corner) return corner;
+
+    // 5) Kenarlar
+    const edge = chooseValidKey([
+      "fighter01",
+      "fighter10",
+      "fighter12",
+      "fighter21",
+    ]);
+    if (edge) return edge;
+
+    // 6) Kalan boşlardan rastgele
+    const empties = Object.keys(stateByKey).filter(
+      (k) => ownerOf(stateByKey[k].bg) === null
+    );
+    const validRandoms = empties.filter(
+      (k) => (positionsFighters[positionKeyOf(k)] || []).length > 0
+    );
+    if (validRandoms.length === 0) return null;
+    return validRandoms[Math.floor(Math.random() * validRandoms.length)];
+  };
+
+  const makeAIMove = () => {
+    let winna = checkWinner();
+    if (winna != null) return;
+
+    // Akıllı hamle seç
+    const smartKey = pickSmartKey();
+    if (!smartKey) return;
+
+    const posKey = positionKeyOf(smartKey);
+    const possibleFighters = positionsFighters[posKey] as Fighter[] | undefined;
     if (!possibleFighters || possibleFighters.length === 0) return;
 
-    let randomFighter: any;
+    // %20 olasılıkla bilerek yanlış dövüşçü seç
+    const willBlunder = Math.random() < 0.2;
+    let chosen: Fighter | null = null;
 
-    // %15 ihtimalle yanlış dövüşçü seçsin
-    if (Math.random() < 0.15) {
-      // Tüm dövüşçülerden (fighters_url) possibleFighters'ta olmayan rastgele birini seç
-      const wrongFighters = fighters_url.filter(
-        (f: any) => !possibleFighters.some((pf: any) => pf.Id === f.Id)
-      );
-      if (wrongFighters.length > 0) {
-        randomFighter =
-          wrongFighters[Math.floor(Math.random() * wrongFighters.length)];
-      } else {
-        // Eğer yanlış dövüşçü yoksa yine doğru dövüşçü seç
-        randomFighter =
-          possibleFighters[Math.floor(Math.random() * possibleFighters.length)];
-      }
-    } else {
-      // Doğru dövüşçü seç
-      randomFighter =
+    if (willBlunder) {
+      chosen = chooseWrongFighterForPosition(posKey);
+    }
+    // Blunder başarısızsa veya blunder yoksa geçerli bir dövüşçü seç
+    if (!chosen) {
+      chosen =
         possibleFighters[Math.floor(Math.random() * possibleFighters.length)];
     }
 
-    setSelected(randomBox.key);
-
+    setSelected(smartKey);
     setTimeout(() => {
-      updateBox(randomFighter, randomBox.key);
-    }, 300);
+      updateBox(chosen as Fighter, smartKey);
+    }, 250);
   };
 
   useEffect(() => {
