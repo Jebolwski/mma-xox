@@ -120,7 +120,7 @@ Bu proje MIT lisansı altında lisanslanmıştır.
 
 ## 📞 İletişim
 
-Proje hakkında sorularınız için: [your-email@example.com]
+Proje hakkında sorularınız için: [mertgkmeen@gmail.com]
 
 ---
 
