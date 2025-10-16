@@ -619,6 +619,7 @@ function SameScreenGame() {
       if (others.length === 2 && others.every((o) => o === target)) {
         const [ei] = emptiesIdx;
         const [r, c] = winPatternsAI[0]; // dummy to satisfy TS (we'll override below)
+        console.log(ei, r, c);
       }
     }
     // yeniden yaz: return boş kare key'i
