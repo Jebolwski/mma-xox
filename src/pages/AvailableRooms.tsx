@@ -14,7 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import return_img from "../assets/return.png";
 import refresh from "../assets/refresh.png";
-import { cleanupStaleRooms } from "../services/roomCleanup";
+import { logStaleRoomsByLastActivity } from "../services/roomCleanup";
 import { usePageTitle } from "../hooks/usePageTitle";
 
 const AvailableRooms = () => {
@@ -65,7 +65,7 @@ const AvailableRooms = () => {
 
     if (Date.now() - last > 5 * 60 * 1000) {
       // 5 dk throttling
-      cleanupStaleRooms(50, !!currentUser).catch(() => {});
+      logStaleRoomsByLastActivity();
       localStorage.setItem("cleanupAt", String(Date.now()));
     }
   }, [currentUser]);

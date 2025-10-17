@@ -1,56 +1,73 @@
 import { db } from "../firebase";
 import {
-    collection, query, where, getDocs, Timestamp, writeBatch,
+    collection, query, where, writeBatch, getDocs, Timestamp, orderBy, limit as qLimit,
+    deleteDoc,
 } from "firebase/firestore";
 
-export const ROOM_TTL_MS = 1 * 60 * 60 * 1000; // 6 saat
+export const ROOM_TTL_HOURS = 1; // 6 hours
+export const ROOM_TTL_MS = ROOM_TTL_HOURS * 60 * 60 * 1000;
 
-export async function cleanupStaleRooms(limit = 50, includeRanked = false) {
+// Helper: Firestore Timestamp/number'dan ms çıkar
+const toMillis = (ts: any): number | null => {
+    if (!ts) return null;
+    if (typeof ts.toMillis === "function") return ts.toMillis();
+    if (typeof ts === "number") return ts;
+    return null;
+};
+
+// Helper: lastMs -> şimdiye kadar geçen süre (h, m)
+const elapsedHM = (lastMs: number) => {
+    const diff = Date.now() - lastMs;
+    const h = Math.floor(diff / 3_600_000);
+    const m = Math.floor((diff % 3_600_000) / 60_000);
+    return { h, m, iso: new Date(lastMs).toISOString() };
+};
+
+export async function logStaleRoomsByLastActivity(
+    max = 50,
+    hoursAgo = ROOM_TTL_MS / 3_600_000,
+    remove = true // true gönderirsen siler
+) {
     const roomsRef = collection(db, "rooms");
-    const threshold = Timestamp.fromMillis(Date.now() - ROOM_TTL_MS);
-    console.log(threshold);
+    const threshold = Timestamp.fromMillis(Date.now() - hoursAgo * 3_600_000);
 
+    console.log(`[preview] threshold: ${new Date(threshold.toMillis()).toISOString()}`);
 
-    // Casual (herkese açık silinebilir)
-    const qCasual = query(
+    // Sadece lastActivityAt'a göre filtrele
+    const q = query(
         roomsRef,
-        where("isRankedRoom", "==", false),
-        where("lastActivityAt", "<", threshold)
+        where("lastActivityAt", "<", threshold),
+        orderBy("lastActivityAt", "asc"),
+        qLimit(max)
     );
 
-    const batch = writeBatch(db);
-    let count = 0;
+    const snap = await getDocs(q);
+    console.log(`[preview] found ${snap.size} rooms older than threshold`);
 
-    const s1 = await getDocs(qCasual);
-    for (const d of s1.docs) {
-        if (count >= limit) break;
-        batch.delete(d.ref);
-        count++;
-    }
+    let deleted = 0;
+    for (const d of snap.docs) {
+        const data: any = d.data();
+        const ms = toMillis(data?.lastActivityAt);
+        const info = ms ? elapsedHM(ms) : null;
+        console.log(
+            `[preview] ${d.id} | ranked=${!!data?.isRankedRoom} | stage=${data?.stage ?? "-"} | lastActivityAt=${info?.iso ?? "n/a"} | idle=${info ? `${info.h}h ${info.m}m` : "n/a"}`
+        );
 
-    // Ranked (login gerektirir; rules zaten kontrol ediyor)
-    if (includeRanked) {
-        // in_progress olmayanlar
-        const stages = ["waiting", "ready", "finished"]; // index gerekebilir
-        for (const st of stages) {
-            if (count >= limit) break;
-            console.log(st);
+        console.log(remove, "allah allah");
 
-            const qRanked = query(
-                roomsRef,
-                where("isRankedRoom", "==", true),
-                where("stage", "==", st),
-                where("lastActivityAt", "<", threshold)
-            );
-            const s2 = await getDocs(qRanked);
-            for (const d of s2.docs) {
-                if (count >= limit) break;
-                batch.delete(d.ref);
-                count++;
+
+        if (remove) {
+            try {
+                await deleteDoc(d.ref);
+                deleted++;
+                console.log(`[preview] deleted: ${d.id}`);
+            } catch (e: any) {
+                console.warn(`[preview] delete failed: ${d.id}`, e?.code || e);
             }
         }
     }
 
-    if (count > 0) await batch.commit();
-    return count;
+    if (remove) {
+        console.log(`[preview] total deleted: ${deleted}/${snap.size}`);
+    }
 }

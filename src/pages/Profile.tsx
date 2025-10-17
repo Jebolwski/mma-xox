@@ -46,7 +46,7 @@ const Profile = () => {
       max: 99,
       icon: "🥉",
       color: "from-orange-400 to-orange-600",
-      note: "Yeni başlayanlar için.",
+      note: "For beginners.",
     },
     {
       name: "Silver",
@@ -54,7 +54,7 @@ const Profile = () => {
       max: 299,
       icon: "🥈",
       color: "from-gray-300 to-gray-500",
-      note: "Temel deneyim sahibi.",
+      note: "Basic experience.",
     },
     {
       name: "Gold",
@@ -62,7 +62,7 @@ const Profile = () => {
       max: 599,
       icon: "🥇",
       color: "from-yellow-400 to-yellow-600",
-      note: "İleri seviye oyuncu.",
+      note: "Advanced player.",
     },
     {
       name: "Diamond",
@@ -70,7 +70,7 @@ const Profile = () => {
       max: Infinity,
       icon: "💎",
       color: "from-cyan-400 to-blue-600",
-      note: "En yüksek kademe.",
+      note: "Top tier.",
     },
   ];
 
@@ -467,7 +467,7 @@ const Profile = () => {
                   : "bg-indigo-500 hover:bg-indigo-600 text-white"
               }`}
             >
-              Rank kademelerini gör
+              See rank levels
             </button>
           </div>
 
@@ -495,10 +495,10 @@ const Profile = () => {
                   } max-h-[85vh] overflow-y-auto`}
                 >
                   <div className="flex justify-between items-center p-5 pb-3 sticky top-0 bg-inherit">
-                    <h3 className="text-xl font-semibold">Rank Kademeleri</h3>
+                    <h3 className="text-xl font-semibold">Rank Levels</h3>
                     <button
                       onClick={() => setTiersOpen(false)}
-                      className={`px-3 py-1 cursor-pointer rounded-md text-sm ${
+                      className={`px-3 py-1 cursor-pointer duration-200 rounded-md text-sm ${
                         theme === "dark"
                           ? "bg-slate-700 hover:bg-slate-600"
                           : "bg-slate-200 hover:bg-slate-300"
