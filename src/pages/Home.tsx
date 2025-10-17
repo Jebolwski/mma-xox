@@ -103,11 +103,11 @@ const Home = () => {
       )}
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pt-24 pb-12 lg:pt-0">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-3 lg:px-4 pt-24 lg:pt-0">
         {/* Game Logo */}
         <div className="lg:mb-8 mb-6 text-center animate-bounce-slow">
           <div
-            className={`relative inline-block p-6 px-4 rounded-2xl shadow-2xl backdrop-blur-md border-4 ${
+            className={`relative inline-block p-4 px-4 rounded-2xl shadow-2xl backdrop-blur-md border-4 ${
               theme === "dark"
                 ? "bg-slate-800/90 border-red-500 shadow-red-500/20"
                 : "bg-white/90 border-red-600 shadow-red-600/20"
@@ -123,7 +123,7 @@ const Home = () => {
               />
             </div>
             <h1
-              className={`text-6xl md:text-8xl font-black tracking-wider ${
+              className={`text-5xl md:text-8xl font-black tracking-wider ${
                 theme === "dark" ? "text-red-400" : "text-red-600"
               } drop-shadow-lg`}
               style={{
@@ -136,7 +136,7 @@ const Home = () => {
               MMA
             </h1>
             <h2
-              className={`text-4xl md:text-6xl font-black tracking-widest ${
+              className={`text-3xl md:text-6xl font-black tracking-widest ${
                 theme === "dark" ? "text-yellow-400" : "text-yellow-600"
               } drop-shadow-lg`}
               style={{
@@ -152,22 +152,22 @@ const Home = () => {
         </div>
 
         <div
-          className={`max-w-2xl mx-auto lg:mb-10 mb-6 p-6 rounded-xl backdrop-blur-md border-2 ${
+          className={`max-w-2xl mx-auto lg:mb-10 mb-4 p-6 rounded-xl backdrop-blur-md border-2 ${
             theme === "dark"
               ? "bg-slate-800/80 border-slate-600 text-slate-200"
               : "bg-white/80 border-slate-300 text-slate-700"
           } shadow-xl`}
         >
-          <p className="text-lg md:text-xl text-center leading-relaxed">
+          <p className="text-base md:text-xl text-center leading-relaxed">
             <span className="font-bold text-red-500">MMA XOX</span> combines the
             classic Tic Tac Toe game with fighters and an arena!
           </p>
-          <p className="text-base md:text-lg text-center mt-4 opacity-90">
+          <p className="text-sm md:text-lg text-center mt-2 lg:mt-4 opacity-90">
             Play with your friends or on a single screen, create rooms and
             invite your rivals.
           </p>
           <p
-            className={`text-lg md:text-xl text-center mt-4 font-bold ${
+            className={`text-base md:text-xl text-center mt-2 lg:mt-4 font-bold ${
               theme === "dark" ? "text-yellow-400" : "text-red-600"
             }`}
           >
@@ -182,7 +182,7 @@ const Home = () => {
             <>
               <div
                 onClick={() => navigate("/menu")}
-                className={`w-fit px-10 py-3 text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
+                className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
                   theme === "dark"
                     ? "bg-green-600 hover:bg-green-700 border-green-400 text-white shadow-lg shadow-green-600/30"
                     : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
@@ -196,7 +196,7 @@ const Home = () => {
 
               <div
                 onClick={handleLogout}
-                className={`w-fit px-10 py-3 text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
+                className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
                   theme === "dark"
                     ? "bg-red-600 hover:bg-red-700 border-red-400 text-white shadow-lg shadow-red-600/30"
                     : "bg-red-500 hover:bg-red-600 border-red-300 text-white shadow-lg shadow-red-500/30"
