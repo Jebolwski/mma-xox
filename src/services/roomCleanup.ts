@@ -1,6 +1,6 @@
 import { db } from "../firebase";
 import {
-    collection, query, where, writeBatch, getDocs, Timestamp, orderBy, limit as qLimit,
+    collection, query, where, getDocs, Timestamp, orderBy, limit as qLimit,
     deleteDoc,
 } from "firebase/firestore";
 
