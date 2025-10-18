@@ -65,6 +65,28 @@ function SameScreenGame() {
 
   const [fighters, setFigters]: any = useState();
 
+  const [muted, setMuted] = useState<boolean>(() => {
+    try {
+      return JSON.parse(localStorage.getItem("muted") || "false");
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("muted", JSON.stringify(muted));
+    } catch {}
+  }, [muted]);
+
+  // central sfx helper
+  const playSfx = (src: string) => {
+    if (muted) return;
+    const a = new Audio(src);
+    a.volume = 0.9;
+    a.play().catch(() => {});
+  };
+
   const [playWithAI, setPlayWithAI] = useState(false);
 
   const isGameOver = gameWinner !== null;
@@ -278,7 +300,7 @@ function SameScreenGame() {
     const positionKey = fighterMap[selectedBox];
     if (!positionsFighters[positionKey].includes(fighter)) {
       notify();
-      new Audio(wrong).play(); // ❌ Yanlış seçim sesi
+      playSfx(wrong); // ❌ Yanlış seçim sesi
     } else {
       const bgColor =
         turn === "red"
@@ -298,7 +320,7 @@ function SameScreenGame() {
 
       setterMap[selectedBox]({ url: picture, text: name, bg: bgColor });
 
-      new Audio(correct).play(); // ✅ Doğru seçim sesi
+      playSfx(correct); // ✅ Doğru seçim sesi
 
       const winner = checkWinner();
       if (winner) {
@@ -738,17 +760,17 @@ function SameScreenGame() {
       if (winner) {
         if (winner == "Red Wins!") {
           setGameWinner("Red");
-          new Audio(win).play();
+          playSfx(win);
           setScore((prev) => ({ ...prev, red: prev.red + 1 })); // 🔴 Red skor +1
           setShowConfetti(true);
         } else if (winner == "Blue Wins!") {
           setGameWinner("Blue");
-          new Audio(win).play();
+          playSfx(win);
           setShowConfetti(true);
           setScore((prev) => ({ ...prev, blue: prev.blue + 1 })); // 🔵 Blue skor +1
         } else if (winner == "Draw!") {
           setGameWinner("Draw");
-          new Audio(draw).play();
+          playSfx(draw);
           setScore((prev) => ({ ...prev, draw: prev.draw + 1 })); // ➕ Draw sayacı
         } else {
           setGameWinner(null);
@@ -1015,11 +1037,24 @@ function SameScreenGame() {
             )}
           </div>
         </div>
-        <div
-          className="absolute z-30 top-6 right-6"
-          onClick={handleExit}
-        >
+        <div className="absolute z-30 top-6 right-6 flex items-center gap-3">
+          {/* Mute toggle */}
+          <button
+            onClick={() => setMuted((m) => !m)}
+            aria-pressed={muted}
+            aria-label={muted ? "Unmute sounds" : "Mute sounds"}
+            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
+              theme === "dark"
+                ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
+                : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
+            }`}
+            title={muted ? "Unmute" : "Mute"}
+          >
+            <span className="text-xl">{muted ? "🔇" : "🔊"}</span>
+          </button>
+          {/* Back to menu */}
           <div
+            onClick={handleExit}
             className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
               theme === "dark"
                 ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"

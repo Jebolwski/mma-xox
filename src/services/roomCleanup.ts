@@ -4,7 +4,7 @@ import {
     deleteDoc,
 } from "firebase/firestore";
 
-export const ROOM_TTL_HOURS = 1; // 6 hours
+export const ROOM_TTL_HOURS = 1; // 1 hour
 export const ROOM_TTL_MS = ROOM_TTL_HOURS * 60 * 60 * 1000;
 
 // Helper: Firestore Timestamp/number'dan ms çıkar
@@ -31,15 +31,19 @@ export async function logStaleRoomsByLastActivity(
     const roomsRef = collection(db, "rooms");
     const threshold = Timestamp.fromMillis(Date.now() - hoursAgo * 3_600_000);
 
+    console.log("CLSAJHDLASHCDALSCŞD");
+
+
     console.log(`[preview] threshold: ${new Date(threshold.toMillis()).toISOString()}`);
 
     // Sadece lastActivityAt'a göre filtrele
     const q = query(
         roomsRef,
+        where("isRankedRoom", "==", false), // guest için şart
         where("lastActivityAt", "<", threshold),
-        orderBy("lastActivityAt", "asc"),
-        qLimit(max)
+        orderBy("lastActivityAt", "asc")
     );
+
 
     const snap = await getDocs(q);
     console.log(`[preview] found ${snap.size} rooms older than threshold`);
@@ -54,7 +58,6 @@ export async function logStaleRoomsByLastActivity(
         );
 
         console.log(remove, "allah allah");
-
 
         if (remove) {
             try {

@@ -128,6 +128,30 @@ const Room = () => {
   const [isExiting, setIsExiting] = useState(false);
   const { width, height } = useWindowSize();
 
+  const [muted, setMuted] = useState<boolean>(() => {
+    try {
+      return JSON.parse(localStorage.getItem("muted") || "false");
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("muted", JSON.stringify(muted));
+    } catch {}
+  }, [muted]);
+
+  // sfx helper
+  const playSfx = (src: string) => {
+    if (muted) return;
+    try {
+      const a = new Audio(src);
+      a.volume = 0.9;
+      a.play();
+    } catch {}
+  };
+
   useEffect(() => {
     if (gameState?.winner && gameState.winner !== "draw") {
       setShowConfetti(true);
@@ -1265,7 +1289,7 @@ const Room = () => {
     const positionKey = fighterMap[selected];
     if (!positionsFighters[positionKey].includes(fighter)) {
       notify();
-      new Audio(wrong).play(); // ❌ Yanlış seçim sesi
+      playSfx(wrong); // ❌ Yanlış seçim sesi
       console.log(3, "a");
       await updateDoc(roomRef, {
         timerLength: gameState.timer,
@@ -1294,7 +1318,7 @@ const Room = () => {
       setterMap[selected]({ url: picture, text: name, bg: bgColor });
       console.log(4, "a");
 
-      new Audio(correct).play(); // ✅ Doğru seçim sesi
+      playSfx(correct); // ✅ Doğru seçim sesi
       await updateDoc(roomRef, {
         [selected]: {
           // selected değişkenini key olarak kullan (fighter01, fighter02 vs.)
@@ -1415,7 +1439,7 @@ const Room = () => {
             winner: "red",
           });
           // updatePlayerStats("red"); KALDIR
-          new Audio(win).play();
+          playSfx(win);
           if (shouldShowAd()) {
             recordAdView();
           }
@@ -1425,7 +1449,7 @@ const Room = () => {
             winner: "blue",
           });
           // updatePlayerStats("blue"); KALDIR
-          new Audio(win).play();
+          playSfx(win);
           if (shouldShowAd()) {
             recordAdView();
           }
@@ -1447,7 +1471,7 @@ const Room = () => {
         gameStarted: false, // OYUNU BITIR
       });
       // updatePlayerStats("draw"); KALDIR
-      new Audio(draw).play();
+      playSfx(draw);
       if (shouldShowAd()) {
         recordAdView();
       }
@@ -1623,12 +1647,23 @@ const Room = () => {
           )}
         </div>
       </div>
-      {/* Geri dönüş butonu */}
-      <div
-        className="absolute z-30 top-6 right-6"
-        onClick={handleExit}
-      >
+      {/* Mute + Back buttons */}
+      <div className="absolute z-30 top-6 right-6 flex items-center gap-3">
+        <button
+          onClick={() => setMuted((m) => !m)}
+          aria-pressed={muted}
+          aria-label={muted ? "Unmute sounds" : "Mute sounds"}
+          title={muted ? "Unmute" : "Mute"}
+          className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
+            theme === "dark"
+              ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
+              : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
+          }`}
+        >
+          <span className="text-xl">{muted ? "🔇" : "🔊"}</span>
+        </button>
         <div
+          onClick={handleExit}
           className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
             theme === "dark"
               ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"

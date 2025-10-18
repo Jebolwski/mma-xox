@@ -63,7 +63,7 @@ const AvailableRooms = () => {
     // oturum başına bir kere dene
     const last = Number(localStorage.getItem("cleanupAt") || 0);
 
-    if (Date.now() - last > 5 * 60 * 1000) {
+    if (Date.now() - last > 0.1 * 60 * 1000) {
       // 5 dk throttling
       logStaleRoomsByLastActivity();
       localStorage.setItem("cleanupAt", String(Date.now()));
