@@ -1,7 +1,6 @@
 import { db } from "../firebase";
 import {
-    collection, query, where, getDocs, Timestamp, orderBy, limit as qLimit,
-    deleteDoc,
+    collection, query, where, getDocs, Timestamp, orderBy, deleteDoc,
 } from "firebase/firestore";
 
 export const ROOM_TTL_HOURS = 1; // 1 hour
@@ -24,7 +23,6 @@ const elapsedHM = (lastMs: number) => {
 };
 
 export async function logStaleRoomsByLastActivity(
-    max = 50,
     hoursAgo = ROOM_TTL_MS / 3_600_000,
     remove = true // true gönderirsen siler
 ) {
