@@ -19,7 +19,7 @@ import { usePageTitle } from "../hooks/usePageTitle";
 
 const AvailableRooms = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const { currentUser } = useAuth(); // EKLENDI
+  const { currentUser } = useAuth();
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [guestName, setGuestName] = useState("");
@@ -27,14 +27,19 @@ const AvailableRooms = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const NAME_MAX = 16;
+  const sanitizeName = (name: string) =>
+    (name || "").trim().replace(/\s+/g, " ").slice(0, NAME_MAX);
+
   // Kullanıcı adını otomatik al
   const getPlayerName = () => {
     if (currentUser) {
       // Giriş yapmış kullanıcı için email'den username al
-      return currentUser.email?.split("@")[0] || "User";
+      const base = currentUser.email?.split("@")[0] || "User";
+      return sanitizeName(base);
     }
     // Guest kullanıcı için manuel girilen ismi kullan
-    return guestName;
+    return sanitizeName(guestName);
   };
 
   usePageTitle("MMA XOX - Available Rooms");
@@ -78,7 +83,7 @@ const AvailableRooms = () => {
     const finalPlayerName = getPlayerName();
 
     // Guest kullanıcı için isim kontrolü
-    if (!currentUser && !guestName) {
+    if (!currentUser && !finalPlayerName) {
       toast.error("Please enter your name!");
       return;
     }
@@ -108,14 +113,13 @@ const AvailableRooms = () => {
         const roomRef = doc(db, "rooms", roomId);
         await updateDoc(roomRef, {
           guest: { now: finalPlayerName },
-          guestJoinMethod: "available-rooms", // EKLENDI
+          guestJoinMethod: "available-rooms",
         });
         navigate(`/room/${roomId}?role=guest&name=${finalPlayerName}`);
       } catch (error) {
         toast.error("Failed to join the room!");
       }
     } else {
-      // Guest kullanıcı için modal aç
       setSelectedRoom(roomId);
     }
   };
@@ -454,13 +458,23 @@ const AvailableRooms = () => {
                 type="text"
                 placeholder="Enter your name"
                 value={guestName}
-                onChange={(e) => setGuestName(e.target.value)}
-                className={`mb-4 px-4 py-3 rounded-xl border-2 w-full outline-none transition-all duration-200 focus:scale-105 ${
+                onChange={(e) =>
+                  setGuestName(e.target.value.slice(0, NAME_MAX))
+                }
+                maxLength={NAME_MAX}
+                className={`mb-1 px-4 py-3 rounded-xl border-2 w-full outline-none transition-all duration-200 focus:scale-105 ${
                   theme === "dark"
                     ? "bg-slate-700/80 border-slate-600 text-slate-200 focus:border-red-400 placeholder-slate-400"
                     : "bg-white/80 border-slate-300 text-slate-700 focus:border-red-500 placeholder-slate-500"
                 }`}
               />
+              <div
+                className={`mb-4 -mt-1 text-right text-xs ${
+                  theme === "dark" ? "text-slate-400" : "text-slate-500"
+                }`}
+              >
+                {guestName.length}/{NAME_MAX}
+              </div>
               <div className="flex w-full justify-between gap-4">
                 <button
                   onClick={() => setSelectedRoom(null)}
