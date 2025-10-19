@@ -13,7 +13,7 @@ import { useAuth } from "../context/AuthContext"; // EKLENDI
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import return_img from "../assets/return.png";
-import refresh from "../assets/refresh.png";
+// import refresh from "../assets/refresh.png";
 import { logStaleRoomsByLastActivity } from "../services/roomCleanup";
 import { usePageTitle } from "../hooks/usePageTitle";
 
@@ -133,20 +133,20 @@ const AvailableRooms = () => {
     navigate("/menu");
   };
 
-  const handleRefresh = async () => {
-    if (!cahRefresh) {
-      toast.error("Please wait 5 seconds before refreshing again!");
-      return;
-    }
-    setCahRefresh(false);
-    setLoading(true);
-    setTimeout(() => {
-      setCahRefresh(true);
-    }, 5000);
+  // const handleRefresh = async () => {
+  //   if (!cahRefresh) {
+  //     toast.error("Please wait 5 seconds before refreshing again!");
+  //     return;
+  //   }
+  //   setCahRefresh(false);
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     setCahRefresh(true);
+  //   }, 5000);
 
-    // Liste zaten canlı; refresh ile sadece temizlik tetikle
-    logStaleRoomsByLastActivity().catch(() => {});
-  };
+  //   // Liste zaten canlı; refresh ile sadece temizlik tetikle
+  //   logStaleRoomsByLastActivity().catch(() => {});
+  // };
 
   const SkeletonRoom = () => (
     <div
