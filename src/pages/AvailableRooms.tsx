@@ -23,7 +23,7 @@ const AvailableRooms = () => {
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [guestName, setGuestName] = useState("");
-  const [cahRefresh, setCahRefresh] = useState(true);
+  // const [cahRefresh, setCahRefresh] = useState(true);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
