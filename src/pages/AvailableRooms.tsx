@@ -3,7 +3,7 @@ import {
   collection,
   query,
   where,
-  getDocs,
+  onSnapshot,
   doc,
   updateDoc,
 } from "firebase/firestore";
@@ -45,31 +45,36 @@ const AvailableRooms = () => {
   usePageTitle("MMA XOX - Available Rooms");
 
   useEffect(() => {
-    const fetchRooms = async () => {
-      setLoading(true);
-      const roomsRef = collection(db, "rooms");
-      const q = query(
-        roomsRef,
-        where("guest.now", "==", null), // DOĞRU
-        where("isRankedRoom", "==", false)
-      );
-      const querySnapshot = await getDocs(q);
-      const roomList: any = [];
-      querySnapshot.forEach((doc) => {
-        roomList.push({ id: doc.id, ...doc.data() });
-      });
-      setRooms(roomList);
-      setLoading(false);
-    };
-    fetchRooms();
+    setLoading(true);
+    const roomsRef = collection(db, "rooms");
+    const q = query(
+      roomsRef,
+      where("guest.now", "==", null),
+      where("isRankedRoom", "==", false)
+    );
+    const unsub = onSnapshot(
+      q,
+      (snap) => {
+        const list: any[] = [];
+        snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+        setRooms(list as any);
+        setLoading(false);
+      },
+      (err) => {
+        console.error("rooms subscribe failed:", err);
+        toast.error("Failed to listen rooms.");
+        setLoading(false);
+      }
+    );
+    return () => unsub();
   }, []);
 
   useEffect(() => {
     // oturum başına bir kere dene
     const last = Number(localStorage.getItem("cleanupAt") || 0);
 
-    if (Date.now() - last > 0.1 * 60 * 1000) {
-      // 5 dk throttling
+    if (Date.now() - last > 2 * 60 * 1000) {
+      // 2 dk throttling
       logStaleRoomsByLastActivity();
       localStorage.setItem("cleanupAt", String(Date.now()));
     }
@@ -139,19 +144,8 @@ const AvailableRooms = () => {
       setCahRefresh(true);
     }, 5000);
 
-    const roomsRef = collection(db, "rooms");
-    const q = query(
-      roomsRef,
-      where("guest.now", "==", null),
-      where("isRankedRoom", "==", false) // EKLENDI - ranked odaları gösterme
-    );
-    const querySnapshot = await getDocs(q);
-    const roomList: any = [];
-    querySnapshot.forEach((doc) => {
-      roomList.push({ id: doc.id, ...doc.data() });
-    });
-    setRooms(roomList);
-    setLoading(false);
+    // Liste zaten canlı; refresh ile sadece temizlik tetikle
+    logStaleRoomsByLastActivity().catch(() => {});
   };
 
   const SkeletonRoom = () => (
@@ -325,7 +319,7 @@ const AvailableRooms = () => {
             </div>
           </div>
 
-          <div
+          {/* <div
             className={`flex justify-between items-center mb-4 ${
               theme === "dark" ? "text-slate-200" : "text-slate-700"
             }`}
@@ -350,7 +344,7 @@ const AvailableRooms = () => {
                 className="w-8"
               />
             </div>
-          </div>
+          </div> */}
 
           {loading ? (
             <ul className="space-y-4">

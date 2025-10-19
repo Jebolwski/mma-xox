@@ -3,8 +3,8 @@ import {
     collection, query, where, getDocs, Timestamp, orderBy, deleteDoc,
 } from "firebase/firestore";
 
-export const ROOM_TTL_HOURS = 1; // 1 hour
-export const ROOM_TTL_MS = ROOM_TTL_HOURS * 60 * 60 * 1000;
+export const ROOM_TTL_MINUTES = 10; // 10 minutes
+export const ROOM_TTL_MS = ROOM_TTL_MINUTES * 60 * 1000;
 
 // Helper: Firestore Timestamp/number'dan ms çıkar
 const toMillis = (ts: any): number | null => {
@@ -23,11 +23,11 @@ const elapsedHM = (lastMs: number) => {
 };
 
 export async function logStaleRoomsByLastActivity(
-    hoursAgo = ROOM_TTL_MS / 3_600_000,
+    minutesAgo = ROOM_TTL_MINUTES,
     remove = true // true gönderirsen siler
 ) {
     const roomsRef = collection(db, "rooms");
-    const threshold = Timestamp.fromMillis(Date.now() - hoursAgo * 3_600_000);
+    const threshold = Timestamp.fromMillis(Date.now() - minutesAgo * 60_000);
 
     console.log("CLSAJHDLASHCDALSCŞD");
 

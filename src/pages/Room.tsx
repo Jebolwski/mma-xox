@@ -1484,6 +1484,8 @@ const Room = () => {
   const handleExit = async () => {
     if (!roomId || !playerName || !role || isExiting) return;
 
+    console.log(currentUser?.email, "LKJSACHDASLCHD", currentUser);
+
     setIsExiting(true);
     const roomRef = doc(db, "rooms", roomId);
 
