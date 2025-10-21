@@ -1,6 +1,6 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useRef, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
-import { Timestamp } from "firebase/firestore";
+import { arrayUnion, Timestamp } from "firebase/firestore";
 import {
   collection,
   onSnapshot,
@@ -33,7 +33,6 @@ import Confetti from "react-confetti";
 import { getDoc, increment } from "firebase/firestore";
 import { useWindowSize } from "react-use";
 import { ROOM_TTL_MS } from "../services/roomCleanup";
-
 import { useAuth } from "../context/AuthContext"; // Add this import if you have an AuthContext
 
 const Room = () => {
@@ -53,6 +52,7 @@ const Room = () => {
   const [filters, setFilters]: any = useState();
   const [selected, setSelected]: any = useState();
   const [showConfetti, setShowConfetti] = useState(false);
+  const prevGuestNow = useRef<string | null>(null); // Önceki guest adını tutmak için ref
 
   usePageTitle(roomId ? `MMA XOX - Room ${roomId}` : "MMA XOX • Room");
 
@@ -153,13 +153,20 @@ const Room = () => {
   };
 
   useEffect(() => {
-    if (gameState?.winner && gameState.winner !== "draw") {
-      setShowConfetti(true);
-      console.log("messi işte");
-
-      updatePlayerStats(gameState.winner); // BURAYA EKLE
-    } else if (gameState?.winner === "draw") {
-      updatePlayerStats("draw"); // BERABERLIK İÇİN DE EKLE
+    if (gameState?.winner) {
+      if (gameState.winner !== "draw") {
+        setShowConfetti(true);
+      }
+      // Bu useEffect sadece bir kere tetiklenir, bu yüzden kontrol ekleyelim
+      if (!gameState.statsUpdated) {
+        // statsUpdated gibi bir flag kontrolü
+        updatePlayerStats(gameState.winner);
+        // Tekrar çalışmasını önlemek için odaya bir flag yazabiliriz
+        if (roomId && role === "host") {
+          const roomRef = doc(db, "rooms", roomId);
+          updateDoc(roomRef, { statsUpdated: true });
+        }
+      }
     } else {
       setShowConfetti(false);
     }
@@ -335,8 +342,8 @@ const Room = () => {
       !hasExited
     ) {
       const joinGame = async () => {
-        console.log("messi girdi");
         const roomRef = doc(db, "rooms", roomId!);
+
         await updateDoc(roomRef, {
           guest: { prev: gameState.guest.now || null, now: playerName },
           guestEmail: currentUser?.email || null, // BURAYA EKLEDİK
@@ -368,6 +375,7 @@ const Room = () => {
     gameState?.guestReady,
     gameState?.gameStarted,
     role,
+    gameState?.isRankedRoom, // Bağımlılığı ekle
   ]);
 
   useEffect(() => {
@@ -509,18 +517,35 @@ const Room = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [gameState, timerLength, roomId]); // gameState dependency'sine gameState.winner da dahil
+  }, [
+    gameState?.gameStarted,
+    gameState?.timerLength,
+    gameState?.turn,
+    gameState?.winner,
+    timerLength,
+    roomId,
+  ]); // gameState dependency'sine gameState.winner da dahil
 
   useEffect(() => {
-    if (gameState != null && role == "host") {
-      if (gameState.guest.prev == null && gameState.guest.now != null) {
-        toast.success(gameState.guest.now + " joined the game!");
-      } else if (gameState.guest.prev != null && gameState.guest.now == null) {
-        toast.info(gameState.guest.prev + " left the game!");
-      }
-    }
-  }, [gameState]);
+    console.log("gel bakim");
 
+    if (gameState != null && role === "host") {
+      const currentGuestNow = gameState.guest?.now;
+
+      // Önceki değer null iken şimdiki değer doluysa -> Biri katıldı
+      if (prevGuestNow.current === null && currentGuestNow !== null) {
+        toast.success(`${currentGuestNow} joined the game!`);
+      }
+      // Önceki değer dolu iken şimdiki değer null ise -> Biri ayrıldı
+      else if (prevGuestNow.current !== null && currentGuestNow === null) {
+        toast.info(`${prevGuestNow.current} left the game!`);
+      }
+
+      // Bir sonraki çalıştırma için mevcut değeri "önceki değer" olarak ata
+      prevGuestNow.current = currentGuestNow;
+    }
+    // Bağımlılığı sadece guest.now'a indirge
+  }, [gameState?.guest?.now, role]);
   useEffect(() => {
     const handleBeforeUnload = async () => {
       if (!roomId || !playerName || !role) return;
@@ -756,81 +781,127 @@ const Room = () => {
     upd();
   }, [fighter22]);
 
-  const updatePlayerStats = async (winner: string) => {
+  const updatePlayerStats = async (winner: "red" | "blue" | "draw") => {
     if (!gameState?.isRankedRoom) {
-      console.log("Bu casual maç, puan güncellenmeyecek");
+      console.log("This is a casual match, stats will not be updated.");
       return;
     }
 
+    const hostEmail = gameState.hostEmail;
+    const guestEmail = gameState.guestEmail;
+
+    if (!hostEmail || !guestEmail) {
+      console.error("Host or guest email is missing for ranked match.");
+      return;
+    }
+
+    const hostRef = doc(db, "users", hostEmail);
+    const guestRef = doc(db, "users", guestEmail);
+
+    const hostIsWinner = winner === "red";
+    const guestIsWinner = winner === "blue";
+
     try {
-      const hostEmail = gameState.hostEmail;
-      const guestEmail = gameState.guestEmail;
-      console.log(hostEmail, guestEmail);
+      // Her iki kullanıcıyı da tek bir transaction içinde güncelle
+      await runTransaction(db, async (transaction) => {
+        const hostDoc = await transaction.get(hostRef);
+        const guestDoc = await transaction.get(guestRef);
 
-      if (hostEmail && guestEmail) {
-        const hostRef = doc(db, "users", hostEmail);
-        const guestRef = doc(db, "users", guestEmail);
-        console.log("come aqui");
-
-        if (winner === "red") {
-          // Host wins
-          await updateDoc(hostRef, {
-            "stats.points": increment(10),
-            "stats.wins": increment(1),
-            "stats.totalGames": increment(1),
-            "stats.lastActive": new Date().toISOString(),
-          });
-
-          await updateDoc(guestRef, {
-            "stats.points": increment(-3),
-            "stats.losses": increment(1),
-            "stats.totalGames": increment(1),
-            "stats.lastActive": new Date().toISOString(),
-          });
-
-          toast.success("🏆 Ranked match completed! Points updated.");
-        } else if (winner === "blue") {
-          // Guest wins
-          await updateDoc(hostRef, {
-            "stats.points": increment(-3),
-            "stats.losses": increment(1),
-            "stats.totalGames": increment(1),
-            "stats.lastActive": new Date().toISOString(),
-          });
-
-          await updateDoc(guestRef, {
-            "stats.points": increment(10),
-            "stats.wins": increment(1),
-            "stats.totalGames": increment(1),
-            "stats.lastActive": new Date().toISOString(),
-          });
-
-          toast.success("🏆 Ranked match completed! Points updated.");
-        } else if (winner === "draw") {
-          // Draw
-          await updateDoc(hostRef, {
-            "stats.points": increment(2),
-            "stats.draws": increment(1),
-            "stats.totalGames": increment(1),
-            "stats.lastActive": new Date().toISOString(),
-          });
-
-          await updateDoc(guestRef, {
-            "stats.points": increment(2),
-            "stats.draws": increment(1),
-            "stats.totalGames": increment(1),
-            "stats.lastActive": new Date().toISOString(),
-          });
-
-          toast.success("🤝 Ranked match completed! Points updated.");
+        if (!hostDoc.exists() || !guestDoc.exists()) {
+          throw "One of the user profiles could not be found.";
         }
 
-        // Win rate'leri güncelle
-        await updateWinRates(hostEmail, guestEmail);
-      }
+        const hostProfile = hostDoc.data();
+        const guestProfile = guestDoc.data();
+
+        // --- HOST GÜNCELLEMELERİ ---
+        const hostNewAchievements = { ...hostProfile.achievements };
+        const hostNewUnlockedTitles = [];
+        let hostAchievementUnlocked = false;
+
+        if (hostIsWinner) {
+          // Başarım: İlk Galibiyet
+          if (!hostProfile.achievements.firstWin) {
+            hostNewAchievements.firstWin = new Date().toISOString();
+            hostNewUnlockedTitles.push("First Blood");
+            hostAchievementUnlocked = true;
+          }
+          // Başarım: 10 Galibiyet
+          const newWinCount = (hostProfile.stats.wins || 0) + 1;
+          if (newWinCount >= 10 && !hostProfile.achievements.tenWins) {
+            hostNewAchievements.tenWins = new Date().toISOString();
+            hostNewUnlockedTitles.push("Arena Master");
+            hostAchievementUnlocked = true;
+          }
+        }
+
+        transaction.update(hostRef, {
+          "stats.points": increment(
+            hostIsWinner ? 15 : winner === "draw" ? 2 : -5
+          ),
+          "stats.wins": increment(hostIsWinner ? 1 : 0),
+          "stats.losses": increment(guestIsWinner ? 1 : 0),
+          "stats.draws": increment(winner === "draw" ? 1 : 0),
+          "stats.totalGames": increment(1),
+          achievements: hostNewAchievements,
+          // arrayUnion ile tekrar eden unvan eklemeyi önle
+          unlockedTitles: arrayUnion(...hostNewUnlockedTitles),
+        });
+
+        console.log("updatelesene 1");
+
+        // --- GUEST GÜNCELLEMELERİ ---
+        const guestNewAchievements = { ...guestProfile.achievements };
+        const guestNewUnlockedTitles = [];
+        let guestAchievementUnlocked = false;
+
+        if (guestIsWinner) {
+          // Başarım: İlk Galibiyet
+          if (!guestProfile.achievements.firstWin) {
+            guestNewAchievements.firstWin = new Date().toISOString();
+            guestNewUnlockedTitles.push("First Blood");
+            guestAchievementUnlocked = true;
+          }
+          // Başarım: 10 Galibiyet
+          const newWinCount = (guestProfile.stats.wins || 0) + 1;
+          if (newWinCount >= 10 && !guestProfile.achievements.tenWins) {
+            guestNewAchievements.tenWins = new Date().toISOString();
+            guestNewUnlockedTitles.push("Arena Master");
+            guestAchievementUnlocked = true;
+          }
+        }
+        console.log("updatelesene 2");
+
+        transaction.update(guestRef, {
+          "stats.points": increment(
+            guestIsWinner ? 15 : winner === "draw" ? 2 : -5
+          ),
+          "stats.wins": increment(guestIsWinner ? 1 : 0),
+          "stats.losses": increment(hostIsWinner ? 1 : 0),
+          "stats.draws": increment(winner === "draw" ? 1 : 0),
+          "stats.totalGames": increment(1),
+          achievements: guestNewAchievements,
+          unlockedTitles: arrayUnion(...guestNewUnlockedTitles),
+        });
+
+        console.log("updatelesene 3");
+        // Başarım kazanıldıysa toast mesajı göster
+        const playerIsHost = currentUser?.email === hostEmail;
+        if (
+          (playerIsHost && hostAchievementUnlocked) ||
+          (!playerIsHost && guestAchievementUnlocked)
+        ) {
+          toast.success("🏆 New achievement unlocked!");
+        }
+      });
+
+      toast.success("🏆 Ranked match completed! Stats updated.");
+      // Win rate'leri transaction sonrası ayrıca güncelle
+      await updateWinRates(hostEmail, guestEmail);
+      console.log("updatelesene 4");
     } catch (error) {
-      console.error("Puan güncelleme hatası:", error);
-      toast.error("Failed to update player stats");
+      console.error("Failed to update player stats in transaction:", error);
+      toast.error("Failed to update player stats.");
     }
   };
 

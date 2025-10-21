@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
@@ -8,25 +8,44 @@ import { ToastContainer, toast } from "react-toastify";
 import return_img from "../assets/return.png";
 import { usePageTitle } from "../hooks/usePageTitle";
 
-interface UserStats {
-  points: number;
-  totalGames: number;
-  wins: number;
-  losses: number;
-  draws: number;
-  winRate: number;
-  level: string;
+// --- YENİ: Profil veri yapısı arayüzü ---
+interface UserProfile {
+  username: string;
+  email: string;
+  avatarUrl: string;
+  activeTitle: string;
+  unlockedTitles: string[];
+  stats: {
+    points: number;
+    totalGames: number;
+    wins: number;
+    losses: number;
+    draws: number;
+    winRate: number;
+  };
+  achievements: Record<string, string>;
   createdAt: string;
-  lastActive: string;
 }
+
+// --- YENİ: Başarım tanımları ---
+const achievementsList = {
+  firstWin: { name: "First Blood", description: "Get your first ranked win." },
+  tenWins: { name: "Arena Master", description: "Win 10 ranked matches." },
+  flawlessVictory: {
+    name: "Flawless Victory",
+    description: "Win a match without making any mistakes.",
+  },
+};
 
 const Profile = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const [userStats, setUserStats] = useState<UserStats | null>(null);
+  // --- GÜNCELLENDİ: State'i tek bir profile nesnesi olarak tut ---
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [tiersOpen, setTiersOpen] = useState(false);
+  const [titlesOpen, setTitlesOpen] = useState(false); // Unvan seçme modalı için
 
   usePageTitle("MMA XOX - Profile");
 
@@ -103,54 +122,52 @@ const Profile = () => {
     return `${nextTier.min - points} points to ${nextTier.name}`;
   };
 
+  // --- GÜNCELLENDİ: Veri çekme mantığı ---
   useEffect(() => {
-    if (!currentUser) {
+    if (!currentUser || !currentUser.email) {
       navigate("/login");
       return;
     }
 
-    const fetchUserStats = async () => {
+    const fetchUserProfile = async () => {
+      const userRef = doc(db, "users", currentUser.email!);
       try {
-        const userRef = doc(db, "users", currentUser.email!);
         const userDoc = await getDoc(userRef);
 
-        if (!userDoc.exists()) {
-          // İlk kez giriş yapan kullanıcı için varsayılan stats oluştur
-          const defaultStats: UserStats = {
-            points: 100,
-            totalGames: 0,
-            wins: 0,
-            losses: 0,
-            draws: 0,
-            winRate: 0,
-            level: "Silver",
-            createdAt: new Date().toISOString(),
-            lastActive: new Date().toISOString(),
-          };
-
-          await setDoc(userRef, {
-            email: currentUser.email,
-            username: currentUser.email?.split("@")[0] || "User",
-            stats: defaultStats,
-            createdAt: new Date().toISOString(),
-            lastActive: new Date().toISOString(),
-          });
-
-          setUserStats(defaultStats);
+        if (userDoc.exists()) {
+          setProfile(userDoc.data() as UserProfile);
         } else {
-          const userData = userDoc.data();
-          setUserStats(userData.stats);
+          // Login.tsx'de profil oluşturulduğu için bu durum bir hatadır.
+          console.error("User profile not found for email:", currentUser.email);
+          toast.error("Could not find your profile data. Please log in again.");
+          setProfile(null);
         }
       } catch (error) {
-        console.error("Error fetching user stats:", error);
+        console.error("Error fetching user profile:", error);
         toast.error("Failed to load profile data");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUserStats();
+    fetchUserProfile();
   }, [currentUser, navigate]);
+
+  // --- YENİ: Unvan değiştirme fonksiyonu ---
+  const handleTitleChange = async (newTitle: string) => {
+    if (!currentUser?.email || !profile || profile.activeTitle === newTitle)
+      return;
+
+    const userRef = doc(db, "users", currentUser.email);
+    try {
+      await updateDoc(userRef, { activeTitle: newTitle });
+      setProfile((prev) => (prev ? { ...prev, activeTitle: newTitle } : null));
+      toast.success("Title updated!");
+      setTitlesOpen(false);
+    } catch (error) {
+      toast.error("Failed to update title.");
+    }
+  };
 
   if (loading) {
     return (
@@ -172,7 +189,8 @@ const Profile = () => {
     );
   }
 
-  if (!userStats) {
+  // --- GÜNCELLENDİ: Artık !profile kontrolü yapılıyor ---
+  if (!profile) {
     return (
       <div
         className={`min-h-screen flex items-center justify-center ${
@@ -186,9 +204,10 @@ const Profile = () => {
     );
   }
 
-  const level = calculateLevel(userStats.points);
-  const progress = calculateProgress(userStats.points);
-  const nextLevelInfo = getNextLevelPoints(userStats.points);
+  // --- GÜNCELLENDİ: Değişkenler profile'dan alınıyor ---
+  const level = calculateLevel(profile.stats.points);
+  const progress = calculateProgress(profile.stats.points);
+  const nextLevelInfo = getNextLevelPoints(profile.stats.points);
 
   return (
     <div
@@ -277,20 +296,23 @@ const Profile = () => {
               : "bg-white/90 border-slate-300 text-slate-800"
           }`}
         >
-          {/* Header */}
+          {/* --- GÜNCELLENDİ: Header --- */}
           <div className="text-center mb-8">
-            <div className="flex justify-center items-center gap-3 mb-4">
-              <div className="text-6xl">👤</div>
+            <div className="flex justify-center items-center gap-4 mb-4">
+              <img
+                src={profile.avatarUrl}
+                alt="avatar"
+                className="w-20 h-20 rounded-full border-4 border-red-500"
+              />
               <div>
-                <h1 className="text-3xl font-bold">
-                  {currentUser?.email?.split("@")[0]}
-                </h1>
+                <h1 className="text-3xl font-bold">{profile.username}</h1>
                 <p
-                  className={`text-sm ${
-                    theme === "dark" ? "text-slate-400" : "text-slate-600"
+                  onClick={() => setTitlesOpen(true)}
+                  className={`text-lg font-semibold cursor-pointer hover:scale-105 transition-transform ${
+                    theme === "dark" ? "text-yellow-400" : "text-yellow-600"
                   }`}
                 >
-                  {currentUser?.email}
+                  {profile.activeTitle} <span className="text-sm">✏️</span>
                 </p>
               </div>
             </div>
@@ -327,7 +349,7 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* Points */}
+          {/* --- GÜNCELLENDİ: Points ve Stats Grid (profile.stats kullanımı) --- */}
           <div className="text-center mb-8">
             <div
               className={`inline-block px-8 py-4 rounded-xl border-2 ${
@@ -337,7 +359,7 @@ const Profile = () => {
               }`}
             >
               <div className="text-4xl font-bold text-yellow-500">
-                {userStats.points}
+                {profile.stats.points}
               </div>
               <div
                 className={`text-sm ${
@@ -348,8 +370,6 @@ const Profile = () => {
               </div>
             </div>
           </div>
-
-          {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div
               className={`text-center p-4 rounded-xl border ${
@@ -359,7 +379,7 @@ const Profile = () => {
               }`}
             >
               <div className="text-2xl font-bold text-blue-500">
-                {userStats.totalGames}
+                {profile.stats.totalGames}
               </div>
               <div
                 className={`text-xs ${
@@ -378,7 +398,7 @@ const Profile = () => {
               }`}
             >
               <div className="text-2xl font-bold text-green-500">
-                {userStats.wins}
+                {profile.stats.wins}
               </div>
               <div
                 className={`text-xs ${
@@ -397,7 +417,7 @@ const Profile = () => {
               }`}
             >
               <div className="text-2xl font-bold text-red-500">
-                {userStats.losses}
+                {profile.stats.losses}
               </div>
               <div
                 className={`text-xs ${
@@ -416,7 +436,7 @@ const Profile = () => {
               }`}
             >
               <div className="text-2xl font-bold text-yellow-500">
-                {userStats.draws}
+                {profile.stats.draws}
               </div>
               <div
                 className={`text-xs ${
@@ -429,7 +449,7 @@ const Profile = () => {
           </div>
 
           {/* Win Rate */}
-          {userStats.totalGames > 0 && (
+          {profile.stats.totalGames > 0 && (
             <div className="text-center">
               <div
                 className={`inline-block px-6 py-3 rounded-xl border ${
@@ -441,7 +461,7 @@ const Profile = () => {
                 <div className="text-lg font-semibold">
                   Win Rate:{" "}
                   <span className="text-green-500">
-                    {userStats.winRate.toFixed(1)}%
+                    {profile.stats.winRate.toFixed(1)}%
                   </span>
                 </div>
               </div>
@@ -454,7 +474,37 @@ const Profile = () => {
               theme === "dark" ? "text-slate-400" : "text-slate-600"
             }`}
           >
-            Member since: {new Date(userStats.createdAt).toLocaleDateString()}
+            Member since: {new Date(profile.createdAt).toLocaleDateString()}
+          </div>
+
+          {/* --- YENİ: Başarımlar Bölümü --- */}
+          <div className="mt-8">
+            <h2 className="text-xl font-bold mb-4 text-center">Achievements</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Object.entries(achievementsList).map(([key, value]) => (
+                <div
+                  key={key}
+                  className={`p-4 rounded-lg border ${
+                    profile.achievements[key] ? "opacity-100" : "opacity-40"
+                  } ${
+                    theme === "dark"
+                      ? "bg-slate-700/50 border-slate-600"
+                      : "bg-slate-100/50 border-slate-300"
+                  }`}
+                >
+                  <h3 className="font-bold text-md">
+                    {value.name} {profile.achievements[key] ? "🏆" : "🔒"}
+                  </h3>
+                  <p className="text-sm">{value.description}</p>
+                  {profile.achievements[key] && (
+                    <p className="text-xs text-green-400 mt-1">
+                      Unlocked:{" "}
+                      {new Date(profile.achievements[key]).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Rank kademeleri butonu (modal açar) */}
@@ -569,6 +619,41 @@ const Profile = () => {
                       ))}
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* --- YENİ: Unvan Seçme Modalı --- */}
+          {titlesOpen && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+              onClick={() => setTitlesOpen(false)}
+            >
+              <div
+                className={`relative z-10 p-6 rounded-xl w-full max-w-md ${
+                  theme === "dark" ? "bg-slate-800" : "bg-white"
+                }`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h3 className="text-xl font-bold mb-4">Select a Title</h3>
+                <div className="flex flex-col gap-2 max-h-60 overflow-y-auto">
+                  {profile.unlockedTitles.map((title) => (
+                    <button
+                      key={title}
+                      onClick={() => handleTitleChange(title)}
+                      disabled={profile.activeTitle === title}
+                      className={`w-full p-3 rounded-lg text-left font-semibold transition ${
+                        profile.activeTitle === title
+                          ? "bg-green-600 text-white cursor-not-allowed"
+                          : theme === "dark"
+                          ? "bg-slate-700 hover:bg-slate-600"
+                          : "bg-slate-200 hover:bg-slate-300"
+                      }`}
+                    >
+                      {title}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>

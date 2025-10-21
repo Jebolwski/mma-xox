@@ -25,7 +25,6 @@ const Login = () => {
       toast.error("Please fill all fields!");
       return;
     }
-    console.log("messi aminake");
 
     setLoading(true);
     try {
@@ -37,27 +36,35 @@ const Login = () => {
           password
         );
 
-        // Firestore'a kullanıcı profili oluştur
+        // Firestore'a kullanıcı profili oluştur (Doküman ID'si olarak email kullanılıyor)
         const userRef = doc(db, "users", result.user.email!);
-        const defaultStats = {
-          points: 100,
-          totalGames: 0,
-          wins: 0,
-          losses: 0,
-          draws: 0,
-          winRate: 0,
-          level: "Silver",
-          createdAt: new Date().toISOString(),
-          lastActive: new Date().toISOString(),
-        };
 
-        await setDoc(userRef, {
+        // Yeni kullanıcı için oluşturulacak eksiksiz profil verisi
+        const newUserProfile = {
           email: result.user.email,
           username: result.user.email?.split("@")[0] || "User",
-          stats: defaultStats,
+
+          // Kişiselleştirme ve Başarım Alanları
+          avatarUrl:
+            "https://preview.redd.it/the-new-discord-default-profile-pictures-v0-tbhgxr7adj7f1.png?width=1024&auto=webp&s=d64e0fdfeac749167246780dcc5e82915c6d7b70", // Varsayılan avatar yolu
+          activeTitle: "Arena Rookie", // Varsayılan unvan
+          unlockedTitles: ["Arena Rookie"], // Kazanılan unvanlar listesi
+          achievements: {}, // Başlangıçta boş başarım nesnesi
+
+          // İstatistikler
+          stats: {
+            points: 100,
+            totalGames: 0,
+            wins: 0,
+            losses: 0,
+            draws: 0,
+            winRate: 0,
+          },
+
           createdAt: new Date().toISOString(),
-          lastActive: new Date().toISOString(),
-        });
+        };
+
+        await setDoc(userRef, newUserProfile);
 
         toast.success("Account created successfully!");
       } else {

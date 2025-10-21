@@ -201,9 +201,9 @@ const Home = () => {
             <>
               <div
                 onClick={() => navigate("/menu")}
-                className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 duration-300 hover:scale-105 active:scale-95 ${
+                className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 duration-200 hover:scale-102 active:scale-95 ${
                   theme === "dark"
-                    ? "bg-green-600 hover:bg-green-700 border-green-400 text-white shadow-lg shadow-green-600/30"
+                    ? "bg-purple-600 hover:bg-purple-700 border-purple-400 text-white shadow-lg shadow-purple-600/30"
                     : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
                 }`}
                 style={{
@@ -215,9 +215,9 @@ const Home = () => {
 
               <div
                 onClick={handleLogout}
-                className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 duration-300 hover:scale-105 active:scale-95 ${
+                className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 duration-200 hover:scale-102 active:scale-95 ${
                   theme === "dark"
-                    ? "bg-red-600 hover:bg-red-700 border-red-400 text-white shadow-lg shadow-red-600/30"
+                    ? "bg-blue-600 hover:bg-blue-700 border-blue-400 text-white shadow-lg shadow-blue-600/30"
                     : "bg-red-500 hover:bg-red-600 border-red-300 text-white shadow-lg shadow-red-500/30"
                 }`}
                 style={{
@@ -232,9 +232,9 @@ const Home = () => {
             <>
               <div
                 onClick={() => navigate("/menu")}
-                className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
+                className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-200 hover:scale-102 active:scale-95 ${
                   theme === "dark"
-                    ? "bg-green-600 hover:bg-green-700 border-green-400 text-white shadow-lg shadow-green-600/30"
+                    ? "bg-purple-600 hover:bg-purple-700 border-purple-400 text-white shadow-lg shadow-purple-600/30"
                     : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
                 }`}
                 style={{
@@ -246,7 +246,7 @@ const Home = () => {
 
               <div
                 onClick={() => navigate("/login")}
-                className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-300 hover:scale-105 active:scale-95 ${
+                className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-200 hover:scale-102 active:scale-95 ${
                   theme === "dark"
                     ? "bg-blue-600 hover:bg-blue-700 border-blue-400 text-white shadow-lg shadow-blue-600/30"
                     : "bg-blue-500 hover:bg-blue-600 border-blue-300 text-white shadow-lg shadow-blue-500/30"
