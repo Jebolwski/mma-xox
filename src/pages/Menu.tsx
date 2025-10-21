@@ -116,7 +116,8 @@ const Menu = () => {
       icon: "👤",
       gradient: "from-sky-500 to-sky-600",
       disabled: !currentUser,
-      onClick: () => (currentUser ? navigate("/profile") : null),
+      onClick: () =>
+        currentUser ? navigate("/profile/" + currentUser?.email) : null,
     },
   ];
 
@@ -394,7 +395,7 @@ const Menu = () => {
             // Giriş yapmış kullanıcı için username ve logout
             <div className="flex flex-wrap justify-end items-center gap-3">
               <div
-                onClick={() => navigate("/profile")}
+                onClick={() => navigate("/profile/" + currentUser?.email)} // GÜNCELLENDİ
                 className={`px-4 py-2 rounded-xl backdrop-blur-md border cursor-pointer ${
                   theme === "dark"
                     ? "bg-slate-800/80 border-slate-600/50 text-white"

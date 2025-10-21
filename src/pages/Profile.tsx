@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"; // useParams EKLENDİ
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
@@ -39,13 +39,17 @@ const achievementsList = {
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { userEmail } = useParams<{ userEmail: string }>(); // YENİ: URL'den email'i al
   const { currentUser } = useAuth();
   const { theme, toggleTheme } = useContext(ThemeContext);
   // --- GÜNCELLENDİ: State'i tek bir profile nesnesi olarak tut ---
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [tiersOpen, setTiersOpen] = useState(false);
-  const [titlesOpen, setTitlesOpen] = useState(false); // Unvan seçme modalı için
+  const [titlesOpen, setTitlesOpen] = useState(false);
+
+  // YENİ: Kendi profilimiz mi diye kontrol et
+  const isMyProfile = currentUser?.email === userEmail;
 
   usePageTitle("MMA XOX - Profile");
 
@@ -124,13 +128,13 @@ const Profile = () => {
 
   // --- GÜNCELLENDİ: Veri çekme mantığı ---
   useEffect(() => {
-    if (!currentUser || !currentUser.email) {
-      navigate("/login");
+    if (!userEmail) {
+      navigate("/menu"); // Eğer URL'de email yoksa menüye at
       return;
     }
 
     const fetchUserProfile = async () => {
-      const userRef = doc(db, "users", currentUser.email!);
+      const userRef = doc(db, "users", userEmail); // GÜNCELLENDİ: URL'deki email'i kullan
       try {
         const userDoc = await getDoc(userRef);
 
@@ -138,7 +142,10 @@ const Profile = () => {
           setProfile(userDoc.data() as UserProfile);
         } else {
           // Login.tsx'de profil oluşturulduğu için bu durum bir hatadır.
-          console.error("User profile not found for email:", currentUser.email);
+          console.error(
+            "User profile not found for email:",
+            currentUser?.email
+          );
           toast.error("Could not find your profile data. Please log in again.");
           setProfile(null);
         }
@@ -151,7 +158,7 @@ const Profile = () => {
     };
 
     fetchUserProfile();
-  }, [currentUser, navigate]);
+  }, [userEmail, navigate]);
 
   // --- YENİ: Unvan değiştirme fonksiyonu ---
   const handleTitleChange = async (newTitle: string) => {
@@ -269,7 +276,7 @@ const Profile = () => {
       {/* Back Button */}
       <div className="absolute z-30 top-6 right-6">
         <div
-          onClick={() => navigate("/menu")}
+          onClick={() => navigate(-1)}
           className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
             theme === "dark"
               ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
@@ -282,7 +289,7 @@ const Profile = () => {
               className="w-6"
               alt="Back"
             />
-            <p className="font-semibold">Back to Menu</p>
+            <p className="font-semibold">Go Back</p>
           </div>
         </div>
       </div>
@@ -302,18 +309,24 @@ const Profile = () => {
               <img
                 src={profile.avatarUrl}
                 alt="avatar"
-                className="w-20 h-20 rounded-full border-4 border-red-500"
+                className="w-20 h-20 rounded-full hidden sm:block border-4 border-red-500"
               />
               <div>
                 <h1 className="text-3xl font-bold">{profile.username}</h1>
-                <p
-                  onClick={() => setTitlesOpen(true)}
-                  className={`text-lg font-semibold cursor-pointer hover:scale-105 transition-transform ${
+                <div
+                  onClick={() => isMyProfile && setTitlesOpen(true)} // GÜNCELLENDİ: Sadece kendi profilinde tıkla
+                  className={`text-lg flex items-center gap-2 justify-center font-semibold transition-transform ${
+                    isMyProfile
+                      ? "cursor-pointer hover:scale-105"
+                      : "cursor-default"
+                  } ${
                     theme === "dark" ? "text-yellow-400" : "text-yellow-600"
                   }`}
                 >
-                  {profile.activeTitle} <span className="text-sm">✏️</span>
-                </p>
+                  <p>{profile.activeTitle}</p>
+                  {/* GÜNCELLENDİ: Sadece kendi profilinde kalemi göster */}
+                  {isMyProfile && <span className="text-sm">✏️</span>}
+                </div>
               </div>
             </div>
           </div>
@@ -478,7 +491,7 @@ const Profile = () => {
           </div>
 
           {/* --- YENİ: Başarımlar Bölümü --- */}
-          <div className="mt-8">
+          <div className="mt-6">
             <h2 className="text-xl font-bold mb-4 text-center">Achievements</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {Object.entries(achievementsList).map(([key, value]) => (
@@ -627,7 +640,7 @@ const Profile = () => {
           {/* --- YENİ: Unvan Seçme Modalı --- */}
           {titlesOpen && (
             <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 rounded-xl"
               onClick={() => setTitlesOpen(false)}
             >
               <div
@@ -643,7 +656,7 @@ const Profile = () => {
                       key={title}
                       onClick={() => handleTitleChange(title)}
                       disabled={profile.activeTitle === title}
-                      className={`w-full p-3 rounded-lg text-left font-semibold transition ${
+                      className={`w-full p-3 rounded-lg cursor-pointer text-left font-semibold transition ${
                         profile.activeTitle === title
                           ? "bg-green-600 text-white cursor-not-allowed"
                           : theme === "dark"

@@ -130,7 +130,7 @@ const AvailableRooms = () => {
   };
 
   const handleExit = async () => {
-    navigate("/menu");
+    navigate(-1);
   };
 
   // const handleRefresh = async () => {
@@ -255,7 +255,7 @@ const AvailableRooms = () => {
               src={return_img || "/placeholder.svg"}
               className="w-6"
             />
-            <p className="font-semibold">Back to menu</p>
+            <p className="font-semibold">Go Back</p>
           </div>
         </div>
       </div>

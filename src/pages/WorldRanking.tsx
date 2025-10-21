@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Link EKLENDİ
 import {
   collection,
   query,
@@ -130,7 +130,7 @@ export default function WorldRanking() {
   };
 
   const handleExit = async () => {
-    navigate("/menu");
+    navigate(-1);
   };
 
   useEffect(() => {
@@ -208,7 +208,7 @@ export default function WorldRanking() {
               src={return_img || "/placeholder.svg"}
               className="w-6"
             />
-            <p className="font-semibold">Back to menu</p>
+            <p className="font-semibold">Go Back</p>
           </div>
         </div>
       </div>
@@ -281,12 +281,13 @@ export default function WorldRanking() {
                   : null;
               const record = `${r.wins}-${r.losses}-${r.draws}`;
               return (
-                <div
+                <Link // YENİ: Satırı Link component'i ile sarmala
+                  to={`/profile/${r.email}`}
                   key={r.id}
-                  className={`grid grid-cols-6 gap-2 px-4 py-3 text-sm border-t ${
+                  className={`grid grid-cols-6 gap-2 px-4 py-3 text-sm border-t transition-colors duration-200 ${
                     theme === "dark"
-                      ? "text-white border-slate-700"
-                      : "text-black border-slate-200"
+                      ? "text-white border-slate-700 hover:bg-slate-700/50"
+                      : "text-black border-slate-200 hover:bg-slate-100"
                   } ${
                     highlight
                       ? theme === "dark"
@@ -310,7 +311,7 @@ export default function WorldRanking() {
                   <div className="text-right font-semibold">{r.points}</div>
                   <div className="text-right tabular-nums">{record}</div>
                   <div className="text-right">{r.winRate?.toFixed(1)}%</div>
-                </div>
+                </Link> // YENİ
               );
             })}
 

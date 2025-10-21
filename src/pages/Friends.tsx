@@ -74,7 +74,7 @@ export default function Friends() {
   }, [currentUser?.email]);
 
   const handleExit = async () => {
-    navigate("/menu");
+    navigate(-1);
   };
 
   // Realtime incoming/sent
@@ -256,7 +256,7 @@ export default function Friends() {
               src={return_img || "/placeholder.svg"}
               className="w-6"
             />
-            <p className="font-semibold">Back to menu</p>
+            <p className="font-semibold">Go Back</p>
           </div>
         </div>
       </div>

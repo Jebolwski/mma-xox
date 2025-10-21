@@ -921,7 +921,7 @@ function SameScreenGame() {
     if (playWithAI && turn === "blue" && gameStart && !gameWinner) {
       setTimeout(() => {
         makeAIMove();
-      }, 700); // AI'nın düşünüyormuş gibi gecikmeli oynaması için
+      }, 900); // AI'nın düşünüyormuş gibi gecikmeli oynaması için
     }
   }, [turn, playWithAI, gameStart, gameWinner]);
 
