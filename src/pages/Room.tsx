@@ -546,48 +546,6 @@ const Room = () => {
     }
     // Bağımlılığı sadece guest.now'a indirge
   }, [gameState?.guest?.now, role]);
-  useEffect(() => {
-    const handleBeforeUnload = async () => {
-      if (!roomId || !playerName || !role) return;
-
-      const roomRef = doc(db, "rooms", roomId);
-
-      if (role === "host") {
-        try {
-          await updateDoc(roomRef, {
-            ank: "messi",
-          });
-          // await runTransaction(db, async (transaction) => {
-          //   const roomDoc = await transaction.get(roomRef);
-          //   if (!roomDoc.exists()) return;
-          //   transaction.delete(roomRef);
-          // });
-        } catch (error) {
-          console.error("Host çıkışında oda silinirken hata oluştu:", error);
-        }
-      } else if (role === "guest") {
-        try {
-          await updateDoc(roomRef, {
-            guest: { prev: null, now: null },
-            gameStarted: false,
-          });
-        } catch (error) {
-          console.error("Guest çıkışında güncelleme hatası:", error);
-        }
-      }
-    };
-
-    const handleUnload = () => {
-      // Asenkron işlemleri 'beforeunload' yerine 'unload'ta tetikleyebiliriz
-      handleBeforeUnload();
-    };
-
-    window.addEventListener("unload", handleUnload);
-
-    return () => {
-      window.removeEventListener("unload", handleUnload);
-    };
-  }, [roomId, playerName, role]);
 
   useEffect(() => {
     if (

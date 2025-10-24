@@ -24,6 +24,12 @@ const Menu = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { currentUser, logout } = useAuth(); // EKLENDI
 
+  const getUsernameForUrl = () => {
+    return currentUser?.email
+      ? encodeURIComponent(currentUser.email.split("@")[0].toLowerCase())
+      : "";
+  };
+
   usePageTitle("MMA XOX - Menu");
 
   const [playerName, setPlayerName] = useState("");
@@ -117,7 +123,7 @@ const Menu = () => {
       gradient: "from-sky-500 to-sky-600",
       disabled: !currentUser,
       onClick: () =>
-        currentUser ? navigate("/profile/" + currentUser?.email) : null,
+        currentUser ? navigate("/profile/" + getUsernameForUrl()) : null, // GÜNCELLENDİ
     },
   ];
 
@@ -395,7 +401,7 @@ const Menu = () => {
             // Giriş yapmış kullanıcı için username ve logout
             <div className="flex flex-wrap justify-end items-center gap-3">
               <div
-                onClick={() => navigate("/profile/" + currentUser?.email)} // GÜNCELLENDİ
+                onClick={() => navigate("/profile/" + getUsernameForUrl())} // GÜNCELLENDİ: username ile git
                 className={`px-4 py-2 rounded-xl backdrop-blur-md border cursor-pointer ${
                   theme === "dark"
                     ? "bg-slate-800/80 border-slate-600/50 text-white"

@@ -1,6 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom"; // useParams EKLENDİ
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
@@ -126,29 +134,41 @@ const Profile = () => {
     return `${nextTier.min - points} points to ${nextTier.name}`;
   };
 
-  // --- GÜNCELLENDİ: Veri çekme mantığı ---
   useEffect(() => {
     if (!userEmail) {
-      navigate("/menu"); // Eğer URL'de email yoksa menüye at
+      navigate("/menu");
       return;
     }
 
     const fetchUserProfile = async () => {
-      const userRef = doc(db, "users", userEmail); // GÜNCELLENDİ: URL'deki email'i kullan
       try {
-        const userDoc = await getDoc(userRef);
-
-        if (userDoc.exists()) {
-          setProfile(userDoc.data() as UserProfile);
-        } else {
-          // Login.tsx'de profil oluşturulduğu için bu durum bir hatadır.
-          console.error(
-            "User profile not found for email:",
-            currentUser?.email
-          );
-          toast.error("Could not find your profile data. Please log in again.");
-          setProfile(null);
+        // if param looks like email -> fetch by doc id (email)
+        if (userEmail.includes("@")) {
+          const userRef = doc(db, "users", userEmail);
+          const userDoc = await getDoc(userRef);
+          if (userDoc.exists()) {
+            setProfile(userDoc.data() as UserProfile);
+            return;
+          }
         }
+
+        // otherwise try to find by username (or usernameSlug)
+        // NOTE: make sure 'username' field is indexed in Firestore
+        const q = query(
+          collection(db, "users"),
+          where("username", "==", userEmail)
+        );
+        const snap = await getDocs(q);
+        if (!snap.empty) {
+          const data = snap.docs[0].data() as UserProfile;
+          setProfile(data);
+          return;
+        }
+
+        // not found
+        console.error("User profile not found for:", userEmail);
+        toast.error("Could not find the profile.");
+        setProfile(null);
       } catch (error) {
         console.error("Error fetching user profile:", error);
         toast.error("Failed to load profile data");

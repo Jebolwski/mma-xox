@@ -7,7 +7,14 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { toast, ToastContainer } from "react-toastify";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  query,
+  collection,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 const Login = () => {
@@ -30,6 +37,22 @@ const Login = () => {
     try {
       if (isSignUp) {
         // Sign up işlemi
+
+        // before creating user, ensure username is unique
+        const desiredUsername = email.split("@")[0].toLowerCase(); // veya kullanıcı girdisi
+        const usernameSlug = desiredUsername.replace(/[^a-z0-9_-]/g, "-");
+
+        const usernameQuery = query(
+          collection(db, "users"),
+          where("username", "==", desiredUsername)
+        );
+        const usernameSnap = await getDocs(usernameQuery);
+        if (!usernameSnap.empty) {
+          toast.error("Username already taken. Try another.");
+          setLoading(false);
+          return;
+        }
+
         const result = await createUserWithEmailAndPassword(
           auth,
           email,
@@ -42,7 +65,8 @@ const Login = () => {
         // Yeni kullanıcı için oluşturulacak eksiksiz profil verisi
         const newUserProfile = {
           email: result.user.email,
-          username: result.user.email?.split("@")[0] || "User",
+          username: desiredUsername, // Kullanıcının belirlediği veya otomatik oluşturulan kullanıcı adı
+          usernameSlug: usernameSlug, // Kullanıcı adı için temizlenmiş ve benzersiz hale getirilmiş slug
 
           // Kişiselleştirme ve Başarım Alanları
           avatarUrl:
