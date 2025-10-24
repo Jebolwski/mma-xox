@@ -57,7 +57,7 @@ const Profile = () => {
   const [titlesOpen, setTitlesOpen] = useState(false);
 
   // YENİ: Kendi profilimiz mi diye kontrol et
-  const isMyProfile = currentUser?.email === userEmail;
+  const isMyProfile = profile ? currentUser?.email === profile.email : false;
 
   usePageTitle("MMA XOX - Profile");
 
