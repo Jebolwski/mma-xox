@@ -527,8 +527,6 @@ const Room = () => {
   ]); // gameState dependency'sine gameState.winner da dahil
 
   useEffect(() => {
-    console.log("gel bakim");
-
     if (gameState != null && role === "host") {
       const currentGuestNow = gameState.guest?.now;
 
@@ -806,8 +804,6 @@ const Room = () => {
           unlockedTitles: arrayUnion(...hostNewUnlockedTitles),
         });
 
-        console.log("updatelesene 1");
-
         // --- GUEST GÜNCELLEMELERİ ---
         const guestNewAchievements = { ...guestProfile.achievements };
         const guestNewUnlockedTitles = [];
@@ -828,7 +824,6 @@ const Room = () => {
             guestAchievementUnlocked = true;
           }
         }
-        console.log("updatelesene 2");
 
         transaction.update(guestRef, {
           "stats.points": increment(
@@ -842,7 +837,6 @@ const Room = () => {
           unlockedTitles: arrayUnion(...guestNewUnlockedTitles),
         });
 
-        console.log("updatelesene 3");
         // Başarım kazanıldıysa toast mesajı göster
         const playerIsHost = currentUser?.email === hostEmail;
         if (
@@ -856,7 +850,6 @@ const Room = () => {
       toast.success("🏆 Ranked match completed! Stats updated.");
       // Win rate'leri transaction sonrası ayrıca güncelle
       await updateWinRates(hostEmail, guestEmail);
-      console.log("updatelesene 4");
     } catch (error) {
       console.error("Failed to update player stats in transaction:", error);
       toast.error("Failed to update player stats.");
@@ -1229,8 +1222,6 @@ const Room = () => {
       position25: {},
     });
 
-    console.log(filtersSelected);
-
     setFilters(null);
     setFighter00({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
@@ -1294,7 +1285,6 @@ const Room = () => {
       toast.error("Its your opponents turn!");
       return;
     }
-    console.log(1, "a");
 
     if (!roomId) return;
 
@@ -1311,7 +1301,6 @@ const Room = () => {
       fighter21: "position15",
       fighter22: "position25",
     };
-    console.log(2, "a");
 
     if (!fighterMap[selected]) return;
 
@@ -1319,7 +1308,6 @@ const Room = () => {
     if (!positionsFighters[positionKey].includes(fighter)) {
       notify();
       playSfx(wrong); // ❌ Yanlış seçim sesi
-      console.log(3, "a");
       await updateDoc(roomRef, {
         timerLength: gameState.timer,
         turn: gameState.turn === "red" ? "blue" : "red",
@@ -1345,7 +1333,6 @@ const Room = () => {
       };
 
       setterMap[selected]({ url: picture, text: name, bg: bgColor });
-      console.log(4, "a");
 
       playSfx(correct); // ✅ Doğru seçim sesi
       await updateDoc(roomRef, {
@@ -1366,7 +1353,6 @@ const Room = () => {
         expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
       });
     }
-    console.log(5, "a");
 
     setTurn(turn === "red" ? "blue" : "red");
     //setTimer(timerLength);
@@ -3305,7 +3291,7 @@ const Room = () => {
                           toast.success("You are ready! Waiting for guest...");
                         }
                       } else {
-                        // Casual maçlarda direkt başlat
+                        // Casual maçlarda direkt başlatılacak
                         startGame();
                       }
                     } else {
