@@ -1,4 +1,4 @@
-import fighters from "../assets/data/fighters.json";
+import fighters from "../assets/data/fighters_updated_new.json";
 import usaFlag from "../assets/usa_flag.png";
 import nigeriaFlag from "../assets/nigeria_flag.jpg";
 import russiaFlag from "../assets/russia_flag.jpg";
@@ -35,7 +35,7 @@ const Filters = (): FilterDifficulty => {
         "filter_text": "Been in Title Fight",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return fighter.BeenInTitleFight == "True";
+            return parseInt(fighter.TotalTitleBouts) > 0;
         })
     }, {
         "id": 4,
@@ -166,7 +166,7 @@ const Filters = (): FilterDifficulty => {
         "filter_text": "Been in Title Fight",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return fighter.BeenInTitleFight == "True";
+            return parseInt(fighter.TotalTitleBouts) > 0;
         })
     }, {
         "id": 4,
@@ -373,7 +373,7 @@ const Filters = (): FilterDifficulty => {
             "filter_text": "Been in Title Fight",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
-                return fighter.BeenInTitleFight == "True";
+                return parseInt(fighter.TotalTitleBouts) > 0;
             })
         }, {
             "id": 4,

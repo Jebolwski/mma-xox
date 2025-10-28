@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import fighters_url from "../assets/data/fighters.json";
+import fighters_url from "../assets/data/fighters_updated_new.json";
 import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
@@ -269,8 +269,6 @@ function SameScreenGame() {
   };
 
   const updateBox = (fighter: Fighter, selectedParam: string | null) => {
-    console.log("fighter came", fighter, selected);
-
     let picture =
       fighter.Picture === "Unknown"
         ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
@@ -298,6 +296,8 @@ function SameScreenGame() {
     if (!fighterMap[selectedBox]) return;
 
     const positionKey = fighterMap[selectedBox];
+    console.log(positionsFighters[positionKey], positionKey, fighter);
+
     if (!positionsFighters[positionKey].includes(fighter)) {
       notify();
       playSfx(wrong); // ❌ Yanlış seçim sesi
