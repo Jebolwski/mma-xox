@@ -108,6 +108,7 @@ const Room = () => {
     text: "",
     bg: "from-stone-300 to-stone-500",
   });
+
   const [filtersSelected, setFiltersSelected]: any = useState([]);
   const [pushFirestore, setPushFirestore]: any = useState(false);
   const [fighters, setFighters] = useState<Fighter[]>([]);
@@ -138,6 +139,7 @@ const Room = () => {
 
   useEffect(() => {
     try {
+      console.log(filtersSelected);
       localStorage.setItem("muted", JSON.stringify(muted));
     } catch {}
   }, [muted]);

@@ -35,19 +35,6 @@ interface UserProfile {
   createdAt: string;
 }
 
-const ACHIEVEMENT_TO_TITLE: Record<string, string> = {
-  firstWin: "First Blood",
-  tenWins: "Arena Master",
-  flawlessVictory: "Flawless Victory",
-  winStreak5: "Hot Streak",
-  points500: "Power Punch",
-  hundredGames: "Veteran",
-  comebackKing: "Comeback King",
-  socialInvite: "Connector",
-  daily7: "Dedication",
-  rematchChampion: "Rematch Champion",
-};
-
 // --- YENİ: Başarım tanımları ---
 const achievementsList = {
   firstWin: { name: "First Blood", description: "Get your first ranked win." },
