@@ -1926,7 +1926,7 @@ function SameScreenGame() {
                 </div>
               </div>
               <div className="mt-4 flex justify-center">
-                <label className="font-semibold text-lg mb-2 flex items-center gap-2 cursor-pointer select-none">
+                <label className="font-semibold text-lg mb-2 flex items-center gap-1 cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={playWithAI}
@@ -1956,7 +1956,7 @@ function SameScreenGame() {
       `}
                     style={{ marginLeft: "2px" }}
                   ></span>
-                  AI'ya karşı oyna
+                  Play against AI
                 </label>
               </div>
               <div className="flex justify-center">
