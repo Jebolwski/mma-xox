@@ -198,6 +198,7 @@ const Login = () => {
               <input
                 type="password"
                 value={password}
+                autoComplete="password"
                 onChange={(e) => setPassword(e.target.value)}
                 className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
                   theme === "dark"
