@@ -1781,7 +1781,12 @@ function SameScreenGame() {
                                 ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
                                 : fighter.Picture
                             }
-                            className="xl:w-13 w-10"
+                            className="xl:w-13 w-10 opacity-0 transition-opacity duration-500"
+                            onLoad={(e) => {
+                              e.currentTarget.classList.remove("opacity-0");
+                              e.currentTarget.classList.add("opacity-100");
+                            }}
+                            loading="lazy"
                           />
                           <p className="xl:text-lg md:text-base text-sm font-semibold">
                             {fighter.Fighter}
