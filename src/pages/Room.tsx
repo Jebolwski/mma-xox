@@ -175,6 +175,21 @@ const Room = () => {
   }, [gameState?.winner]);
 
   useEffect(() => {
+    if (!roomId || !gameState) return;
+
+    // Eğer ranked match + gameStarted ve winner yok ise state'i koru
+    if (gameState.isRankedRoom && gameState.gameStarted && !gameState.winner) {
+      // Zaten devam eden oyunu koru; yeni başlatma / resetleme yapma
+      // (mevcut snapshot listener zaten board/turn/timer'ı senkronize eder)
+      // Eğer resetGame() veya startGame() çağrısı varsa, bunu atlayın:
+      // setGameStarted(true); // mevcut gameState.gameStarted kullanılıyor
+      // setBoard(...) gibi local state varsa snapshot'tan alın
+    } else if (!gameState.gameStarted && role === "host") {
+      // Host refresh yaptıysa ama oyun başlamamışsa izin ver
+    }
+  }, [roomId, gameState, role]);
+
+  useEffect(() => {
     document.title = "MMA XOX - Online Game";
   }, []);
 
@@ -253,6 +268,31 @@ const Room = () => {
           getFightersByPositions(updatedData.positionsFighters)
         );
       }
+      console.log(updatedData);
+
+      if (updatedData.fighter00) setFighter00(updatedData.fighter00);
+      if (updatedData.fighter01) setFighter01(updatedData.fighter01);
+      if (updatedData.fighter02) setFighter02(updatedData.fighter02);
+      if (updatedData.fighter10) setFighter10(updatedData.fighter10);
+      if (updatedData.fighter11) setFighter11(updatedData.fighter11);
+      if (updatedData.fighter12) setFighter12(updatedData.fighter12);
+      if (updatedData.fighter20) setFighter20(updatedData.fighter20);
+      if (updatedData.fighter21) setFighter21(updatedData.fighter21);
+      if (updatedData.fighter22) setFighter22(updatedData.fighter22);
+
+      if (updatedData.gameStarted) {
+        setGameStarted(true);
+        if (updatedData.turn) setTurn(updatedData.turn);
+        if (updatedData.filtersSelected)
+          setFiltersSelected(updatedData.filtersSelected);
+        // Timer ve difficulty değerlerini de restore et
+        if (updatedData.timerLength !== undefined) {
+          setTimerLength(String(updatedData.timerLength));
+        }
+        if (updatedData.difficulty) {
+          setDifficulty(updatedData.difficulty);
+        }
+      }
 
       setGuest(updatedData?.guest.now);
       setGameState(updatedData);
@@ -267,6 +307,15 @@ const Room = () => {
     if (role === "host" && !gameState) {
       const initializeGame = async () => {
         const roomRef = doc(db, "rooms", roomId!);
+
+        // Önce odanın var olup olmadığını kontrol et
+        const roomSnap = await getDoc(roomRef);
+
+        // Eğer oda zaten varsa (refresh durumu) hiçbir şey yapma
+        if (roomSnap.exists()) {
+          console.log("Room already exists, skipping initialization");
+          return;
+        }
         await setDoc(roomRef, {
           host: playerName,
           hostEmail: currentUser?.email || null,
@@ -367,6 +416,15 @@ const Room = () => {
       !gameState?.gameStarted &&
       role === "host"
     ) {
+      const hasFighters =
+        gameState.fighter00?.text ||
+        gameState.fighter01?.text ||
+        gameState.fighter02?.text;
+      if (hasFighters) {
+        console.log("Game already has fighters, skipping startGame");
+        return;
+      }
+
       setDifficulty("MEDIUM");
       setTimerLength("30");
       startGame();
@@ -631,114 +689,6 @@ const Room = () => {
     }
   }, [theme]);
 
-  useEffect(() => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-    let upd = async () => {
-      await updateDoc(roomRef, {
-        fighter00: fighter00,
-      });
-    };
-    upd();
-  }, [fighter00]);
-
-  useEffect(() => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-    let upd = async () => {
-      await updateDoc(roomRef, {
-        fighter01: fighter01,
-      });
-    };
-    upd();
-  }, [fighter01]);
-
-  useEffect(() => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-    let upd = async () => {
-      await updateDoc(roomRef, {
-        fighter02: fighter02,
-      });
-    };
-    upd();
-  }, [fighter02]);
-
-  useEffect(() => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-    let upd = async () => {
-      await updateDoc(roomRef, {
-        fighter10: fighter10,
-      });
-    };
-    upd();
-  }, [fighter10]);
-
-  useEffect(() => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-    let upd = async () => {
-      await updateDoc(roomRef, {
-        fighter11: fighter11,
-      });
-    };
-    upd();
-  }, [fighter11]);
-
-  useEffect(() => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-    let upd = async () => {
-      await updateDoc(roomRef, {
-        fighter12: fighter12,
-      });
-    };
-    upd();
-  }, [fighter12]);
-
-  useEffect(() => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-    let upd = async () => {
-      await updateDoc(roomRef, {
-        fighter20: fighter20,
-      });
-    };
-    upd();
-  }, [fighter20]);
-
-  useEffect(() => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-    let upd = async () => {
-      await updateDoc(roomRef, {
-        fighter21: fighter21,
-      });
-    };
-    upd();
-  }, [fighter21]);
-
-  useEffect(() => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-    let upd = async () => {
-      await updateDoc(roomRef, {
-        fighter22: fighter22,
-      });
-    };
-    upd();
-  }, [fighter22]);
-
   const updatePlayerStats = async (winner: "red" | "blue" | "draw") => {
     if (!gameState?.isRankedRoom) {
       console.log("This is a casual match, stats will not be updated.");
@@ -919,6 +869,20 @@ const Room = () => {
     if (!roomId) return;
 
     const roomRef = doc(db, "rooms", roomId);
+
+    const roomSnap = await getDoc(roomRef);
+    if (roomSnap.exists()) {
+      const data = roomSnap.data();
+      // Eğer oyun zaten devam ediyorsa ve fighterlar doluysa resetleme
+      const hasFighters =
+        data.fighter00?.text || data.fighter01?.text || data.fighter02?.text;
+      if (hasFighters && data.gameStarted) {
+        console.log(
+          "Game already started with fighters, skipping initialization"
+        );
+        return;
+      }
+    }
 
     let f: FilterDifficulty = Filters();
 
