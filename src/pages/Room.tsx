@@ -313,8 +313,12 @@ const Room = () => {
 
         // Eğer oda zaten varsa (refresh durumu) hiçbir şey yapma
         if (roomSnap.exists()) {
-          console.log("Room already exists, skipping initialization");
-          return;
+          const data = roomSnap.data();
+          // Eğer oyun zaten başlamışsa hiçbir şey yapma (refresh / resume durumları için)
+          if (data?.gameStarted) {
+            console.log("Room already started, skipping initialization");
+            return;
+          }
         }
         await setDoc(roomRef, {
           host: playerName,
@@ -1922,7 +1926,7 @@ const Room = () => {
               } justify-between items-center gap-3 flex-wrap text-right pt-2 px-4 md:px-0`}
             >
               {/* Restart Game butonu - sadece casual maçlarda göster */}
-              {!gameState?.isRankedRoom && (
+              {!gameState?.isRankedRoom && role == "host" && (
                 <div
                   onClick={() => {
                     restartGame();
