@@ -1283,7 +1283,12 @@ function SameScreenGame() {
                         {filtersSelected[0].filter_image != null ? (
                           <img
                             src={filtersSelected[0].filter_image}
-                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                            onLoad={(e) => {
+                              e.currentTarget.classList.remove("opacity-0");
+                              e.currentTarget.classList.add("opacity-100");
+                            }}
+                            loading="lazy"
                           />
                         ) : (
                           <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
@@ -1316,7 +1321,12 @@ function SameScreenGame() {
                         {filtersSelected[1].filter_image != null ? (
                           <img
                             src={filtersSelected[1].filter_image}
-                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                            onLoad={(e) => {
+                              e.currentTarget.classList.remove("opacity-0");
+                              e.currentTarget.classList.add("opacity-100");
+                            }}
+                            loading="lazy"
                           />
                         ) : (
                           <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
@@ -1349,7 +1359,12 @@ function SameScreenGame() {
                         {filtersSelected[2].filter_image != null ? (
                           <img
                             src={filtersSelected[2].filter_image}
-                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                            onLoad={(e) => {
+                              e.currentTarget.classList.remove("opacity-0");
+                              e.currentTarget.classList.add("opacity-100");
+                            }}
+                            loading="lazy"
                           />
                         ) : (
                           <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
@@ -1384,7 +1399,12 @@ function SameScreenGame() {
                         {filtersSelected[3].filter_image != null ? (
                           <img
                             src={filtersSelected[3].filter_image}
-                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                            onLoad={(e) => {
+                              e.currentTarget.classList.remove("opacity-0");
+                              e.currentTarget.classList.add("opacity-100");
+                            }}
+                            loading="lazy"
                           />
                         ) : (
                           <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
@@ -1509,7 +1529,12 @@ function SameScreenGame() {
                         {filtersSelected[4].filter_image != null ? (
                           <img
                             src={filtersSelected[4].filter_image}
-                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                            onLoad={(e) => {
+                              e.currentTarget.classList.remove("opacity-0");
+                              e.currentTarget.classList.add("opacity-100");
+                            }}
+                            loading="lazy"
                           />
                         ) : (
                           <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
@@ -1634,7 +1659,12 @@ function SameScreenGame() {
                         {filtersSelected[5].filter_image != null ? (
                           <img
                             src={filtersSelected[5].filter_image}
-                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                            onLoad={(e) => {
+                              e.currentTarget.classList.remove("opacity-0");
+                              e.currentTarget.classList.add("opacity-100");
+                            }}
+                            loading="lazy"
                           />
                         ) : (
                           <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">

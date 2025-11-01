@@ -177,11 +177,14 @@ const Menu = () => {
         createdAt: new Date().toISOString(),
       });
 
-      // URL'e ranked bilgisini ekle
-      const rankedParam = currentUser && isRankedRoom ? "&ranked=true" : "";
-      navigate(
-        `/room/${newRoomId}?role=host&name=${finalPlayerName}${rankedParam}`
-      );
+      // State'le navigate et - daha güvenli
+      navigate(`/room/${newRoomId}`, {
+        state: {
+          role: "host",
+          name: finalPlayerName,
+          isRanked: currentUser && isRankedRoom,
+        },
+      });
     } catch (error) {
       toast.error("An error occurred while creating the room!");
       console.error(error);
@@ -222,7 +225,9 @@ const Menu = () => {
         guestJoinMethod: "direct-code", // EKLENDI
       });
 
-      navigate(`/room/${roomCode}?role=guest&name=${finalPlayerName}`);
+      navigate(`/room/${roomCode}`, {
+        state: { role: "guest", name: finalPlayerName },
+      });
     } catch (error) {
       toast.error("An error occurred while joining the room!");
       console.error(error);
@@ -267,7 +272,9 @@ const Menu = () => {
         guestJoinMethod: "random",
       });
 
-      navigate(`/room/${randomRoom.id}?role=guest&name=${finalPlayerName}`);
+      navigate(`/room/${randomRoom.id}`, {
+        state: { role: "guest", name: finalPlayerName },
+      });
       toast.success(`You got matched with ${randomRoom.host}!`);
     } catch (error) {
       toast.error("An error occurred while finding a random match!");
@@ -309,7 +316,9 @@ const Menu = () => {
         guestJoinMethod: "random",
       });
 
-      navigate(`/room/${randomRoom.id}?role=guest&name=${finalPlayerName}`);
+      navigate(`/room/${randomRoom.id}`, {
+        state: { role: "guest", name: finalPlayerName },
+      });
       toast.success(`Ranked match found! Playing against ${randomRoom.host}!`);
     } catch (error) {
       toast.error("An error occurred while finding a ranked match!");
@@ -592,6 +601,11 @@ const Menu = () => {
                       onChange={(e) =>
                         setPlayerName(e.target.value.slice(0, NAME_MAX))
                       }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleRandomMatch();
+                        }
+                      }}
                       maxLength={NAME_MAX}
                       className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
                         theme === "dark"
@@ -655,6 +669,11 @@ const Menu = () => {
                       onChange={(e) =>
                         setPlayerName(e.target.value.slice(0, NAME_MAX))
                       }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleCreateRoom();
+                        }
+                      }}
                       maxLength={NAME_MAX}
                       className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
                         theme === "dark"
@@ -762,6 +781,11 @@ const Menu = () => {
                       onChange={(e) =>
                         setPlayerName(e.target.value.slice(0, NAME_MAX))
                       }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && roomCode) {
+                          handleJoinRoom();
+                        }
+                      }}
                       maxLength={NAME_MAX}
                       className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
                         theme === "dark"
@@ -799,6 +823,11 @@ const Menu = () => {
                   placeholder="Room code"
                   value={roomCode}
                   onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleJoinRoom();
+                    }
+                  }}
                   className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
                     theme === "dark"
                       ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"

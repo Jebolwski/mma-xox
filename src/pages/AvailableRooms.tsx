@@ -104,7 +104,9 @@ const AvailableRooms = () => {
         guest: { now: finalPlayerName },
         guestJoinMethod: "available-rooms", // EKLENDI
       });
-      navigate(`/room/${selectedRoom}?role=guest&name=${finalPlayerName}`);
+      navigate(`/room/${selectedRoom}`, {
+        state: { role: "guest", name: finalPlayerName },
+      });
     } catch (error) {
       toast.error("Failed to join the room!");
     }
@@ -120,7 +122,9 @@ const AvailableRooms = () => {
           guest: { now: finalPlayerName },
           guestJoinMethod: "available-rooms",
         });
-        navigate(`/room/${roomId}?role=guest&name=${finalPlayerName}`);
+        navigate(`/room/${roomId}`, {
+          state: { role: "guest", name: finalPlayerName },
+        });
       } catch (error) {
         toast.error("Failed to join the room!");
       }
@@ -455,6 +459,11 @@ const AvailableRooms = () => {
                 onChange={(e) =>
                   setGuestName(e.target.value.slice(0, NAME_MAX))
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleJoinRoom();
+                  }
+                }}
                 maxLength={NAME_MAX}
                 className={`mb-1 px-4 py-3 rounded-xl border-2 w-full outline-none transition-all duration-200 focus:scale-105 ${
                   theme === "dark"

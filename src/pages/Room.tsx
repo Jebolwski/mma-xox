@@ -1,5 +1,10 @@
 import { useEffect, useContext, useRef, useState } from "react";
-import { useParams, useSearchParams, useNavigate } from "react-router-dom";
+import {
+  useParams,
+  useSearchParams,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { arrayUnion, Timestamp } from "firebase/firestore";
 import {
   collection,
@@ -38,10 +43,17 @@ import { useAuth } from "../context/AuthContext"; // Add this import if you have
 const Room = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // State'ten role, name, isRanked'i al, fallback olarak searchParams'ı kontrol et
+  const stateRole = (location.state as any)?.role;
+  const statePlayerName = (location.state as any)?.name;
+  const stateIsRanked = (location.state as any)?.isRanked;
+
   const [searchParams] = useSearchParams();
-  const role = searchParams.get("role");
-  const playerName = searchParams.get("name");
-  const isRanked = searchParams.get("ranked") === "true"; // EKLENDI
+  const role = stateRole || searchParams.get("role");
+  const playerName = statePlayerName || searchParams.get("name");
+  const isRanked = stateIsRanked ?? searchParams.get("ranked") === "true"; // EKLENDI
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { shouldShowAd, recordAdView } = useAdContext();
   const { currentUser } = useAuth(); // Get currentUser from AuthContext
@@ -2338,7 +2350,12 @@ const Room = () => {
                           null ? (
                             <img
                               src={gameState?.filtersSelected[0].filter_image}
-                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                              onLoad={(e) => {
+                                e.currentTarget.classList.remove("opacity-0");
+                                e.currentTarget.classList.add("opacity-100");
+                              }}
+                              loading="lazy"
                             />
                           ) : (
                             <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
@@ -2375,7 +2392,12 @@ const Room = () => {
                           null ? (
                             <img
                               src={gameState?.filtersSelected[1].filter_image}
-                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                              onLoad={(e) => {
+                                e.currentTarget.classList.remove("opacity-0");
+                                e.currentTarget.classList.add("opacity-100");
+                              }}
+                              loading="lazy"
                             />
                           ) : (
                             <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
@@ -2412,7 +2434,12 @@ const Room = () => {
                           null ? (
                             <img
                               src={gameState?.filtersSelected[2].filter_image}
-                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                              onLoad={(e) => {
+                                e.currentTarget.classList.remove("opacity-0");
+                                e.currentTarget.classList.add("opacity-100");
+                              }}
+                              loading="lazy"
                             />
                           ) : (
                             <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
@@ -2451,7 +2478,12 @@ const Room = () => {
                           null ? (
                             <img
                               src={gameState?.filtersSelected[3].filter_image}
-                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                              onLoad={(e) => {
+                                e.currentTarget.classList.remove("opacity-0");
+                                e.currentTarget.classList.add("opacity-100");
+                              }}
+                              loading="lazy"
                             />
                           ) : (
                             <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
@@ -2577,7 +2609,12 @@ const Room = () => {
                           null ? (
                             <img
                               src={gameState?.filtersSelected[4].filter_image}
-                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                              onLoad={(e) => {
+                                e.currentTarget.classList.remove("opacity-0");
+                                e.currentTarget.classList.add("opacity-100");
+                              }}
+                              loading="lazy"
                             />
                           ) : (
                             <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
@@ -2703,7 +2740,12 @@ const Room = () => {
                           null ? (
                             <img
                               src={gameState?.filtersSelected[5].filter_image}
-                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                              className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
+                              onLoad={(e) => {
+                                e.currentTarget.classList.remove("opacity-0");
+                                e.currentTarget.classList.add("opacity-100");
+                              }}
+                              loading="lazy"
                             />
                           ) : (
                             <h2 className="text-red-500 font-bold xl:text-3xl lg:text-xl text-lg italic">
