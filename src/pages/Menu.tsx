@@ -103,7 +103,8 @@ const Menu = () => {
       subtitle: "Global leaderboard",
       icon: "🌍",
       gradient: "from-indigo-500 to-indigo-600",
-      onClick: () => navigate("/world-ranking"),
+      disabled: !currentUser,
+      onClick: () => (currentUser ? navigate("/world-ranking") : null),
     },
     {
       key: "friends",

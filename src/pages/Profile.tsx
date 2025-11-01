@@ -15,6 +15,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import { ToastContainer, toast } from "react-toastify";
 import return_img from "../assets/return.png";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { updatePassword } from "firebase/auth";
 
 // --- YENİ: Profil veri yapısı arayüzü ---
 interface UserProfile {
@@ -55,6 +56,11 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [tiersOpen, setTiersOpen] = useState(false);
   const [titlesOpen, setTitlesOpen] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordLoading, setPasswordLoading] = useState(false);
 
   // YENİ: Kendi profilimiz mi diye kontrol et
   const isMyProfile = profile ? currentUser?.email === profile.email : false;
@@ -193,6 +199,54 @@ const Profile = () => {
       setTitlesOpen(false);
     } catch (error) {
       toast.error("Failed to update title.");
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (!newPassword || !currentPassword || !confirmPassword) {
+      toast.error("Please fill all password fields!");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords don't match!");
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      toast.error("New password must be at least 6 characters!");
+      return;
+    }
+
+    if (newPassword === currentPassword) {
+      toast.error("New password must be different from current password!");
+      return;
+    }
+
+    setPasswordLoading(true);
+    try {
+      if (!currentUser) {
+        toast.error("Not authenticated!");
+        return;
+      }
+
+      // Şifreyi güncelle
+      await updatePassword(currentUser, newPassword);
+      toast.success("Password changed successfully!");
+      setShowChangePassword(false);
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error: any) {
+      if (error.code === "auth/weak-password") {
+        toast.error("Password is too weak!");
+      } else if (error.code === "auth/wrong-password") {
+        toast.error("Current password is incorrect!");
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setPasswordLoading(false);
     }
   };
 
@@ -381,6 +435,22 @@ const Profile = () => {
               </p>
             </div>
           </div>
+
+          {/* Şifremi Değiştir Butonu - Sadece kendi profilinde göster */}
+          {isMyProfile && (
+            <div className="text-center mb-8">
+              <button
+                onClick={() => setShowChangePassword(true)}
+                className={`px-6 py-2 rounded-lg font-semibold transition-all duration-300 ${
+                  theme === "dark"
+                    ? "bg-slate-700/80 hover:bg-slate-600 text-slate-100 border border-slate-600"
+                    : "bg-slate-200/80 hover:bg-slate-300 text-slate-800 border border-slate-300"
+                } hover:scale-105`}
+              >
+                🔐 Change Password
+              </button>
+            </div>
+          )}
 
           {/* --- GÜNCELLENDİ: Points ve Stats Grid (profile.stats kullanımı) --- */}
           <div className="text-center mb-8">
@@ -693,6 +763,115 @@ const Profile = () => {
           )}
         </div>
       </div>
+
+      {/* Şifre Değiştirme Modal - Sadece kendi profilime bakıyorsam göster */}
+      {showChangePassword && isMyProfile && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-6">
+          <div
+            className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-md transition-all duration-300 ${
+              theme === "dark"
+                ? "bg-slate-800/90 border-slate-600/50 text-slate-100"
+                : "bg-white/90 border-slate-200/50 text-slate-800"
+            }`}
+          >
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Change Password
+            </h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Current Password
+                </label>
+                <input
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                    theme === "dark"
+                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                  }`}
+                  placeholder="••••••••"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                    theme === "dark"
+                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                  }`}
+                  placeholder="••••••••"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !passwordLoading) {
+                      handleChangePassword();
+                    }
+                  }}
+                  className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                    theme === "dark"
+                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                  }`}
+                  placeholder="••••••••"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={() => {
+                    setShowChangePassword(false);
+                    setCurrentPassword("");
+                    setNewPassword("");
+                    setConfirmPassword("");
+                  }}
+                  disabled={passwordLoading}
+                  className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                    passwordLoading
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:scale-105 cursor-pointer"
+                  } ${
+                    theme === "dark"
+                      ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
+                      : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
+                  }`}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleChangePassword}
+                  disabled={passwordLoading}
+                  className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                    passwordLoading
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:scale-105 cursor-pointer hover:shadow-xl"
+                  } bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg`}
+                >
+                  {passwordLoading ? "Updating..." : "Update Password"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

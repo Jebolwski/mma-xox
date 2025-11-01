@@ -4,6 +4,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { toast, ToastContainer } from "react-toastify";
@@ -25,6 +26,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
@@ -101,6 +105,25 @@ const Login = () => {
       toast.error(error.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!resetEmail) {
+      toast.error("Please enter your email!");
+      return;
+    }
+
+    setResetLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, resetEmail);
+      toast.success("Password reset email sent! Check your inbox.");
+      setShowForgotPassword(false);
+      setResetEmail("");
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setResetLoading(false);
     }
   };
 
@@ -218,7 +241,7 @@ const Login = () => {
                   : "hover:scale-105 cursor-pointer hover:shadow-xl"
               } ${
                 isSignUp
-                  ? "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
+                  ? "bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
                   : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
               } text-white shadow-lg`}
             >
@@ -241,6 +264,22 @@ const Login = () => {
             </button>
           </div>
 
+          {/* Şifremi Unuttum Butonu - Sign In modu için */}
+          {!isSignUp && (
+            <div className="mt-4 text-center">
+              <button
+                onClick={() => setShowForgotPassword(true)}
+                className={`text-sm cursor-pointer transition-colors duration-200 ${
+                  theme === "dark"
+                    ? "text-slate-400 hover:text-slate-300"
+                    : "text-slate-600 hover:text-slate-500"
+                }`}
+              >
+                Forgot your password?
+              </button>
+            </div>
+          )}
+
           <div className="mt-8 text-center">
             <button
               onClick={() => navigate("/")}
@@ -255,6 +294,87 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      {/* Şifremi Unuttum Modal */}
+      {showForgotPassword && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-6">
+          <div
+            className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-md transition-all duration-300 ${
+              theme === "dark"
+                ? "bg-slate-800/90 border-slate-600/50 text-slate-100"
+                : "bg-white/90 border-slate-200/50 text-slate-800"
+            }`}
+          >
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Reset Password
+            </h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Enter your email address
+                </label>
+                <input
+                  type="email"
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !resetLoading) {
+                      handleForgotPassword();
+                    }
+                  }}
+                  className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                    theme === "dark"
+                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                  }`}
+                  placeholder="your@email.com"
+                />
+              </div>
+
+              <p
+                className={`text-sm ${
+                  theme === "dark" ? "text-slate-400" : "text-slate-600"
+                }`}
+              >
+                We'll send you an email with a link to reset your password.
+              </p>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={() => {
+                    setShowForgotPassword(false);
+                    setResetEmail("");
+                  }}
+                  disabled={resetLoading}
+                  className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                    resetLoading
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:scale-105 cursor-pointer"
+                  } ${
+                    theme === "dark"
+                      ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
+                      : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
+                  }`}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleForgotPassword}
+                  disabled={resetLoading}
+                  className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                    resetLoading
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:scale-105 cursor-pointer hover:shadow-xl"
+                  } bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg`}
+                >
+                  {resetLoading ? "Sending..." : "Send Reset Link"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

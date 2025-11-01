@@ -15,6 +15,7 @@ import SameScreenGame from "./pages/SameScreenGame";
 import Room from "./pages/Room";
 import AvailableRooms from "./pages/AvailableRooms";
 import Profile from "./pages/Profile"; // EKLENDI
+import ResetPassword from "./pages/ResetPassword";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AdProvider } from "./context/AdContext";
 import { AuthProvider } from "./context/AuthContext"; // EKLENDI
@@ -52,6 +53,10 @@ function App() {
               <Route
                 path="/login"
                 element={<Login />}
+              />
+              <Route
+                path="/reset-password"
+                element={<ResetPassword />}
               />
               <Route
                 path="/menu"
