@@ -299,7 +299,7 @@ const Login = () => {
       {showForgotPassword && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-6">
           <div
-            className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-md transition-all duration-300 ${
+            className={`p-8 rounded-2xl shadow-2xl shadow-indigo-900/50 border backdrop-blur-md w-full max-w-md transition-all duration-300 ${
               theme === "dark"
                 ? "bg-slate-800/90 border-slate-600/50 text-slate-100"
                 : "bg-white/90 border-slate-200/50 text-slate-800"
