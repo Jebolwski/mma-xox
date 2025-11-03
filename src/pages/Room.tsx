@@ -275,12 +275,14 @@ const Room = () => {
         return updatedPositions;
       };
 
-      if (updatedData.positionsFighters) {
+      if (
+        updatedData.positionsFighters &&
+        Object.keys(updatedData.positionsFighters).length > 0
+      ) {
         setPositionsFighters(
           getFightersByPositions(updatedData.positionsFighters)
         );
       }
-      console.log(updatedData);
 
       if (updatedData.fighter00) setFighter00(updatedData.fighter00);
       if (updatedData.fighter01) setFighter01(updatedData.fighter01);
@@ -347,6 +349,8 @@ const Room = () => {
           turn: "red",
           gameStarted: false,
           filtersSelected: [],
+          timerLength: isRanked ? "30" : "-2",
+          difficulty: isRanked ? "MEDIUM" : "MEDIUM",
           createdAt: serverTimestamp(),
           lastActivityAt: serverTimestamp(),
           expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
@@ -579,11 +583,13 @@ const Room = () => {
         const roomRef = doc(db, "rooms", roomId);
         if (timerLength != "-2") {
           if (gameState.timerLength <= 0) {
+            // Timer 0'a ulaştıysa: timer'ı reset et ve turn'ü değiştir
             updateDoc(roomRef, {
-              timerLength: timerLength,
+              timerLength: parseInt(timerLength) || 30, // Timer'ı orijinal değerine reset et
               turn: gameState.turn == "red" ? "blue" : "red",
             });
           } else {
+            // Henüz zamanı varsa: timer'ı 1 saniye azalt
             updateDoc(roomRef, {
               timerLength: gameState.timerLength - 1,
             });
@@ -613,13 +619,27 @@ const Room = () => {
       // Önceki değer dolu iken şimdiki değer null ise -> Biri ayrıldı
       else if (prevGuestNow.current !== null && currentGuestNow === null) {
         toast.info(`${prevGuestNow.current} left the game!`);
+
+        // Guest çıkınca oyun ve ready state'lerini reset et
+        const resetGame = async () => {
+          const roomRef = doc(db, "rooms", roomId!);
+          await updateDoc(roomRef, {
+            gameStarted: false,
+            positionsFighters: {},
+            hostReady: false,
+            guestReady: false,
+            lastActivityAt: serverTimestamp(),
+            expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
+          });
+        };
+        resetGame();
       }
 
       // Bir sonraki çalıştırma için mevcut değeri "önceki değer" olarak ata
       prevGuestNow.current = currentGuestNow;
     }
     // Bağımlılığı sadece guest.now'a indirge
-  }, [gameState?.guest?.now, role]);
+  }, [gameState?.guest?.now, role, roomId]);
 
   useEffect(() => {
     if (
@@ -858,12 +878,21 @@ const Room = () => {
   };
 
   const resetTimerFirestore = async () => {
-    if (!roomId) return;
+    if (!roomId || !gameState) return;
 
+    // gameState'teki currentTimer değerini orijinal timer değerine resetle
+    // Örnek: Timer 45 saniye olarak set edilmişse, hep 45'e geri dön
     const roomRef = doc(db, "rooms", roomId);
 
+    // Oyun başlarken kaydedilen orijinal timerLength'i bul
+    // gameState.originalTimerLength varsa onu, yoksa gameState'i okunacak başlangıç değeri al
+    // En basit: user "30", "45", "60" seçti, oyun başlarken kaydedildi, o değer hep reset olmalı
+    // Bunu bilmek için başlangıçtaki timerLength'i roomData'dan oku
+    const roomDoc = await getDoc(roomRef);
+    const originalTimer = roomDoc.data()?.timer || 30;
+
     await updateDoc(roomRef, {
-      timerLength: timerLength,
+      timerLength: originalTimer,
       lastActivityAt: serverTimestamp(),
       expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
     });
@@ -1995,23 +2024,21 @@ const Room = () => {
                       ? gameState.host
                       : gameState.guest.now}
                   </p>
-                  <div
-                    onClick={() => {
-                      if (role == "host") {
+                  {role == "host" && (
+                    <div
+                      onClick={() => {
                         switchTurn();
                         resetTimerFirestore();
-                      } else {
-                        toast.error("Its not your turn!");
-                      }
-                    }}
-                    className={`${
-                      theme === "dark"
-                        ? "bg-slate-500 border-slate-700 text-slate-200"
-                        : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
-                    } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
-                  >
-                    Skip
-                  </div>
+                      }}
+                      className={`${
+                        theme === "dark"
+                          ? "bg-slate-500 border-slate-700 text-slate-200"
+                          : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
+                      } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border hover:opacity-80 transition-opacity`}
+                    >
+                      Skip
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div
@@ -2027,23 +2054,21 @@ const Room = () => {
                       ? gameState.host
                       : gameState.guest.now}
                   </p>
-                  <div
-                    onClick={() => {
-                      if (role == "guest") {
+                  {role == "guest" && (
+                    <div
+                      onClick={() => {
                         switchTurn();
                         resetTimerFirestore();
-                      } else {
-                        toast.error("Its not your turn!");
-                      }
-                    }}
-                    className={`${
-                      theme === "dark"
-                        ? "bg-slate-500 border-slate-700 text-slate-200"
-                        : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
-                    } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
-                  >
-                    Skip
-                  </div>
+                      }}
+                      className={`${
+                        theme === "dark"
+                          ? "bg-slate-500 border-slate-700 text-slate-200"
+                          : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
+                      } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border hover:opacity-80 transition-opacity`}
+                    >
+                      Skip
+                    </div>
+                  )}
                 </div>
               )}
             </div>
