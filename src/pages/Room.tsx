@@ -428,6 +428,29 @@ const Room = () => {
     }
   }, [gameState, role, playerName, roomId, hasExited, currentUser]); // currentUser'ı dependency'lere de ekle
 
+  // EKLEME: Eğer guest join etti ama guestEmail null kaldıysa, currentUser yüklenince güncelle
+  useEffect(() => {
+    if (
+      role === "guest" &&
+      gameState?.guest.now &&
+      !gameState?.guestEmail &&
+      currentUser?.email &&
+      roomId
+    ) {
+      const roomRef = doc(db, "rooms", roomId);
+      updateDoc(roomRef, {
+        guestEmail: currentUser.email,
+      });
+      console.log("✅ Guest email updated:", currentUser.email);
+    }
+  }, [
+    gameState?.guest.now,
+    gameState?.guestEmail,
+    currentUser?.email,
+    roomId,
+    role,
+  ]);
+
   useEffect(() => {
     if (
       gameState?.isRankedRoom &&
@@ -446,8 +469,7 @@ const Room = () => {
       }
 
       setDifficulty("MEDIUM");
-      setTimerLength("30");
-      startGame();
+      startGame("30");
       toast.success("🏆 Both players ready! Starting ranked match...");
     }
   }, [
@@ -726,60 +748,71 @@ const Room = () => {
   }, [theme]);
 
   const updatePlayerStats = async (winner: "red" | "blue" | "draw") => {
+    console.log("🎮 updatePlayerStats called with winner:", winner);
+    console.log("🎮 gameState?.isRankedRoom:", gameState?.isRankedRoom);
+    console.log("🎮 role:", role, "currentUser?.email:", currentUser?.email);
+
     if (!gameState?.isRankedRoom) {
-      console.log("This is a casual match, stats will not be updated.");
+      console.log("❌ This is a casual match, stats will not be updated.");
       return;
     }
 
     const hostEmail = gameState.hostEmail;
     const guestEmail = gameState.guestEmail;
 
+    console.log(
+      "✅ Ranked match detected. Host:",
+      hostEmail,
+      "Guest:",
+      guestEmail
+    );
+
     if (!hostEmail || !guestEmail) {
-      console.error("Host or guest email is missing for ranked match.");
+      console.error("❌ Host or guest email is missing for ranked match.");
       return;
     }
 
-    const hostRef = doc(db, "users", hostEmail);
-    const guestRef = doc(db, "users", guestEmail);
+    // 🔑 Current user'ın kim olduğunu belirle
+    const isHost = currentUser?.email === hostEmail;
+    const isGuest = currentUser?.email === guestEmail;
+
+    if (!isHost && !isGuest) {
+      console.error("❌ Current user is neither host nor guest.");
+      return;
+    }
 
     const hostIsWinner = winner === "red";
     const guestIsWinner = winner === "blue";
 
     try {
-      // Her iki kullanıcıyı da tek bir transaction içinde güncelle
-      await runTransaction(db, async (transaction) => {
-        const hostDoc = await transaction.get(hostRef);
-        const guestDoc = await transaction.get(guestRef);
+      if (isHost) {
+        // 🏠 HOST: Sadece kendi stats'ını güncelle
+        const hostRef = doc(db, "users", hostEmail);
+        const hostDoc = await getDoc(hostRef);
 
-        if (!hostDoc.exists() || !guestDoc.exists()) {
-          throw "One of the user profiles could not be found.";
+        if (!hostDoc.exists()) {
+          throw "Host profile could not be found.";
         }
 
         const hostProfile = hostDoc.data();
-        const guestProfile = guestDoc.data();
-
-        // --- HOST GÜNCELLEMELERİ ---
         const hostNewAchievements = { ...hostProfile.achievements };
         const hostNewUnlockedTitles = [];
-        let hostAchievementUnlocked = false;
 
         if (hostIsWinner) {
-          // Başarım: İlk Galibiyet
           if (!hostProfile.achievements.firstWin) {
             hostNewAchievements.firstWin = new Date().toISOString();
             hostNewUnlockedTitles.push("First Blood");
-            hostAchievementUnlocked = true;
+            toast.success("🏆 New achievement unlocked! First Blood");
           }
-          // Başarım: 10 Galibiyet
           const newWinCount = (hostProfile.stats.wins || 0) + 1;
           if (newWinCount >= 10 && !hostProfile.achievements.tenWins) {
             hostNewAchievements.tenWins = new Date().toISOString();
             hostNewUnlockedTitles.push("Arena Master");
-            hostAchievementUnlocked = true;
+            toast.success("🏆 New achievement unlocked! Arena Master");
           }
         }
 
-        transaction.update(hostRef, {
+        await updateDoc(hostRef, {
           "stats.points": increment(
             hostIsWinner ? 15 : winner === "draw" ? 2 : -5
           ),
@@ -788,32 +821,39 @@ const Room = () => {
           "stats.draws": increment(winner === "draw" ? 1 : 0),
           "stats.totalGames": increment(1),
           achievements: hostNewAchievements,
-          // arrayUnion ile tekrar eden unvan eklemeyi önle
           unlockedTitles: arrayUnion(...hostNewUnlockedTitles),
         });
 
-        // --- GUEST GÜNCELLEMELERİ ---
+        console.log("✅ Host stats updated successfully!");
+        toast.success("🏆 Ranked match completed! Stats updated.");
+      } else if (isGuest) {
+        // 👥 GUEST: Sadece kendi stats'ını güncelle
+        const guestRef = doc(db, "users", guestEmail);
+        const guestDoc = await getDoc(guestRef);
+
+        if (!guestDoc.exists()) {
+          throw "Guest profile could not be found.";
+        }
+
+        const guestProfile = guestDoc.data();
         const guestNewAchievements = { ...guestProfile.achievements };
         const guestNewUnlockedTitles = [];
-        let guestAchievementUnlocked = false;
 
         if (guestIsWinner) {
-          // Başarım: İlk Galibiyet
           if (!guestProfile.achievements.firstWin) {
             guestNewAchievements.firstWin = new Date().toISOString();
             guestNewUnlockedTitles.push("First Blood");
-            guestAchievementUnlocked = true;
+            toast.success("🏆 New achievement unlocked! First Blood");
           }
-          // Başarım: 10 Galibiyet
           const newWinCount = (guestProfile.stats.wins || 0) + 1;
           if (newWinCount >= 10 && !guestProfile.achievements.tenWins) {
             guestNewAchievements.tenWins = new Date().toISOString();
             guestNewUnlockedTitles.push("Arena Master");
-            guestAchievementUnlocked = true;
+            toast.success("🏆 New achievement unlocked! Arena Master");
           }
         }
 
-        transaction.update(guestRef, {
+        await updateDoc(guestRef, {
           "stats.points": increment(
             guestIsWinner ? 15 : winner === "draw" ? 2 : -5
           ),
@@ -825,21 +865,11 @@ const Room = () => {
           unlockedTitles: arrayUnion(...guestNewUnlockedTitles),
         });
 
-        // Başarım kazanıldıysa toast mesajı göster
-        const playerIsHost = currentUser?.email === hostEmail;
-        if (
-          (playerIsHost && hostAchievementUnlocked) ||
-          (!playerIsHost && guestAchievementUnlocked)
-        ) {
-          toast.success("🏆 New achievement unlocked!");
-        }
-      });
-
-      toast.success("🏆 Ranked match completed! Stats updated.");
-      // Win rate'leri transaction sonrası ayrıca güncelle
-      await updateWinRates(hostEmail, guestEmail);
+        console.log("✅ Guest stats updated successfully!");
+        toast.success("🏆 Ranked match completed! Stats updated.");
+      }
     } catch (error) {
-      console.error("Failed to update player stats in transaction:", error);
+      console.error("❌ Failed to update player stats:", error);
       toast.error("Failed to update player stats.");
     }
   };
@@ -910,7 +940,7 @@ const Room = () => {
     });
   };
 
-  const startGame = async () => {
+  const startGame = async (customTimerLength?: string) => {
     if (!roomId) return;
 
     const roomRef = doc(db, "rooms", roomId);
@@ -942,10 +972,12 @@ const Room = () => {
     setGameStarted(true);
 
     // ✅ FIRESTORE'A DA YAZALIM
+    // customTimerLength varsa onu kullan (ranked maçta), yoksa state'i kullan
+    const finalTimerLength = customTimerLength || timerLength;
     await updateDoc(roomRef, {
       gameStarted: true,
       difficulty: difficulty,
-      timerLength: timerLength,
+      timerLength: finalTimerLength,
       lastActivityAt: serverTimestamp(),
       expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
     });
