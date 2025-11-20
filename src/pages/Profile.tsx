@@ -739,7 +739,19 @@ const Profile = () => {
                 }`}
                 onClick={(e) => e.stopPropagation()}
               >
-                <h3 className="text-xl font-bold mb-4">Select a Title</h3>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-xl font-bold">Select a Title</h3>
+                  <button
+                    onClick={() => setTitlesOpen(false)}
+                    className={`px-2 py-1 rounded-lg font-semibold text-sm cursor-pointer transition ${
+                      theme === "dark"
+                        ? "bg-slate-700 hover:bg-slate-600 text-slate-200"
+                        : "bg-slate-200 hover:bg-slate-300 text-slate-800"
+                    }`}
+                  >
+                    ✕
+                  </button>
+                </div>
                 <div className="flex flex-col gap-2 max-h-60 overflow-y-auto">
                   {profile.unlockedTitles.map((title) => (
                     <button

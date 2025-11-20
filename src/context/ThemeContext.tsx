@@ -5,7 +5,7 @@ export const ThemeContext = createContext({
   toggleTheme: () => {},
 });
 
-export const ThemeProvider = ({ children }: any) => {
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState("dark");
 
   // Sayfa yüklendiğinde localStorage'dan tema bilgisi alınır

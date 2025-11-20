@@ -254,7 +254,7 @@ const Room = () => {
 
       //firestore'daki sadece idli olan fightersPositions'ı fighters_url'den alan fonksiyon
       const getFightersByPositions = (positionsFighters: any) => {
-        let updatedPositions: any = {};
+        const updatedPositions: any = {};
 
         // Her bir pozisyon için
         Object.keys(positionsFighters).forEach((position) => {
@@ -501,7 +501,7 @@ const Room = () => {
           ({ filter_fighters, ...rest }: any) => rest
         );
 
-        let updatedDataPositionFighters: any = {};
+        const updatedDataPositionFighters: any = {};
         updatedDataPositionFighters.position03 = (
           newPositions.position03 || []
         ).map((fighter: Fighter) => fighter.Id);
@@ -960,7 +960,7 @@ const Room = () => {
       }
     }
 
-    let f: FilterDifficulty = Filters();
+    const f: FilterDifficulty = Filters();
 
     if (difficulty == "EASY") {
       setFilters(f.easy);
@@ -1085,9 +1085,9 @@ const Room = () => {
 
     while (!isDone && finish < 1500) {
       finish += 1;
-      let filters_arr: any = [];
+      const filters_arr: any = [];
       while (filters_arr.length < 6) {
-        let random_index = Math.floor(Math.random() * activeFilters.length);
+        const random_index = Math.floor(Math.random() * activeFilters.length);
         if (!filters_arr.includes(activeFilters[random_index])) {
           filters_arr.push(activeFilters[random_index]);
         }
@@ -1100,7 +1100,7 @@ const Room = () => {
         continue;
       }
 
-      let newPositions: any = {
+      const newPositions: any = {
         position03: [],
         position04: [],
         position05: [],
@@ -1118,13 +1118,13 @@ const Room = () => {
         const b4 = filters_arr[4]?.filter_fighters || [];
         const b5 = filters_arr[5]?.filter_fighters || [];
 
-        let intersection3 = a.filter((fighter1: Fighter) =>
+        const intersection3 = a.filter((fighter1: Fighter) =>
           b3.some((fighter2: Fighter) => fighter1.Id === fighter2.Id)
         );
-        let intersection4 = a.filter((fighter1: Fighter) =>
+        const intersection4 = a.filter((fighter1: Fighter) =>
           b4.some((fighter2: Fighter) => fighter1.Id === fighter2.Id)
         );
-        let intersection5 = a.filter((fighter1: Fighter) =>
+        const intersection5 = a.filter((fighter1: Fighter) =>
           b5.some((fighter2: Fighter) => fighter1.Id === fighter2.Id)
         );
 
@@ -1171,7 +1171,7 @@ const Room = () => {
 
   const filterByName = (name: string) => {
     if (name.length > 3) {
-      let filteredFighters = fighters_url.filter((fighter) => {
+      const filteredFighters = fighters_url.filter((fighter) => {
         return fighter.Fighter.toLowerCase().includes(name.toLowerCase());
       });
       setFighters(filteredFighters);
@@ -1186,7 +1186,7 @@ const Room = () => {
       toast.error("Its your opponents turn!");
       return;
     }
-    let div = document.querySelector(".select-fighter");
+    const div = document.querySelector(".select-fighter");
     div?.classList.toggle("hidden");
   };
 
@@ -1316,11 +1316,11 @@ const Room = () => {
   };
 
   const updateBox = async (fighter: Fighter) => {
-    let picture =
+    const picture =
       fighter.Picture === "Unknown"
         ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
         : fighter.Picture;
-    let name = fighter.Fighter;
+    const name = fighter.Fighter;
 
     if (role == "host" && gameState.turn == "blue") {
       toast.error("Its your opponents turn!");
@@ -1406,7 +1406,7 @@ const Room = () => {
   };
 
   const resetInput = () => {
-    let input: any = document.querySelector(".input-fighter");
+    const input: any = document.querySelector(".input-fighter");
     input.value = "";
   };
 
@@ -1479,7 +1479,7 @@ const Room = () => {
     ];
 
     // 🎯 Kazanan var mı kontrol et
-    for (let pattern of winPatterns) {
+    for (const pattern of winPatterns) {
       const [a, b, c] = pattern;
       const cellA = board[a[0]][a[1]];
       const cellB = board[b[0]][b[1]];

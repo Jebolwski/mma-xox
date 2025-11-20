@@ -256,7 +256,7 @@ function SameScreenGame() {
 
   const filterByName = (name: string) => {
     if (name.length > 3) {
-      let fighters = fighters_url.filter((fighter) => {
+      const fighters = fighters_url.filter((fighter) => {
         return fighter.Fighter.toLowerCase().includes(name);
       });
       setFigters(fighters);
@@ -264,16 +264,16 @@ function SameScreenGame() {
   };
 
   const resetInput = () => {
-    let input: any = document.querySelector(".input-fighter");
+    const input: any = document.querySelector(".input-fighter");
     input.value = "";
   };
 
   const updateBox = (fighter: Fighter, selectedParam: string | null) => {
-    let picture =
+    const picture =
       fighter.Picture === "Unknown"
         ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
         : fighter.Picture;
-    let name = fighter.Fighter;
+    const name = fighter.Fighter;
 
     const fighterMap: { [key: string]: keyof typeof positionsFighters } = {
       fighter00: "position03",
@@ -336,7 +336,7 @@ function SameScreenGame() {
   };
 
   const startGame = () => {
-    let f: FilterDifficulty = Filters();
+    const f: FilterDifficulty = Filters();
 
     setTimer(timerLength);
     if (difficulty == "EASY") {
@@ -351,10 +351,10 @@ function SameScreenGame() {
   };
 
   const getFilters = () => {
-    let filters_arr: any = [];
+    const filters_arr: any = [];
 
     while (filters_arr.length < 6) {
-      let random_index = Math.floor(Math.random() * filters.length);
+      const random_index = Math.floor(Math.random() * filters.length);
       if (!filters_arr.includes(filters[random_index])) {
         filters_arr.push(filters[random_index]);
       }
@@ -370,9 +370,9 @@ function SameScreenGame() {
 
     while (!isDone && finish < 1500) {
       finish += 1;
-      let filters_arr: any = [];
+      const filters_arr: any = [];
       while (filters_arr.length < 6) {
-        let random_index = Math.floor(Math.random() * filters.length);
+        const random_index = Math.floor(Math.random() * filters.length);
         if (!filters_arr.includes(filters[random_index])) {
           filters_arr.push(filters[random_index]);
         }
@@ -385,24 +385,24 @@ function SameScreenGame() {
         continue;
       }
 
-      let newPositions = { ...positionsFighters }; // Yeni state nesnesi oluştur
+      const newPositions = { ...positionsFighters }; // Yeni state nesnesi oluştur
 
       for (let i = 0; i < 3; i++) {
-        let intersection3 =
+        const intersection3 =
           filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
             filters_arr[3]?.filter_fighters?.some(
               (fighter2: Fighter) => fighter1.Id === fighter2.Id
             )
           ) || [];
 
-        let intersection4 =
+        const intersection4 =
           filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
             filters_arr[4]?.filter_fighters?.some(
               (fighter2: Fighter) => fighter1.Id === fighter2.Id
             )
           ) || [];
 
-        let intersection5 =
+        const intersection5 =
           filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
             filters_arr[5]?.filter_fighters?.some(
               (fighter2: Fighter) => fighter1.Id === fighter2.Id
@@ -502,7 +502,7 @@ function SameScreenGame() {
     ];
 
     // 🎯 Kazanan var mı kontrol et
-    for (let pattern of winPatterns) {
+    for (const pattern of winPatterns) {
       const [a, b, c] = pattern;
       const cellA = board[a[0]][a[1]];
       const cellB = board[b[0]][b[1]];
@@ -537,7 +537,7 @@ function SameScreenGame() {
   const toggleFighterPick = () => {
     if (selected) {
     }
-    let div = document.querySelector(".select-fighter");
+    const div = document.querySelector(".select-fighter");
     div?.classList.toggle("hidden");
   };
 
@@ -724,7 +724,7 @@ function SameScreenGame() {
   };
 
   const makeAIMove = () => {
-    let winna = checkWinner();
+    const winna = checkWinner();
     if (winna != null) return;
 
     // Akıllı hamle seç

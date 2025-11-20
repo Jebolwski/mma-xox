@@ -13,7 +13,7 @@ export interface Fighter {
     HeightCms: string;
     Losses: string;
     ReachCms: string;
-    WeightLbs: any;
+    WeightLbs: string;
     Age: string;
     CurrentWinStreak: string;
     CurrentLoseStreak: string;
