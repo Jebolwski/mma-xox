@@ -14,8 +14,8 @@ const AdBanner = ({ adSlot, style, className }: AdBannerProps) => {
     if (window) {
       try {
         // Google Ads scripti yüklenmişse reklamı tekrar yükle
-        // @ts-expect-error - Google Ads script injection
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+        (window as any).adsbygoogle.push({});
       } catch {
         // ignore
       }
