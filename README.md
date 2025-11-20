@@ -1,5 +1,7 @@
 # MMA XOX - Online Game
 
+[![CI/CD Pipeline](https://github.com/Jebolwski/mma-xox/actions/workflows/ci.yml/badge.svg)](https://github.com/Jebolwski/mma-xox/actions/workflows/ci.yml)
+
 MMA temalı XOX (Tic-Tac-Toe) oyunu. Firebase ile gerçek zamanlı çok oyunculu oyun deneyimi.
 
 ## 🎮 Özellikler

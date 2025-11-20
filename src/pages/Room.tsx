@@ -874,7 +874,8 @@ const Room = () => {
     }
   };
 
-  // Win rate güncelleme fonksiyonu
+  // Win rate güncelleme fonksiyonu (future use)
+  // @ts-expect-error - Future implementation
   const updateWinRates = async (hostEmail: string, guestEmail: string) => {
     try {
       const hostDoc = await getDoc(doc(db, "users", hostEmail));
