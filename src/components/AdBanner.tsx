@@ -14,9 +14,10 @@ const AdBanner = ({ adSlot, style, className }: AdBannerProps) => {
     if (window) {
       try {
         // Google Ads scripti yüklenmişse reklamı tekrar yükle
-        const win = window as Record<string, unknown>;
-        win.adsbygoogle = (win.adsbygoogle as unknown[]) || [];
-        (win.adsbygoogle as unknown[]).push({});
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const win = window as any;
+        win.adsbygoogle = win.adsbygoogle || [];
+        win.adsbygoogle.push({});
       } catch {
         // ignore
       }
