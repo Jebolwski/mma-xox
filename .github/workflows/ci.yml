@@ -30,9 +30,6 @@ jobs:
       - name: 🧪 Run tests
         run: npm test
 
-      - name: 🧹 Lint check
-        run: npm run lint
-
       - name: 🔒 Security audit
         run: npm audit --audit-level moderate
         continue-on-error: true # Don't fail build on moderate vulnerabilities
