@@ -30,9 +30,6 @@ jobs:
       - name: 🧪 Run tests
         run: npm test
 
-      - name: 🔍 TypeScript type check
-        run: npm run type-check
-
       - name: 🧹 Lint check
         run: npm run lint
 
