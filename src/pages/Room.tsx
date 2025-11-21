@@ -33,7 +33,6 @@ import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ThemeContext } from "../context/ThemeContext";
 import { useAdContext } from "../context/AdContext";
-import AdBanner from "../components/AdBanner";
 import Confetti from "react-confetti";
 import { getDoc, increment } from "firebase/firestore";
 import { useWindowSize } from "react-use";
@@ -1804,17 +1803,6 @@ const Room = () => {
               >
                 Draw! 🤝
               </p>
-            )}
-
-            {/* Oyun sonu reklamı */}
-            {shouldShowAd() && (
-              <div className="mt-4">
-                <AdBanner
-                  adSlot="0987654321"
-                  className="w-full"
-                  style={{ height: "250px" }}
-                />
-              </div>
             )}
 
             {/* CASUAL MAÇLAR - Sadece host Play Again görsün */}
