@@ -1363,7 +1363,7 @@ const Room = () => {
           ? "from-red-800 to-red-900"
           : "from-blue-800 to-blue-900";
 
-      const setterMap: { [key: string]: Function } = {
+      const setterMap: { [key: string]: (value: Fighter | null) => void } = {
         fighter00: setFighter00,
         fighter01: setFighter01,
         fighter02: setFighter02,
