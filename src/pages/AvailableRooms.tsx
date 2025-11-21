@@ -55,9 +55,9 @@ const AvailableRooms = () => {
     const unsub = onSnapshot(
       q,
       (snap) => {
-        const list: any[] = [];
+        const list: Record<string, unknown>[] = [];
         snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
-        setRooms(list as any);
+        setRooms(list as never[]);
         setLoading(false);
       },
       (err) => {
@@ -107,7 +107,7 @@ const AvailableRooms = () => {
       navigate(`/room/${selectedRoom}`, {
         state: { role: "guest", name: finalPlayerName },
       });
-    } catch (error) {
+    } catch {
       toast.error("Failed to join the room!");
     }
   };
@@ -125,7 +125,7 @@ const AvailableRooms = () => {
         navigate(`/room/${roomId}`, {
           state: { role: "guest", name: finalPlayerName },
         });
-      } catch (error) {
+      } catch {
         toast.error("Failed to join the room!");
       }
     } else {
