@@ -26,6 +26,7 @@ firebase deploy --only firestore:rules
 ## Adım 4: Doğrula
 
 Firebase Console:
+
 1. Firestore Database → Rules tab
 2. Rules yüklü olduğunu ve herhangi hata olmadığını kontrol et
 
@@ -43,6 +44,7 @@ match /{document=**} {
 ```
 
 Yeni rules deploy etmeden **önce**:
+
 - [ ] Tüm user email'leri doğrula
 - [ ] Test kullanıcılarla test et
 - [ ] Backup al
@@ -58,60 +60,62 @@ npm install firebase-admin firebase-functions
 ```
 
 **functions/src/index.ts:**
+
 ```typescript
-import * as functions from 'firebase-functions';
-import * as admin from 'firebase-admin';
+import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
 
 admin.initializeApp();
 
 export const updatePlayerStatsOnGameEnd = functions.firestore
-  .document('rooms/{roomId}')
+  .document("rooms/{roomId}")
   .onUpdate(async (change, context) => {
     const before = change.before.data();
     const after = change.after.data();
-    
+
     // Sadece winner set edildiyse
     if (!before.winner && after.winner) {
       const { hostEmail, guestEmail, winner } = after;
-      
+
       const hostRef = admin.firestore().doc(`users/${hostEmail}`);
       const guestRef = admin.firestore().doc(`users/${guestEmail}`);
-      
+
       const batch = admin.firestore().batch();
-      
-      if (winner === 'red') {
+
+      if (winner === "red") {
         batch.update(hostRef, {
-          'stats.wins': admin.firestore.FieldValue.increment(1),
-          'stats.points': admin.firestore.FieldValue.increment(50),
+          "stats.wins": admin.firestore.FieldValue.increment(1),
+          "stats.points": admin.firestore.FieldValue.increment(50),
         });
         batch.update(guestRef, {
-          'stats.losses': admin.firestore.FieldValue.increment(1),
-          'stats.points': admin.firestore.FieldValue.increment(-10),
+          "stats.losses": admin.firestore.FieldValue.increment(1),
+          "stats.points": admin.firestore.FieldValue.increment(-10),
         });
-      } else if (winner === 'blue') {
+      } else if (winner === "blue") {
         batch.update(hostRef, {
-          'stats.losses': admin.firestore.FieldValue.increment(1),
-          'stats.points': admin.firestore.FieldValue.increment(-10),
+          "stats.losses": admin.firestore.FieldValue.increment(1),
+          "stats.points": admin.firestore.FieldValue.increment(-10),
         });
         batch.update(guestRef, {
-          'stats.wins': admin.firestore.FieldValue.increment(1),
-          'stats.points': admin.firestore.FieldValue.increment(50),
+          "stats.wins": admin.firestore.FieldValue.increment(1),
+          "stats.points": admin.firestore.FieldValue.increment(50),
         });
-      } else if (winner === 'draw') {
+      } else if (winner === "draw") {
         batch.update(hostRef, {
-          'stats.draws': admin.firestore.FieldValue.increment(1),
+          "stats.draws": admin.firestore.FieldValue.increment(1),
         });
         batch.update(guestRef, {
-          'stats.draws': admin.firestore.FieldValue.increment(1),
+          "stats.draws": admin.firestore.FieldValue.increment(1),
         });
       }
-      
+
       await batch.commit();
     }
   });
 ```
 
 Deploy:
+
 ```bash
 firebase deploy --only functions
 ```

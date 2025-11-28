@@ -599,7 +599,9 @@ const Menu = () => {
                       placeholder="Your name"
                       value={playerName}
                       onChange={(e) =>
-                        setPlayerName(sanitizePlayerName(e.target.value).slice(0, NAME_MAX))
+                        setPlayerName(
+                          sanitizePlayerName(e.target.value).slice(0, NAME_MAX)
+                        )
                       }
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
@@ -667,7 +669,9 @@ const Menu = () => {
                       placeholder="Your name"
                       value={playerName}
                       onChange={(e) =>
-                        setPlayerName(sanitizePlayerName(e.target.value).slice(0, NAME_MAX))
+                        setPlayerName(
+                          sanitizePlayerName(e.target.value).slice(0, NAME_MAX)
+                        )
                       }
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
@@ -701,7 +705,8 @@ const Menu = () => {
                     }`}
                   >
                     <span className="text-sm">
-                      Creating room as: <strong>{sanitizePlayerName(getPlayerName())}</strong>
+                      Creating room as:{" "}
+                      <strong>{sanitizePlayerName(getPlayerName())}</strong>
                     </span>
                   </div>
                 )}
@@ -779,7 +784,9 @@ const Menu = () => {
                       placeholder="Your name"
                       value={playerName}
                       onChange={(e) =>
-                        setPlayerName(sanitizePlayerName(e.target.value).slice(0, NAME_MAX))
+                        setPlayerName(
+                          sanitizePlayerName(e.target.value).slice(0, NAME_MAX)
+                        )
                       }
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && roomCode) {
@@ -813,7 +820,8 @@ const Menu = () => {
                     }`}
                   >
                     <span className="text-sm">
-                      Joining as: <strong>{sanitizePlayerName(getPlayerName())}</strong>
+                      Joining as:{" "}
+                      <strong>{sanitizePlayerName(getPlayerName())}</strong>
                     </span>
                   </div>
                 )}

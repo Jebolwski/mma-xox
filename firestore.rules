@@ -1,32 +1,17 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // ==========================================
-    // HELPER FUNCTIONS
-    // ==========================================
-    
-    function isSignedIn() { 
-      return request.auth != null; 
-    }
-    
-    function email() { 
-      return isSignedIn() ? request.auth.token.email : null; 
-    }
-    
+    function isSignedIn() { return request.auth != null; }
+    function email() { return isSignedIn() ? request.auth.token.email : null; }
     function olderThanMinutes(ts, minutes) {
-      return ts != null && ts < request.time - duration.value(minutes, 'm');
-    }
-    
+  		return ts != null && ts < request.time - duration.value(minutes, 'm');
+		}
     function isOwner() {
       return isSignedIn() &&
              resource.data.hostEmail != null &&
              email() == resource.data.hostEmail;
     }
 
-    // ==========================================
-    // ROOMS
-    // ==========================================
-    
     match /rooms/{roomId} {
       // READ
       allow read: if resource.data.isRankedRoom == false || isSignedIn();
@@ -37,13 +22,12 @@ service cloud.firestore {
         (isSignedIn() && request.resource.data.isRankedRoom == true)
       );
 
-      // UPDATE
+      // UPDATE (eski mantığın)
       allow update: if
         (resource.data.isRankedRoom == true && isSignedIn()) ||
         (resource.data.isRankedRoom == false &&
          request.resource.data.isRankedRoom == false);
 
-      // DELETE
       allow delete: if
         // 1) Owner ise her zaman silebilir
         isOwner() ||
@@ -57,10 +41,6 @@ service cloud.firestore {
         );
     }
 
-    // ==========================================
-    // USERS
-    // ==========================================
-    
     match /users/{uid} {
       // Username kontrolü için spesifik oku izni
       allow get, list: if true; // get/list: query yapmaya izin veriyor ama veriyi tam açmıyor
@@ -75,10 +55,6 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // ==========================================
-    // FRIEND REQUESTS
-    // ==========================================
-    
     match /friendRequests/{reqId} {
       allow read: if isSignedIn();
       allow create: if isSignedIn() &&
@@ -95,10 +71,7 @@ service cloud.firestore {
         (email() == resource.data.fromEmail || email() == resource.data.toEmail);
     }
     
-    // ==========================================
-    // INVITATIONS
-    // ==========================================
-    
+    // INVITATIONS - YENİ EKLEME
     match /invitations/{invId} {
       allow read: if isSignedIn() && 
         (email() == resource.data.from || email() == resource.data.to);
@@ -116,12 +89,7 @@ service cloud.firestore {
         (email() == resource.data.from || email() == resource.data.to);
     }
 
-    // ==========================================
-    // DEFAULT - DENY ALL
-    // ==========================================
-    
-    match /{document=**} { 
-      allow read, write: if false; 
-    }
+
+    match /{document=**} { allow read, write: if false; }
   }
 }
