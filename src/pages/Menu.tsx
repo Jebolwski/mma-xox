@@ -18,6 +18,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
 import { useAuth } from "../context/AuthContext";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { sanitizePlayerName } from "../utils/security";
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -142,11 +143,9 @@ const Menu = () => {
 
   const NAME_MAX = 16;
 
-  // Kullanıcı adını otomatik al
+  // Legacy - now using sanitizePlayerName from utils
   const sanitizeGuestName = (name: string) => {
-    const trimmed = (name || "").trim().replace(/\s+/g, " ");
-    if (!trimmed) return "";
-    return trimmed.slice(0, NAME_MAX);
+    return sanitizePlayerName(name).slice(0, NAME_MAX);
   };
   const getPlayerName = () => {
     if (currentUser) {
@@ -600,7 +599,7 @@ const Menu = () => {
                       placeholder="Your name"
                       value={playerName}
                       onChange={(e) =>
-                        setPlayerName(e.target.value.slice(0, NAME_MAX))
+                        setPlayerName(sanitizePlayerName(e.target.value).slice(0, NAME_MAX))
                       }
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
@@ -668,7 +667,7 @@ const Menu = () => {
                       placeholder="Your name"
                       value={playerName}
                       onChange={(e) =>
-                        setPlayerName(e.target.value.slice(0, NAME_MAX))
+                        setPlayerName(sanitizePlayerName(e.target.value).slice(0, NAME_MAX))
                       }
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
@@ -702,7 +701,7 @@ const Menu = () => {
                     }`}
                   >
                     <span className="text-sm">
-                      Creating room as: <strong>{getPlayerName()}</strong>
+                      Creating room as: <strong>{sanitizePlayerName(getPlayerName())}</strong>
                     </span>
                   </div>
                 )}
@@ -780,7 +779,7 @@ const Menu = () => {
                       placeholder="Your name"
                       value={playerName}
                       onChange={(e) =>
-                        setPlayerName(e.target.value.slice(0, NAME_MAX))
+                        setPlayerName(sanitizePlayerName(e.target.value).slice(0, NAME_MAX))
                       }
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && roomCode) {
@@ -814,7 +813,7 @@ const Menu = () => {
                     }`}
                   >
                     <span className="text-sm">
-                      Joining as: <strong>{getPlayerName()}</strong>
+                      Joining as: <strong>{sanitizePlayerName(getPlayerName())}</strong>
                     </span>
                   </div>
                 )}

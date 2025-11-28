@@ -1,0 +1,127 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ==========================================
+    // HELPER FUNCTIONS
+    // ==========================================
+    
+    function isSignedIn() { 
+      return request.auth != null; 
+    }
+    
+    function email() { 
+      return isSignedIn() ? request.auth.token.email : null; 
+    }
+    
+    function olderThanMinutes(ts, minutes) {
+      return ts != null && ts < request.time - duration.value(minutes, 'm');
+    }
+    
+    function isOwner() {
+      return isSignedIn() &&
+             resource.data.hostEmail != null &&
+             email() == resource.data.hostEmail;
+    }
+
+    // ==========================================
+    // ROOMS
+    // ==========================================
+    
+    match /rooms/{roomId} {
+      // READ
+      allow read: if resource.data.isRankedRoom == false || isSignedIn();
+
+      // CREATE
+      allow create: if (
+        request.resource.data.isRankedRoom == false ||
+        (isSignedIn() && request.resource.data.isRankedRoom == true)
+      );
+
+      // UPDATE
+      allow update: if
+        (resource.data.isRankedRoom == true && isSignedIn()) ||
+        (resource.data.isRankedRoom == false &&
+         request.resource.data.isRankedRoom == false);
+
+      // DELETE
+      allow delete: if
+        // 1) Owner ise her zaman silebilir
+        isOwner() ||
+        // 2) Owner değilse: bayat + (casual herkes | ranked girişli ve in_progress değil)
+        (
+          olderThanMinutes(resource.data.lastActivityAt, 10) &&
+          (
+            resource.data.isRankedRoom == false ||
+            (resource.data.isRankedRoom == true && isSignedIn())
+          )
+        );
+    }
+
+    // ==========================================
+    // USERS
+    // ==========================================
+    
+    match /users/{uid} {
+      // Username kontrolü için spesifik oku izni
+      allow get, list: if true; // get/list: query yapmaya izin veriyor ama veriyi tam açmıyor
+
+      // Yeni kullanıcı eklenebilir (signup)
+      allow create: if request.auth != null;
+
+      // Kullanıcı sadece kendi hesabını güncelleyebilir
+      allow update: if request.auth != null && request.auth.token.email == uid;
+
+      // Hesap silme kapalı
+      allow delete: if false;
+    }
+
+    // ==========================================
+    // FRIEND REQUESTS
+    // ==========================================
+    
+    match /friendRequests/{reqId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() &&
+        request.resource.data.fromEmail == email() &&
+        request.resource.data.toEmail != null &&
+        request.resource.data.status == "pending";
+      allow update: if isSignedIn() && (
+        (email() == resource.data.toEmail &&
+          request.resource.data.status in ["accepted", "declined"]) ||
+        (email() == resource.data.fromEmail &&
+          request.resource.data.status == "cancelled")
+      );
+      allow delete: if isSignedIn() &&
+        (email() == resource.data.fromEmail || email() == resource.data.toEmail);
+    }
+    
+    // ==========================================
+    // INVITATIONS
+    // ==========================================
+    
+    match /invitations/{invId} {
+      allow read: if isSignedIn() && 
+        (email() == resource.data.from || email() == resource.data.to);
+      allow create: if isSignedIn() &&
+        request.resource.data.from == email() &&
+        request.resource.data.to != null &&
+        request.resource.data.status == "pending";
+      allow update: if isSignedIn() && (
+        (email() == resource.data.to && 
+          request.resource.data.status in ["accepted", "declined"]) ||
+        (email() == resource.data.from &&
+          request.resource.data.status == "cancelled")
+      );
+      allow delete: if isSignedIn() &&
+        (email() == resource.data.from || email() == resource.data.to);
+    }
+
+    // ==========================================
+    // DEFAULT - DENY ALL
+    // ==========================================
+    
+    match /{document=**} { 
+      allow read, write: if false; 
+    }
+  }
+}
