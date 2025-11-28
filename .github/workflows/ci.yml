@@ -30,6 +30,9 @@ jobs:
       - name: 🧪 Run tests
         run: npm test
 
+      - name: 🧪 Run socket.io integration tests
+        run: npm test -- server/server.test.ts
+
       - name: 🔒 Security audit
         run: npm audit --audit-level moderate
         continue-on-error: true # Don't fail build on moderate vulnerabilities
