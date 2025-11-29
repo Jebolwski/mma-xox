@@ -255,12 +255,90 @@ function SameScreenGame() {
   };
 
   const filterByName = (name: string) => {
-    if (name.length > 3) {
-      const fighters = fighters_url.filter((fighter) => {
-        return fighter.Fighter.toLowerCase().includes(name);
-      });
-      setFigters(fighters);
+    if (name.length < 4) {
+      setFigters([]);
+      return;
     }
+
+    const nameLower = name.toLowerCase();
+    const inputWords = nameLower.split(/\s+/).filter((w) => w.length > 0);
+
+    // Tüm dövüşçüleri puanlama sistemiyle değerlendir
+    const scoredFighters = fighters_url.map((fighter) => {
+      const fighterNameLower = fighter.Fighter.toLowerCase();
+      const fighterWords = fighterNameLower.split(/\s+/);
+
+      let totalScore = 0;
+      let matchCount = 0;
+
+      // Her input kelimesi için fuzzy eşleşme yap
+      for (const inputWord of inputWords) {
+        for (const fighterWord of fighterWords) {
+          // Fuzzy distance hesapla
+          const distance = levenshteinDistance(inputWord, fighterWord);
+
+          // Kelime uzunluğuna göre tolerans: 1-2 harf yazım hatası kabul et
+          if (distance <= 2) {
+            totalScore += 10 - distance; // Daha yakın match daha yüksek puan
+            matchCount++;
+            break; // Bu input kelimesi için en iyi match'i bul, diğerlerine gitme
+          }
+
+          // Include kontrolü (tam match için daha yüksek puan)
+          if (fighterWord.includes(inputWord)) {
+            totalScore += 15;
+            matchCount++;
+            break;
+          }
+        }
+      }
+
+      return {
+        fighter,
+        score: totalScore,
+        matchCount,
+      };
+    });
+
+    // En az 1 kelime eşleşen sonuçları filtrele ve sırala
+    const filteredFighters = scoredFighters
+      .filter((item) => item.matchCount > 0)
+      .sort((a, b) => b.score - a.score) // Yüksek puan ilk gelsin
+      .map((item) => item.fighter);
+
+    setFigters(filteredFighters);
+  };
+
+  // Levenshtein Distance fonksiyonu (editType mesafesi)
+  const levenshteinDistance = (a: string, b: string): number => {
+    const matrix: number[][] = [];
+
+    // İlk satırı başlat
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
+    }
+
+    // İlk sütunu başlat
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
+
+    // Matrisi doldur
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // Değiştir
+            matrix[i][j - 1] + 1, // Ekle
+            matrix[i - 1][j] + 1 // Sil
+          );
+        }
+      }
+    }
+
+    return matrix[b.length][a.length];
   };
 
   const resetInput = () => {

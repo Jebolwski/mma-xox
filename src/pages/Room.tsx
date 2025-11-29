@@ -1167,13 +1167,75 @@ const Room = () => {
     return null;
   };
 
-  const filterByName = (name: string) => {
-    if (name.length > 3) {
-      const filteredFighters = fighters_url.filter((fighter) => {
-        return fighter.Fighter.toLowerCase().includes(name.toLowerCase());
-      });
-      setFighters(filteredFighters);
+  const levenshteinDistance = (a: string, b: string): number => {
+    const matrix: number[][] = [];
+    for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+    
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // Substitute
+            matrix[i][j - 1] + 1,     // Insert
+            matrix[i - 1][j] + 1      // Delete
+          );
+        }
+      }
     }
+    return matrix[b.length][a.length];
+  };
+
+  const filterByName = (name: string) => {
+    if (name.length < 4) {
+      setFighters([]);
+      return;
+    }
+
+    const nameLower = name.toLowerCase();
+    const inputWords = nameLower.split(/\s+/).filter(w => w.length > 0);
+
+    // Scoring system for each fighter
+    const scoredFighters = fighters_url.map((fighter) => {
+      const fighterNameLower = fighter.Fighter.toLowerCase();
+      const fighterWords = fighterNameLower.split(/\s+/);
+
+      let totalScore = 0;
+      let matchCount = 0;
+
+      // Fuzzy match each input word against fighter words
+      for (const inputWord of inputWords) {
+        for (const fighterWord of fighterWords) {
+          const distance = levenshteinDistance(inputWord, fighterWord);
+          
+          // Tolerance: 1-2 character edits
+          if (distance <= 2) {
+            totalScore += (10 - distance);
+            matchCount++;
+            break;
+          }
+
+          // Include match (higher priority)
+          if (fighterWord.includes(inputWord)) {
+            totalScore += 15;
+            matchCount++;
+            break;
+          }
+        }
+      }
+
+      return { fighter, score: totalScore, matchCount };
+    });
+
+    // Filter and sort by relevance
+    const filteredFighters = scoredFighters
+      .filter((item) => item.matchCount > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((item) => item.fighter);
+
+    setFighters(filteredFighters);
   };
 
   const toggleFighterPick = () => {

@@ -12,8 +12,12 @@ node_modules
 dist
 dist-ssr
 *.local
+
+
 SECURITY_AUDIT.md
 SETUP_FIRESTORE_RULES.md
+
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
