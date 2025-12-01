@@ -1050,6 +1050,7 @@ const Room = () => {
         text: "",
         bg: "from-stone-300 to-stone-500",
       },
+      statsUpdated: false, // 🔑 REMATCH'TE STATS GÜNCELLEMESINI TETIKLE
       lastActivityAt: serverTimestamp(),
       expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
     });
@@ -1171,7 +1172,7 @@ const Room = () => {
     const matrix: number[][] = [];
     for (let i = 0; i <= b.length; i++) matrix[i] = [i];
     for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-    
+
     for (let i = 1; i <= b.length; i++) {
       for (let j = 1; j <= a.length; j++) {
         if (b.charAt(i - 1) === a.charAt(j - 1)) {
@@ -1179,8 +1180,8 @@ const Room = () => {
         } else {
           matrix[i][j] = Math.min(
             matrix[i - 1][j - 1] + 1, // Substitute
-            matrix[i][j - 1] + 1,     // Insert
-            matrix[i - 1][j] + 1      // Delete
+            matrix[i][j - 1] + 1, // Insert
+            matrix[i - 1][j] + 1 // Delete
           );
         }
       }
@@ -1195,7 +1196,7 @@ const Room = () => {
     }
 
     const nameLower = name.toLowerCase();
-    const inputWords = nameLower.split(/\s+/).filter(w => w.length > 0);
+    const inputWords = nameLower.split(/\s+/).filter((w) => w.length > 0);
 
     // Scoring system for each fighter
     const scoredFighters = fighters_url.map((fighter) => {
@@ -1209,10 +1210,10 @@ const Room = () => {
       for (const inputWord of inputWords) {
         for (const fighterWord of fighterWords) {
           const distance = levenshteinDistance(inputWord, fighterWord);
-          
+
           // Tolerance: 1-2 character edits
           if (distance <= 2) {
-            totalScore += (10 - distance);
+            totalScore += 10 - distance;
             matchCount++;
             break;
           }
@@ -1263,6 +1264,7 @@ const Room = () => {
       timerLength: "-2",
       filtersSelected: [],
       positionsFighters: {},
+      statsUpdated: false,
       fighter00: {
         url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
         text: "",

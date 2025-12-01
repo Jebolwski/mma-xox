@@ -598,11 +598,15 @@ const Menu = () => {
                       type="text"
                       placeholder="Your name"
                       value={playerName}
-                      onChange={(e) =>
-                        setPlayerName(
-                          sanitizePlayerName(e.target.value).slice(0, NAME_MAX)
-                        )
-                      }
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        try {
+                          setPlayerName(sanitizePlayerName(value).slice(0, NAME_MAX));
+                        } catch {
+                          // Allow empty string when user deletes everything
+                          setPlayerName("");
+                        }
+                      }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           handleRandomMatch();
@@ -668,11 +672,15 @@ const Menu = () => {
                       type="text"
                       placeholder="Your name"
                       value={playerName}
-                      onChange={(e) =>
-                        setPlayerName(
-                          sanitizePlayerName(e.target.value).slice(0, NAME_MAX)
-                        )
-                      }
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        try {
+                          setPlayerName(sanitizePlayerName(value).slice(0, NAME_MAX));
+                        } catch {
+                          // Allow empty string when user deletes everything
+                          setPlayerName("");
+                        }
+                      }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           handleCreateRoom();
@@ -783,11 +791,15 @@ const Menu = () => {
                       type="text"
                       placeholder="Your name"
                       value={playerName}
-                      onChange={(e) =>
-                        setPlayerName(
-                          sanitizePlayerName(e.target.value).slice(0, NAME_MAX)
-                        )
-                      }
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        try {
+                          setPlayerName(sanitizePlayerName(value).slice(0, NAME_MAX));
+                        } catch {
+                          // Allow empty string when user deletes everything
+                          setPlayerName("");
+                        }
+                      }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && roomCode) {
                           handleJoinRoom();

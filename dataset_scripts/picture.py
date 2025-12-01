@@ -4,6 +4,8 @@ import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import threading
 
 def slugify(name):
     # isimden slug üretir (ör: "Ciryl Gane" -> "ciryl-gane")
@@ -29,31 +31,67 @@ def fetch_fighter_image(slug):
     return None
 
 
-def update_fighters_json():
-    with open("fighters_updated_new.json", "r", encoding="utf-8") as file:
+def update_fighters_json(max_workers=5):
+    """
+    Paralel olarak fighter resimlerini günceller
+    max_workers: Aynı anda kaç fighter işlensin (3-10 arası önerilir)
+    """
+    with open("fighters_updated.json", "r", encoding="utf-8") as file:
         fighters = json.load(file)
 
-    updated = False
+    # Sadece Unknown olan fighter'ları filtrele
+    fighters_to_update = [
+        (idx, fighter) for idx, fighter in enumerate(fighters)
+        if fighter.get("Picture") == "Unknown"
+    ]
 
-    for fighter in tqdm(fighters, desc="Updating fighters"):
-        if fighter.get("Picture") != "Unknown":
-            continue  # zaten foto varsa geç
+    if not fighters_to_update:
+        print("\nℹ Güncellenecek bir şey bulunamadı.")
+        return
 
+    print(f"Toplam {len(fighters_to_update)} fighter güncellenecek...")
+
+    updated_count = 0
+    lock = threading.Lock()
+
+    def process_fighter(idx_fighter):
+        idx, fighter = idx_fighter
         name = fighter.get("Fighter")
         slug = slugify(name)
         image_url = fetch_fighter_image(slug)
-
+        
         if image_url:
-            fighter["Picture"] = image_url
-            updated = True
-        time.sleep(0.5)  # ban yememek için bekleme
+            return (idx, image_url)
+        return None
 
-    if updated:
+    # Paralel işleme ile resim çekme
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Progress bar için
+        futures = {
+            executor.submit(process_fighter, item): item 
+            for item in fighters_to_update
+        }
+        
+        with tqdm(total=len(fighters_to_update), desc="Updating fighters") as pbar:
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    idx, image_url = result
+                    with lock:
+                        fighters[idx]["Picture"] = image_url
+                        updated_count += 1
+                pbar.update(1)
+
+    # JSON'a kaydet
+    if updated_count > 0:
         with open("fighters.json", "w", encoding="utf-8") as file:
             json.dump(fighters, file, indent=4, ensure_ascii=False)
-        print("\n✅ fighters.json başarıyla güncellendi.")
+        print(f"\n✅ fighters.json başarıyla güncellendi. ({updated_count} resim bulundu)")
     else:
-        print("\nℹ Güncellenecek bir şey bulunamadı.")
+        print("\nℹ Hiçbir resim bulunamadı.")
+
 
 if __name__ == "__main__":
-    update_fighters_json()
+    # max_workers: Aynı anda kaç fighter işlensin
+    # 5 = güvenli, 10 = hızlı ama biraz riskli (rate limiting)
+    update_fighters_json(max_workers=5)
