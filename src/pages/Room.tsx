@@ -204,6 +204,172 @@ const Room = () => {
     document.title = "MMA XOX - Online Game";
   }, []);
 
+  // HEARTBEAT MEKANIZMASI: Her 5 saniyede bir host/guest active status'unu güncelle
+  useEffect(() => {
+    if (!roomId || !gameState || !gameState.gameStarted || gameState.winner) {
+      return; // Oyun başlamamışsa veya bitmişse heartbeat gönderme
+    }
+
+    const heartbeatInterval = setInterval(async () => {
+      try {
+        const roomRef = doc(db, "rooms", roomId);
+
+        if (role === "host") {
+          // Host heartbeat gönder
+          await updateDoc(roomRef, {
+            hostLastActive: serverTimestamp(),
+          });
+          console.log("💓 Host heartbeat sent");
+        } else if (role === "guest") {
+          // Guest heartbeat gönder
+          await updateDoc(roomRef, {
+            guestLastActive: serverTimestamp(),
+          });
+          console.log("💓 Guest heartbeat sent");
+        }
+      } catch (error) {
+        console.warn("Heartbeat update failed:", error);
+      }
+    }, 5000); // Her 5 saniyede bir
+
+    return () => clearInterval(heartbeatInterval);
+  }, [roomId, gameState?.gameStarted, gameState?.winner, role]);
+
+  // TIMEOUT CHECKER: Her 15 saniyede bir opponent'in heartbeat'ini kontrol et
+  useEffect(() => {
+    if (!roomId || !gameState || !gameState.gameStarted || gameState.winner) {
+      return; // Oyun başlamamışsa veya bitmişse kontrol yapma
+    }
+
+    let hasAlreadyForfeit = false; // Forfeit'i sadece bir kere tetikle
+
+    const timeoutCheckInterval = setInterval(async () => {
+      if (hasAlreadyForfeit) return; // Zaten forfeit olduysa çık
+
+      try {
+        const roomRef = doc(db, "rooms", roomId);
+        const roomSnap = await getDoc(roomRef);
+
+        if (!roomSnap.exists()) return;
+
+        const data = roomSnap.data();
+
+        // Eğer zaten winner varsa, artık kontrol yapma
+        if (data.winner) {
+          hasAlreadyForfeit = true;
+          return;
+        }
+
+        const now = Date.now();
+        const TIMEOUT_MS = 15000; // 15 saniye
+
+        // Host timeout kontrol et (guest bakısı)
+        if (role === "guest") {
+          const hostLastActive = data.hostLastActive?.toMillis?.() || 0;
+          const hostTimeout = now - hostLastActive > TIMEOUT_MS;
+
+          if (hostTimeout) {
+            hasAlreadyForfeit = true;
+            console.log("⚠️  Host timeout! Guest wins by forfeit");
+
+            // Transaction ile atomik güncelleme yap
+            await runTransaction(db, async (transaction) => {
+              const roomDoc = await transaction.get(roomRef);
+              if (!roomDoc.exists() || roomDoc.data().winner) return; // Already updated
+
+              transaction.update(roomRef, {
+                winner: "blue",
+                gameStarted: false,
+                isForfeited: true, // 🚩 Forfeit flag ekle (updatePlayerStats'da skip etmek için)
+                lastActivityAt: serverTimestamp(),
+              });
+
+              // Stats güncelle
+              if (data.hostEmail && data.guestEmail) {
+                const hostRef = doc(db, "users", data.hostEmail);
+                const guestRef = doc(db, "users", data.guestEmail);
+
+                transaction.update(hostRef, {
+                  "stats.points": increment(-5),
+                  "stats.losses": increment(1),
+                  "stats.totalGames": increment(1),
+                });
+
+                transaction.update(guestRef, {
+                  "stats.points": increment(15),
+                  "stats.wins": increment(1),
+                  "stats.totalGames": increment(1),
+                });
+              }
+            });
+
+            toast.success("🏆 Host disconnected! You win!");
+            setTimeout(() => navigate("/menu"), 2000);
+          }
+        } else if (role === "host") {
+          // Guest timeout kontrol et (host bakısı)
+          const guestLastActive = data.guestLastActive?.toMillis?.() || 0;
+          const guestTimeout = now - guestLastActive > TIMEOUT_MS;
+
+          if (guestTimeout && data.guest?.now) {
+            hasAlreadyForfeit = true;
+            console.log("⚠️  Guest timeout! Host wins by forfeit");
+
+            // Transaction ile atomik güncelleme yap
+            await runTransaction(db, async (transaction) => {
+              const roomDoc = await transaction.get(roomRef);
+              if (!roomDoc.exists() || roomDoc.data().winner) return; // Already updated
+
+              transaction.update(roomRef, {
+                winner: "red",
+                gameStarted: false,
+                isForfeited: true, // 🚩 Forfeit flag ekle
+                lastActivityAt: serverTimestamp(),
+              });
+
+              // Stats güncelle
+              if (data.hostEmail && data.guestEmail) {
+                const hostRef = doc(db, "users", data.hostEmail);
+                const guestRef = doc(db, "users", data.guestEmail);
+
+                transaction.update(hostRef, {
+                  "stats.points": increment(15),
+                  "stats.wins": increment(1),
+                  "stats.totalGames": increment(1),
+                });
+
+                transaction.update(guestRef, {
+                  "stats.points": increment(-5),
+                  "stats.losses": increment(1),
+                  "stats.totalGames": increment(1),
+                });
+              }
+
+              const resetGame = async () => {
+                const roomRef = doc(db, "rooms", roomId!);
+                await updateDoc(roomRef, {
+                  gameStarted: false,
+                  positionsFighters: {},
+                  hostReady: false,
+                  guestReady: false,
+                  lastActivityAt: serverTimestamp(),
+                  expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
+                });
+              };
+            });
+
+            toast.success("🏆 Guest disconnected! You win!");
+            // Host odada kalır, yeni guest'i bekler
+          }
+        }
+      } catch (error) {
+        console.warn("Timeout check failed:", error);
+      }
+    }, 15000); // Her 15 saniyede bir kontrol et
+
+    return () => clearInterval(timeoutCheckInterval);
+  }, [roomId, gameState?.gameStarted, gameState?.winner, role, navigate]);
+
   useEffect(() => {
     if (!roomId) return;
 
@@ -352,6 +518,8 @@ const Room = () => {
           difficulty: isRanked ? "MEDIUM" : "MEDIUM",
           createdAt: serverTimestamp(),
           lastActivityAt: serverTimestamp(),
+          hostLastActive: serverTimestamp(),
+          guestLastActive: serverTimestamp(),
           expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
           fighter00: {
             url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
@@ -418,6 +586,7 @@ const Room = () => {
           guest: { prev: gameState.guest.now || null, now: playerName },
           guestEmail: currentUser?.email || null, // BURAYA EKLEDİK
           guestJoinMethod: "direct-link", // İsterseniz bunu da ekleyebilirsiniz
+          guestLastActive: serverTimestamp(),
           lastActivityAt: serverTimestamp(),
           expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
         });
@@ -751,6 +920,14 @@ const Room = () => {
     console.log("🎮 gameState?.isRankedRoom:", gameState?.isRankedRoom);
     console.log("🎮 role:", role, "currentUser?.email:", currentUser?.email);
 
+    // 🚩 FORFEIT CHECK: Eğer forfeit olmuşsa, stats zaten transaction'da güncellendi, skip et
+    if (gameState?.isForfeited) {
+      console.log(
+        "⚠️  This match was forfeit. Stats already updated via transaction."
+      );
+      return;
+    }
+
     if (!gameState?.isRankedRoom) {
       console.log("❌ This is a casual match, stats will not be updated.");
       return;
@@ -810,6 +987,7 @@ const Room = () => {
             toast.success("🏆 New achievement unlocked! Arena Master");
           }
         }
+        console.log("haburaya geldi");
 
         await updateDoc(hostRef, {
           "stats.points": increment(
