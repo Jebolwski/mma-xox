@@ -14,7 +14,10 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import return_img from "../assets/return.png";
 // import refresh from "../assets/refresh.png";
-import { logStaleRoomsByLastActivity } from "../services/roomCleanup";
+import {
+  logStaleRoomsByLastActivity,
+  cleanupAllStaleRooms,
+} from "../services/roomCleanup";
 import { usePageTitle } from "../hooks/usePageTitle";
 
 const AvailableRooms = () => {
@@ -75,7 +78,8 @@ const AvailableRooms = () => {
 
     if (Date.now() - last > 2 * 60 * 1000) {
       // 2 dk throttling
-      logStaleRoomsByLastActivity();
+      // Hem casual hem ranked odaları temizle
+      cleanupAllStaleRooms();
       localStorage.setItem("cleanupAt", String(Date.now()));
     }
   }, [currentUser]);

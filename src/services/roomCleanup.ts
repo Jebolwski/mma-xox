@@ -29,22 +29,19 @@ export async function logStaleRoomsByLastActivity(
     const roomsRef = collection(db, "rooms");
     const threshold = Timestamp.fromMillis(Date.now() - minutesAgo * 60_000);
 
-    console.log("CLSAJHDLASHCDALSCŞD");
+    console.log("[cleanup] Starting cleanup for casual rooms");
+    console.log(`[cleanup] threshold: ${new Date(threshold.toMillis()).toISOString()}`);
 
-
-    console.log(`[preview] threshold: ${new Date(threshold.toMillis()).toISOString()}`);
-
-    // Sadece lastActivityAt'a göre filtrele
+    // Sadece casual (non-ranked) odaları temizle
     const q = query(
         roomsRef,
-        where("isRankedRoom", "==", false), // guest için şart
+        where("isRankedRoom", "==", false),
         where("lastActivityAt", "<", threshold),
         orderBy("lastActivityAt", "asc")
     );
 
-
     const snap = await getDocs(q);
-    console.log(`[preview] found ${snap.size} rooms older than threshold`);
+    console.log(`[cleanup] found ${snap.size} casual rooms older than threshold`);
 
     let deleted = 0;
     for (const d of snap.docs) {
@@ -52,23 +49,87 @@ export async function logStaleRoomsByLastActivity(
         const ms = toMillis(data?.lastActivityAt);
         const info = ms ? elapsedHM(ms) : null;
         console.log(
-            `[preview] ${d.id} | ranked=${!!data?.isRankedRoom} | stage=${data?.stage ?? "-"} | lastActivityAt=${info?.iso ?? "n/a"} | idle=${info ? `${info.h}h ${info.m}m` : "n/a"}`
+            `[cleanup] ${d.id} | stage=${data?.stage ?? "-"} | lastActivityAt=${info?.iso ?? "n/a"} | idle=${info ? `${info.h}h ${info.m}m` : "n/a"}`
         );
-
-        console.log(remove, "allah allah");
 
         if (remove) {
             try {
                 await deleteDoc(d.ref);
                 deleted++;
-                console.log(`[preview] deleted: ${d.id}`);
+                console.log(`[cleanup] deleted: ${d.id}`);
             } catch (e: any) {
-                console.warn(`[preview] delete failed: ${d.id}`, e?.code || e);
+                console.warn(`[cleanup] delete failed: ${d.id}`, e?.code || e);
             }
         }
     }
 
     if (remove) {
-        console.log(`[preview] total deleted: ${deleted}/${snap.size}`);
+        console.log(`[cleanup] total deleted: ${deleted}/${snap.size}`);
     }
+}
+
+// YENİ: Ranked odaları temizle
+export async function cleanupStaleRankedRooms(
+    minutesAgo = ROOM_TTL_MINUTES,
+    remove = true
+) {
+    const roomsRef = collection(db, "rooms");
+    const threshold = Timestamp.fromMillis(Date.now() - minutesAgo * 60_000);
+
+    console.log("[cleanup-ranked] Starting cleanup for ranked rooms");
+    console.log(`[cleanup-ranked] threshold: ${new Date(threshold.toMillis()).toISOString()}`);
+
+    // Ranked odaları temizle
+    const q = query(
+        roomsRef,
+        where("isRankedRoom", "==", true),
+        where("lastActivityAt", "<", threshold),
+        orderBy("lastActivityAt", "asc")
+    );
+
+    const snap = await getDocs(q);
+    console.log(`[cleanup-ranked] found ${snap.size} ranked rooms older than threshold`);
+
+    let deleted = 0;
+    for (const d of snap.docs) {
+        const data: any = d.data();
+        const ms = toMillis(data?.lastActivityAt);
+        const info = ms ? elapsedHM(ms) : null;
+        console.log(
+            `[cleanup-ranked] ${d.id} | host=${data?.host} | lastActivityAt=${info?.iso ?? "n/a"} | idle=${info ? `${info.h}h ${info.m}m` : "n/a"}`
+        );
+
+        if (remove) {
+            try {
+                await deleteDoc(d.ref);
+                deleted++;
+                console.log(`[cleanup-ranked] deleted: ${d.id}`);
+            } catch (e: any) {
+                console.warn(`[cleanup-ranked] delete failed: ${d.id}`, e?.code || e);
+            }
+        }
+    }
+
+    if (remove) {
+        console.log(`[cleanup-ranked] total deleted: ${deleted}/${snap.size}`);
+    }
+}
+
+// Hem casual hem ranked odaları temizle
+export async function cleanupAllStaleRooms(minutesAgo = ROOM_TTL_MINUTES) {
+    console.log("[cleanup-all] Starting full cleanup (casual + ranked)");
+
+    try {
+        await logStaleRoomsByLastActivity(minutesAgo, true);
+    } catch (e) {
+        console.error("[cleanup-all] Casual cleanup failed:", e);
+    }
+
+    try {
+        await cleanupStaleRankedRooms(minutesAgo, true);
+    } catch (e) {
+        console.error("[cleanup-all] Ranked cleanup failed:", e);
+    }
+
+    console.log("[cleanup-all] Full cleanup completed");
 }

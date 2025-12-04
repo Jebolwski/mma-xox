@@ -601,7 +601,9 @@ const Menu = () => {
                       onChange={(e) => {
                         const value = e.target.value;
                         try {
-                          setPlayerName(sanitizePlayerName(value).slice(0, NAME_MAX));
+                          setPlayerName(
+                            sanitizePlayerName(value).slice(0, NAME_MAX)
+                          );
                         } catch {
                           // Allow empty string when user deletes everything
                           setPlayerName("");
@@ -675,7 +677,9 @@ const Menu = () => {
                       onChange={(e) => {
                         const value = e.target.value;
                         try {
-                          setPlayerName(sanitizePlayerName(value).slice(0, NAME_MAX));
+                          setPlayerName(
+                            sanitizePlayerName(value).slice(0, NAME_MAX)
+                          );
                         } catch {
                           // Allow empty string when user deletes everything
                           setPlayerName("");
@@ -794,7 +798,9 @@ const Menu = () => {
                       onChange={(e) => {
                         const value = e.target.value;
                         try {
-                          setPlayerName(sanitizePlayerName(value).slice(0, NAME_MAX));
+                          setPlayerName(
+                            sanitizePlayerName(value).slice(0, NAME_MAX)
+                          );
                         } catch {
                           // Allow empty string when user deletes everything
                           setPlayerName("");
