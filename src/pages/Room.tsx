@@ -138,6 +138,9 @@ const Room = () => {
   const [timerLength, setTimerLength] = useState("-2");
   const [hasExited, setHasExited] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [guestForfeitModal, setGuestForfeitModal] = useState(false);
+  const [hostForfeitModal, setHostForfeitModal] = useState(false);
+  const [userUsername, setUserUsername] = useState("");
   const { width, height } = useWindowSize();
 
   const [muted, setMuted] = useState<boolean>(() => {
@@ -154,6 +157,18 @@ const Room = () => {
       localStorage.setItem("muted", JSON.stringify(muted));
     } catch {}
   }, [muted]);
+
+  // Firestore'dan username'i çek
+  useEffect(() => {
+    if (currentUser?.email) {
+      const userRef = doc(db, "users", currentUser.email);
+      getDoc(userRef).then((docSnap) => {
+        if (docSnap.exists()) {
+          setUserUsername(docSnap.data().username || "");
+        }
+      });
+    }
+  }, [currentUser]);
 
   // sfx helper
   const playSfx = (src: string) => {
@@ -301,10 +316,15 @@ const Room = () => {
                   "stats.totalGames": increment(1),
                 });
               }
+            }).then(() => {
+              const hostEmail = gameState.hostEmail;
+              const guestEmail = gameState.guestEmail;
+              updateWinRates(hostEmail, guestEmail);
             });
 
+            // Modal aç - guest seçim yapabilir
+            setHostForfeitModal(true);
             toast.success("🏆 Host disconnected! You win!");
-            setTimeout(() => navigate("/menu"), 2000);
           }
         } else if (role === "host") {
           // Guest timeout kontrol et (host bakısı)
@@ -324,7 +344,12 @@ const Room = () => {
                 winner: "red",
                 gameStarted: false,
                 isForfeited: true, // 🚩 Forfeit flag ekle
+                positionsFighters: {},
+                hostReady: false,
+                guest: { prev: null, now: null },
+                guestReady: false,
                 lastActivityAt: serverTimestamp(),
+                expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
               });
 
               // Stats güncelle
@@ -344,22 +369,11 @@ const Room = () => {
                   "stats.totalGames": increment(1),
                 });
               }
-
-              const resetGame = async () => {
-                const roomRef = doc(db, "rooms", roomId!);
-                await updateDoc(roomRef, {
-                  gameStarted: false,
-                  positionsFighters: {},
-                  hostReady: false,
-                  guestReady: false,
-                  lastActivityAt: serverTimestamp(),
-                  expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
-                });
-              };
             });
 
+            // Modal aç - host seçim yapabilir
+            setGuestForfeitModal(true);
             toast.success("🏆 Guest disconnected! You win!");
-            // Host odada kalır, yeni guest'i bekler
           }
         }
       } catch (error) {
@@ -916,10 +930,6 @@ const Room = () => {
   }, [theme]);
 
   const updatePlayerStats = async (winner: "red" | "blue" | "draw") => {
-    console.log("🎮 updatePlayerStats called with winner:", winner);
-    console.log("🎮 gameState?.isRankedRoom:", gameState?.isRankedRoom);
-    console.log("🎮 role:", role, "currentUser?.email:", currentUser?.email);
-
     // 🚩 FORFEIT CHECK: Eğer forfeit olmuşsa, stats zaten transaction'da güncellendi, skip et
     if (gameState?.isForfeited) {
       console.log(
@@ -935,6 +945,9 @@ const Room = () => {
 
     const hostEmail = gameState.hostEmail;
     const guestEmail = gameState.guestEmail;
+    console.log("🎮 updatePlayerStats called with winner:", winner);
+    console.log("🎮 gameState?.isRankedRoom:", gameState?.isRankedRoom);
+    console.log("🎮 role:", role, "currentUser?.email:", currentUser?.email);
 
     console.log(
       "✅ Ranked match detected. Host:",
@@ -999,6 +1012,8 @@ const Room = () => {
           "stats.totalGames": increment(1),
           achievements: hostNewAchievements,
           unlockedTitles: arrayUnion(...hostNewUnlockedTitles),
+        }).then(() => {
+          updateWinRates(hostEmail, guestEmail);
         });
 
         console.log("✅ Host stats updated successfully!");
@@ -1040,6 +1055,8 @@ const Room = () => {
           "stats.totalGames": increment(1),
           achievements: guestNewAchievements,
           unlockedTitles: arrayUnion(...guestNewUnlockedTitles),
+        }).then(() => {
+          updateWinRates(hostEmail, guestEmail);
         });
 
         console.log("✅ Guest stats updated successfully!");
@@ -1998,7 +2015,7 @@ const Room = () => {
               />{" "}
               <span className="font-semibold text-sm">
                 {" "}
-                {currentUser?.displayName ||
+                {userUsername ||
                   currentUser?.email?.split("@")[0] ||
                   playerName ||
                   "Player"}
@@ -2013,7 +2030,11 @@ const Room = () => {
 
       {/* Winner Overlay */}
       <div
-        className={`${gameState.winner == null ? "hidden" : "absolute"} ${
+        className={`${
+          gameState.winner == null || guestForfeitModal || hostForfeitModal
+            ? "hidden"
+            : "absolute"
+        } ${
           theme === "dark" ? "bg-[#00000061]" : "bg-[#ffffff61]"
         }  rounded-lg w-full h-full z-40`}
       >
@@ -3626,6 +3647,108 @@ const Room = () => {
             </div>
           </div>
         )}
+
+      {/* Guest Forfeit Modal */}
+      {guestForfeitModal && role === "host" && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div
+            className={`${
+              theme === "dark"
+                ? "bg-gradient-to-br from-indigo-700 to-indigo-900 border-indigo-600 shadow-indigo-900/75"
+                : "bg-gradient-to-br from-indigo-100 to-indigo-200 border-indigo-300 shadow-indigo-200/75"
+            } border-2 rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl`}
+          >
+            <h2
+              className={`${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              } text-3xl font-bold text-center mb-2`}
+            >
+              Guest Forfeited!
+            </h2>
+
+            <p
+              className={`${
+                theme === "dark" ? "text-purple-200" : "text-purple-700"
+              } text-center text-lg mb-6`}
+            >
+              🏆 You win by forfeit!
+            </p>
+
+            <div className="space-y-4">
+              <button
+                onClick={() => {
+                  setGuestForfeitModal(false);
+                  startNewRankedMatch();
+                }}
+                className={`${
+                  theme === "dark"
+                    ? "bg-gradient-to-r from-green-600 to-green-700 hover:scale-[1.03] hover:to-green-600 text-white duration-200 cursor-pointer"
+                    : "bg-gradient-to-r from-green-400 to-green-500 hover:scale-[1.03] text-green-900 duration-200 cursor-pointer"
+                } w-full py-3 rounded-lg font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl`}
+              >
+                Play Again
+              </button>
+
+              <button
+                onClick={() => {
+                  setGuestForfeitModal(false);
+                  navigate("/menu");
+                }}
+                className={`${
+                  theme === "dark"
+                    ? "bg-gradient-to-r from-red-600 to-red-700 hover:scale-[1.03] text-white duration-200 cursor-pointer"
+                    : "bg-gradient-to-r from-red-400 to-red-500 hover:scale-[1.03] text-red-900 duration-200 cursor-pointer"
+                } w-full py-3 rounded-lg font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl`}
+              >
+                Return to Menu
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Host Forfeit Modal */}
+      {hostForfeitModal && role === "guest" && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div
+            className={`${
+              theme === "dark"
+                ? "bg-gradient-to-br from-purple-900 to-indigo-900 border-purple-600"
+                : "bg-gradient-to-br from-purple-100 to-indigo-100 border-purple-300"
+            } border-2 rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl`}
+          >
+            <h2
+              className={`${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              } text-3xl font-bold text-center mb-2`}
+            >
+              Host Forfeited!
+            </h2>
+
+            <p
+              className={`${
+                theme === "dark" ? "text-purple-200" : "text-purple-700"
+              } text-center text-lg mb-6`}
+            >
+              🏆 You win by forfeit!
+            </p>
+
+            <button
+              onClick={() => {
+                setHostForfeitModal(false);
+                navigate("/menu");
+              }}
+              className={`${
+                theme === "dark"
+                  ? "bg-gradient-to-r from-red-600 to-red-700 hover:scale-[1.03] text-white duration-200 cursor-pointer"
+                  : "bg-gradient-to-r from-red-400 to-red-500 hover:scale-[1.03] text-red-900 duration-200 cursor-pointer"
+              } w-full py-3 rounded-lg font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl`}
+            >
+              Return to Menu
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

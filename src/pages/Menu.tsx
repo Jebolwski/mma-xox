@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import {
@@ -25,14 +25,6 @@ const Menu = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { currentUser, logout } = useAuth(); // EKLENDI
 
-  const getUsernameForUrl = () => {
-    return currentUser?.email
-      ? encodeURIComponent(currentUser.email.split("@")[0].toLowerCase())
-      : "";
-  };
-
-  usePageTitle("MMA XOX - Menu");
-
   const [playerName, setPlayerName] = useState("");
   const [roomCode, setRoomCode] = useState("");
   const [showJoinFields, setShowJoinFields] = useState(false);
@@ -40,6 +32,25 @@ const Menu = () => {
   const [showRandomFields, setShowRandomFields] = useState(false);
   const [isRankedRoom, setIsRankedRoom] = useState(false); // EKLENDI
   const [showRankedConfirm, setShowRankedConfirm] = useState(false); // EKLENDI
+  const [userUsername, setUserUsername] = useState("");
+
+  // Firestore'dan username'i çek
+  useEffect(() => {
+    if (currentUser?.email) {
+      const userRef = doc(db, "users", currentUser.email);
+      getDoc(userRef).then((docSnap) => {
+        if (docSnap.exists()) {
+          setUserUsername(docSnap.data().username || "");
+        }
+      });
+    }
+  }, [currentUser]);
+
+  const getUsernameForUrl = () => {
+    return userUsername ? encodeURIComponent(userUsername.toLowerCase()) : "";
+  };
+
+  usePageTitle("MMA XOX - Menu");
 
   // Grid görünüm mü? (form ekranlarında max-w-md kalsın)
   const isGrid =
@@ -149,9 +160,8 @@ const Menu = () => {
   };
   const getPlayerName = () => {
     if (currentUser) {
-      // Email prefix çok uzunsa gösterim için kısalt
-      const u = currentUser.email?.split("@")[0] || "User";
-      return u.slice(0, NAME_MAX);
+      // Kullanıcının username'i kullan
+      return userUsername || "User";
     }
     return sanitizeGuestName(playerName);
   };
@@ -418,7 +428,7 @@ const Menu = () => {
                 } shadow-lg`}
               >
                 <span className="text-sm font-medium">
-                  👤 {currentUser.email?.split("@")[0] || "User"}
+                  👤 {userUsername || "User"}
                 </span>
               </div>
               <button

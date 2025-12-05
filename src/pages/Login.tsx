@@ -24,6 +24,7 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState(""); // YENİ: Username state
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -32,20 +33,43 @@ const Login = () => {
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
-    if (!email || !password) {
-      toast.error("Please fill all fields!");
-      return;
+
+    if (isSignUp) {
+      // Sign up: email, password, username zorunlu
+      if (!email || !password || !username) {
+        toast.error("Please fill all fields!");
+        return;
+      }
+    } else {
+      // Sign in: email, password zorunlu
+      if (!email || !password) {
+        toast.error("Please fill all fields!");
+        return;
+      }
     }
 
     setLoading(true);
     try {
       if (isSignUp) {
-        // Sign up işlemi
+        // Sign up işlemi - kullanıcı tarafından girilen username kullan
+        const desiredUsername = username.toLowerCase().trim();
+
+        // Username validasyonu
+        if (desiredUsername.length < 3) {
+          toast.error("Username must be at least 3 characters!");
+          setLoading(false);
+          return;
+        }
+
+        if (!/^[a-z0-9_-]+$/.test(desiredUsername)) {
+          toast.error(
+            "Username can only contain letters, numbers, underscore and dash!"
+          );
+          setLoading(false);
+          return;
+        }
 
         // before creating user, ensure username is unique
-        const desiredUsername = email.split("@")[0].toLowerCase(); // veya kullanıcı girdisi
-        const usernameSlug = desiredUsername.replace(/[^a-z0-9_-]/g, "-");
-
         const usernameQuery = query(
           collection(db, "users"),
           where("username", "==", desiredUsername)
@@ -69,8 +93,8 @@ const Login = () => {
         // Yeni kullanıcı için oluşturulacak eksiksiz profil verisi
         const newUserProfile = {
           email: result.user.email,
-          username: desiredUsername, // Kullanıcının belirlediği veya otomatik oluşturulan kullanıcı adı
-          usernameSlug: usernameSlug, // Kullanıcı adı için temizlenmiş ve benzersiz hale getirilmiş slug
+          username: desiredUsername,
+          lastUsernameChangeAt: new Date().toISOString(), // YENİ: Son username değişikliği tarihi
 
           // Kişiselleştirme ve Başarım Alanları
           avatarUrl:
@@ -215,7 +239,28 @@ const Login = () => {
                 placeholder="your@email.com"
               />
             </div>
-
+            {/* YENİ: Username input - sadece sign up sırasında göster */}
+            {isSignUp && (
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                    theme === "dark"
+                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                  }`}
+                  placeholder="your_username"
+                />
+                <p className="text-xs mt-1 text-slate-500">
+                  3+ characters, letters, numbers, underscore and dash allowed
+                </p>
+              </div>
+            )}{" "}
             <div>
               <label className="block text-sm font-medium mb-2">Password</label>
               <input
@@ -231,7 +276,6 @@ const Login = () => {
                 placeholder="••••••••"
               />
             </div>
-
             <button
               type="submit"
               disabled={loading}
@@ -251,7 +295,12 @@ const Login = () => {
 
           <div className="mt-6 text-center">
             <button
-              onClick={() => setIsSignUp(!isSignUp)}
+              onClick={() => {
+                setIsSignUp(!isSignUp);
+                setEmail("");
+                setPassword("");
+                setUsername(""); // Reset username field
+              }}
               className={`text-sm hover:underline transition-colors cursor-pointer duration-200 ${
                 theme === "dark"
                   ? "text-purple-400 hover:text-purple-300"

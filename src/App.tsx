@@ -73,7 +73,7 @@ function App() {
 
               {/* protected */}
               <Route
-                path="/profile/:userEmail" // GÜNCELLENDİ
+                path="/profile/:username"
                 element={
                   <ProtectedRoute>
                     <Profile />

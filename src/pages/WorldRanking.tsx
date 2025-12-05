@@ -282,7 +282,7 @@ export default function WorldRanking() {
               const record = `${r.wins}-${r.losses}-${r.draws}`;
               return (
                 <Link // YENİ: Satırı Link component'i ile sarmala
-                  to={`/profile/${r.email}`}
+                  to={`/profile/${r.username}`}
                   key={r.id}
                   className={`grid grid-cols-6 gap-2 px-4 py-3 text-sm border-t transition-colors duration-200 ${
                     theme === "dark"

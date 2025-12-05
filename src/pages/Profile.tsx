@@ -24,6 +24,7 @@ interface UserProfile {
   avatarUrl: string;
   activeTitle: string;
   unlockedTitles: string[];
+  lastUsernameChangeAt?: string; // YENİ: Son username değişikliği tarihi
   stats: {
     points: number;
     totalGames: number;
@@ -48,7 +49,7 @@ const achievementsList = {
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { userEmail } = useParams<{ userEmail: string }>(); // YENİ: URL'den email'i al
+  const { username } = useParams<{ username: string }>(); // YENİ: URL'den username'i al
   const { currentUser } = useAuth();
   const { theme, toggleTheme } = useContext(ThemeContext);
   // --- GÜNCELLENDİ: State'i tek bir profile nesnesi olarak tut ---
@@ -61,6 +62,10 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordLoading, setPasswordLoading] = useState(false);
+  const [showChangeUsername, setShowChangeUsername] = useState(false); // YENİ
+  const [newUsername, setNewUsername] = useState(""); // YENİ
+  const [usernameLoading, setUsernameLoading] = useState(false); // YENİ
+  const [canChangeUsername, setCanChangeUsername] = useState(true); // YENİ
 
   // YENİ: Kendi profilimiz mi diye kontrol et
   const isMyProfile = profile ? currentUser?.email === profile.email : false;
@@ -141,38 +146,48 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    if (!userEmail) {
+    if (!username) {
       navigate("/menu");
       return;
     }
 
     const fetchUserProfile = async () => {
       try {
-        // if param looks like email -> fetch by doc id (email)
-        if (userEmail.includes("@")) {
-          const userRef = doc(db, "users", userEmail);
-          const userDoc = await getDoc(userRef);
-          if (userDoc.exists()) {
-            setProfile(userDoc.data() as UserProfile);
-            return;
-          }
-        }
-
-        // otherwise try to find by username (or usernameSlug)
-        // NOTE: make sure 'username' field is indexed in Firestore
+        // Username'le sorgu yap
+        // NOTE: 'username' field'ının Firestore'da indexed olduğundan emin ol
         const q = query(
           collection(db, "users"),
-          where("username", "==", userEmail)
+          where("username", "==", username)
         );
         const snap = await getDocs(q);
         if (!snap.empty) {
           const data = snap.docs[0].data() as UserProfile;
           setProfile(data);
+
+          // YENİ: Username değişim hakkını kontrol et
+          const lastChange = data.lastUsernameChangeAt
+            ? new Date(data.lastUsernameChangeAt)
+            : null;
+          const now = new Date();
+          const twoDotsInMs = 2 * 24 * 60 * 60 * 1000; // 2 günü milisaniyeye çevir
+
+          if (lastChange) {
+            const timeDiff = now.getTime() - lastChange.getTime();
+            if (timeDiff < twoDotsInMs) {
+              setCanChangeUsername(false);
+            } else {
+              setCanChangeUsername(true);
+            }
+          } else {
+            // İlk kez açılıyorsa değiştirebilir
+            setCanChangeUsername(true);
+          }
+
           return;
         }
 
         // not found
-        console.error("User profile not found for:", userEmail);
+        console.error("User profile not found for username:", username);
         toast.error("Could not find the profile.");
         setProfile(null);
       } catch (error) {
@@ -184,7 +199,7 @@ const Profile = () => {
     };
 
     fetchUserProfile();
-  }, [userEmail, navigate]);
+  }, [username, navigate]);
 
   // --- YENİ: Unvan değiştirme fonksiyonu ---
   const handleTitleChange = async (newTitle: string) => {
@@ -250,6 +265,94 @@ const Profile = () => {
     }
   };
 
+  // YENİ: Username değiştirme fonksiyonu
+  const handleChangeUsername = async () => {
+    if (!newUsername || !currentUser?.email || !profile) {
+      toast.error("Invalid input!");
+      return;
+    }
+
+    const desiredUsername = newUsername.toLowerCase().trim();
+
+    // Validation
+    if (desiredUsername.length < 3) {
+      toast.error("Username must be at least 3 characters!");
+      return;
+    }
+
+    if (!/^[a-z0-9_-]+$/.test(desiredUsername)) {
+      toast.error(
+        "Username can only contain letters, numbers, underscore and dash!"
+      );
+      return;
+    }
+
+    if (desiredUsername === profile.username) {
+      toast.error("New username must be different from current!");
+      return;
+    }
+
+    // 2 gün kontrolü
+    if (!canChangeUsername) {
+      const lastChange = new Date(profile.lastUsernameChangeAt || "");
+      const nextChange = new Date(
+        lastChange.getTime() + 2 * 24 * 60 * 60 * 1000
+      );
+      const daysLeft = Math.ceil(
+        (nextChange.getTime() - new Date().getTime()) / (24 * 60 * 60 * 1000)
+      );
+      toast.error(`You can change username again in ${daysLeft} days!`);
+      return;
+    }
+
+    setUsernameLoading(true);
+    try {
+      // Check if new username is already taken
+      const usernameQuery = query(
+        collection(db, "users"),
+        where("username", "==", desiredUsername)
+      );
+      const usernameSnap = await getDocs(usernameQuery);
+      if (!usernameSnap.empty) {
+        toast.error("Username already taken. Try another.");
+        setUsernameLoading(false);
+        return;
+      }
+
+      // Update username
+      const userRef = doc(db, "users", currentUser.email);
+      await updateDoc(userRef, {
+        username: desiredUsername,
+        lastUsernameChangeAt: new Date().toISOString(),
+      });
+
+      setProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              username: desiredUsername,
+              lastUsernameChangeAt: new Date().toISOString(),
+            }
+          : null
+      );
+
+      toast.success("Username changed successfully!");
+      setShowChangeUsername(false);
+      setNewUsername("");
+      setCanChangeUsername(false);
+
+      // 2 saniye sonra profil sayfasına yönlendir (yeni username ile)
+      setTimeout(() => {
+        navigate(`/profile/${desiredUsername}`);
+      }, 2000);
+    } catch (error) {
+      console.error("Error changing username:", error);
+      toast.error("Failed to change username!");
+    } finally {
+      setUsernameLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div
@@ -280,7 +383,15 @@ const Profile = () => {
             : "bg-gradient-to-br from-blue-400 via-blue-300 to-green-400"
         }`}
       >
-        <div className="text-2xl font-semibold">Failed to load profile</div>
+        <div
+          className={
+            theme == "dark"
+              ? "text-2xl text-white font-semibold"
+              : "text-2xl text-black font-semibold"
+          }
+        >
+          Failed to load profile
+        </div>
       </div>
     );
   }
@@ -438,10 +549,22 @@ const Profile = () => {
 
           {/* Şifremi Değiştir Butonu - Sadece kendi profilinde göster */}
           {isMyProfile && (
-            <div className="text-center mb-8">
+            <div className="text-center mb-8 space-y-3">
+              <button
+                onClick={() => setShowChangeUsername(true)}
+                className={`block w-full px-6 py-2 cursor-pointer rounded-lg font-semibold transition-all duration-300 ${
+                  theme === "dark"
+                    ? "bg-blue-700/80 hover:bg-blue-600 text-slate-100 border border-blue-600"
+                    : "bg-blue-200/80 hover:bg-blue-300 text-slate-800 border border-blue-300"
+                } hover:scale-105`}
+              >
+                {canChangeUsername
+                  ? "👤 Change Username"
+                  : "👤 Change Username (2 days cooldown)"}
+              </button>
               <button
                 onClick={() => setShowChangePassword(true)}
-                className={`px-6 py-2 cursor-pointer rounded-lg font-semibold transition-all duration-300 ${
+                className={`block w-full px-6 py-2 cursor-pointer rounded-lg font-semibold transition-all duration-300 ${
                   theme === "dark"
                     ? "bg-slate-700/80 hover:bg-slate-600 text-slate-100 border border-slate-600"
                     : "bg-slate-200/80 hover:bg-slate-300 text-slate-800 border border-slate-300"
@@ -878,6 +1001,87 @@ const Profile = () => {
                   } bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg`}
                 >
                   {passwordLoading ? "Updating..." : "Update Password"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* YENİ: Change Username Modal */}
+      {showChangeUsername && isMyProfile && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-6">
+          <div
+            className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-md transition-all duration-300 ${
+              theme === "dark"
+                ? "bg-slate-800/90 border-slate-600/50 text-slate-100"
+                : "bg-white/90 border-slate-200/50 text-slate-800"
+            }`}
+          >
+            <h2 className="text-2xl font-bold mb-2 text-center">
+              Change Username
+            </h2>
+            {!canChangeUsername && (
+              <p className="text-center text-sm text-orange-500 mb-4">
+                ⏳ You can change username again in 2 days
+              </p>
+            )}
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  New Username
+                </label>
+                <input
+                  type="text"
+                  value={newUsername}
+                  onChange={(e) => setNewUsername(e.target.value)}
+                  disabled={!canChangeUsername || usernameLoading}
+                  className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                    theme === "dark"
+                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-blue-500/50"
+                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-blue-500/50"
+                  } ${
+                    !canChangeUsername || usernameLoading
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
+                  placeholder="new_username"
+                />
+                <p className="text-xs mt-1 text-slate-500">
+                  3+ characters, letters, numbers, underscore and dash allowed
+                </p>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={() => {
+                    setShowChangeUsername(false);
+                    setNewUsername("");
+                  }}
+                  disabled={usernameLoading}
+                  className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                    usernameLoading
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:scale-105 cursor-pointer"
+                  } ${
+                    theme === "dark"
+                      ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
+                      : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
+                  }`}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleChangeUsername}
+                  disabled={usernameLoading || !canChangeUsername}
+                  className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                    usernameLoading || !canChangeUsername
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:scale-105 cursor-pointer hover:shadow-xl"
+                  } bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-lg`}
+                >
+                  {usernameLoading ? "Updating..." : "Update Username"}
                 </button>
               </div>
             </div>

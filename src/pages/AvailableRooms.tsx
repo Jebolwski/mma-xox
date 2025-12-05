@@ -6,6 +6,7 @@ import {
   onSnapshot,
   doc,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
@@ -104,8 +105,10 @@ const AvailableRooms = () => {
 
     try {
       const roomRef = doc(db, "rooms", selectedRoom);
+      const roomDoc = await getDoc(roomRef);
+      const currentGuest = roomDoc.data()?.guest;
       await updateDoc(roomRef, {
-        guest: { now: finalPlayerName },
+        guest: { prev: currentGuest?.now || null, now: finalPlayerName },
         guestJoinMethod: "available-rooms", // EKLENDI
       });
       navigate(`/room/${selectedRoom}`, {
@@ -122,8 +125,10 @@ const AvailableRooms = () => {
       const finalPlayerName = getPlayerName();
       try {
         const roomRef = doc(db, "rooms", roomId);
+        const roomDoc = await getDoc(roomRef);
+        const currentGuest = roomDoc.data()?.guest;
         await updateDoc(roomRef, {
-          guest: { now: finalPlayerName },
+          guest: { prev: currentGuest?.now || null, now: finalPlayerName },
           guestJoinMethod: "available-rooms",
         });
         navigate(`/room/${roomId}`, {
