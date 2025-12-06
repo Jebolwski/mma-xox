@@ -1,37 +1,17 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { ThemeContext } from "../context/ThemeContext";
 import { toast } from "react-toastify";
 import { usePageTitle } from "../hooks/usePageTitle";
 const Home = () => {
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    try {
-      const saved = localStorage.getItem("theme");
-      if (saved === "light" || saved === "dark") return saved;
-      const prefersDark =
-        typeof window !== "undefined" &&
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      return prefersDark ? "dark" : "light";
-    } catch {
-      return "dark";
-    }
-  });
+  const { theme, toggleTheme: contextToggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
 
   usePageTitle("MMA XOX - Home");
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
-  // theme’i kalıcı yap
-  useEffect(() => {
-    try {
-      localStorage.setItem("theme", theme);
-    } catch {}
-  }, [theme]);
+  const toggleTheme = contextToggleTheme;
 
   const handleLogout = async () => {
     try {

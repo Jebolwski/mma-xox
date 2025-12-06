@@ -15,7 +15,7 @@ export default function Footer() {
       className={`lg:py-4 py-3 z-10 w-full border-t ${
         isHome
           ? theme === "dark"
-            ? "bg-gradient-to-r from-green-800 to-emerald-600 border-emerald-700/50 text-slate-200"
+            ? "bg-gradient-to-r from-purple-800 to-purple-600 border-emerald-700/50 text-slate-200"
             : "bg-gradient-to-r from-green-200 to-emerald-200 border-emerald-200/50 text-slate-600"
           : theme === "dark"
           ? "bg-gradient-to-r from-purple-800 to-indigo-600 border-indigo-700/50 text-slate-200"
