@@ -43,70 +43,68 @@ function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <AdProvider>
-          <BrowserRouter>
-            <Routes>
-              {/* public */}
-              <Route
-                path="/"
-                element={<Home />}
-              />
-              <Route
-                path="/login"
-                element={<Login />}
-              />
-              <Route
-                path="/reset-password"
-                element={<ResetPassword />}
-              />
-              <Route
-                path="/menu"
-                element={<Menu />}
-              />
-              <Route
-                path="/same-screen"
-                element={<SameScreenGame />}
-              />
-              <Route
-                path="/available-rooms"
-                element={<AvailableRooms />}
-              />
+        <BrowserRouter>
+          <Routes>
+            {/* public */}
+            <Route
+              path="/"
+              element={<Home />}
+            />
+            <Route
+              path="/login"
+              element={<Login />}
+            />
+            <Route
+              path="/reset-password"
+              element={<ResetPassword />}
+            />
+            <Route
+              path="/menu"
+              element={<Menu />}
+            />
+            <Route
+              path="/same-screen"
+              element={<SameScreenGame />}
+            />
+            <Route
+              path="/available-rooms"
+              element={<AvailableRooms />}
+            />
 
-              {/* protected */}
-              <Route
-                path="/profile/:username"
-                element={
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/world-ranking"
-                element={
-                  <ProtectedRoute>
-                    <WorldRanking />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/friends"
-                element={
-                  <ProtectedRoute>
-                    <Friends />
-                  </ProtectedRoute>
-                }
-              />
+            {/* protected */}
+            <Route
+              path="/profile/:username"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/world-ranking"
+              element={
+                <ProtectedRoute>
+                  <WorldRanking />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/friends"
+              element={
+                <ProtectedRoute>
+                  <Friends />
+                </ProtectedRoute>
+              }
+            />
 
-              {/* diğerleri (isteğe göre koruyabilirsin) */}
-              <Route
-                path="/room/:roomId"
-                element={<Room />}
-              />
-            </Routes>
-          </BrowserRouter>
+            {/* diğerleri (isteğe göre koruyabilirsin) */}
+            <Route
+              path="/room/:roomId"
+              element={<Room />}
+            />
+          </Routes>
           <Footer />
-        </AdProvider>
+        </BrowserRouter>
       </ThemeProvider>
     </AuthProvider>
   );

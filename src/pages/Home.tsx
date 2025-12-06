@@ -122,7 +122,7 @@ const Home = () => {
       )}
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center px-3 lg:px-4 pt-12 lg:pt-0">
+      <div className="relative z-10 flex flex-col min-h-[calc(100vh-61px)] items-center justify-center px-3 lg:px-4 pt-12 lg:pt-0">
         {/* Game Logo */}
         <div className="lg:mb-8 mb-6 text-center animate-bounce-slow">
           <div

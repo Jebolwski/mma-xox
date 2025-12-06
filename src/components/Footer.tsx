@@ -1,8 +1,11 @@
 import { useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 
 export default function Footer() {
   const { theme } = useContext(ThemeContext);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
   const currentYear = new Date().getFullYear();
   const email = "mertgkmeen@gmail.com";
   const buyMeACoffeeUrl = "https://buymeacoffee.com/jebolwski";
@@ -10,7 +13,11 @@ export default function Footer() {
   return (
     <footer
       className={`lg:py-4 py-3 z-10 w-full border-t ${
-        theme === "dark"
+        isHome
+          ? theme === "dark"
+            ? "bg-gradient-to-r from-green-800 to-emerald-600 border-emerald-700/50 text-slate-200"
+            : "bg-gradient-to-r from-green-200 to-emerald-200 border-emerald-200/50 text-slate-600"
+          : theme === "dark"
           ? "bg-gradient-to-r from-purple-800 to-indigo-600 border-indigo-700/50 text-slate-200"
           : "bg-gradient-to-r from-purple-200 to-indigo-200 border-indigo-200/50 text-slate-600"
       }`}
