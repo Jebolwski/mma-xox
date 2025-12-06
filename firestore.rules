@@ -49,7 +49,7 @@ service cloud.firestore {
       allow create: if request.auth != null;
 
       // Kullanıcı sadece kendi hesabını güncelleyebilir
-      allow update: if true;
+      allow update: if request.auth != null;
 
       // Hesap silme kapalı
       allow delete: if false;

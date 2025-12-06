@@ -9,6 +9,8 @@ import {
   where,
   doc,
   setDoc,
+  getDoc,
+  getDocs,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
@@ -41,7 +43,10 @@ export default function Friends() {
   const [friends, setFriends] = useState<string[]>([]);
   const [docFriends, setDocFriends] = useState<string[]>([]);
   const [acceptedFriends, setAcceptedFriends] = useState<string[]>([]);
-  const [addEmail, setAddEmail] = useState("");
+  const [addUsername, setAddUsername] = useState("");
+  const [friendsUsernames, setFriendsUsernames] = useState<{
+    [email: string]: string;
+  }>({});
 
   const [friendsLoading, setFriendsLoading] = useState(true);
   const [docLoaded, setDocLoaded] = useState(false);
@@ -173,6 +178,26 @@ export default function Friends() {
   useEffect(() => {
     const merged = Array.from(new Set([...docFriends, ...acceptedFriends]));
     setFriends(merged);
+
+    // Friends'lerin username'lerini çek
+    const fetchUsernames = async () => {
+      const usernames: { [email: string]: string } = {};
+      for (const email of merged) {
+        try {
+          const userDoc = await getDoc(doc(db, "users", email));
+          if (userDoc.exists()) {
+            usernames[email] = userDoc.data().username || email.split("@")[0];
+          } else {
+            usernames[email] = email.split("@")[0];
+          }
+        } catch {
+          usernames[email] = email.split("@")[0];
+        }
+      }
+      setFriendsUsernames(usernames);
+    };
+
+    fetchUsernames();
     if (docLoaded && acceptedLoaded) setFriendsLoading(false);
   }, [docFriends, acceptedFriends, docLoaded, acceptedLoaded]);
 
@@ -276,7 +301,6 @@ export default function Friends() {
 
         {canUse && (
           <div className="grid md:grid-cols-3 gap-6">
-            {/* Add Friend */}
             <div
               className={`rounded-xl p-4 border ${
                 theme === "dark"
@@ -286,10 +310,10 @@ export default function Friends() {
             >
               <div className="font-semibold mb-3">Add friend</div>
               <input
-                type="email"
-                placeholder="friend@example.com"
-                value={addEmail}
-                onChange={(e) => setAddEmail(e.target.value.trim())}
+                type="text"
+                placeholder="username"
+                value={addUsername}
+                onChange={(e) => setAddUsername(e.target.value.trim())}
                 className={`w-full px-3 py-2 rounded-lg border mb-3 ${
                   theme === "dark"
                     ? "bg-slate-900 border-slate-700 text-white"
@@ -299,11 +323,29 @@ export default function Friends() {
               <button
                 onClick={async () => {
                   try {
-                    await sendFriendRequest(me, addEmail);
-                    setAddEmail("");
+                    if (!addUsername) {
+                      toast.error("Please enter a username");
+                      return;
+                    }
+
+                    // Username'den email'i bul
+                    const q = query(
+                      collection(db, "users"),
+                      where("username", "==", addUsername)
+                    );
+                    const result = await getDocs(q);
+
+                    if (result.empty) {
+                      toast.error("Username not found");
+                      return;
+                    }
+
+                    const friendEmail = result.docs[0].id;
+                    await sendFriendRequest(me, friendEmail);
+                    setAddUsername("");
                     toast.success("Friend request sent");
                   } catch (e: any) {
-                    alert(e.message || "Failed");
+                    toast.error(e.message || "Failed to send request");
                   }
                 }}
                 className={`w-full py-2 rounded-lg font-semibold cursor-pointer ${
@@ -410,7 +452,9 @@ export default function Friends() {
                     key={e}
                     className="flex items-center justify-between py-2 border-b last:border-none border-slate-600/30"
                   >
-                    <div className="truncate">{e}</div>
+                    <div className="truncate">
+                      {friendsUsernames[e] || e.split("@")[0]}
+                    </div>
                     <div className="flex gap-2">
                       <button
                         onClick={() =>

@@ -23,18 +23,17 @@ import { sanitizePlayerName } from "../utils/security";
 const Menu = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const { currentUser, logout } = useAuth(); // EKLENDI
+  const { currentUser, logout } = useAuth();
 
   const [playerName, setPlayerName] = useState("");
   const [roomCode, setRoomCode] = useState("");
   const [showJoinFields, setShowJoinFields] = useState(false);
   const [showCreateFields, setShowCreateFields] = useState(false);
   const [showRandomFields, setShowRandomFields] = useState(false);
-  const [isRankedRoom, setIsRankedRoom] = useState(false); // EKLENDI
-  const [showRankedConfirm, setShowRankedConfirm] = useState(false); // EKLENDI
+  const [isRankedRoom, setIsRankedRoom] = useState(false);
+  const [showRankedConfirm, setShowRankedConfirm] = useState(false);
   const [userUsername, setUserUsername] = useState("");
 
-  // Firestore'dan username'i çek
   useEffect(() => {
     if (currentUser?.email) {
       const userRef = doc(db, "users", currentUser.email);
@@ -961,7 +960,7 @@ const Menu = () => {
             <div className="flex gap-4">
               <button
                 onClick={() => setShowRankedConfirm(false)}
-                className={`flex-1 py-3 rounded-xl font-bold transition-all duration-200 hover:scale-105 ${
+                className={`flex-1 py-3 rounded-xl font-bold cursor-pointer transition-all duration-200 hover:scale-105 ${
                   theme === "dark"
                     ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
                     : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
@@ -971,7 +970,7 @@ const Menu = () => {
               </button>
               <button
                 onClick={handleRankedConfirm}
-                className="flex-1 py-3 rounded-xl font-bold transition-all duration-200 hover:scale-105 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white shadow-lg shadow-yellow-600/30"
+                className="flex-1 py-3 rounded-xl cursor-pointer font-bold transition-all duration-200 hover:scale-105 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white shadow-lg shadow-yellow-600/30"
               >
                 Let's Go! 🚀
               </button>
