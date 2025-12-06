@@ -360,8 +360,8 @@ const Menu = () => {
       />
 
       <div
-        className="relative w-screen min-h-[100svh] overflow-x-hidden pb-24 lg:pb-0"
-        style={{ WebkitOverflowScrolling: "touch", minHeight: "100dvh" }}
+        className="relative w-screen min-h-[calc(100vh-61px)] overflow-x-hidden pb-24 lg:pb-0"
+        style={{ WebkitOverflowScrolling: "touch" }}
       >
         <div
           className={`absolute inset-0 transition-all duration-1000 ${
@@ -494,7 +494,7 @@ const Menu = () => {
           </div>
         </div>
 
-        <div className="relative z-10 flex items-center justify-center min-h-full p-6">
+        <div className="relative z-10 flex items-center justify-center p-6">
           <div
             className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full mt-24 ${
               isGrid ? "max-w-5xl" : "max-w-md"

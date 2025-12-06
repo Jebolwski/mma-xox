@@ -1008,7 +1008,7 @@ function SameScreenGame() {
   return (
     <>
       <div
-        className={`w-screen min-h-screen relative overflow-x-hidden overflow-y-auto transition-all duration-1000 ${
+        className={`max-w-[100vw] min-h-[calc(100vh-61px)] relative overflow-x-hidden overflow-y-auto transition-all duration-1000 ${
           theme === "dark"
             ? "bg-gradient-to-br from-stone-900 via-indigo-900 to-stone-800"
             : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
@@ -1148,7 +1148,7 @@ function SameScreenGame() {
             </div>
           </div>
         </div>
-        <div className="flex w-full justify-center">
+        <div className="flex w-full justify-center mb-12">
           <div>
             <div className="mt-32">
               {gameStart == true && parseInt(timerLength) >= 0 ? (
@@ -2099,7 +2099,7 @@ function SameScreenGame() {
               onClick={() => setShowRestartModal(false)}
             />
             {/* center */}
-            <div className="relative z-10 flex min-h-screen items-center justify-center p-4">
+            <div className="relative z-10 flex items-center justify-center p-4">
               <div
                 className={`relative w-full max-w-md rounded-2xl border shadow-2xl ${
                   theme === "dark"

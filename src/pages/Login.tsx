@@ -153,7 +153,7 @@ const Login = () => {
 
   return (
     <div
-      className={`min-h-screen relative overflow-hidden transition-all duration-1000 ${
+      className={`min-h-[calc(100vh-61px)] relative overflow-hidden transition-all duration-1000 ${
         theme === "dark"
           ? "bg-gradient-to-br from-stone-900 via-indigo-900 to-stone-800"
           : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
@@ -191,7 +191,7 @@ const Login = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex items-center justify-center min-h-screen p-6">
+      <div className="flex items-center justify-center p-6">
         <div
           className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-md transition-all duration-300 ${
             theme === "dark"

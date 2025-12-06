@@ -205,7 +205,7 @@ export default function Friends() {
 
   return (
     <div
-      className={`min-h-screen w-full relative ${
+      className={`min-h-[calc(100vh-61px)] w-full relative ${
         theme === "dark"
           ? "bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
           : "bg-gradient-to-br from-blue-400 via-blue-300 to-green-400"

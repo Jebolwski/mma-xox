@@ -44,7 +44,7 @@ const Home = () => {
 
   return (
     <div
-      className={`min-h-screen relative overflow-hidden transition-all duration-1000 ${
+      className={`relative min-h-[calc(100vh-61px)] overflow-hidden transition-all duration-1000 ${
         theme === "dark"
           ? "bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900"
           : "bg-gradient-to-b from-blue-400 via-blue-300 to-green-400"
@@ -122,7 +122,7 @@ const Home = () => {
       )}
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-3 lg:px-4 pt-12 lg:pt-0">
+      <div className="relative z-10 flex flex-col items-center justify-center px-3 lg:px-4 pt-12 lg:pt-0">
         {/* Game Logo */}
         <div className="lg:mb-8 mb-6 text-center animate-bounce-slow">
           <div

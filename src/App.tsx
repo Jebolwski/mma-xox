@@ -21,6 +21,7 @@ import { AdProvider } from "./context/AdContext";
 import { AuthProvider } from "./context/AuthContext"; // EKLENDI
 import WorldRanking from "./pages/WorldRanking";
 import Friends from "./pages/Friends";
+import Footer from "./components/Footer";
 
 function App() {
   // Protected wrapper: user yoksa Login'e at
@@ -104,6 +105,7 @@ function App() {
               />
             </Routes>
           </BrowserRouter>
+          <Footer />
         </AdProvider>
       </ThemeProvider>
     </AuthProvider>
