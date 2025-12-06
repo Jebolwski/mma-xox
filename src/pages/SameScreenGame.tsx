@@ -19,6 +19,7 @@ function SameScreenGame() {
     document.title = "MMA XOX"; // Sayfa başlığını değiştir
   }, []);
   const navigate = useNavigate();
+
   const handleExit = async () => {
     navigate("/menu");
   };
@@ -79,7 +80,6 @@ function SameScreenGame() {
     } catch {}
   }, [muted]);
 
-  // central sfx helper
   const playSfx = (src: string) => {
     if (muted) return;
     const a = new Audio(src);
@@ -309,7 +309,6 @@ function SameScreenGame() {
     setFigters(filteredFighters);
   };
 
-  // Levenshtein Distance fonksiyonu (editType mesafesi)
   const levenshteinDistance = (a: string, b: string): number => {
     const matrix: number[][] = [];
 

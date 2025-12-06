@@ -17,7 +17,6 @@ import AvailableRooms from "./pages/AvailableRooms";
 import Profile from "./pages/Profile"; // EKLENDI
 import ResetPassword from "./pages/ResetPassword";
 import { ThemeProvider } from "./context/ThemeContext";
-import { AdProvider } from "./context/AdContext";
 import { AuthProvider } from "./context/AuthContext"; // EKLENDI
 import WorldRanking from "./pages/WorldRanking";
 import Friends from "./pages/Friends";

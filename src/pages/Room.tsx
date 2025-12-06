@@ -23,7 +23,6 @@ import { db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import return_img from "../assets/return.png";
-//import { Link } from "react-router-dom";
 import win from "../assets/sounds/win.mp3";
 import draw from "../assets/sounds/draw.mp3";
 import fighters_url from "../assets/data/fighters_updated_new.json";
@@ -32,19 +31,17 @@ import correct from "../assets/sounds/correct.mp3";
 import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ThemeContext } from "../context/ThemeContext";
-import { useAdContext } from "../context/AdContext";
 import Confetti from "react-confetti";
 import { getDoc, increment } from "firebase/firestore";
 import { useWindowSize } from "react-use";
 import { ROOM_TTL_MS } from "../services/roomCleanup";
-import { useAuth } from "../context/AuthContext"; // Add this import if you have an AuthContext
+import { useAuth } from "../context/AuthContext";
 
 const Room = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // State'ten role, name, isRanked'i al, fallback olarak searchParams'ı kontrol et
   const stateRole = (location.state as any)?.role;
   const statePlayerName = (location.state as any)?.name;
   const stateIsRanked = (location.state as any)?.isRanked;
@@ -52,10 +49,9 @@ const Room = () => {
   const [searchParams] = useSearchParams();
   const role = stateRole || searchParams.get("role");
   const playerName = statePlayerName || searchParams.get("name");
-  const isRanked = stateIsRanked ?? searchParams.get("ranked") === "true"; // EKLENDI
+  const isRanked = stateIsRanked ?? searchParams.get("ranked") === "true";
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const { shouldShowAd, recordAdView } = useAdContext();
-  const { currentUser } = useAuth(); // Get currentUser from AuthContext
+  const { currentUser } = useAuth();
   const [gameState, setGameState] = useState<any>(null);
   const [guest, setGuest] = useState<any>(null);
   const [turn, setTurn] = useState<string | null>(null);
@@ -63,14 +59,12 @@ const Room = () => {
   const [filters, setFilters]: any = useState();
   const [selected, setSelected]: any = useState();
   const [showConfetti, setShowConfetti] = useState(false);
-  const prevGuestNow = useRef<string | null>(null); // Önceki guest adını tutmak için ref
+  const prevGuestNow = useRef<string | null>(null);
 
   usePageTitle(roomId ? `MMA XOX - Room ${roomId}` : "MMA XOX • Room");
 
-  // Ranked bilgisini gameState yokken de (URL paramından) anlayalım
   const isRankedRoom = (gameState?.isRankedRoom ?? isRanked) === true;
 
-  // Banner görünürlüğü: login varsa daima; değilse sadece casual (host veya guest)
   const showUserBanner =
     !!currentUser || (!isRankedRoom && (role === "host" || role === "guest"));
 
@@ -140,6 +134,7 @@ const Room = () => {
   const [isExiting, setIsExiting] = useState(false);
   const [guestForfeitModal, setGuestForfeitModal] = useState(false);
   const [hostForfeitModal, setHostForfeitModal] = useState(false);
+  const [showWaitingGuest, setShowWaitingGuest] = useState(false);
   const [userUsername, setUserUsername] = useState("");
   const { width, height } = useWindowSize();
 
@@ -153,7 +148,6 @@ const Room = () => {
 
   useEffect(() => {
     try {
-      console.log(filtersSelected);
       localStorage.setItem("muted", JSON.stringify(muted));
     } catch {}
   }, [muted]);
@@ -219,7 +213,6 @@ const Room = () => {
     document.title = "MMA XOX - Online Game";
   }, []);
 
-  // HEARTBEAT MEKANIZMASI: Her 5 saniyede bir host/guest active status'unu güncelle
   useEffect(() => {
     if (!roomId || !gameState || !gameState.gameStarted || gameState.winner) {
       return; // Oyun başlamamışsa veya bitmişse heartbeat gönderme
@@ -234,13 +227,11 @@ const Room = () => {
           await updateDoc(roomRef, {
             hostLastActive: serverTimestamp(),
           });
-          console.log("💓 Host heartbeat sent");
         } else if (role === "guest") {
           // Guest heartbeat gönder
           await updateDoc(roomRef, {
             guestLastActive: serverTimestamp(),
           });
-          console.log("💓 Guest heartbeat sent");
         }
       } catch (error) {
         console.warn("Heartbeat update failed:", error);
@@ -285,7 +276,6 @@ const Room = () => {
 
           if (hostTimeout) {
             hasAlreadyForfeit = true;
-            console.log("⚠️  Host timeout! Guest wins by forfeit");
 
             // Transaction ile atomik güncelleme yap
             await runTransaction(db, async (transaction) => {
@@ -333,7 +323,6 @@ const Room = () => {
 
           if (guestTimeout && data.guest?.now) {
             hasAlreadyForfeit = true;
-            console.log("⚠️  Guest timeout! Host wins by forfeit");
 
             // Transaction ile atomik güncelleme yap
             await runTransaction(db, async (transaction) => {
@@ -384,6 +373,18 @@ const Room = () => {
     return () => clearInterval(timeoutCheckInterval);
   }, [roomId, gameState?.gameStarted, gameState?.winner, role, navigate]);
 
+  // Wait for Host modal'ını kapat eğer host yeni maç başlattıysa
+  useEffect(() => {
+    if (
+      showWaitingGuest &&
+      gameState?.gameStarted === false &&
+      gameState?.winner === null
+    ) {
+      // Oyun reset edildi, modal'ı kapat
+      setShowWaitingGuest(false);
+    }
+  }, [gameState?.gameStarted, gameState?.winner, showWaitingGuest]);
+
   useEffect(() => {
     if (!roomId) return;
 
@@ -392,7 +393,6 @@ const Room = () => {
 
     const unsubscribe = onSnapshot(q, async (snapshot) => {
       if (snapshot.empty) {
-        console.log("Document not found");
         if (role === "guest") {
           toast.info("Host has left the game!");
           setTimeout(() => {
@@ -422,7 +422,6 @@ const Room = () => {
               const roomDoc = await transaction.get(roomRef);
               if (!roomDoc.exists()) return;
               transaction.delete(roomRef);
-              console.log("Oda 3 saatten eski ve guest yok, otomatik silindi.");
             });
           } catch (error) {
             console.error("Oda otomatik silinirken hata:", error);
@@ -509,7 +508,6 @@ const Room = () => {
           const data = roomSnap.data();
           // Eğer oyun zaten başlamışsa hiçbir şey yapma (refresh / resume durumları için)
           if (data?.gameStarted) {
-            console.log("Room already started, skipping initialization");
             return;
           }
         }
@@ -608,9 +606,8 @@ const Room = () => {
 
       joinGame();
     }
-  }, [gameState, role, playerName, roomId, hasExited, currentUser]); // currentUser'ı dependency'lere de ekle
+  }, [gameState, role, playerName, roomId, hasExited, currentUser]);
 
-  // EKLEME: Eğer guest join etti ama guestEmail null kaldıysa, currentUser yüklenince güncelle
   useEffect(() => {
     if (
       role === "guest" &&
@@ -623,7 +620,6 @@ const Room = () => {
       updateDoc(roomRef, {
         guestEmail: currentUser.email,
       });
-      console.log("✅ Guest email updated:", currentUser.email);
     }
   }, [
     gameState?.guest.now,
@@ -646,7 +642,6 @@ const Room = () => {
         gameState.fighter01?.text ||
         gameState.fighter02?.text;
       if (hasFighters) {
-        console.log("Game already has fighters, skipping startGame");
         return;
       }
 
@@ -932,29 +927,15 @@ const Room = () => {
   const updatePlayerStats = async (winner: "red" | "blue" | "draw") => {
     // 🚩 FORFEIT CHECK: Eğer forfeit olmuşsa, stats zaten transaction'da güncellendi, skip et
     if (gameState?.isForfeited) {
-      console.log(
-        "⚠️  This match was forfeit. Stats already updated via transaction."
-      );
       return;
     }
 
     if (!gameState?.isRankedRoom) {
-      console.log("❌ This is a casual match, stats will not be updated.");
       return;
     }
 
     const hostEmail = gameState.hostEmail;
     const guestEmail = gameState.guestEmail;
-    console.log("🎮 updatePlayerStats called with winner:", winner);
-    console.log("🎮 gameState?.isRankedRoom:", gameState?.isRankedRoom);
-    console.log("🎮 role:", role, "currentUser?.email:", currentUser?.email);
-
-    console.log(
-      "✅ Ranked match detected. Host:",
-      hostEmail,
-      "Guest:",
-      guestEmail
-    );
 
     if (!hostEmail || !guestEmail) {
       console.error("❌ Host or guest email is missing for ranked match.");
@@ -1000,7 +981,6 @@ const Room = () => {
             toast.success("🏆 New achievement unlocked! Arena Master");
           }
         }
-        console.log("haburaya geldi");
 
         await updateDoc(hostRef, {
           "stats.points": increment(
@@ -1016,7 +996,6 @@ const Room = () => {
           updateWinRates(hostEmail, guestEmail);
         });
 
-        console.log("✅ Host stats updated successfully!");
         toast.success("🏆 Ranked match completed! Stats updated.");
       } else if (isGuest) {
         // 👥 GUEST: Sadece kendi stats'ını güncelle
@@ -1059,7 +1038,6 @@ const Room = () => {
           updateWinRates(hostEmail, guestEmail);
         });
 
-        console.log("✅ Guest stats updated successfully!");
         toast.success("🏆 Ranked match completed! Stats updated.");
       }
     } catch (error) {
@@ -1146,9 +1124,6 @@ const Room = () => {
       const hasFighters =
         data.fighter00?.text || data.fighter01?.text || data.fighter02?.text;
       if (hasFighters && data.gameStarted) {
-        console.log(
-          "Game already started with fighters, skipping initialization"
-        );
         return;
       }
     }
@@ -1351,10 +1326,8 @@ const Room = () => {
       }
 
       if (isDone) {
-        // update local UI state
         setPositionsFighters(newPositions);
         setFiltersSelected(filters_arr);
-        // return the computed values so caller doğrudan kullanabilir
         return { filters_arr, newPositions };
       }
     }
@@ -1374,9 +1347,9 @@ const Room = () => {
           matrix[i][j] = matrix[i - 1][j - 1];
         } else {
           matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1, // Substitute
-            matrix[i][j - 1] + 1, // Insert
-            matrix[i - 1][j] + 1 // Delete
+            matrix[i - 1][j - 1] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j] + 1
           );
         }
       }
@@ -1756,9 +1729,6 @@ const Room = () => {
           });
           // updatePlayerStats("red"); KALDIR
           playSfx(win);
-          if (shouldShowAd()) {
-            recordAdView();
-          }
           return "red";
         } else {
           updateDoc(roomRef, {
@@ -1766,9 +1736,6 @@ const Room = () => {
           });
           // updatePlayerStats("blue"); KALDIR
           playSfx(win);
-          if (shouldShowAd()) {
-            recordAdView();
-          }
           return "blue";
         }
       }
@@ -1784,13 +1751,9 @@ const Room = () => {
       const roomRef = doc(db, "rooms", roomId);
       updateDoc(roomRef, {
         winner: "draw",
-        gameStarted: false, // OYUNU BITIR
+        gameStarted: false,
       });
-      // updatePlayerStats("draw"); KALDIR
       playSfx(draw);
-      if (shouldShowAd()) {
-        recordAdView();
-      }
       return "Draw!";
     }
 
@@ -1799,8 +1762,6 @@ const Room = () => {
 
   const handleExit = async () => {
     if (!roomId || !playerName || !role || isExiting) return;
-
-    console.log(currentUser?.email, "LKJSACHDASLCHD", currentUser);
 
     setIsExiting(true);
     const roomRef = doc(db, "rooms", roomId);
@@ -1815,13 +1776,11 @@ const Room = () => {
           const roomDoc = await transaction.get(roomRef);
 
           if (!roomDoc.exists()) {
-            console.log("Oda zaten silinmiş");
             return;
           }
 
           // Odayı sil
           transaction.delete(roomRef);
-          console.log("Silme işlemi transaction'a eklendi");
         });
 
         // Toast mesajını göster ve 1.5 saniye sonra yönlendir
@@ -1836,7 +1795,6 @@ const Room = () => {
           guest: { prev: gameState.guest.now || null, now: null },
           gameStarted: false,
         });
-        console.log(`${playerName} (guest) oyundan çıktı.`);
         navigate("/menu");
       }
     } catch (error) {
@@ -2067,7 +2025,7 @@ const Room = () => {
               </p>
             )}
 
-            {/* CASUAL MAÇLAR - Sadece host Play Again görsün */}
+            {/* CASUAL MAÇLAR - Host için Play Again, Guest için Return/Wait */}
             {!gameState?.isRankedRoom && role == "host" && (
               <div className="flex justify-center">
                 <button
@@ -2079,6 +2037,32 @@ const Room = () => {
                   } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200 mt-5`}
                 >
                   Play Again
+                </button>
+              </div>
+            )}
+
+            {/* CASUAL MAÇLAR - Guest için seçenekler */}
+            {!gameState?.isRankedRoom && role == "guest" && (
+              <div className=" mt-5">
+                <button
+                  onClick={() => navigate("/menu")}
+                  className={`bg-gradient-to-r w-full cursor-pointer ${
+                    theme === "dark"
+                      ? "from-red-600 to-orange-700 text-white border-red-600"
+                      : "from-red-300 to-orange-300 text-black border-red-400"
+                  } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200`}
+                >
+                  Return to Menu
+                </button>
+                <button
+                  onClick={() => setShowWaitingGuest(true)}
+                  className={`bg-gradient-to-r w-full mt-3 cursor-pointer ${
+                    theme === "dark"
+                      ? "from-sky-600 to-indigo-700 text-white border-indigo-600"
+                      : "from-indigo-200 to-sky-300 text-black border-indigo-400"
+                  } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200`}
+                >
+                  Wait for Host
                 </button>
               </div>
             )}
@@ -3703,6 +3687,70 @@ const Room = () => {
                 Return to Menu
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Wait for Host Modal - Casual maçlarda guest oyuncu bir sonraki maç için host'u beklerken */}
+      {showWaitingGuest && !gameState?.isRankedRoom && role === "guest" && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div
+            className={`${
+              theme === "dark"
+                ? "bg-gradient-to-br from-blue-900 to-indigo-900 border-blue-600"
+                : "bg-gradient-to-br from-blue-100 to-indigo-100 border-blue-300"
+            } border-2 rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl`}
+          >
+            <h2
+              className={`${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              } text-3xl font-bold text-center mb-2`}
+            >
+              Waiting for Host
+            </h2>
+
+            <p
+              className={`${
+                theme === "dark" ? "text-blue-200" : "text-blue-700"
+              } text-center text-lg mb-6`}
+            >
+              ⏳ Waiting for {gameState?.host} to start a new game...
+            </p>
+
+            {/* Animasyon için dönen nokta */}
+            <div className="flex justify-center mb-6">
+              <div className="flex gap-1">
+                <div
+                  className={`w-3 h-3 rounded-full ${
+                    theme === "dark" ? "bg-blue-400" : "bg-blue-600"
+                  } animate-bounce`}
+                ></div>
+                <div
+                  className={`w-3 h-3 rounded-full ${
+                    theme === "dark" ? "bg-blue-400" : "bg-blue-600"
+                  } animate-bounce delay-100`}
+                ></div>
+                <div
+                  className={`w-3 h-3 rounded-full ${
+                    theme === "dark" ? "bg-blue-400" : "bg-blue-600"
+                  } animate-bounce delay-200`}
+                ></div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                setShowWaitingGuest(false);
+                navigate("/menu");
+              }}
+              className={`${
+                theme === "dark"
+                  ? "bg-gradient-to-r from-red-600 to-red-700 hover:scale-[1.03] text-white duration-200 cursor-pointer"
+                  : "bg-gradient-to-r from-red-400 to-red-500 hover:scale-[1.03] text-red-900 duration-200 cursor-pointer"
+              } w-full py-3 rounded-lg font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl`}
+            >
+              Go Back to Menu
+            </button>
           </div>
         </div>
       )}
