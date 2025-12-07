@@ -263,7 +263,6 @@ function SameScreenGame() {
     const nameLower = name.toLowerCase();
     const inputWords = nameLower.split(/\s+/).filter((w) => w.length > 0);
 
-    // Tüm dövüşçüleri puanlama sistemiyle değerlendir
     const scoredFighters = fighters_url.map((fighter) => {
       const fighterNameLower = fighter.Fighter.toLowerCase();
       const fighterWords = fighterNameLower.split(/\s+/);
@@ -300,7 +299,6 @@ function SameScreenGame() {
       };
     });
 
-    // En az 1 kelime eşleşen sonuçları filtrele ve sırala
     const filteredFighters = scoredFighters
       .filter((item) => item.matchCount > 0)
       .sort((a, b) => b.score - a.score) // Yüksek puan ilk gelsin
@@ -373,11 +371,10 @@ function SameScreenGame() {
     if (!fighterMap[selectedBox]) return;
 
     const positionKey = fighterMap[selectedBox];
-    console.log(positionsFighters[positionKey], positionKey, fighter);
 
     if (!positionsFighters[positionKey].includes(fighter)) {
       notify();
-      playSfx(wrong); // ❌ Yanlış seçim sesi
+      playSfx(wrong);
     } else {
       const bgColor =
         turn === "red"
@@ -397,7 +394,7 @@ function SameScreenGame() {
 
       setterMap[selectedBox]({ url: picture, text: name, bg: bgColor });
 
-      playSfx(correct); // ✅ Doğru seçim sesi
+      playSfx(correct);
 
       const winner = checkWinner();
       if (winner) {
@@ -487,9 +484,9 @@ function SameScreenGame() {
           ) || [];
 
         if (
-          intersection3.length < 2 ||
-          intersection4.length < 2 ||
-          intersection5.length < 2
+          intersection3.length < 3 ||
+          intersection4.length < 3 ||
+          intersection5.length < 3
         ) {
           console.warn("Eşleşme sağlanamadı, döngü yeniden başlatılıyor.");
           break;
@@ -516,12 +513,13 @@ function SameScreenGame() {
       }
 
       if (isDone) {
-        setPositionsFighters(newPositions); // Tek seferde state güncelle
+        setPositionsFighters(newPositions);
         setFiltersSelected(filters_arr);
         break;
       }
     }
   };
+  console.log(positionsFighters, filtersSelected);
 
   const checkWinner = () => {
     const board = [
@@ -704,7 +702,6 @@ function SameScreenGame() {
     ],
   ];
 
-  // Belirli renge (blue/red) ait kazanma veya blok hamlesi bul
   const findLineMove = (target: "blue" | "red"): string | null => {
     for (const pattern of winPatternsAI) {
       const owners = pattern.map(([r, c]) =>
@@ -713,15 +710,13 @@ function SameScreenGame() {
       const emptiesIdx = owners
         .map((o, i) => (o === null ? i : -1))
         .filter((i) => i >= 0);
-      if (emptiesIdx.length !== 1) continue; // sadece 1 boş olmalı
+      if (emptiesIdx.length !== 1) continue;
       const others = owners.filter((o) => o !== null) as ("blue" | "red")[];
       if (others.length === 2 && others.every((o) => o === target)) {
         const [ei] = emptiesIdx;
-        const [r, c] = winPatternsAI[0]; // dummy to satisfy TS (we'll override below)
-        console.log(ei, r, c);
+        const [r, c] = winPatternsAI[0];
       }
     }
-    // yeniden yaz: return boş kare key'i
     for (const pattern of winPatternsAI) {
       const owners = pattern.map(([r, c]) =>
         ownerOf(stateByKey[gridKeys[r][c]].bg)

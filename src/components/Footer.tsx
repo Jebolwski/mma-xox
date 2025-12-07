@@ -15,7 +15,7 @@ export default function Footer() {
       className={`lg:py-4 py-3 z-10 w-full border-t ${
         isHome
           ? theme === "dark"
-            ? "bg-gradient-to-r from-purple-800 to-purple-600 border-emerald-700/50 text-slate-200"
+            ? "bg-gradient-to-r from-slate-800 to-slate-700 border-slate-700/50 text-slate-200"
             : "bg-gradient-to-r from-green-200 to-emerald-200 border-emerald-200/50 text-slate-600"
           : theme === "dark"
           ? "bg-gradient-to-r from-purple-800 to-indigo-600 border-indigo-700/50 text-slate-200"
@@ -24,7 +24,6 @@ export default function Footer() {
     >
       <div className="max-w-7xl mx-auto lg:px-4 px-3">
         <div className="flex flex-wrap flex-col sm:flex-row items-center justify-between gap-4 text-sm">
-          {/* Links */}
           <div className="flex items-center gap-4">
             {/* Email */}
             <a
@@ -55,7 +54,6 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Bottom Text */}
           <div
             className={`text-center text-xs ${
               theme === "dark" ? "text-slate-200" : "text-slate-600"
@@ -64,7 +62,6 @@ export default function Footer() {
             <p>Made with ❤️ for MMA fans</p>
           </div>
 
-          {/* Copyright */}
           <div className="text-center sm:text-left">
             <p>© {currentYear} MMA XOX. All rights reserved.</p>
           </div>

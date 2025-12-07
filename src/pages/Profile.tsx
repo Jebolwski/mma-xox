@@ -1046,7 +1046,7 @@ const Profile = () => {
                       ? "opacity-50 cursor-not-allowed"
                       : ""
                   }`}
-                  placeholder="new_username"
+                  placeholder="New Username"
                 />
                 <p className="text-xs mt-1 text-slate-500">
                   3+ characters, letters, numbers, underscore and dash allowed
