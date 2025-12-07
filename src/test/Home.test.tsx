@@ -3,16 +3,13 @@ import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "../context/ThemeContext";
 import { AuthProvider } from "../context/AuthContext";
-import { AdProvider } from "../context/AdContext";
 import Home from "../pages/Home";
 
 // Test wrapper component
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
   <BrowserRouter>
     <AuthProvider>
-      <ThemeProvider>
-        <AdProvider>{children}</AdProvider>
-      </ThemeProvider>
+      <ThemeProvider>{children}</ThemeProvider>
     </AuthProvider>
   </BrowserRouter>
 );

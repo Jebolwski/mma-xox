@@ -75,31 +75,6 @@ npm run dev
 
 ## 🔧 Teknik Detaylar
 
-### Reklam Entegrasyonu
-
-- **AdContext**: Merkezi reklam yönetimi
-- **AdBanner**: Yeniden kullanılabilir reklam bileşeni
-- **Local Storage**: Kullanıcı tercihlerini saklama
-
-### Premium Sistem
-
-- **PremiumUpgrade**: Premium üyelik bileşeni
-- **AdSettings**: Reklam ayarları yönetimi
-- **Kullanıcı Tercihleri**: Local storage ile ayar saklama
-
-## 📈 Gelir Tahminleri
-
-### AdSense Gelirleri
-
-- **Sayfa Görüntüleme**: ~$1-3 RPM (1000 görüntüleme başına)
-- **Tıklama Oranı**: ~%1-2 CTR
-- **Aylık Tahmin**: 10,000 görüntüleme = $10-30
-
-### Premium Gelirleri
-
-- **Dönüşüm Oranı**: ~%2-5 kullanıcı premium üye olur
-- **Aylık Tahmin**: 1000 kullanıcı = 20-50 premium üye = $100-250
-
 ## 🎯 Gelecek Planları
 
 - [ ] **Stripe Entegrasyonu**: Güvenli ödeme sistemi
