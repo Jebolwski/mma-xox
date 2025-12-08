@@ -415,7 +415,7 @@ const Menu = () => {
 
         {/* Back Button / User Info - Sağ üstte */}
         <div className="absolute z-30 top-6 right-6">
-          {currentUser ? (
+          {currentUser && userUsername ? (
             // Giriş yapmış kullanıcı için username ve logout
             <div className="flex flex-wrap justify-end items-center gap-3">
               <div
@@ -426,9 +426,7 @@ const Menu = () => {
                     : "bg-white/80 border-slate-200/50 text-slate-800"
                 } shadow-lg`}
               >
-                <span className="text-sm font-medium">
-                  👤 {userUsername || "User"}
-                </span>
+                <span className="text-sm font-medium">👤 {userUsername}</span>
               </div>
               <button
                 onClick={handleLogout}

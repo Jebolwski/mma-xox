@@ -137,6 +137,7 @@ const Room = () => {
   const [rankedForfeitModal, setRankedForfeitModal] = useState(false);
   const [guestForfeitVictoryModal, setGuestForfeitVictoryModal] =
     useState(false);
+  const [guestExitConfirmModal, setGuestExitConfirmModal] = useState(false);
   const [showWaitingGuest, setShowWaitingGuest] = useState(false);
   const [userUsername, setUserUsername] = useState("");
   const { width, height } = useWindowSize();
@@ -637,8 +638,7 @@ const Room = () => {
       gameState?.isRankedRoom &&
       gameState?.hostReady &&
       gameState?.guestReady &&
-      !gameState?.gameStarted &&
-      role === "host"
+      !gameState?.gameStarted
     ) {
       const hasFighters =
         gameState.fighter00?.text ||
@@ -1774,7 +1774,7 @@ const Room = () => {
   const handleExit = async () => {
     if (!roomId || !playerName || !role || isExiting) return;
 
-    // Ranked maçta oyun devam ederken çıkmak isterse modal aç
+    // Ranked maçta oyun devam ederken host çıkmak isterse modal aç
     if (
       gameState?.isRankedRoom &&
       gameState?.gameStarted &&
@@ -1782,6 +1782,17 @@ const Room = () => {
       role === "host"
     ) {
       setRankedForfeitModal(true);
+      return;
+    }
+
+    // Ranked maçta oyun devam ederken guest çıkmak isterse modal aç
+    if (
+      gameState?.isRankedRoom &&
+      gameState?.gameStarted &&
+      !gameState?.winner &&
+      role === "guest"
+    ) {
+      setGuestExitConfirmModal(true);
       return;
     }
 
@@ -1890,6 +1901,126 @@ const Room = () => {
       setIsExiting(false);
     }
   };
+
+  // Handle guest forfeit - host wins, guest loses
+  const handleGuestForfeit = async () => {
+    if (!roomId || !gameState) return;
+
+    setGuestExitConfirmModal(false);
+    setIsExiting(true);
+
+    try {
+      const hostEmail = gameState.hostEmail;
+      const guestEmail = gameState.guestEmail;
+
+      if (!hostEmail || !guestEmail) {
+        toast.error("Could not determine players!");
+        setIsExiting(false);
+        return;
+      }
+
+      const hostRef = doc(db, "users", hostEmail);
+      const guestRef = doc(db, "users", guestEmail);
+      const roomRef = doc(db, "rooms", roomId);
+
+      // Transaction: Update stats and room
+      await runTransaction(db, async (transaction) => {
+        const hostDoc = await transaction.get(hostRef);
+        const guestDoc = await transaction.get(guestRef);
+
+        if (!hostDoc.exists() || !guestDoc.exists()) {
+          throw new Error("User documents not found");
+        }
+
+        const hostStats = hostDoc.data()?.stats || {
+          totalGames: 0,
+          wins: 0,
+          losses: 0,
+          draws: 0,
+          points: 0,
+          winRate: 0,
+        };
+        const guestStats = guestDoc.data()?.stats || {
+          totalGames: 0,
+          wins: 0,
+          losses: 0,
+          draws: 0,
+          points: 0,
+          winRate: 0,
+        };
+
+        // Host wins, guest loses
+        const newHostStats = {
+          totalGames: hostStats.totalGames + 1,
+          wins: hostStats.wins + 1,
+          losses: hostStats.losses,
+          draws: hostStats.draws,
+          points: hostStats.points + 15,
+          winRate:
+            ((hostStats.wins + 1) / (hostStats.totalGames + 1)) * 100 || 0,
+        };
+
+        const newGuestStats = {
+          totalGames: guestStats.totalGames + 1,
+          wins: guestStats.wins,
+          losses: guestStats.losses + 1,
+          draws: guestStats.draws,
+          points: Math.max(0, guestStats.points - 5),
+          winRate: (guestStats.wins / (guestStats.totalGames + 1)) * 100 || 0,
+        };
+
+        transaction.update(hostRef, { stats: newHostStats });
+        transaction.update(guestRef, { stats: newGuestStats });
+
+        // Update room: host wins, forfeit flag, room reset
+        transaction.update(roomRef, {
+          winner: "red",
+          forfeit: true,
+          gameStarted: false,
+          filtersSelected: [],
+          positionsFighters: {},
+          statsUpdated: true,
+          lastActivityAt: serverTimestamp(),
+          expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
+        });
+      });
+
+      toast.success("🏆 Host wins! You forfeited!");
+
+      // Delete room in background
+      runTransaction(db, async (transaction) => {
+        try {
+          const roomDoc = await transaction.get(roomRef);
+          if (roomDoc.exists()) {
+            transaction.delete(roomRef);
+          }
+        } catch (err) {
+          console.warn("Room deletion failed:", err);
+        }
+      }).catch((err) => console.warn("Room deletion error:", err));
+
+      // Guest goes to menu immediately
+      navigate("/menu");
+    } catch (error) {
+      console.error("Guest forfeit failed:", error);
+      toast.error("An error occurred during forfeit!");
+      setIsExiting(false);
+    }
+  };
+
+  // Listener for host when guest forfeits
+  useEffect(() => {
+    if (!roomId || role !== "host" || !gameState) return;
+
+    // If host wins by forfeit, show toast and redirect to menu
+    if (gameState?.forfeit && gameState?.winner === "red") {
+      toast.success("🏆 Guest forfeited, you win!");
+
+      setTimeout(() => {
+        navigate("/menu");
+      }, 4500);
+    }
+  }, [gameState?.forfeit, gameState?.winner, role, roomId, navigate]);
 
   const notify = () => toast.error("Fighter doesnt meet the requirements.");
 
@@ -3929,8 +4060,8 @@ const Room = () => {
           <div
             className={`${
               theme === "dark"
-                ? "bg-gradient-to-r from-indigo-800 to-indigo-900 border-indigo-700"
-                : "bg-gradient-to-r from-indigo-100 to-sky-200 border-indigo-300"
+                ? "bg-gradient-to-r from-indigo-800 to-indigo-900 border-indigo-700 text-white"
+                : "bg-gradient-to-r from-indigo-100 to-sky-200 border-indigo-300 text-black"
             } border-2 w-80 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
           >
             <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold mb-4">
@@ -3950,7 +4081,7 @@ const Room = () => {
                   theme === "dark"
                     ? "bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white"
                     : "bg-gradient-to-r from-slate-300 to-slate-400 hover:from-slate-200 hover:to-slate-300 text-black"
-                } flex-1 py-2 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl`}
+                } flex-1 cursor-pointer py-2 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl`}
               >
                 Cancel
               </button>
@@ -3960,7 +4091,7 @@ const Room = () => {
                   theme === "dark"
                     ? "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white"
                     : "bg-gradient-to-r from-red-400 to-red-500 hover:from-red-300 hover:to-red-400 text-red-900"
-                } flex-1 py-2 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl`}
+                } flex-1 cursor-pointer py-2 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl`}
               >
                 Yes, Forfeit
               </button>
@@ -3969,7 +4100,52 @@ const Room = () => {
         </div>
       )}
 
-      {/* Guest sees host forfeited modal */}
+      {/* Guest Exit Confirmation Modal */}
+      {guestExitConfirmModal && role === "guest" && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div
+            className={`${
+              theme === "dark"
+                ? "bg-gradient-to-r from-orange-800 to-red-900 border-red-700"
+                : "bg-gradient-to-r from-orange-100 to-red-100 border-red-300"
+            } border-2 w-80 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
+          >
+            <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold mb-4">
+              ⚠️ Leave Match?
+            </p>
+            <p
+              className={`text-center mb-6 ${
+                theme === "dark" ? "text-gray-200" : "text-gray-700"
+              }`}
+            >
+              You will lose this ranked game. Host will win and gain points.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setGuestExitConfirmModal(false)}
+                className={`${
+                  theme === "dark"
+                    ? "bg-slate-600 hover:bg-slate-500 text-white"
+                    : "bg-slate-300 hover:bg-slate-400 text-slate-800"
+                } flex-1 py-2 rounded-lg cursor-pointer font-semibold transition-all duration-300`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleGuestForfeit}
+                className={`${
+                  theme === "dark"
+                    ? "bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white"
+                    : "bg-gradient-to-r from-red-400 to-orange-400 hover:from-red-300 hover:to-orange-300 text-red-900"
+                } flex-1 py-2 rounded-lg cursor-pointer font-bold transition-all duration-300 shadow-lg hover:shadow-xl`}
+              >
+                Yes, Leave
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {guestForfeitVictoryModal && role === "guest" && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
           <div
@@ -3998,7 +4174,7 @@ const Room = () => {
                 theme === "dark"
                   ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white"
                   : "bg-gradient-to-r from-green-400 to-emerald-400 hover:from-green-300 hover:to-emerald-300 text-green-900"
-              } w-full py-2 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl`}
+              } w-full py-2 rounded-lg cursor-pointer font-bold transition-all duration-300 shadow-lg hover:shadow-xl`}
             >
               Go Back to Menu
             </button>

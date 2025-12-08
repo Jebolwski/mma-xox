@@ -280,6 +280,11 @@ const Profile = () => {
       return;
     }
 
+    if (desiredUsername.length > 14) {
+      toast.error("Username cannot be longer than 14 characters!");
+      return;
+    }
+
     if (!/^[a-z0-9_-]+$/.test(desiredUsername)) {
       toast.error(
         "Username can only contain letters, numbers, underscore and dash!"
@@ -461,7 +466,7 @@ const Profile = () => {
       {/* Back Button */}
       <div className="absolute z-30 top-6 right-6">
         <div
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/menu")}
           className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
             theme === "dark"
               ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
@@ -497,7 +502,9 @@ const Profile = () => {
                 className="w-20 h-20 rounded-full hidden sm:block border-4 border-red-500"
               />
               <div>
-                <h1 className="text-3xl font-bold">{profile.username}</h1>
+                <h1 className="text-3xl font-bold">
+                  {profile.username.slice(0, 14)}
+                </h1>
                 <div
                   onClick={() => isMyProfile && setTitlesOpen(true)} // GÜNCELLENDİ: Sadece kendi profilinde tıkla
                   className={`text-lg flex items-center gap-2 justify-center font-semibold transition-transform ${
@@ -1037,6 +1044,7 @@ const Profile = () => {
                   value={newUsername}
                   onChange={(e) => setNewUsername(e.target.value)}
                   disabled={!canChangeUsername || usernameLoading}
+                  maxLength={14}
                   className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
                     theme === "dark"
                       ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-blue-500/50"
@@ -1049,7 +1057,7 @@ const Profile = () => {
                   placeholder="New Username"
                 />
                 <p className="text-xs mt-1 text-slate-500">
-                  3+ characters, letters, numbers, underscore and dash allowed
+                  3-14 characters, letters, numbers, underscore and dash allowed
                 </p>
               </div>
 

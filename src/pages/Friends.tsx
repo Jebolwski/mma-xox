@@ -453,7 +453,7 @@ export default function Friends() {
                     className="flex items-center justify-between py-2 border-b last:border-none border-slate-600/30"
                   >
                     <div className="truncate">
-                      {friendsUsernames[e] || e.split("@")[0]}
+                      {(friendsUsernames[e] || e.split("@")[0]).slice(0, 14)}
                     </div>
                     <div className="flex gap-2">
                       <button
