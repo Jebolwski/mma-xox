@@ -3,7 +3,7 @@ import {
     collection, query, where, getDocs, Timestamp, orderBy, deleteDoc,
 } from "firebase/firestore";
 
-export const ROOM_TTL_MINUTES = 10; // 10 minutes
+export const ROOM_TTL_MINUTES = 5; // 10 minutes
 export const ROOM_TTL_MS = ROOM_TTL_MINUTES * 60 * 1000;
 
 // Helper: Firestore Timestamp/number'dan ms çıkar

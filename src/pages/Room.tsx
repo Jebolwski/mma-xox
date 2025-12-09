@@ -1802,25 +1802,28 @@ const Room = () => {
     try {
       if (role === "host") {
         // Host çıkarsa odayı tamamen sil
+        if (currentUser) {
+          // Transaction içinde silme işlemini gerçekleştir
+          await runTransaction(db, async (transaction) => {
+            // Önce odayı kontrol et
+            const roomDoc = await transaction.get(roomRef);
 
-        // Transaction içinde silme işlemini gerçekleştir
-        await runTransaction(db, async (transaction) => {
-          // Önce odayı kontrol et
-          const roomDoc = await transaction.get(roomRef);
+            if (!roomDoc.exists()) {
+              return;
+            }
 
-          if (!roomDoc.exists()) {
-            return;
-          }
+            // Odayı sil
+            transaction.delete(roomRef);
+          });
 
-          // Odayı sil
-          transaction.delete(roomRef);
-        });
-
-        // Toast mesajını göster ve 1.5 saniye sonra yönlendir
-        toast.success("Room deleted successfully!");
-        setTimeout(() => {
+          // Toast mesajını göster ve 1.5 saniye sonra yönlendir
+          toast.success("Room deleted successfully!");
+          setTimeout(() => {
+            navigate("/menu");
+          }, 1500);
+        } else {
           navigate("/menu");
-        }, 1500);
+        }
       } else if (role === "guest") {
         // Guest çıkarsa sadece guest'i null yap
         setHasExited(true); // Guest'in çıkış yaptığını işaretle
