@@ -346,7 +346,7 @@ class UFCStatsScraper:
                         all_fighters.append(result)
                     
                     # Her 50 dövüşçüde bir kaydet
-                    if len(all_fighters) % 50 == 0:
+                    if len(all_fighters) % 1000 == 0:
                         self.save_to_json(all_fighters, f'ufc_fighters_backup_{len(all_fighters)}.json')
         
         return all_fighters
