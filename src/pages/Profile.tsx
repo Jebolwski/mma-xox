@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom"; // useParams EKLENDİ
+import { useTranslation } from "react-i18next";
 import {
   collection,
   doc,
@@ -16,6 +17,10 @@ import { ToastContainer, toast } from "react-toastify";
 import return_img from "../assets/return.png";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { updatePassword } from "firebase/auth";
+import light from "../assets/light.png";
+import dark from "../assets/dark.png";
+import trFlag from "../assets/tr.png";
+import enFlag from "../assets/en.jpg";
 
 // --- YENİ: Profil veri yapısı arayüzü ---
 interface UserProfile {
@@ -39,21 +44,29 @@ interface UserProfile {
 
 // --- YENİ: Başarım tanımları ---
 const achievementsList = {
-  firstWin: { name: "First Blood", description: "Get your first ranked win." },
-  tenWins: { name: "Arena Master", description: "Win 10 ranked matches." },
+  firstWin: {
+    name: "profile.firstBlood",
+    description: "profile.firstBloodDesc",
+  },
+  tenWins: {
+    name: "profile.arenaMaster",
+    description: "profile.arenamasterDesc",
+  },
   flawlessVictory: {
-    name: "Flawless Victory",
-    description: "Win a match without making any mistakes.",
+    name: "profile.flawlessVictory",
+    description: "profile.flawlessVictoryDesc",
   },
 };
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const { username } = useParams<{ username: string }>(); // YENİ: URL'den username'i al
   const { currentUser } = useAuth();
   const { theme, toggleTheme } = useContext(ThemeContext);
   // --- GÜNCELLENDİ: State'i tek bir profile nesnesi olarak tut ---
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [languageDropdown, setLanguageDropdown] = useState(false);
   const [loading, setLoading] = useState(true);
   const [tiersOpen, setTiersOpen] = useState(false);
   const [titlesOpen, setTitlesOpen] = useState(false);
@@ -66,6 +79,27 @@ const Profile = () => {
   const [newUsername, setNewUsername] = useState(""); // YENİ
   const [usernameLoading, setUsernameLoading] = useState(false); // YENİ
   const [canChangeUsername, setCanChangeUsername] = useState(true); // YENİ
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
+    setLanguageDropdown(false);
+  };
+
+  const handleLanguageClick = () => {
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(min-width: 768px)").matches
+    ) {
+      // Desktop / md+ -> open dropdown
+      setLanguageDropdown(!languageDropdown);
+    } else {
+      // Mobile -> toggle language directly
+      const newLang = i18n.language === "tr" ? "en" : "tr";
+      changeLanguage(newLang);
+    }
+  };
 
   // YENİ: Kendi profilimiz mi diye kontrol et
   const isMyProfile = profile ? currentUser?.email === profile.email : false;
@@ -88,7 +122,7 @@ const Profile = () => {
       max: 99,
       icon: "🥉",
       color: "from-orange-400 to-orange-600",
-      note: "For beginners.",
+      note: t("profile.bronzeNote"),
     },
     {
       name: "Silver",
@@ -96,7 +130,7 @@ const Profile = () => {
       max: 299,
       icon: "🥈",
       color: "from-gray-300 to-gray-500",
-      note: "Basic experience.",
+      note: t("profile.silverNote"),
     },
     {
       name: "Gold",
@@ -104,7 +138,7 @@ const Profile = () => {
       max: 599,
       icon: "🥇",
       color: "from-yellow-400 to-yellow-600",
-      note: "Advanced player.",
+      note: t("profile.goldNote"),
     },
     {
       name: "Diamond",
@@ -112,7 +146,7 @@ const Profile = () => {
       max: Infinity,
       icon: "💎",
       color: "from-cyan-400 to-blue-600",
-      note: "Top tier.",
+      note: t("profile.diamondNote"),
     },
   ];
 
@@ -372,7 +406,7 @@ const Profile = () => {
             theme === "dark" ? "text-white" : "text-slate-800"
           }`}
         >
-          Loading Profile...
+          {t("profile.loading")}
         </div>
       </div>
     );
@@ -395,7 +429,7 @@ const Profile = () => {
               : "text-2xl text-black font-semibold"
           }
         >
-          Failed to load profile
+          {t("profile.failed")}
         </div>
       </div>
     );
@@ -437,57 +471,10 @@ const Profile = () => {
         ))}
       </div>
 
-      {/* Theme Toggle */}
-      <div className="absolute z-30 top-6 left-6">
-        <div
-          onClick={toggleTheme}
-          className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
-            theme === "dark"
-              ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
-              : "bg-white/80 border-slate-200/50 hover:bg-white/90"
-          } shadow-xl hover:scale-110`}
-        >
-          {theme === "dark" ? (
-            <img
-              src="https://clipart-library.com/images/6iypd9jin.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Light mode"
-            />
-          ) : (
-            <img
-              src="https://clipart-library.com/img/1669853.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Dark mode"
-            />
-          )}
-        </div>
-      </div>
-
-      {/* Back Button */}
-      <div className="absolute z-30 top-6 right-6">
-        <div
-          onClick={() => navigate("/menu")}
-          className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
-            theme === "dark"
-              ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
-              : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
-          }`}
-        >
-          <div className="flex gap-2 items-center">
-            <img
-              src={return_img}
-              className="w-6"
-              alt="Back"
-            />
-            <p className="font-semibold">Go Back</p>
-          </div>
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="relative z-10 flex justify-center items-center min-h-screen p-6">
         <div
-          className={`max-w-2xl w-full rounded-2xl backdrop-blur-md border-4 shadow-2xl p-8 lg:mt-8 mt-20 ${
+          className={`max-w-2xl w-full rounded-2xl backdrop-blur-md border-4 shadow-2xl p-8 ${
             theme === "dark"
               ? "bg-slate-800/90 border-slate-600 text-white"
               : "bg-white/90 border-slate-300 text-slate-800"
@@ -566,8 +553,8 @@ const Profile = () => {
                 } hover:scale-105`}
               >
                 {canChangeUsername
-                  ? "👤 Change Username"
-                  : "👤 Change Username (2 days cooldown)"}
+                  ? t("profile.changeUsername")
+                  : t("profile.changeUsernameDisabled")}
               </button>
               <button
                 onClick={() => setShowChangePassword(true)}
@@ -577,7 +564,7 @@ const Profile = () => {
                     : "bg-slate-200/80 hover:bg-slate-300 text-slate-800 border border-slate-300"
                 } hover:scale-105`}
               >
-                🔐 Change Password
+                {t("profile.changePassword")}
               </button>
             </div>
           )}
@@ -599,7 +586,7 @@ const Profile = () => {
                   theme === "dark" ? "text-slate-400" : "text-slate-600"
                 }`}
               >
-                Total Points
+                {t("profile.totalPoints")}
               </div>
             </div>
           </div>
@@ -619,7 +606,7 @@ const Profile = () => {
                   theme === "dark" ? "text-slate-400" : "text-slate-600"
                 }`}
               >
-                Total Games
+                {t("profile.totalGames")}
               </div>
             </div>
 
@@ -638,7 +625,7 @@ const Profile = () => {
                   theme === "dark" ? "text-slate-400" : "text-slate-600"
                 }`}
               >
-                Wins
+                {t("ranking.wins")}
               </div>
             </div>
 
@@ -657,7 +644,7 @@ const Profile = () => {
                   theme === "dark" ? "text-slate-400" : "text-slate-600"
                 }`}
               >
-                Losses
+                {t("ranking.losses")}
               </div>
             </div>
 
@@ -676,7 +663,7 @@ const Profile = () => {
                   theme === "dark" ? "text-slate-400" : "text-slate-600"
                 }`}
               >
-                Draws
+                {t("ranking.draws")}
               </div>
             </div>
           </div>
@@ -692,7 +679,7 @@ const Profile = () => {
                 }`}
               >
                 <div className="text-lg font-semibold">
-                  Win Rate:{" "}
+                  {t("profile.winRate")}{" "}
                   <span className="text-green-500">
                     {profile.stats.winRate.toFixed(1)}%
                   </span>
@@ -707,12 +694,15 @@ const Profile = () => {
               theme === "dark" ? "text-slate-400" : "text-slate-600"
             }`}
           >
-            Member since: {new Date(profile.createdAt).toLocaleDateString()}
+            {t("profile.memberSince")}{" "}
+            {new Date(profile.createdAt).toLocaleDateString()}
           </div>
 
           {/* --- YENİ: Başarımlar Bölümü --- */}
           <div className="mt-6">
-            <h2 className="text-xl font-bold mb-4 text-center">Achievements</h2>
+            <h2 className="text-xl font-bold mb-4 text-center">
+              {t("profile.achievements")}
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {Object.entries(achievementsList).map(([key, value]) => (
                 <div
@@ -726,12 +716,12 @@ const Profile = () => {
                   }`}
                 >
                   <h3 className="font-bold text-md">
-                    {value.name} {profile.achievements[key] ? "🏆" : "🔒"}
+                    {t(value.name)} {profile.achievements[key] ? "🏆" : "🔒"}
                   </h3>
-                  <p className="text-sm">{value.description}</p>
+                  <p className="text-sm">{t(value.description)}</p>
                   {profile.achievements[key] && (
                     <p className="text-xs text-green-400 mt-1">
-                      Unlocked:{" "}
+                      {t("profile.unlocked")}{" "}
                       {new Date(profile.achievements[key]).toLocaleDateString()}
                     </p>
                   )}
@@ -750,7 +740,7 @@ const Profile = () => {
                   : "bg-indigo-500 hover:bg-indigo-600 text-white"
               }`}
             >
-              See rank levels
+              {t("profile.seeRankLevels")}
             </button>
           </div>
 
@@ -778,7 +768,9 @@ const Profile = () => {
                   } max-h-[85vh] overflow-y-auto`}
                 >
                   <div className="flex justify-between items-center p-5 pb-3 sticky top-0 bg-inherit">
-                    <h3 className="text-xl font-semibold">Rank Levels</h3>
+                    <h3 className="text-xl font-semibold">
+                      {t("profile.rankLevels")}
+                    </h3>
                     <button
                       onClick={() => setTiersOpen(false)}
                       className={`px-3 py-1 cursor-pointer duration-200 rounded-md text-sm ${
@@ -830,7 +822,7 @@ const Profile = () => {
                             }`}
                           >
                             <div>
-                              Points range:
+                              {t("profile.pointsRange")}
                               <span className="font-semibold">
                                 {" "}
                                 {tier.max === Infinity
@@ -870,7 +862,9 @@ const Profile = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-xl font-bold">Select a Title</h3>
+                  <h3 className="text-xl font-bold">
+                    {t("profile.selectTitle")}
+                  </h3>
                   <button
                     onClick={() => setTitlesOpen(false)}
                     className={`px-2 py-1 rounded-lg font-semibold text-sm cursor-pointer transition ${
@@ -917,13 +911,13 @@ const Profile = () => {
             }`}
           >
             <h2 className="text-2xl font-bold mb-6 text-center">
-              Change Password
+              {t("profile.changePassword")}
             </h2>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Current Password
+                  {t("profile.currentPassword")}
                 </label>
                 <input
                   type="password"
@@ -940,7 +934,7 @@ const Profile = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  New Password
+                  {t("profile.newPassword")}
                 </label>
                 <input
                   type="password"
@@ -957,7 +951,7 @@ const Profile = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Confirm New Password
+                  {t("profile.confirmNewPassword")}
                 </label>
                 <input
                   type="password"
@@ -996,7 +990,7 @@ const Profile = () => {
                       : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
                   }`}
                 >
-                  Cancel
+                  {t("common.cancel")}
                 </button>
                 <button
                   onClick={handleChangePassword}
@@ -1007,7 +1001,9 @@ const Profile = () => {
                       : "hover:scale-105 cursor-pointer hover:shadow-xl"
                   } bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg`}
                 >
-                  {passwordLoading ? "Updating..." : "Update Password"}
+                  {passwordLoading
+                    ? t("profile.updating")
+                    : t("profile.updatePassword")}
                 </button>
               </div>
             </div>
@@ -1026,18 +1022,18 @@ const Profile = () => {
             }`}
           >
             <h2 className="text-2xl font-bold mb-2 text-center">
-              Change Username
+              {t("profile.changeUsername")}
             </h2>
             {!canChangeUsername && (
               <p className="text-center text-sm text-orange-500 mb-4">
-                ⏳ You can change username again in 2 days
+                {t("profile.cooldownMessage")}
               </p>
             )}
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  New Username
+                  {t("profile.newUsername")}
                 </label>
                 <input
                   type="text"
@@ -1057,7 +1053,7 @@ const Profile = () => {
                   placeholder="New Username"
                 />
                 <p className="text-xs mt-1 text-slate-500">
-                  3-14 characters, letters, numbers, underscore and dash allowed
+                  {t("profile.usernameHint")}
                 </p>
               </div>
 
@@ -1078,7 +1074,7 @@ const Profile = () => {
                       : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
                   }`}
                 >
-                  Cancel
+                  {t("common.cancel")}
                 </button>
                 <button
                   onClick={handleChangeUsername}
@@ -1089,7 +1085,9 @@ const Profile = () => {
                       : "hover:scale-105 cursor-pointer hover:shadow-xl"
                   } bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-lg`}
                 >
-                  {usernameLoading ? "Updating..." : "Update Username"}
+                  {usernameLoading
+                    ? t("profile.updating")
+                    : t("profile.updateUsername")}
                 </button>
               </div>
             </div>

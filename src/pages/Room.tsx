@@ -19,6 +19,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { useTranslation } from "react-i18next";
 import { db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -36,6 +37,13 @@ import { getDoc, increment } from "firebase/firestore";
 import { useWindowSize } from "react-use";
 import { ROOM_TTL_MS } from "../services/roomCleanup";
 import { useAuth } from "../context/AuthContext";
+import trFlag from "../assets/tr.png";
+import enFlag from "../assets/en.jpg";
+import dark from "../assets/dark.png";
+import light from "../assets/light.png";
+import logo from "../assets/logo.png";
+import ptFlag from "../assets/pt.png";
+import spFlag from "../assets/sp.png";
 
 const Room = () => {
   const { roomId } = useParams();
@@ -60,6 +68,8 @@ const Room = () => {
   const [selected, setSelected]: any = useState();
   const [showConfetti, setShowConfetti] = useState(false);
   const prevGuestNow = useRef<string | null>(null);
+  const [languageDropdown, setLanguageDropdown] = useState(false);
+  const { t, i18n } = useTranslation();
 
   usePageTitle(roomId ? `MMA XOX - Room ${roomId}` : "MMA XOX • Room");
 
@@ -1126,6 +1136,27 @@ const Room = () => {
     });
   };
 
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
+    setLanguageDropdown(false);
+  };
+
+  const handleLanguageClick = () => {
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(min-width: 768px)").matches
+    ) {
+      // Desktop / md+ -> open dropdown
+      setLanguageDropdown(!languageDropdown);
+    } else {
+      // Mobile -> toggle language directly
+      const newLang = i18n.language === "tr" ? "en" : "tr";
+      changeLanguage(newLang);
+    }
+  };
+
   const startGame = async (customTimerLength?: string) => {
     if (!roomId) return;
 
@@ -2112,63 +2143,148 @@ const Room = () => {
         position="bottom-right"
         theme="dark"
       />
-      {/* Tema değiştirme butonu */}
-      <div className="absolute z-30 top-6 left-6">
-        <div
-          onClick={toggleTheme}
-          className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
-            theme === "dark"
-              ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
-              : "bg-white/80 border-slate-200/50 hover:bg-white/90"
-          } shadow-xl hover:scale-110`}
-        >
-          {theme === "dark" ? (
-            <img
-              src="https://clipart-library.com/images/6iypd9jin.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Light mode"
-            />
-          ) : (
-            <img
-              src="https://clipart-library.com/img/1669853.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Dark mode"
-            />
-          )}
+
+      {/* Header */}
+      <div className="flex flex-wrap gap-4 justify-between items-center p-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <div
+              onClick={toggleTheme}
+              className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
+                theme === "dark"
+                  ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
+                  : "bg-white/80 border-slate-200/50 hover:bg-white/90"
+              } shadow-xl hover:scale-110`}
+            >
+              {theme === "dark" ? (
+                <img
+                  src={light}
+                  className="lg:w-6 lg:h-6 w-5 h-5"
+                  alt="Light mode"
+                />
+              ) : (
+                <img
+                  src={dark}
+                  className="lg:w-6 lg:h-6 w-5 h-5"
+                  alt="Dark mode"
+                />
+              )}
+            </div>
+            <div className="relative">
+              <button
+                onClick={handleLanguageClick}
+                className="lg:w-[50px] lg:h-[50px] w-[46px] h-[46px] bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900 dark:to-cyan-900 border border-red-500 flex items-center justify-center rounded-full cursor-pointer transition-all hover:scale-110 shadow-blue-300/50 dark:shadow-blue-900/50 duration-300 overflow-hidden"
+                title="Change Language"
+              >
+                <img
+                  src={
+                    i18n.language === "tr"
+                      ? trFlag
+                      : i18n.language === "pt"
+                      ? ptFlag
+                      : i18n.language === "sp"
+                      ? spFlag
+                      : enFlag
+                  }
+                  alt={
+                    i18n.language === "tr"
+                      ? "Turkish"
+                      : i18n.language === "pt"
+                      ? "Portuguese"
+                      : i18n.language === "sp"
+                      ? "Spanish"
+                      : "English"
+                  }
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </button>
+
+              {/* Dropdown Menu */}
+              {languageDropdown && (
+                <div className="z-60 w-36 absolute top-14 left-0 bg-slate-200/10 text-white rounded-br-xl rounded-tl-xl shadow-xl dark:shadow-2xl border border-slate-600/40 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20">
+                  <button
+                    onClick={() => changeLanguage("tr")}
+                    className="z-80 flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left hover:bg-blue-200/10 transition-colors border-b border-slate-600/40"
+                  >
+                    <img
+                      src={trFlag}
+                      alt="Turkish"
+                      className="w-6 h-6 rounded object-cover rounded-full"
+                    />
+                    <span className="font-medium">Türkçe</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("en")}
+                    className="flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left hover:bg-blue-200/10 transition-colors border-b border-slate-600/40"
+                  >
+                    <img
+                      src={enFlag}
+                      alt="English"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">English</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("pt")}
+                    className="flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left hover:bg-blue-200/10 transition-colors border-b border-slate-600/40"
+                  >
+                    <img
+                      src={ptFlag}
+                      alt="Portuguese"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">Português</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("sp")}
+                    className="flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left hover:bg-blue-200/10 transition-colors"
+                  >
+                    <img
+                      src={spFlag}
+                      alt="Spanish"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">Español</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-      {/* Mute + Back buttons */}
-      <div className="absolute z-30 top-6 right-6 flex items-center gap-3">
-        <button
-          onClick={() => setMuted((m) => !m)}
-          aria-pressed={muted}
-          aria-label={muted ? "Unmute sounds" : "Mute sounds"}
-          title={muted ? "Unmute" : "Mute"}
-          className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
-            theme === "dark"
-              ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
-              : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
-          }`}
-        >
-          <span className="text-xl">{muted ? "🔇" : "🔊"}</span>
-        </button>
-        <div
-          onClick={handleExit}
-          className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
-            theme === "dark"
-              ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
-              : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
-          }`}
-        >
-          <div className="flex gap-2">
-            <img
-              src={return_img || "/placeholder.svg"}
-              className="w-6"
-            />
-            <p className="font-semibold">Back to menu</p>
+        {/* Mute + Back buttons */}
+        <div className="z-30 flex items-center gap-3">
+          <button
+            onClick={() => setMuted((m) => !m)}
+            aria-pressed={muted}
+            aria-label={muted ? "Unmute sounds" : "Mute sounds"}
+            title={muted ? "Unmute" : "Mute"}
+            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
+              theme === "dark"
+                ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
+                : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
+            }`}
+          >
+            <span className="text-xl">{muted ? "🔇" : "🔊"}</span>
+          </button>
+          <div
+            onClick={handleExit}
+            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
+              theme === "dark"
+                ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
+                : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
+            }`}
+          >
+            <div className="flex gap-2">
+              <img
+                src={return_img || "/placeholder.svg"}
+                className="w-6"
+              />
+              <p className="font-semibold">{t("room.backToMenu")}</p>
+            </div>
           </div>
         </div>
       </div>
+
       {/* Kullanıcı adı gösterimi - üst orta */}
       {showUserBanner && (
         <div className="absolute top-24 lg:top-6 left-1/2 transform -translate-x-1/2 z-30">
@@ -2206,10 +2322,10 @@ const Room = () => {
           className={`${
             gameState.winner == null || guestForfeitModal || hostForfeitModal
               ? "hidden"
-              : "absolute"
+              : "fixed top-0"
           } ${
             theme === "dark" ? "bg-[#00000061]" : "bg-[#ffffff61]"
-          }  rounded-lg w-full h-full z-40`}
+          } rounded-lg w-full h-full z-40`}
         >
           <div className="flex justify-center mt-12">
             <div
@@ -2220,15 +2336,15 @@ const Room = () => {
               } bg-gradient-to-r border-2 w-80 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
             >
               <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold">
-                Game Finished!
+                {t("room.gameFinished")}
               </p>
               {gameState.winner == "red" ? (
                 <p className="text-red-500 font-semibold text-xl mt-4 text-center">
-                  {gameState.host} wins! 🏆
+                  {t("room.wins", { player: gameState.host })}
                 </p>
               ) : gameState.winner == "blue" ? (
                 <p className="text-blue-500 font-semibold text-xl mt-4 text-center">
-                  {gameState.guest.now} wins! 🏆
+                  {t("room.wins", { player: gameState.guest.now })}
                 </p>
               ) : (
                 <p
@@ -2236,7 +2352,7 @@ const Room = () => {
                     theme === "dark" ? "text-stone-100" : "text-stone-700"
                   } font-semibold text-xl mt-4 text-center`}
                 >
-                  Draw! 🤝
+                  {t("room.draw")}
                 </p>
               )}
 
@@ -2251,7 +2367,7 @@ const Room = () => {
                         : "from-indigo-200 to-sky-300 text-black border-indigo-400"
                     } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200 mt-5`}
                   >
-                    Play Again
+                    {t("room.playAgain")}
                   </button>
                 </div>
               )}
@@ -2267,7 +2383,7 @@ const Room = () => {
                         : "from-red-300 to-orange-300 text-black border-red-400"
                     } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200`}
                   >
-                    Return to Menu
+                    {t("room.returnToMenu")}
                   </button>
                   <button
                     onClick={() => setShowWaitingGuest(true)}
@@ -2277,7 +2393,7 @@ const Room = () => {
                         : "from-indigo-200 to-sky-300 text-black border-indigo-400"
                     } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200`}
                   >
-                    Wait for Host
+                    {t("room.waitForHost")}
                   </button>
                 </div>
               )}
@@ -2293,14 +2409,14 @@ const Room = () => {
                     }`}
                   >
                     <p className="text-sm text-yellow-600 font-semibold">
-                      🏆 Ranked Match Completed
+                      {t("room.rankedMatchCompleted")}
                     </p>
                     <p
                       className={`text-xs mt-1 ${
                         theme === "dark" ? "text-yellow-400" : "text-yellow-700"
                       }`}
                     >
-                      Points have been updated!
+                      {t("room.pointsUpdated")}
                     </p>
                   </div>
 
@@ -2313,7 +2429,7 @@ const Room = () => {
                     }`}
                   >
                     <h3 className="text-sm font-semibold mb-2 text-center">
-                      Play Again?
+                      {t("room.playAgainQuestion")}
                     </h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between items-center">
@@ -2326,8 +2442,8 @@ const Room = () => {
                           }`}
                         >
                           {gameState.hostWantsRematch
-                            ? "✅ Yes"
-                            : "⏳ Deciding..."}
+                            ? "✅ " + t("room.yes")
+                            : "⏳ " + t("room.deciding")}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
@@ -2340,8 +2456,8 @@ const Room = () => {
                           }`}
                         >
                           {gameState.guestWantsRematch
-                            ? "✅ Yes"
-                            : "⏳ Deciding..."}
+                            ? "✅ " + t("room.yes")
+                            : "⏳ " + t("room.deciding")}
                         </span>
                       </div>
                     </div>
@@ -2367,7 +2483,7 @@ const Room = () => {
                             });
                           }
 
-                          toast.success("Waiting for opponent's decision...");
+                          toast.success(t("room.waitingForOpponentDecision"));
                         }}
                         className={`px-4 py-2 rounded-lg font-semibold cursor-pointer transition-all duration-200 ${
                           theme === "dark"
@@ -2375,7 +2491,7 @@ const Room = () => {
                             : "bg-green-500 hover:bg-green-600 text-white"
                         }`}
                       >
-                        Play Again
+                        {t("room.playAgain")}
                       </button>
                     )}
 
@@ -2388,7 +2504,7 @@ const Room = () => {
                           : "bg-red-500 hover:bg-red-600 text-white"
                       }`}
                     >
-                      Return to Menu
+                      {t("room.returnToMenu")}
                     </button>
                   </div>
 
@@ -2403,7 +2519,7 @@ const Room = () => {
                               : "text-green-600"
                           }`}
                         >
-                          🎮 Starting new ranked match...
+                          {t("room.startingNewRankedMatch")}
                         </p>
                       </div>
                     )}
@@ -2422,19 +2538,21 @@ const Room = () => {
           }`}
         >
           <div className="w-fit mb-4">
-            <div className="text-2xl mb-2 mt-42 lg:mt-28 text-center">
-              Room Code: {roomId}
+            <div className="text-2xl mb-2 mt-4 text-center">
+              {t("room.roomCode")} {roomId}
             </div>
             {gameState.gameStarted == false &&
             gameState.guest.now != null &&
             role == "guest" ? (
               <div className="text-2xl text-center">
-                Host is setting up the game...
+                {t("room.hostSettingUp")}
               </div>
             ) : null}
 
             {gameState.guest.now == null ? (
-              <p className="text-2xl text-center">Waiting for an opponent...</p>
+              <p className="text-2xl text-center">
+                {t("room.waitingForOpponent")}
+              </p>
             ) : null}
             <div className="text-center">
               <div>
@@ -2447,7 +2565,7 @@ const Room = () => {
                         : "text-blue-500"
                     }`}
                   >
-                    {gameState.timerLength} seconds
+                    {gameState.timerLength} {t("room.seconds")}
                   </p>
                 ) : null}
               </div>
@@ -2468,7 +2586,7 @@ const Room = () => {
                         : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80"
                     }`}
                   >
-                    Restart Game
+                    {t("room.restartGame")}
                   </div>
                 )}
 
@@ -2481,7 +2599,7 @@ const Room = () => {
                         : "bg-gradient-to-r from-yellow-200/80 to-yellow-300/80 border-yellow-400/30 text-yellow-800"
                     }`}
                   >
-                    🏆 <span>Ranked Match</span>
+                    🏆 <span>{t("room.rankedMatch")}</span>
                   </div>
                 )}
 
@@ -2495,7 +2613,7 @@ const Room = () => {
                           : "text-blue-500"
                       }`}
                     >
-                      {gameState.timerLength} seconds
+                      {gameState.timerLength} {t("room.seconds")}
                     </p>
                   ) : null}
                 </div>
@@ -2509,7 +2627,7 @@ const Room = () => {
                     }`}
                   >
                     <p>
-                      Turn :{" "}
+                      {t("room.turn")}{" "}
                       {gameState.turn == "red"
                         ? gameState.host
                         : gameState.guest.now}
@@ -2539,7 +2657,7 @@ const Room = () => {
                     }`}
                   >
                     <p>
-                      Turn :{" "}
+                      {t("room.turn")}{" "}
                       {gameState.turn == "red"
                         ? gameState.host
                         : gameState.guest.now}
@@ -2574,7 +2692,7 @@ const Room = () => {
                       >
                         <div className="flex gap-3 items-center justify-center">
                           <img
-                            src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                            src={logo}
                             alt="logo"
                             className="w-10 drop-shadow-lg"
                           />
@@ -2594,7 +2712,7 @@ const Room = () => {
                                       : "text-slate-800"
                                   }`}
                                 >
-                                  CHOOSE DIFFICULTY
+                                  {t("room.chooseDifficulty")}
                                 </h2>
                                 <select
                                   value={difficulty}
@@ -2615,7 +2733,7 @@ const Room = () => {
                                         : "bg-sky-100"
                                     }`}
                                   >
-                                    EASY
+                                    {t("room.easy")}
                                   </option>
                                   <option
                                     value="MEDIUM"
@@ -2625,7 +2743,7 @@ const Room = () => {
                                         : "bg-sky-100"
                                     }`}
                                   >
-                                    MEDIUM
+                                    {t("room.medium")}
                                   </option>
                                   <option
                                     value="HARD"
@@ -2635,7 +2753,7 @@ const Room = () => {
                                         : "bg-sky-100"
                                     }`}
                                   >
-                                    HARD
+                                    {t("room.hard")}
                                   </option>
                                 </select>
                               </div>
@@ -2654,20 +2772,20 @@ const Room = () => {
                                   <h2 className="font-semibold text-lg mb-2 flex items-center justify-center gap-2">
                                     🏆{" "}
                                     <span className="text-yellow-600">
-                                      Ranked Match
+                                      {t("room.rankedMatch")}
                                     </span>
                                   </h2>
                                   <div className="space-y-2 text-sm">
                                     <div className="flex justify-between items-center">
-                                      <span>Difficulty:</span>
+                                      <span>{t("room.difficulty")}:</span>
                                       <span className="font-bold text-orange-500">
                                         MEDIUM
                                       </span>
                                     </div>
                                     <div className="flex justify-between items-center">
-                                      <span>Timer:</span>
+                                      <span>{t("room.timer")}:</span>
                                       <span className="font-bold text-blue-500">
-                                        30 Seconds
+                                        {t("room.thirtySeconds")}
                                       </span>
                                     </div>
                                     <p
@@ -2774,7 +2892,7 @@ const Room = () => {
                                         : "bg-sky-100"
                                     }`}
                                   >
-                                    30 Seconds
+                                    {t("room.thirtySeconds")}
                                   </option>
                                   <option
                                     value="40"
@@ -2844,7 +2962,7 @@ const Room = () => {
                       <div>
                         <div className="flex items-center justify-center">
                           <img
-                            src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                            src={logo}
                             className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
                           />
                         </div>
@@ -2893,7 +3011,7 @@ const Room = () => {
                               theme === "dark" ? "text-white" : "text-black"
                             }`}
                           >
-                            {gameState?.filtersSelected[0].filter_text}
+                            {t(gameState?.filtersSelected[0].filter_text)}
                           </p>
                         </div>
                       ) : (
@@ -2935,7 +3053,7 @@ const Room = () => {
                               theme === "dark" ? "text-white" : "text-black"
                             }`}
                           >
-                            {gameState?.filtersSelected[1].filter_text}
+                            {t(gameState?.filtersSelected[1].filter_text)}
                           </p>
                         </div>
                       ) : (
@@ -2977,7 +3095,7 @@ const Room = () => {
                               theme === "dark" ? "text-white" : "text-black"
                             }`}
                           >
-                            {gameState?.filtersSelected[2].filter_text}
+                            {t(gameState?.filtersSelected[2].filter_text)}
                           </p>
                         </div>
                       ) : (
@@ -3021,7 +3139,7 @@ const Room = () => {
                               theme === "dark" ? "text-white" : "text-black"
                             }`}
                           >
-                            {gameState?.filtersSelected[3].filter_text}
+                            {t(gameState?.filtersSelected[3].filter_text)}
                           </p>
                         </div>
                       ) : (
@@ -3161,7 +3279,7 @@ const Room = () => {
                               theme === "dark" ? "text-white" : "text-black"
                             }`}
                           >
-                            {gameState?.filtersSelected[4].filter_text}
+                            {t(gameState?.filtersSelected[4].filter_text)}
                           </p>
                         </div>
                       ) : (
@@ -3301,7 +3419,7 @@ const Room = () => {
                               theme === "dark" ? "text-white" : "text-black"
                             }`}
                           >
-                            {gameState?.filtersSelected[5].filter_text}
+                            {t(gameState?.filtersSelected[5].filter_text)}
                           </p>
                         </div>
                       ) : (
@@ -3418,7 +3536,7 @@ const Room = () => {
                         onChange={(e) => {
                           filterByName(e.target.value);
                         }}
-                        placeholder="Search for a fighter..."
+                        placeholder={t("game.searchForFighter")}
                         className="bg-white input-fighter text-black xl:text-base text-sm px-3 w-full py-1 rounded-lg hover:outline-0 focus:outline-1 outline-stone-500 shadow-lg"
                       />
                       {fighters && fighters.length > 0 ? (
@@ -3466,7 +3584,7 @@ const Room = () => {
                               : "bg-stone-300 text-black border-stone-400"
                           } px-6 py-1 font-semibold rounded-tr-lg rounded-bl-lg shadow-lg border cursor-pointer`}
                         >
-                          Cancel
+                          {t("room.cancel")}
                         </button>
                       </div>
                     </div>
@@ -3494,7 +3612,7 @@ const Room = () => {
               >
                 <div className="flex gap-3 items-center justify-center">
                   <img
-                    src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                    src={logo}
                     alt="logo"
                     className="w-10 drop-shadow-lg"
                   />
@@ -3515,19 +3633,21 @@ const Room = () => {
                       >
                         <h2 className="font-semibold text-lg mb-2 flex items-center justify-center gap-2">
                           🏆{" "}
-                          <span className="text-yellow-600">Ranked Match</span>
+                          <span className="text-yellow-600">
+                            {t("room.rankedMatch")}
+                          </span>
                         </h2>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between items-center">
-                            <span>Difficulty:</span>
+                            <span>{t("room.difficulty")}:</span>
                             <span className="font-bold text-orange-500">
-                              MEDIUM
+                              {t("room.medium")}
                             </span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span>Timer:</span>
+                            <span>{t("room.timer")}:</span>
                             <span className="font-bold text-blue-500">
-                              30 Seconds
+                              {t("room.thirtySeconds")}
                             </span>
                           </div>
                           <p
@@ -3537,7 +3657,7 @@ const Room = () => {
                                 : "text-yellow-700"
                             }`}
                           >
-                            Settings are fixed for competitive fairness
+                            {t("room.settingsFixed")}
                           </p>
                         </div>
                       </div>
@@ -3554,7 +3674,9 @@ const Room = () => {
                       >
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between items-center">
-                            <span>Host ({gameState.host}):</span>
+                            <span>
+                              {t("room.hostLabel")} ({gameState.host}):
+                            </span>
                             <span
                               className={`font-semibold ${
                                 gameState.hostReady
@@ -3563,12 +3685,14 @@ const Room = () => {
                               }`}
                             >
                               {gameState.hostReady
-                                ? "✅ Ready"
-                                : "⏳ Setting up..."}
+                                ? "✅ " + t("room.ready")
+                                : t("room.settingUp")}
                             </span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span>You ({gameState.guest.now}):</span>
+                            <span>
+                              {t("room.you")} ({gameState.guest.now}):
+                            </span>
                             <span
                               className={`font-semibold ${
                                 gameState.guestReady
@@ -3577,8 +3701,8 @@ const Room = () => {
                               }`}
                             >
                               {gameState.guestReady
-                                ? "✅ Ready"
-                                : "⏳ Waiting..."}
+                                ? "✅ " + t("room.ready")
+                                : t("room.waiting")}
                             </span>
                           </div>
                         </div>
@@ -3596,7 +3720,7 @@ const Room = () => {
                       lastActivityAt: serverTimestamp(),
                       expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
                     });
-                    toast.success("You are ready! Waiting for host...");
+                    toast.success(t("room.youAreReady"));
                   }}
                   disabled={gameState.guestReady}
                   className={`${
@@ -3610,8 +3734,8 @@ const Room = () => {
                   } border-2 mt-6 text-xl hover:shadow-2xl px-6 py-2 shadow-lg duration-300 rounded-xl font-bold transform transition-all focus:ring-2 focus:ring-green-400 w-full`}
                 >
                   {gameState.guestReady
-                    ? "✅ Ready! Waiting for host..."
-                    : "🚀 I'm Ready!"}
+                    ? t("room.readyWaitingForHost")
+                    : t("room.imReady")}
                 </button>
               </div>
             </div>
@@ -3632,7 +3756,7 @@ const Room = () => {
               >
                 <div className="flex gap-3 items-center justify-center">
                   <img
-                    src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                    src={logo}
                     alt="logo"
                     className="w-10 drop-shadow-lg"
                   />
@@ -3650,7 +3774,7 @@ const Room = () => {
                             theme === "dark" ? "text-white" : "text-slate-800"
                           }`}
                         >
-                          CHOOSE DIFFICULTY
+                          {t("room.chooseDifficulty")}
                         </h2>
                         <select
                           value={difficulty}
@@ -3667,7 +3791,7 @@ const Room = () => {
                               theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                             }`}
                           >
-                            EASY
+                            {t("room.easy")}
                           </option>
                           <option
                             value="MEDIUM"
@@ -3675,7 +3799,7 @@ const Room = () => {
                               theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                             }`}
                           >
-                            MEDIUM
+                            {t("room.medium")}
                           </option>
                           <option
                             value="HARD"
@@ -3683,7 +3807,7 @@ const Room = () => {
                               theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                             }`}
                           >
-                            HARD
+                            {t("room.hard")}
                           </option>
                         </select>
                       </div>
@@ -3702,20 +3826,20 @@ const Room = () => {
                           <h2 className="font-semibold text-lg mb-2 flex items-center justify-center gap-2">
                             🏆{" "}
                             <span className="text-yellow-600">
-                              Ranked Match
+                              {t("room.rankedMatch")}
                             </span>
                           </h2>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between items-center">
-                              <span>Difficulty:</span>
+                              <span>{t("room.difficulty")}:</span>
                               <span className="font-bold text-orange-500">
-                                MEDIUM
+                                {t("room.medium")}
                               </span>
                             </div>
                             <div className="flex justify-between items-center">
-                              <span>Timer:</span>
+                              <span>{t("room.timer")}:</span>
                               <span className="font-bold text-blue-500">
-                                30 Seconds
+                                {t("room.thirtySeconds")}
                               </span>
                             </div>
                             <p
@@ -3725,7 +3849,7 @@ const Room = () => {
                                   : "text-yellow-700"
                               }`}
                             >
-                              Settings are fixed for competitive fairness
+                              {t("room.settingsFixed")}
                             </p>
                           </div>
                         </div>
@@ -3744,7 +3868,9 @@ const Room = () => {
                         >
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between items-center">
-                              <span>You ({gameState.host}):</span>
+                              <span>
+                                {t("room.you")} ({gameState.host}):
+                              </span>
                               <span
                                 className={`font-semibold ${
                                   gameState.hostReady
@@ -3753,12 +3879,14 @@ const Room = () => {
                                 }`}
                               >
                                 {gameState.hostReady
-                                  ? "✅ Ready"
-                                  : "⏳ Waiting..."}
+                                  ? "✅ " + t("room.ready")
+                                  : t("room.waiting")}
                               </span>
                             </div>
                             <div className="flex justify-between items-center">
-                              <span>Guest ({gameState.guest.now}):</span>
+                              <span>
+                                {t("room.guestLabel")} ({gameState.guest.now}):
+                              </span>
                               <span
                                 className={`font-semibold ${
                                   gameState.guestReady
@@ -3767,8 +3895,8 @@ const Room = () => {
                                 }`}
                               >
                                 {gameState.guestReady
-                                  ? "✅ Ready"
-                                  : "⏳ Waiting..."}
+                                  ? "✅ " + t("room.ready")
+                                  : t("room.waiting")}
                               </span>
                             </div>
                           </div>
@@ -3784,7 +3912,7 @@ const Room = () => {
                             theme === "dark" ? "text-white" : "text-slate-800"
                           } font-semibold text-lg`}
                         >
-                          TIMER
+                          {t("room.timer")}
                         </h2>
                         <select
                           value={timerLength}
@@ -3801,7 +3929,7 @@ const Room = () => {
                               theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                             }`}
                           >
-                            No time limit
+                            {t("room.noTimeLimit")}
                           </option>
                           <option
                             value="20"
@@ -3809,7 +3937,7 @@ const Room = () => {
                               theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                             }`}
                           >
-                            20 Seconds
+                            {t("room.twentySeconds")}
                           </option>
                           <option
                             value="30"
@@ -3825,7 +3953,7 @@ const Room = () => {
                               theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                             }`}
                           >
-                            40 Seconds
+                            {t("room.fortySeconds")}
                           </option>
                         </select>
                       </div>
@@ -3856,7 +3984,7 @@ const Room = () => {
                         if (gameState.guestReady) {
                           startGame();
                         } else {
-                          toast.success("You are ready! Waiting for guest...");
+                          toast.success(t("room.youAreReadyWaitingForGuest"));
                         }
                       } else {
                         // Casual maçlarda direkt başlatılacak
@@ -3882,9 +4010,9 @@ const Room = () => {
                 >
                   {gameState?.isRankedRoom
                     ? gameState.hostReady
-                      ? "✅ Ready! Waiting for guest..."
-                      : "🚀 I'm Ready!"
-                    : "PLAY!"}
+                      ? t("room.readyWaitingForGuest")
+                      : t("room.imReady")
+                    : t("room.play")}
                 </button>
               </div>
             </div>
@@ -3906,7 +4034,7 @@ const Room = () => {
                 theme === "dark" ? "text-white" : "text-gray-900"
               } text-3xl font-bold text-center mb-2`}
             >
-              Guest Forfeited!
+              {t("room.guestForfeited")}
             </h2>
 
             <p
@@ -3914,7 +4042,7 @@ const Room = () => {
                 theme === "dark" ? "text-purple-200" : "text-purple-700"
               } text-center text-lg mb-6`}
             >
-              🏆 You win by forfeit!
+              {t("room.youWinByForfeit")}
             </p>
 
             <div className="space-y-4">
@@ -3929,7 +4057,7 @@ const Room = () => {
                     : "bg-gradient-to-r from-green-400 to-green-500 hover:scale-[1.03] text-green-900 duration-200 cursor-pointer"
                 } w-full py-3 rounded-lg font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl`}
               >
-                Play Again
+                {t("room.playAgain")}
               </button>
 
               <button
@@ -3943,7 +4071,7 @@ const Room = () => {
                     : "bg-gradient-to-r from-red-400 to-red-500 hover:scale-[1.03] text-red-900 duration-200 cursor-pointer"
                 } w-full py-3 rounded-lg font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl`}
               >
-                Return to Menu
+                {t("room.returnToMenu")}
               </button>
             </div>
           </div>
@@ -3965,7 +4093,7 @@ const Room = () => {
                 theme === "dark" ? "text-white" : "text-gray-900"
               } text-3xl font-bold text-center mb-2`}
             >
-              Waiting for Host
+              {t("room.waitingForHostDialog")}
             </h2>
 
             <p
@@ -3973,7 +4101,7 @@ const Room = () => {
                 theme === "dark" ? "text-blue-200" : "text-blue-700"
               } text-center text-lg mb-6`}
             >
-              ⏳ Waiting for {gameState?.host} to start a new game...
+              {t("room.waitingForHostToStart", { host: gameState?.host })}
             </p>
 
             {/* Animasyon için dönen nokta */}
@@ -4008,7 +4136,7 @@ const Room = () => {
                   : "bg-gradient-to-r from-red-400 to-red-500 hover:scale-[1.03] text-red-900 duration-200 cursor-pointer"
               } w-full py-3 rounded-lg font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl`}
             >
-              Go Back to Menu
+              {t("room.goBackToMenu")}
             </button>
           </div>
         </div>
@@ -4029,7 +4157,7 @@ const Room = () => {
                 theme === "dark" ? "text-white" : "text-gray-900"
               } text-3xl font-bold text-center mb-2`}
             >
-              Host Forfeited!
+              {t("room.hostForfeited")}
             </h2>
 
             <p
@@ -4037,7 +4165,7 @@ const Room = () => {
                 theme === "dark" ? "text-purple-200" : "text-purple-700"
               } text-center text-lg mb-6`}
             >
-              🏆 You win by forfeit!
+              {t("room.youWinByForfeit")}
             </p>
 
             <button
@@ -4051,7 +4179,7 @@ const Room = () => {
                   : "bg-gradient-to-r from-red-400 to-red-500 hover:scale-[1.03] text-red-900 duration-200 cursor-pointer"
               } w-full py-3 rounded-lg font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl`}
             >
-              Return to Menu
+              {t("room.returnToMenu")}
             </button>
           </div>
         </div>
@@ -4068,14 +4196,14 @@ const Room = () => {
             } border-2 w-80 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
           >
             <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold mb-4">
-              ⚠️ Forfeit Match?
+              {t("room.forfeitMatch")}
             </p>
             <p
               className={`text-center mb-6 ${
                 theme === "dark" ? "text-gray-200" : "text-gray-700"
               }`}
             >
-              You will lose this ranked game. Guest will win and gain points.
+              {t("room.youWillLoseThisRankedGameGuest")}
             </p>
             <div className="flex gap-3">
               <button
@@ -4086,7 +4214,7 @@ const Room = () => {
                     : "bg-gradient-to-r from-slate-300 to-slate-400 hover:from-slate-200 hover:to-slate-300 text-black"
                 } flex-1 cursor-pointer py-2 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl`}
               >
-                Cancel
+                {t("room.cancel")}
               </button>
               <button
                 onClick={handleRankedForfeit}
@@ -4096,7 +4224,7 @@ const Room = () => {
                     : "bg-gradient-to-r from-red-400 to-red-500 hover:from-red-300 hover:to-red-400 text-red-900"
                 } flex-1 cursor-pointer py-2 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl`}
               >
-                Yes, Forfeit
+                {t("room.yesForfeit")}
               </button>
             </div>
           </div>
@@ -4114,14 +4242,14 @@ const Room = () => {
             } border-2 w-80 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
           >
             <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold mb-4">
-              ⚠️ Leave Match?
+              {t("room.leaveMatch")}
             </p>
             <p
               className={`text-center mb-6 ${
                 theme === "dark" ? "text-gray-200" : "text-gray-700"
               }`}
             >
-              You will lose this ranked game. Host will win and gain points.
+              {t("room.youWillLoseThisRankedGame")}
             </p>
             <div className="flex gap-3">
               <button
@@ -4132,7 +4260,7 @@ const Room = () => {
                     : "bg-slate-300 hover:bg-slate-400 text-slate-800"
                 } flex-1 py-2 rounded-lg cursor-pointer font-semibold transition-all duration-300`}
               >
-                Cancel
+                {t("room.cancel")}
               </button>
               <button
                 onClick={handleGuestForfeit}
@@ -4142,7 +4270,7 @@ const Room = () => {
                     : "bg-gradient-to-r from-red-400 to-orange-400 hover:from-red-300 hover:to-orange-300 text-red-900"
                 } flex-1 py-2 rounded-lg cursor-pointer font-bold transition-all duration-300 shadow-lg hover:shadow-xl`}
               >
-                Yes, Leave
+                {t("room.yesLeave")}
               </button>
             </div>
           </div>
@@ -4159,14 +4287,14 @@ const Room = () => {
             } border-2 w-80 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
           >
             <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold mb-4">
-              🏆 Victory!
+              {t("room.victory")}
             </p>
             <p
               className={`text-center mb-6 ${
                 theme === "dark" ? "text-gray-200" : "text-gray-700"
               }`}
             >
-              Host forfeited the match. You win and gain 15 points!
+              {t("room.hostForfeitedYouWin")}
             </p>
             <button
               onClick={() => {
@@ -4179,7 +4307,7 @@ const Room = () => {
                   : "bg-gradient-to-r from-green-400 to-emerald-400 hover:from-green-300 hover:to-emerald-300 text-green-900"
               } w-full py-2 rounded-lg cursor-pointer font-bold transition-all duration-300 shadow-lg hover:shadow-xl`}
             >
-              Go Back to Menu
+              {t("room.goBackToMenu")}
             </button>
           </div>
         </div>

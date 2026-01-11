@@ -13,6 +13,13 @@ import { ThemeContext } from "../context/ThemeContext";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { useTranslation } from "react-i18next";
+import trFlag from "../assets/tr.png";
+import enFlag from "../assets/en.jpg";
+import ptFlag from "../assets/pt.png";
+import dark from "../assets/dark.png";
+import light from "../assets/light.png";
+import logo from "../assets/logo.png";
 
 function SameScreenGame() {
   useEffect(() => {
@@ -24,7 +31,9 @@ function SameScreenGame() {
     navigate("/menu");
   };
 
-  usePageTitle("MMA XOX - Single Player");
+  const { t, i18n } = useTranslation();
+
+  usePageTitle(t("game.pageTitle"));
 
   const { theme, toggleTheme } = useContext(ThemeContext);
 
@@ -42,6 +51,7 @@ function SameScreenGame() {
   const [selected, setSelected]: any = useState();
 
   const [filters, setFilters]: any = useState();
+  const [languageDropdown, setLanguageDropdown] = useState(false);
 
   const [score, setScore] = useState({ red: 0, blue: 0, draw: 0 });
 
@@ -73,6 +83,16 @@ function SameScreenGame() {
       return false;
     }
   });
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
+    setLanguageDropdown(false);
+  };
+
+  const handleLanguageClick = () => {
+    // Always open dropdown since we have 3 languages now
+    setLanguageDropdown(!languageDropdown);
+  };
 
   useEffect(() => {
     try {
@@ -519,7 +539,6 @@ function SameScreenGame() {
       }
     }
   };
-  console.log(positionsFighters, filtersSelected);
 
   const checkWinner = () => {
     const board = [
@@ -1002,7 +1021,7 @@ function SameScreenGame() {
   return (
     <>
       <div
-        className={`max-w-[100vw] min-h-[calc(100vh-61px)] relative overflow-x-hidden overflow-y-auto transition-all duration-1000 ${
+        className={`pt-[82px] max-w-[100vw] min-h-[calc(100vh-61px)] relative overflow-x-hidden overflow-y-auto transition-all duration-1000 ${
           theme === "dark"
             ? "bg-gradient-to-br from-stone-900 via-indigo-900 to-stone-800"
             : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
@@ -1085,73 +1104,17 @@ function SameScreenGame() {
             />
           ))}
         </div>
-        <div className="absolute z-30 top-6 left-6">
-          <div
-            onClick={toggleTheme}
-            className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
-              theme === "dark"
-                ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
-                : "bg-white/80 border-slate-200/50 hover:bg-white/90"
-            } shadow-xl hover:scale-110`}
-          >
-            {theme === "dark" ? (
-              <img
-                src="https://clipart-library.com/images/6iypd9jin.png"
-                className="lg:w-6 lg:h-6 w-5 h-5"
-                alt="Light mode"
-              />
-            ) : (
-              <img
-                src="https://clipart-library.com/img/1669853.png"
-                className="lg:w-6 lg:h-6 w-5 h-5"
-                alt="Dark mode"
-              />
-            )}
-          </div>
-        </div>
-        <div className="absolute z-30 top-6 right-6 flex items-center gap-3">
-          {/* Mute toggle */}
-          <button
-            onClick={() => setMuted((m) => !m)}
-            aria-pressed={muted}
-            aria-label={muted ? "Unmute sounds" : "Mute sounds"}
-            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
-              theme === "dark"
-                ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
-                : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
-            }`}
-            title={muted ? "Unmute" : "Mute"}
-          >
-            <span className="text-xl">{muted ? "🔇" : "🔊"}</span>
-          </button>
-          {/* Back to menu */}
-          <div
-            onClick={handleExit}
-            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
-              theme === "dark"
-                ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
-                : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
-            }`}
-          >
-            <div className="flex gap-2 items-center">
-              <img
-                src={return_img || "/placeholder.svg"}
-                className="w-6"
-              />
-              <p className="font-semibold">Back to menu</p>
-            </div>
-          </div>
-        </div>
+
         <div className="flex w-full justify-center mb-12">
           <div>
-            <div className="mt-32">
+            <div>
               {gameStart == true && parseInt(timerLength) >= 0 ? (
                 <p
                   className={`xl:text-xl md:hidden block lg:text-lg text-base font-semibold ${
                     turn == "red" ? "text-red-500" : "text-blue-500"
                   }`}
                 >
-                  {timer} seconds
+                  {t("game.seconds", { count: timer })}
                 </p>
               ) : null}
             </div>
@@ -1175,7 +1138,7 @@ function SameScreenGame() {
                 }`}
                 aria-disabled={isGameOver}
               >
-                Restart Game
+                {t("game.restartGame")}
               </div>
               <div>
                 {gameStart == true && parseInt(timerLength) >= 0 ? (
@@ -1184,7 +1147,7 @@ function SameScreenGame() {
                       turn == "red" ? "text-red-500" : "text-blue-500"
                     }`}
                   >
-                    {timer} seconds
+                    {t("game.seconds", { count: timer })}
                   </p>
                 ) : null}
               </div>
@@ -1196,7 +1159,7 @@ function SameScreenGame() {
                       : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-red-600"
                   }`}
                 >
-                  <p>Turn : Red</p>
+                  <p>{t("game.turnRed")}</p>
                   {canSkip && (
                     <div
                       onClick={() => {
@@ -1210,7 +1173,7 @@ function SameScreenGame() {
                           : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
                       } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
                     >
-                      Skip
+                      {t("game.skip")}
                     </div>
                   )}
                 </div>
@@ -1222,7 +1185,7 @@ function SameScreenGame() {
                       : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-blue-600"
                   }`}
                 >
-                  <p>Turn : Blue</p>
+                  <p>{t("game.turnBlue")}</p>
                   {canSkip && (
                     <div
                       onClick={() => {
@@ -1236,7 +1199,7 @@ function SameScreenGame() {
                           : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
                       } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
                     >
-                      Skip
+                      {t("game.skip")}
                     </div>
                   )}
                 </div>
@@ -1265,18 +1228,18 @@ function SameScreenGame() {
                     } border-2 w-72 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
                   >
                     <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold">
-                      Game Finished!
+                      {t("game.gameFinished")}
                     </p>
                     {gameWinner == "Red" ? (
                       <>
                         <p className="text-red-500 font-semibold text-xl mt-4 text-center">
-                          Red Wins!
+                          {t("game.redWins")}
                         </p>
                       </>
                     ) : gameWinner == "Blue" ? (
                       <>
                         <p className="text-blue-500 font-semibold text-xl mt-4 text-center">
-                          Blue Wins!
+                          {t("game.blueWins")}
                         </p>
                       </>
                     ) : (
@@ -1288,7 +1251,7 @@ function SameScreenGame() {
                               : "text-stone-700"
                           } font-semibold text-xl mt-4 text-center`}
                         >
-                          Draw!
+                          {t("game.draw")}
                         </p>
                       </>
                     )}
@@ -1301,18 +1264,19 @@ function SameScreenGame() {
                             : "from-indigo-200 to-sky-300 text-black border-indigo-400"
                         } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg mt-5`}
                       >
-                        Play Again
+                        {t("game.playAgain")}
                       </button>
                     </div>
-                    <p className="text-center mt-2 font-semibold text-lg">
-                      Score: <span className="text-red-500">{score.red}</span> -{" "}
+                    <p className="text-center mt-4 font-semibold text-lg">
+                      {t("game.score")}{" "}
+                      <span className="text-red-500">{score.red}</span> -{" "}
                       <span className="text-blue-500">{score.blue}</span>
                       <span
                         className={`${
                           theme === "dark" ? "text-stone-100" : "text-stone-700"
                         } ml-2`}
                       >
-                        Draw: {score.draw}
+                        {t("game.drawLabel")} {score.draw}
                       </span>
                     </p>
                   </div>
@@ -1329,7 +1293,7 @@ function SameScreenGame() {
                   <div>
                     <div className="flex items-center justify-center">
                       <img
-                        src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                        src={logo}
                         className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
                       />
                     </div>
@@ -1373,11 +1337,11 @@ function SameScreenGame() {
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        {filtersSelected[0].filter_text}
+                        {t(filtersSelected[0].filter_text)}
                       </p>
                     </div>
                   ) : (
-                    <p>Loading...</p>
+                    <p>{t("game.loading")}</p>
                   )}
                 </div>
                 <div
@@ -1411,11 +1375,11 @@ function SameScreenGame() {
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        {filtersSelected[1].filter_text}
+                        {t(filtersSelected[1].filter_text)}
                       </p>
                     </div>
                   ) : (
-                    <p>Loading...</p>
+                    <p>{t("game.loading")}</p>
                   )}
                 </div>
                 <div
@@ -1449,11 +1413,11 @@ function SameScreenGame() {
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        {filtersSelected[2].filter_text}
+                        {t(filtersSelected[2].filter_text)}
                       </p>
                     </div>
                   ) : (
-                    <p>Loading...</p>
+                    <p>{t("game.loading")}</p>
                   )}
                 </div>
               </div>
@@ -1489,11 +1453,11 @@ function SameScreenGame() {
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        {filtersSelected[3].filter_text}
+                        {t(filtersSelected[3].filter_text)}
                       </p>
                     </div>
                   ) : (
-                    <p>Loading...</p>
+                    <p>{t("game.loading")}</p>
                   )}
                 </div>
                 <div
@@ -1505,7 +1469,7 @@ function SameScreenGame() {
                       toggleFighterPick();
                       setSelected("fighter00");
                     } else {
-                      toast.info("Fighter already selected.");
+                      toast.info(t("game.fighterAlreadySelected"));
                     }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -1535,7 +1499,7 @@ function SameScreenGame() {
                       toggleFighterPick();
                       setSelected("fighter01");
                     } else {
-                      toast.info("Fighter already selected.");
+                      toast.info(t("game.fighterAlreadySelected"));
                     }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -1565,7 +1529,7 @@ function SameScreenGame() {
                       toggleFighterPick();
                       setSelected("fighter02");
                     } else {
-                      toast.info("Fighter already selected.");
+                      toast.info(t("game.fighterAlreadySelected"));
                     }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -1619,11 +1583,11 @@ function SameScreenGame() {
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        {filtersSelected[4].filter_text}
+                        {t(filtersSelected[4].filter_text)}
                       </p>
                     </div>
                   ) : (
-                    <p>Loading...</p>
+                    <p>{t("game.loading")}</p>
                   )}
                 </div>
                 <div
@@ -1635,7 +1599,7 @@ function SameScreenGame() {
                       toggleFighterPick();
                       setSelected("fighter10");
                     } else {
-                      toast.info("Fighter already selected.");
+                      toast.info(t("game.fighterAlreadySelected"));
                     }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -1665,7 +1629,7 @@ function SameScreenGame() {
                       toggleFighterPick();
                       setSelected("fighter11");
                     } else {
-                      toast.info("Fighter already selected.");
+                      toast.info(t("game.fighterAlreadySelected"));
                     }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -1695,7 +1659,7 @@ function SameScreenGame() {
                       toggleFighterPick();
                       setSelected("fighter12");
                     } else {
-                      toast.info("Fighter already selected.");
+                      toast.info(t("game.fighterAlreadySelected"));
                     }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -1749,11 +1713,11 @@ function SameScreenGame() {
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        {filtersSelected[5].filter_text}
+                        {t(filtersSelected[5].filter_text)}
                       </p>
                     </div>
                   ) : (
-                    <p>Loading...</p>
+                    <p>{t("game.loading")}</p>
                   )}
                 </div>
                 <div
@@ -1765,7 +1729,7 @@ function SameScreenGame() {
                       toggleFighterPick();
                       setSelected("fighter20");
                     } else {
-                      toast.info("Fighter already selected.");
+                      toast.info(t("game.fighterAlreadySelected"));
                     }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -1795,7 +1759,7 @@ function SameScreenGame() {
                       toggleFighterPick();
                       setSelected("fighter21");
                     } else {
-                      toast.info("Fighter already selected.");
+                      toast.info(t("game.fighterAlreadySelected"));
                     }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -1825,7 +1789,7 @@ function SameScreenGame() {
                       toggleFighterPick();
                       setSelected("fighter22");
                     } else {
-                      toast.info("Fighter already selected.");
+                      toast.info(t("game.fighterAlreadySelected"));
                     }
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -1860,7 +1824,7 @@ function SameScreenGame() {
                     onChange={(e) => {
                       filterByName(e.target.value);
                     }}
-                    placeholder="Search for a fighter..."
+                    placeholder={t("game.searchForFighter")}
                     className="bg-white input-fighter text-black xl:text-base text-sm px-3 w-full py-1 rounded-lg hover:outline-0 focus:outline-1 outline-stone-500 shadow-lg"
                   />
                   {fighters && fighters.length > 0 ? (
@@ -1908,7 +1872,7 @@ function SameScreenGame() {
                           : "bg-stone-300 text-black border-stone-400"
                       } px-6 py-1 font-semibold rounded-tr-lg rounded-bl-lg shadow-lg border cursor-pointer`}
                     >
-                      Cancel
+                      {t("game.cancel")}
                     </button>
                   </div>
                 </div>
@@ -1932,7 +1896,7 @@ function SameScreenGame() {
             >
               <div className="flex gap-3 items-center">
                 <img
-                  src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                  src={logo}
                   alt="logo"
                   className="w-10 drop-shadow-lg"
                 />
@@ -1943,7 +1907,7 @@ function SameScreenGame() {
               <div className="flex text-center justify-center">
                 <div className="mt-6">
                   <h2 className="font-semibold text-lg mb-2">
-                    CHOOSE DIFFICULTY
+                    {t("game.chooseDifficulty")}
                   </h2>
                   <select
                     defaultValue={"MEDIUM"}
@@ -1962,7 +1926,7 @@ function SameScreenGame() {
                         theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                       }`}
                     >
-                      EASY
+                      {t("game.easy")}
                     </option>
                     <option
                       value="MEDIUM"
@@ -1970,7 +1934,7 @@ function SameScreenGame() {
                         theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                       }`}
                     >
-                      MEDIUM
+                      {t("game.medium")}
                     </option>
                     <option
                       value="HARD"
@@ -1978,14 +1942,16 @@ function SameScreenGame() {
                         theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                       }`}
                     >
-                      HARD
+                      {t("game.hard")}
                     </option>
                   </select>
                 </div>
               </div>
               <div className="flex text-center justify-center">
                 <div className="mt-6">
-                  <h2 className="font-semibold text-lg mb-2">TIMER</h2>
+                  <h2 className="font-semibold text-lg mb-2">
+                    {t("game.timer")}
+                  </h2>
                   <select
                     onChange={(e) => {
                       setTimerLength(e.target.value);
@@ -2003,7 +1969,7 @@ function SameScreenGame() {
                         theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                       }`}
                     >
-                      No time limit
+                      {t("game.noTimeLimit")}
                     </option>
                     <option
                       value="20"
@@ -2011,7 +1977,7 @@ function SameScreenGame() {
                         theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                       }`}
                     >
-                      20 seconds
+                      {t("game.seconds20")}
                     </option>
                     <option
                       value="30"
@@ -2019,7 +1985,7 @@ function SameScreenGame() {
                         theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                       }`}
                     >
-                      30 seconds
+                      {t("game.seconds30")}
                     </option>
                     <option
                       value="40"
@@ -2027,7 +1993,7 @@ function SameScreenGame() {
                         theme === "dark" ? "bg-indigo-800" : "bg-sky-100"
                       }`}
                     >
-                      40 seconds
+                      {t("game.seconds40")}
                     </option>
                   </select>
                 </div>
@@ -2063,7 +2029,7 @@ function SameScreenGame() {
       `}
                     style={{ marginLeft: "2px" }}
                   ></span>
-                  Play against AI
+                  {t("game.playAgainstAI")}
                 </label>
               </div>
               <div className="flex justify-center">
@@ -2075,7 +2041,7 @@ function SameScreenGame() {
                       : "border-indigo-400 bg-gradient-to-r from-indigo-300 to-sky-400 text-indigo-900 hover:from-indigo-400 hover:to-sky-500"
                   } border-2 mt-4 text-xl hover:shadow-2xl px-6 py-2 shadow-lg duration-300 cursor-pointer rounded-xl font-bold transform hover:scale-105 transition-all focus:ring-2 focus:ring-blue-400`}
                 >
-                  PLAY!
+                  {t("game.play")}
                 </button>
               </div>
             </div>
@@ -2093,7 +2059,7 @@ function SameScreenGame() {
               onClick={() => setShowRestartModal(false)}
             />
             {/* center */}
-            <div className="relative z-10 flex items-center justify-center p-4">
+            <div className="relative z-10 flex items-center justify-center p-4 mt-16">
               <div
                 className={`relative w-full max-w-md rounded-2xl border shadow-2xl ${
                   theme === "dark"
@@ -2115,20 +2081,22 @@ function SameScreenGame() {
                 </button>
 
                 <div className="p-6">
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="flex flex-wrap items-center gap-3 mb-2">
                     <img
-                      src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                      src={logo}
                       alt="logo"
                       className="w-8"
                     />
-                    <h3 className="text-lg font-bold">Restart game?</h3>
+                    <h3 className="text-lg font-bold">
+                      {t("game.restartGameTitle")}
+                    </h3>
                   </div>
                   <p
                     className={`text-sm ${
                       theme === "dark" ? "text-slate-300" : "text-slate-600"
                     }`}
                   >
-                    New filters will be generated. Current board will reset.
+                    {t("game.restartGameDescription")}
                   </p>
 
                   <div className="mt-5 flex items-center justify-end gap-2">
@@ -2140,7 +2108,7 @@ function SameScreenGame() {
                           : "bg-white border-slate-300 text-slate-800 hover:bg-slate-50"
                       }`}
                     >
-                      Cancel
+                      {t("common.cancel")}
                     </button>
                     <button
                       onClick={() => {
@@ -2155,7 +2123,7 @@ function SameScreenGame() {
                           : "from-indigo-300 to-sky-400 border-indigo-400 text-indigo-900 hover:from-indigo-400 hover:to-sky-500"
                       }`}
                     >
-                      PLAY!
+                      {t("game.play")}
                     </button>
                   </div>
                 </div>

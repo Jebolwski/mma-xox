@@ -1,9 +1,11 @@
 import { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 
 export default function Footer() {
   const { theme } = useContext(ThemeContext);
+  const { t } = useTranslation();
   const location = useLocation();
   const isHome = location.pathname === "/";
   const currentYear = new Date().getFullYear();
@@ -33,9 +35,9 @@ export default function Footer() {
                   ? "hover:text-slate-300"
                   : "hover:text-slate-700"
               }`}
-              title="Send email"
+              title={t("footer.sendEmail")}
             >
-              📧 Contact Me
+              📧 {t("footer.contactMe")}
             </a>
 
             {/* Buy Me A Coffee */}
@@ -48,9 +50,9 @@ export default function Footer() {
                   ? "bg-yellow-900/30 hover:bg-yellow-800/40 text-yellow-400"
                   : "bg-yellow-100/50 hover:bg-yellow-200/50 text-yellow-700"
               }`}
-              title="Support me"
+              title={t("footer.supportMe")}
             >
-              ☕ Buy Me A Coffee
+              ☕ {t("footer.buyMeACoffee")}
             </a>
           </div>
 
@@ -59,11 +61,11 @@ export default function Footer() {
               theme === "dark" ? "text-slate-200" : "text-slate-600"
             }`}
           >
-            <p>Made with ❤️ for MMA fans</p>
+            <p>{t("footer.madeWith")}</p>
           </div>
 
           <div className="text-center sm:text-left">
-            <p>© {currentYear} MMA XOX. All rights reserved.</p>
+            <p>{t("footer.copyright", { year: currentYear })}</p>
           </div>
         </div>
       </div>

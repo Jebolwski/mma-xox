@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom"; // Link EKLENDİ
+import { useTranslation } from "react-i18next";
 import {
   collection,
   query,
@@ -16,6 +17,10 @@ import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
 import { usePageTitle } from "../hooks/usePageTitle";
+import dark from "../assets/dark.png";
+import light from "../assets/light.png";
+import trFlag from "../assets/tr.png";
+import enFlag from "../assets/en.jpg";
 
 type Row = {
   id: string;
@@ -37,14 +42,15 @@ export default function WorldRanking() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   // ...existing code...
 
-  usePageTitle("MMA XOX - World Ranking");
-
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [lastDoc, setLastDoc] = useState<DocumentData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [languageDropdown, setLanguageDropdown] = useState(false);
+  const { t, i18n } = useTranslation();
 
+  usePageTitle(`MMA XOX - ${t("ranking.title")}`);
   // current user rank info
   const [myRank, setMyRank] = useState<number | null>(null);
   const [myRow, setMyRow] = useState<Row | null>(null);
@@ -117,6 +123,27 @@ export default function WorldRanking() {
     }
   };
 
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
+    setLanguageDropdown(false);
+  };
+
+  const handleLanguageClick = () => {
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(min-width: 768px)").matches
+    ) {
+      // Desktop / md+ -> open dropdown
+      setLanguageDropdown(!languageDropdown);
+    } else {
+      // Mobile -> toggle language directly
+      const newLang = i18n.language === "tr" ? "en" : "tr";
+      changeLanguage(newLang);
+    }
+  };
+
   const loadMore = async () => {
     if (!lastDoc || loadingMore) return;
     setLoadingMore(true);
@@ -167,53 +194,7 @@ export default function WorldRanking() {
         ))}
       </div>
 
-      <div className="absolute z-30 top-6 left-6">
-        <div
-          onClick={toggleTheme}
-          className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
-            theme === "dark"
-              ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
-              : "bg-white/80 border-slate-200/50 hover:bg-white/90"
-          } shadow-xl hover:scale-110`}
-        >
-          {theme === "dark" ? (
-            <img
-              src="https://clipart-library.com/images/6iypd9jin.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Light mode"
-            />
-          ) : (
-            <img
-              src="https://clipart-library.com/img/1669853.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Dark mode"
-            />
-          )}
-        </div>
-      </div>
-
-      <div
-        className="absolute z-30 top-6 right-6"
-        onClick={handleExit}
-      >
-        <div
-          className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
-            theme === "dark"
-              ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
-              : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
-          }`}
-        >
-          <div className="flex gap-2 items-center">
-            <img
-              src={return_img || "/placeholder.svg"}
-              className="w-6"
-            />
-            <p className="font-semibold">Go Back</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+      <div className="max-w-4xl mx-auto px-4 py-8 lg:pt-24 pt-36">
         {currentUser && myRank && (
           <div
             className={`mb-6 rounded-xl p-4 border ${
@@ -222,13 +203,15 @@ export default function WorldRanking() {
                 : "bg-white/80 border-slate-300 text-black"
             }`}
           >
-            <div className="text-sm opacity-80 mb-1">Your global rank</div>
+            <div className="text-sm opacity-80 mb-1">
+              {t("ranking.yourGlobalRank")}
+            </div>
             <div className="flex items-center justify-between">
               <div className="font-semibold">
                 #{myRank} {myRow?.username || currentUser.email?.split("@")[0]}
               </div>
               <div className="text-sm">
-                Points:{" "}
+                {t("ranking.points")}:{" "}
                 <span className="font-semibold">{myRow?.points ?? "-"}</span>
               </div>
             </div>
@@ -247,11 +230,11 @@ export default function WorldRanking() {
               theme === "dark" ? "text-slate-300" : "text-slate-600"
             }`}
           >
-            <div>#</div>
-            <div className="col-span-2">Player</div>
-            <div className="text-right">Points</div>
-            <div className="text-right">Record</div>
-            <div className="text-right">Win Rate</div>
+            <div>{t("ranking.rank")}</div>
+            <div className="col-span-2">{t("ranking.player")}</div>
+            <div className="text-right">{t("ranking.points")}</div>
+            <div className="text-right">{t("ranking.record")}</div>
+            <div className="text-right">{t("ranking.winRate")}</div>
           </div>
 
           {loading && (
@@ -260,7 +243,7 @@ export default function WorldRanking() {
                 theme === "dark" ? "text-white" : "text-black"
               }`}
             >
-              Loading...
+              {t("ranking.loading")}
             </div>
           )}
 
@@ -317,7 +300,7 @@ export default function WorldRanking() {
 
           {!loading && rows.length === 0 && (
             <div className="p-6 text-center text-sm opacity-70">
-              No players found.
+              {t("ranking.noPlayersFound")}
             </div>
           )}
         </div>
@@ -337,9 +320,9 @@ export default function WorldRanking() {
           >
             {lastDoc
               ? loadingMore
-                ? "Loading..."
-                : "Load more"
-              : "End of list"}
+                ? t("ranking.loading")
+                : t("ranking.loadMore")
+              : t("ranking.endOfList")}
           </button>
         </div>
 

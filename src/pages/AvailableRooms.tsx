@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   collection,
   query,
@@ -13,16 +14,30 @@ import { ThemeContext } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext"; // EKLENDI
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
+import number from "../assets/number.svg";
 import return_img from "../assets/return.png";
+import trFlag from "../assets/tr.png";
+import enFlag from "../assets/en.jpg";
+import user_logo from "../assets/user.png";
 // import refresh from "../assets/refresh.png";
 import {
   logStaleRoomsByLastActivity,
   cleanupAllStaleRooms,
 } from "../services/roomCleanup";
 import { usePageTitle } from "../hooks/usePageTitle";
+import light from "../assets/light.png";
+import dark from "../assets/dark.png";
 
 const AvailableRooms = () => {
+  const [languageDropdown, setLanguageDropdown] = useState(false);
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
+    setLanguageDropdown(false);
+  };
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const { t, i18n } = useTranslation();
   const { currentUser } = useAuth();
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
@@ -46,7 +61,22 @@ const AvailableRooms = () => {
     return sanitizeName(guestName);
   };
 
-  usePageTitle("MMA XOX - Available Rooms");
+  const handleLanguageClick = () => {
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(min-width: 768px)").matches
+    ) {
+      // Desktop / md+ -> open dropdown
+      setLanguageDropdown(!languageDropdown);
+    } else {
+      // Mobile -> toggle language directly
+      const newLang = i18n.language === "tr" ? "en" : "tr";
+      changeLanguage(newLang);
+    }
+  };
+
+  usePageTitle(t("menu.availableRoomsTitle"));
 
   useEffect(() => {
     setLoading(true);
@@ -184,7 +214,7 @@ const AvailableRooms = () => {
 
   return (
     <div
-      className={`min-h-screen relative overflow-hidden transition-all duration-1000 ${
+      className={`min-h-[calc(100vh-61px)] relative overflow-hidden transition-all duration-1000 ${
         theme === "dark"
           ? "bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900"
           : "bg-gradient-to-b from-blue-400 via-blue-300 to-green-400"
@@ -225,56 +255,8 @@ const AvailableRooms = () => {
         theme={theme === "dark" ? "dark" : "light"}
       />
 
-      {/* Theme Toggle */}
-      <div className="absolute z-30 top-6 left-6">
-        <div
-          onClick={toggleTheme}
-          className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
-            theme === "dark"
-              ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
-              : "bg-white/80 border-slate-200/50 hover:bg-white/90"
-          } shadow-xl hover:scale-110`}
-        >
-          {theme === "dark" ? (
-            <img
-              src="https://clipart-library.com/images/6iypd9jin.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Light mode"
-            />
-          ) : (
-            <img
-              src="https://clipart-library.com/img/1669853.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Dark mode"
-            />
-          )}
-        </div>
-      </div>
-
-      {/* Back Button */}
-      <div
-        className="absolute z-30 top-6 right-6"
-        onClick={handleExit}
-      >
-        <div
-          className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
-            theme === "dark"
-              ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
-              : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
-          }`}
-        >
-          <div className="flex gap-2 items-center">
-            <img
-              src={return_img || "/placeholder.svg"}
-              className="w-6"
-            />
-            <p className="font-semibold">Go Back</p>
-          </div>
-        </div>
-      </div>
-
       {/* Main Content */}
-      <div className="relative z-10 flex justify-center items-center min-h-screen px-4">
+      <div className="relative z-10 flex justify-center items-center min-h-[calc(100vh-61px)] px-4">
         <div
           className={`mt-8 p-6 rounded-2xl border-4 shadow-2xl backdrop-blur-md transition-all duration-300 ${
             theme === "dark"
@@ -296,7 +278,7 @@ const AvailableRooms = () => {
             <div className="flex items-center gap-3">
               <div className="relative">
                 <img
-                  src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                  src={logo}
                   alt="logo"
                   className="w-12 h-12"
                 />
@@ -375,9 +357,11 @@ const AvailableRooms = () => {
                   : "text-slate-600 border-slate-400"
               }`}
             >
-              <p className="text-lg font-semibold">No available rooms.</p>
+              <p className="text-lg font-semibold">
+                {t("room.noAvailableRooms")}
+              </p>
               <p className="text-sm opacity-75 mt-1">
-                Check back later or create a new room!
+                {t("room.checkBackLater")}
               </p>
             </div>
           ) : (
@@ -395,10 +379,10 @@ const AvailableRooms = () => {
                   <div className="flex gap-2 items-center">
                     <div className="font-semibold flex gap-2 items-center">
                       <img
-                        src="https://www.svgrepo.com/show/309807/number-symbol.svg"
+                        src={number}
                         className="h-4"
                       />
-                      Room:
+                      {t("room.roomLabel")}
                     </div>
                     <span
                       className={`font-mono ${
@@ -411,10 +395,10 @@ const AvailableRooms = () => {
                   <div className="flex gap-2 items-center mt-2">
                     <div className="font-semibold flex gap-2 items-center">
                       <img
-                        src="https://cdn-icons-png.flaticon.com/512/9131/9131478.png"
+                        src={user_logo}
                         className="h-4"
                       />
-                      Host:
+                      {t("room.hostLabel")}
                     </div>
                     <span
                       className={`font-semibold ${
@@ -428,7 +412,8 @@ const AvailableRooms = () => {
                   {/* Giriş yapmış kullanıcı için bilgi göster */}
                   {currentUser && (
                     <div className="mt-2 text-xs opacity-75">
-                      Click to join as: <strong>{getPlayerName()}</strong>
+                      {t("room.clickToJoinAs")}{" "}
+                      <strong>{getPlayerName()}</strong>
                     </div>
                   )}
                 </li>
@@ -452,7 +437,7 @@ const AvailableRooms = () => {
                   theme === "dark" ? "text-slate-200" : "text-slate-700"
                 }`}
               >
-                Joining Room:{" "}
+                {t("room.joiningRoom")}{" "}
                 <span
                   className={`${
                     theme === "dark" ? "text-red-400" : "text-red-600"
@@ -463,7 +448,7 @@ const AvailableRooms = () => {
               </div>
               <input
                 type="text"
-                placeholder="Enter your name"
+                placeholder={t("room.enterName")}
                 value={guestName}
                 onChange={(e) =>
                   setGuestName(e.target.value.slice(0, NAME_MAX))
@@ -496,7 +481,7 @@ const AvailableRooms = () => {
                       : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
                   }`}
                 >
-                  Cancel
+                  {t("common.cancel")}
                 </button>
                 <button
                   onClick={handleJoinRoom}
@@ -509,7 +494,7 @@ const AvailableRooms = () => {
                     textShadow: "1px 1px 2px rgba(0,0,0,0.3)",
                   }}
                 >
-                  Join Room
+                  {t("room.joinRoom")}
                 </button>
               </div>
             </div>

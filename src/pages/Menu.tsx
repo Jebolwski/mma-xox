@@ -2,6 +2,7 @@
 
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ToastContainer, toast } from "react-toastify";
 import {
   doc,
@@ -16,15 +17,21 @@ import {
 import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
+import trFlag from "../assets/tr.png";
+import enFlag from "../assets/en.jpg";
 import { useAuth } from "../context/AuthContext";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { sanitizePlayerName } from "../utils/security";
+import light from "../assets/light.png";
+import dark from "../assets/dark.png";
+import logo from "../assets/logo.png";
 
 const Menu = () => {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { currentUser, logout } = useAuth();
-
+  const [languageDropdown, setLanguageDropdown] = useState(false);
   const [playerName, setPlayerName] = useState("");
   const [roomCode, setRoomCode] = useState("");
   const [showJoinFields, setShowJoinFields] = useState(false);
@@ -32,6 +39,7 @@ const Menu = () => {
   const [showRandomFields, setShowRandomFields] = useState(false);
   const [isRankedRoom, setIsRankedRoom] = useState(false);
   const [showRankedConfirm, setShowRankedConfirm] = useState(false);
+  const [showRankedNoRooms, setShowRankedNoRooms] = useState(false);
   const [userUsername, setUserUsername] = useState("");
 
   useEffect(() => {
@@ -45,11 +53,32 @@ const Menu = () => {
     }
   }, [currentUser]);
 
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
+    setLanguageDropdown(false);
+  };
+
   const getUsernameForUrl = () => {
     return userUsername ? encodeURIComponent(userUsername.toLowerCase()) : "";
   };
 
-  usePageTitle("MMA XOX - Menu");
+  const handleLanguageClick = () => {
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(min-width: 768px)").matches
+    ) {
+      // Desktop / md+ -> open dropdown
+      setLanguageDropdown(!languageDropdown);
+    } else {
+      // Mobile -> toggle language directly
+      const newLang = i18n.language === "tr" ? "en" : "tr";
+      changeLanguage(newLang);
+    }
+  };
+
+  usePageTitle(t("menu.title"));
 
   // Grid görünüm mü? (form ekranlarında max-w-md kalsın)
   const isGrid =
@@ -61,24 +90,24 @@ const Menu = () => {
   const tiles = [
     {
       key: "local",
-      title: "Same Screen",
-      subtitle: "Play locally",
+      title: t("menu.playLocal"),
+      subtitle: t("menu.playLocally"),
       icon: "🎮",
       gradient: "from-red-500 to-red-600",
       onClick: () => handleLocalGame(),
     },
     {
       key: "random",
-      title: "Random Match",
-      subtitle: "Casual",
+      title: t("menu.playLocal"),
+      subtitle: t("menu.casualMatch"),
       icon: "🎲",
       gradient: "from-orange-500 to-orange-600",
       onClick: () => setShowRandomFields(true),
     },
     {
       key: "ranked",
-      title: "Ranked",
-      subtitle: "Compete for points",
+      title: t("menu.playRanked"),
+      subtitle: t("menu.competeForPoints"),
       icon: "🏆",
       gradient: "from-yellow-500 to-yellow-600",
       disabled: !currentUser,
@@ -86,32 +115,32 @@ const Menu = () => {
     },
     {
       key: "available",
-      title: "Available Rooms",
-      subtitle: "Browse public rooms",
+      title: t("menu.availableRooms"),
+      subtitle: t("menu.browseRooms"),
       icon: "🗂️",
       gradient: "from-purple-500 to-purple-600",
       onClick: () => handleAvailableRooms(),
     },
     {
       key: "create",
-      title: "Create Room",
-      subtitle: "Host a new game",
+      title: t("menu.createRoom"),
+      subtitle: t("menu.hostNewGame"),
       icon: "➕",
       gradient: "from-green-500 to-green-600",
       onClick: () => setShowCreateFields(true),
     },
     {
       key: "join",
-      title: "Join Room",
-      subtitle: "Enter room code",
+      title: t("menu.joinRoom"),
+      subtitle: t("menu.enterRoomCode"),
       icon: "🔑",
       gradient: "from-blue-500 to-blue-600",
       onClick: () => setShowJoinFields(true),
     },
     {
       key: "ranking",
-      title: "World Ranking",
-      subtitle: "Global leaderboard",
+      title: t("ranking.title"),
+      subtitle: t("menu.globalLeaderboard"),
       icon: "🌍",
       gradient: "from-indigo-500 to-indigo-600",
       disabled: !currentUser,
@@ -119,8 +148,8 @@ const Menu = () => {
     },
     {
       key: "friends",
-      title: "Friends",
-      subtitle: "Requests & invites",
+      title: t("friends.title"),
+      subtitle: t("menu.requestsInvites"),
       icon: "👥",
       disabled: !currentUser,
       gradient: "from-pink-500 to-pink-600",
@@ -129,8 +158,8 @@ const Menu = () => {
     // Her zaman göster; login yoksa disabled
     {
       key: "profile",
-      title: "My Profile",
-      subtitle: "See your stats",
+      title: t("menu.profile"),
+      subtitle: t("menu.seeStats"),
       icon: "👤",
       gradient: "from-sky-500 to-sky-600",
       disabled: !currentUser,
@@ -168,7 +197,7 @@ const Menu = () => {
   const handleCreateRoom = async () => {
     const finalPlayerName = getPlayerName();
     if (!currentUser && !finalPlayerName) {
-      toast.error("Please enter your name!");
+      toast.error(t("menu.enterName"));
       return;
     }
 
@@ -195,7 +224,7 @@ const Menu = () => {
         },
       });
     } catch (error) {
-      toast.error("An error occurred while creating the room!");
+      toast.error(t("errors.createRoom"));
       console.error(error);
     }
   };
@@ -203,12 +232,12 @@ const Menu = () => {
   const handleJoinRoom = async () => {
     const finalPlayerName = getPlayerName();
     if (!currentUser && !finalPlayerName) {
-      toast.error("Please enter your name!");
+      toast.error(t("menu.enterName"));
       return;
     }
 
     if (!roomCode) {
-      toast.error("Please enter room code!");
+      toast.error(t("menu.enterRoomCodeError"));
       return;
     }
 
@@ -217,14 +246,14 @@ const Menu = () => {
       const roomDoc = await getDoc(roomRef);
 
       if (!roomDoc.exists()) {
-        toast.error("No room found with this code!");
+        toast.error(t("menu.roomNotFound"));
         return;
       }
 
       const roomData = roomDoc.data();
 
       if (roomData.guest && roomData.guest.now !== null) {
-        toast.error("This room is full! Please try another room.");
+        toast.error(t("menu.roomFull"));
         return;
       }
 
@@ -238,7 +267,7 @@ const Menu = () => {
         state: { role: "guest", name: finalPlayerName },
       });
     } catch (error) {
-      toast.error("An error occurred while joining the room!");
+      toast.error(t("errors.joinRoom"));
       console.error(error);
     }
   };
@@ -247,7 +276,7 @@ const Menu = () => {
   const handleRandomMatch = async () => {
     const finalPlayerName = getPlayerName();
     if (!currentUser && !finalPlayerName) {
-      toast.error("Please enter your name!");
+      toast.error(t("menu.enterName"));
       return;
     }
 
@@ -262,7 +291,7 @@ const Menu = () => {
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        toast.error("No available casual rooms found!");
+        toast.error(t("menu.noCasualRooms"));
         return;
       }
 
@@ -284,9 +313,9 @@ const Menu = () => {
       navigate(`/room/${randomRoom.id}`, {
         state: { role: "guest", name: finalPlayerName },
       });
-      toast.success(`You got matched with ${randomRoom.host}!`);
+      toast.success(t("menu.matchedWith", { player: randomRoom.host }));
     } catch (error) {
-      toast.error("An error occurred while finding a random match!");
+      toast.error(t("errors.randomMatch"));
       console.error(error);
     }
   };
@@ -306,7 +335,8 @@ const Menu = () => {
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        toast.error("No available ranked rooms found!");
+        // Oda yoksa modal göster
+        setShowRankedNoRooms(true);
         return;
       }
 
@@ -328,9 +358,9 @@ const Menu = () => {
       navigate(`/room/${randomRoom.id}`, {
         state: { role: "guest", name: finalPlayerName },
       });
-      toast.success(`Ranked match found! Playing against ${randomRoom.host}!`);
+      toast.success(t("menu.rankedMatchFound", { player: randomRoom.host }));
     } catch (error) {
-      toast.error("An error occurred while finding a ranked match!");
+      toast.error(t("errors.rankedMatch"));
       console.error(error);
     }
   };
@@ -344,10 +374,10 @@ const Menu = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      toast.success("Logged out successfully!");
+      toast.success(t("common.logoutSuccess"));
       navigate("/"); // Home'a git
     } catch (error) {
-      toast.error("Failed to logout");
+      toast.error(t("errors.logout"));
     }
   };
 
@@ -360,7 +390,7 @@ const Menu = () => {
       />
 
       <div
-        className="relative w-screen min-h-[calc(100vh-61px)] overflow-x-hidden pb-24 lg:pb-0"
+        className="relative w-screen min-h-[calc(100vh-61px)] overflow-x-hidden pb-24 lg:pb-0 pt-[82px]"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
         <div
@@ -413,88 +443,9 @@ const Menu = () => {
           ))}
         </div>
 
-        {/* Back Button / User Info - Sağ üstte */}
-        <div className="absolute z-30 top-6 right-6">
-          {currentUser && userUsername ? (
-            // Giriş yapmış kullanıcı için username ve logout
-            <div className="flex flex-wrap justify-end items-center gap-3">
-              <div
-                onClick={() => navigate("/profile/" + getUsernameForUrl())} // GÜNCELLENDİ: username ile git
-                className={`px-4 py-2 rounded-xl backdrop-blur-md border cursor-pointer ${
-                  theme === "dark"
-                    ? "bg-slate-800/80 border-slate-600/50 text-white"
-                    : "bg-white/80 border-slate-200/50 text-slate-800"
-                } shadow-lg`}
-              >
-                <span className="text-sm font-medium">👤 {userUsername}</span>
-              </div>
-              <button
-                onClick={handleLogout}
-                className={`px-4 py-2 bg-red-600/70 rounded-xl cursor-pointer backdrop-blur-md border transition-all duration-300 ${
-                  theme === "dark"
-                    ? "border-red-500/50 text-white hover:bg-red-600/80"
-                    : "border-red-400/50 text-white hover:bg-red-600/80"
-                } shadow-lg`}
-              >
-                <div className="flex gap-2">
-                  <img
-                    src={return_img || "/placeholder.svg"}
-                    className="lg:w-6 lg:h-6 w-5 h-5"
-                  />
-                  <p className="lg:block hidden">Logout</p>
-                </div>
-              </button>
-            </div>
-          ) : (
-            // Giriş yapmamış kullanıcı için back to home butonu
-            <div
-              onClick={handleExit}
-              className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
-                theme === "dark"
-                  ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
-                  : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
-              }`}
-            >
-              <div className="flex gap-2 items-center">
-                <img
-                  src={return_img || "/placeholder.svg"}
-                  className="w-6"
-                />
-                <p className="font-semibold">Back to home</p>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Theme Toggle - Sol üstte kalacak */}
-        <div className="absolute z-30 top-6 left-6">
+        <div className="relative z-10 flex items-center justify-center p-4">
           <div
-            onClick={toggleTheme}
-            className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
-              theme === "dark"
-                ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
-                : "bg-white/80 border-slate-200/50 hover:bg-white/90"
-            } shadow-xl hover:scale-110`}
-          >
-            {theme === "dark" ? (
-              <img
-                src="https://clipart-library.com/images/6iypd9jin.png"
-                className="lg:w-6 lg:h-6 w-5 h-5"
-                alt="Light mode"
-              />
-            ) : (
-              <img
-                src="https://clipart-library.com/img/1669853.png"
-                className="lg:w-6 lg:h-6 w-5 h-5"
-                alt="Dark mode"
-              />
-            )}
-          </div>
-        </div>
-
-        <div className="relative z-10 flex items-center justify-center p-6">
-          <div
-            className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full mt-24 ${
+            className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full ${
               isGrid ? "max-w-5xl" : "max-w-md"
             } transition-all duration-300 ${
               theme === "dark"
@@ -505,7 +456,7 @@ const Menu = () => {
             <div className="flex items-center justify-center mb-8">
               <div className="relative">
                 <img
-                  src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                  src={logo}
                   alt="MMA XOX Logo"
                   className="w-16 h-16 mr-4"
                 />
@@ -537,25 +488,25 @@ const Menu = () => {
 
             {isGrid ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {tiles.map((t) => {
-                  const disabled = !!t.disabled;
+                {tiles.map((title) => {
+                  const disabled = !!title.disabled;
                   const base =
                     "relative overflow-hidden rounded-2xl h-40 p-5 select-none transition-all";
                   const state = disabled
                     ? "opacity-60 cursor-not-allowed"
                     : "cursor-pointer hover:scale-[1.02] hover:shadow-xl";
-                  const bg = `bg-gradient-to-br ${t.gradient}`;
+                  const bg = `bg-gradient-to-br ${title.gradient}`;
                   return (
                     <div
-                      key={t.key}
+                      key={title.key}
                       role="button"
                       tabIndex={disabled ? -1 : 0}
                       aria-disabled={disabled}
-                      onClick={() => !disabled && t.onClick()}
+                      onClick={() => !disabled && title.onClick()}
                       onKeyDown={(e) => {
                         if (!disabled && (e.key === "Enter" || e.key === " ")) {
                           e.preventDefault();
-                          t.onClick();
+                          title.onClick();
                         }
                       }}
                       className={`${base} ${bg} ${state} shadow-lg`}
@@ -574,7 +525,7 @@ const Menu = () => {
                                   "repeating-linear-gradient(135deg,#facc15 0px,#facc15 12px,#111 12px,#111 24px)",
                               }}
                             >
-                              LOGIN REQUIRED
+                              {t("menu.loginRequired")}
                             </div>
                           </div>
                         </div>
@@ -582,13 +533,15 @@ const Menu = () => {
 
                       {/* içerik */}
                       <div className="flex h-full flex-col justify-between relative z-10">
-                        <div className="text-3xl drop-shadow-sm">{t.icon}</div>
+                        <div className="text-3xl drop-shadow-sm">
+                          {title.icon}
+                        </div>
                         <div>
                           <div className="text-white font-extrabold text-xl leading-tight">
-                            {t.title}
+                            {title.title}
                           </div>
                           <div className="text-white/90 text-sm">
-                            {t.subtitle}
+                            {title.subtitle}
                           </div>
                         </div>
                       </div>
@@ -603,7 +556,7 @@ const Menu = () => {
                   <div>
                     <input
                       type="text"
-                      placeholder="Your name"
+                      placeholder={t("menu.yourName")}
                       value={playerName}
                       onChange={(e) => {
                         const value = e.target.value;
@@ -648,7 +601,7 @@ const Menu = () => {
                     }`}
                   >
                     <span className="text-sm">
-                      Playing as: <strong>{getPlayerName()}</strong>
+                      {t("menu.playingAs")} <strong>{getPlayerName()}</strong>
                     </span>
                   </div>
                 )}
@@ -662,13 +615,13 @@ const Menu = () => {
                         : "bg-slate-500/80 text-white hover:bg-slate-600/80"
                     } hover:scale-105`}
                   >
-                    Back
+                    {t("menu.back")}
                   </button>
                   <button
                     onClick={handleRandomMatch}
                     className="w-1/2 bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 rounded-xl font-semibold cursor-pointer hover:from-orange-600 hover:to-orange-700 transition-all duration-300 hover:scale-105 backdrop-blur-sm"
                   >
-                    Find Match
+                    {t("menu.findMatch")}
                   </button>
                 </div>
               </div>
@@ -679,7 +632,7 @@ const Menu = () => {
                   <div>
                     <input
                       type="text"
-                      placeholder="Your name"
+                      placeholder={t("menu.yourName")}
                       value={playerName}
                       onChange={(e) => {
                         const value = e.target.value;
@@ -724,7 +677,7 @@ const Menu = () => {
                     }`}
                   >
                     <span className="text-sm">
-                      Creating room as:{" "}
+                      {t("menu.creatingAs")}{" "}
                       <strong>{sanitizePlayerName(getPlayerName())}</strong>
                     </span>
                   </div>
@@ -765,7 +718,7 @@ const Menu = () => {
                         ✓
                       </span>
                       <span className="text-sm font-medium">
-                        🏆 Ranked Room (Only for ranked matches)
+                        {t("menu.rankedRoomCheckbox")}
                       </span>
                     </label>
                   </div>
@@ -783,13 +736,13 @@ const Menu = () => {
                         : "bg-slate-500/80 text-white hover:bg-slate-600/80"
                     } hover:scale-105`}
                   >
-                    Back
+                    {t("menu.back")}
                   </button>
                   <button
                     onClick={handleCreateRoom}
                     className="w-1/2 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-xl font-semibold cursor-pointer hover:from-green-600 hover:to-green-700 transition-all duration-300 hover:scale-105 backdrop-blur-sm"
                   >
-                    Create Room
+                    {t("menu.createRoom")}
                   </button>
                 </div>
               </div>
@@ -800,7 +753,7 @@ const Menu = () => {
                   <div>
                     <input
                       type="text"
-                      placeholder="Your name"
+                      placeholder={t("menu.yourName")}
                       value={playerName}
                       onChange={(e) => {
                         const value = e.target.value;
@@ -853,7 +806,7 @@ const Menu = () => {
 
                 <input
                   type="text"
-                  placeholder="Room code"
+                  placeholder={t("menu.roomCode")}
                   value={roomCode}
                   onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                   onKeyDown={(e) => {
@@ -876,13 +829,13 @@ const Menu = () => {
                         : "bg-slate-500/80 text-white hover:bg-slate-600/80"
                     } hover:scale-105`}
                   >
-                    Back
+                    {t("menu.back")}
                   </button>
                   <button
                     onClick={handleJoinRoom}
                     className="w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 cursor-pointer text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 hover:scale-105 backdrop-blur-sm"
                   >
-                    Join Room
+                    {t("menu.joinRoom")}
                   </button>
                 </div>
               </div>
@@ -908,16 +861,16 @@ const Menu = () => {
                   theme === "dark" ? "text-slate-200" : "text-slate-700"
                 }`}
               >
-                Ranked Match
+                {t("menu.rankedTitle")}
               </h2>
               <p
                 className={`mb-6 ${
                   theme === "dark" ? "text-slate-300" : "text-slate-600"
                 }`}
-              >
-                You're about to enter a <strong>ranked match</strong> where your
-                points will be affected based on the result.
-              </p>
+                dangerouslySetInnerHTML={{
+                  __html: t("menu.rankedMessage"),
+                }}
+              />
               <div
                 className={`p-4 rounded-lg mb-6 ${
                   theme === "dark"
@@ -927,21 +880,21 @@ const Menu = () => {
               >
                 <div className="text-sm space-y-1">
                   <div className="flex justify-between">
-                    <span>🏅 Win:</span>
+                    <span>{t("menu.rankedWin")}</span>
                     <span className="text-green-500 font-semibold">
-                      +10 points
+                      {t("menu.rankedWinPoints")}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span>❌ Loss:</span>
+                    <span>{t("menu.rankedLoss")}</span>
                     <span className="text-red-500 font-semibold">
-                      -3 points
+                      {t("menu.rankedLossPoints")}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span>🤝 Draw:</span>
+                    <span>{t("menu.rankedDraw")}</span>
                     <span className="text-yellow-500 font-semibold">
-                      +2 points
+                      {t("menu.rankedDrawPoints")}
                     </span>
                   </div>
                 </div>
@@ -951,7 +904,7 @@ const Menu = () => {
                   theme === "dark" ? "text-slate-400" : "text-slate-500"
                 }`}
               >
-                Are you sure you want to proceed?
+                {t("menu.sureToProceeed")}
               </p>
             </div>
 
@@ -964,13 +917,74 @@ const Menu = () => {
                     : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
                 }`}
               >
-                Cancel
+                {t("menu.back")}
               </button>
               <button
                 onClick={handleRankedConfirm}
                 className="flex-1 py-3 rounded-xl cursor-pointer font-bold transition-all duration-200 hover:scale-105 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white shadow-lg shadow-yellow-600/30"
               >
-                Let's Go! 🚀
+                {t("menu.letGo")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* RANKED NO ROOMS MODAL */}
+      {showRankedNoRooms && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+          <div
+            className={`p-8 rounded-2xl shadow-2xl border-4 backdrop-blur-md transition-all duration-300 max-w-md w-full mx-4 ${
+              theme === "dark"
+                ? "bg-slate-800/95 border-orange-500 shadow-orange-500/30"
+                : "bg-white/95 border-orange-600 shadow-orange-600/30"
+            }`}
+          >
+            <div className="text-center">
+              <div className="text-6xl mb-4">🔍</div>
+              <h2
+                className={`text-2xl font-bold mb-4 ${
+                  theme === "dark" ? "text-slate-200" : "text-slate-700"
+                }`}
+              >
+                {t("menu.noRoomsTitle")}
+              </h2>
+              <p
+                className={`mb-6 ${
+                  theme === "dark" ? "text-slate-300" : "text-slate-600"
+                }`}
+              >
+                {t("menu.noRoomsMessage")}
+              </p>
+              <p
+                className={`text-sm mb-6 ${
+                  theme === "dark" ? "text-slate-400" : "text-slate-500"
+                }`}
+              >
+                {t("menu.othersCanJoin")}
+              </p>
+            </div>
+
+            <div className="flex gap-4">
+              <button
+                onClick={() => setShowRankedNoRooms(false)}
+                className={`flex-1 py-3 rounded-xl font-bold cursor-pointer transition-all duration-200 hover:scale-105 ${
+                  theme === "dark"
+                    ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
+                    : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
+                }`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowRankedNoRooms(false);
+                  setIsRankedRoom(true);
+                  setShowCreateFields(true);
+                }}
+                className="flex-1 py-3 rounded-xl cursor-pointer font-bold transition-all duration-200 hover:scale-105 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg shadow-orange-600/30"
+              >
+                Create Room 🎮
               </button>
             </div>
           </div>

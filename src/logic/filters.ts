@@ -16,7 +16,7 @@ const Filters = (): FilterDifficulty => {
     const filters_easy: Filter[] = [{
         "id": 1,
         "filter_image": brazilFlag,
-        "filter_text": "Brazilian",
+        "filter_text": "filters.brazilian",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return fighter.Nationality == "Brazil";
@@ -24,7 +24,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 2,
         "filter_image": undefeated,
-        "filter_text": "Undefeated",
+        "filter_text": "filters.undefeated",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return fighter.Losses == "0";
@@ -32,7 +32,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 3,
         "filter_image": title,
-        "filter_text": "Been in Title Fight",
+        "filter_text": "filters.beenInTitleFight",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseInt(fighter.TotalTitleBouts) > 0;
@@ -40,7 +40,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 4,
         "filter_image": null,
-        "filter_text": "Welterweight",
+        "filter_text": "filters.welterweight",
         "filter_no_image_text": "170",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -50,7 +50,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 5,
         "filter_image": null,
-        "filter_text": "Middleweight",
+        "filter_text": "filters.middleweight",
         "filter_no_image_text": "185",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -60,7 +60,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 6,
         "filter_image": null,
-        "filter_text": "Lightweight",
+        "filter_text": "filters.lightweight",
         "filter_no_image_text": "155",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -70,7 +70,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 7,
         "filter_image": null,
-        "filter_text": "Light heavyweight",
+        "filter_text": "filters.lightHeavyweight",
         "filter_no_image_text": "205",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -80,7 +80,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 8,
         "filter_image": null,
-        "filter_text": "Heavyweight",
+        "filter_text": "filters.heavyweight",
         "filter_no_image_text": "205>",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -90,7 +90,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 9,
         "filter_image": null,
-        "filter_text": "Featherweight",
+        "filter_text": "filters.featherweight",
         "filter_no_image_text": "145",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -100,7 +100,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 10,
         "filter_image": null,
-        "filter_text": "Bantamweight",
+        "filter_text": "filters.bantamweight",
         "filter_no_image_text": "135",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -110,7 +110,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 11,
         "filter_image": null,
-        "filter_text": "Flyweight",
+        "filter_text": "filters.flyweight",
         "filter_no_image_text": "125",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -120,7 +120,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 12,
         "filter_image": usaFlag,
-        "filter_text": "USA",
+        "filter_text": "filters.usa",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return fighter.Nationality == "United States";
@@ -129,7 +129,7 @@ const Filters = (): FilterDifficulty => {
     {
         "id": 13,
         "filter_image": null,
-        "filter_text": "Rounds Fought",
+        "filter_text": "filters.roundsFought",
         "filter_no_image_text": ">20",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseFloat(fighter.totalRoundsFought) > 20;
@@ -138,7 +138,7 @@ const Filters = (): FilterDifficulty => {
     {
         "id": 14,
         "filter_image": null,
-        "filter_text": "Octagon Debut",
+        "filter_text": "filters.octagonDebut",
         "filter_no_image_text": "2018<",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseInt(fighter.OctagonDebut) < 2018;
@@ -147,7 +147,7 @@ const Filters = (): FilterDifficulty => {
     const filters_medium: Filter[] = [{
         "id": 1,
         "filter_image": brazilFlag,
-        "filter_text": "Brazilian",
+        "filter_text": "filters.brazilian",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return fighter.Nationality == "Brazil";
@@ -155,7 +155,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 2,
         "filter_image": undefeated,
-        "filter_text": "Undefeated",
+        "filter_text": "filters.undefeated",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return fighter.Losses == "0";
@@ -163,7 +163,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 3,
         "filter_image": title,
-        "filter_text": "Been in Title Fight",
+        "filter_text": "filters.beenInTitleFight",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseInt(fighter.TotalTitleBouts) > 0;
@@ -171,7 +171,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 4,
         "filter_image": null,
-        "filter_text": "Welterweight",
+        "filter_text": "filters.welterweight",
         "filter_no_image_text": "170",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -181,7 +181,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 5,
         "filter_image": null,
-        "filter_text": "Middleweight",
+        "filter_text": "filters.middleweight",
         "filter_no_image_text": "185",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -191,7 +191,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 6,
         "filter_image": null,
-        "filter_text": "Lightweight",
+        "filter_text": "filters.lightweight",
         "filter_no_image_text": "155",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -201,7 +201,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 7,
         "filter_image": null,
-        "filter_text": "Light heavyweight",
+        "filter_text": "filters.lightHeavyweight",
         "filter_no_image_text": "205",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -211,7 +211,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 8,
         "filter_image": null,
-        "filter_text": "Heavyweight",
+        "filter_text": "filters.heavyweight",
         "filter_no_image_text": "205>",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -221,7 +221,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 9,
         "filter_image": null,
-        "filter_text": "Featherweight",
+        "filter_text": "filters.featherweight",
         "filter_no_image_text": "145",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -231,7 +231,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 10,
         "filter_image": null,
-        "filter_text": "Bantamweight",
+        "filter_text": "filters.bantamweight",
         "filter_no_image_text": "135",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -241,7 +241,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 11,
         "filter_image": null,
-        "filter_text": "Flyweight",
+        "filter_text": "filters.flyweight",
         "filter_no_image_text": "125",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return (fighter.WeightLbs as string).split(", ")
@@ -251,7 +251,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 12,
         "filter_image": usaFlag,
-        "filter_text": "USA",
+        "filter_text": "filters.usa",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return fighter.Nationality == "United States";
@@ -259,7 +259,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 13,
         "filter_image": polandFlag,
-        "filter_text": "Poland",
+        "filter_text": "filters.poland",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return fighter.Nationality == "Poland";
@@ -267,7 +267,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 14,
         "filter_image": nigeriaFlag,
-        "filter_text": "Nigeria",
+        "filter_text": "filters.nigeria",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return fighter.Nationality == "Nigeria";
@@ -275,7 +275,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 15,
         "filter_image": australiaFlag,
-        "filter_text": "Australia",
+        "filter_text": "filters.australia",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return fighter.Nationality == "Australia";
@@ -284,7 +284,7 @@ const Filters = (): FilterDifficulty => {
     {
         "id": 16,
         "filter_image": russiaFlag,
-        "filter_text": "Russia",
+        "filter_text": "filters.russia",
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return fighter.Nationality == "Russia";
@@ -292,7 +292,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 17,
         "filter_image": null,
-        "filter_text": "Octagon Debut",
+        "filter_text": "filters.octagonDebut",
         "filter_no_image_text": "2015>",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseInt(fighter.OctagonDebut) > 2015;
@@ -301,7 +301,7 @@ const Filters = (): FilterDifficulty => {
     {
         "id": 18,
         "filter_image": null,
-        "filter_text": "Total Title Bouts",
+        "filter_text": "filters.totalTitleBouts",
         "filter_no_image_text": ">2",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseInt(fighter.TotalTitleBouts) > 2;
@@ -310,7 +310,7 @@ const Filters = (): FilterDifficulty => {
     {
         "id": 19,
         "filter_image": null,
-        "filter_text": "Height",
+        "filter_text": "filters.height",
         "filter_no_image_text": ">180",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseFloat(fighter.HeightCms) > 180;
@@ -319,7 +319,7 @@ const Filters = (): FilterDifficulty => {
     {
         "id": 20,
         "filter_image": null,
-        "filter_text": "Rounds Fought",
+        "filter_text": "filters.roundsFought",
         "filter_no_image_text": ">20",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseFloat(fighter.totalRoundsFought) > 20;
@@ -327,7 +327,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 21,
         "filter_image": null,
-        "filter_text": "Age",
+        "filter_text": "filters.age",
         "filter_no_image_text": "35>",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseInt(fighter.Age) > 35;
@@ -335,7 +335,7 @@ const Filters = (): FilterDifficulty => {
     }, {
         "id": 22,
         "filter_image": null,
-        "filter_text": "Age",
+        "filter_text": "filters.age",
         "filter_no_image_text": "30<",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseInt(fighter.Age) < 30;
@@ -344,7 +344,7 @@ const Filters = (): FilterDifficulty => {
     {
         "id": 23,
         "filter_image": null,
-        "filter_text": "Octagon Debut",
+        "filter_text": "filters.octagonDebut",
         "filter_no_image_text": "2015<",
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseInt(fighter.OctagonDebut) < 2015;
@@ -354,7 +354,7 @@ const Filters = (): FilterDifficulty => {
         {
             "id": 1,
             "filter_image": brazilFlag,
-            "filter_text": "Brazilian",
+            "filter_text": "filters.brazilian",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return fighter.Nationality == "Brazil";
@@ -362,7 +362,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 2,
             "filter_image": undefeated,
-            "filter_text": "Undefeated",
+            "filter_text": "filters.undefeated",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return fighter.Losses == "0";
@@ -370,7 +370,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 3,
             "filter_image": title,
-            "filter_text": "Been in Title Fight",
+            "filter_text": "filters.beenInTitleFight",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return parseInt(fighter.TotalTitleBouts) > 0;
@@ -378,7 +378,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 4,
             "filter_image": null,
-            "filter_text": "Welterweight",
+            "filter_text": "filters.welterweight",
             "filter_no_image_text": "170",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return (fighter.WeightLbs as string).split(", ")
@@ -388,7 +388,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 5,
             "filter_image": null,
-            "filter_text": "Middleweight",
+            "filter_text": "filters.middleweight",
             "filter_no_image_text": "185",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return (fighter.WeightLbs as string).split(", ")
@@ -398,7 +398,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 6,
             "filter_image": null,
-            "filter_text": "Lightweight",
+            "filter_text": "filters.lightweight",
             "filter_no_image_text": "155",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return (fighter.WeightLbs as string).split(", ")
@@ -408,7 +408,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 7,
             "filter_image": null,
-            "filter_text": "Light heavyweight",
+            "filter_text": "filters.lightHeavyweight",
             "filter_no_image_text": "205",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return (fighter.WeightLbs as string).split(", ")
@@ -418,7 +418,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 8,
             "filter_image": null,
-            "filter_text": "Heavyweight",
+            "filter_text": "filters.heavyweight",
             "filter_no_image_text": "205>",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return (fighter.WeightLbs as string).split(", ")
@@ -428,7 +428,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 9,
             "filter_image": null,
-            "filter_text": "Featherweight",
+            "filter_text": "filters.featherweight",
             "filter_no_image_text": "145",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return (fighter.WeightLbs as string).split(", ")
@@ -438,7 +438,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 10,
             "filter_image": null,
-            "filter_text": "Bantamweight",
+            "filter_text": "filters.bantamweight",
             "filter_no_image_text": "135",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return (fighter.WeightLbs as string).split(", ")
@@ -448,7 +448,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 11,
             "filter_image": null,
-            "filter_text": "Flyweight",
+            "filter_text": "filters.flyweight",
             "filter_no_image_text": "125",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return (fighter.WeightLbs as string).split(", ")
@@ -458,7 +458,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 12,
             "filter_image": usaFlag,
-            "filter_text": "USA",
+            "filter_text": "filters.usa",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return fighter.Nationality == "United States";
@@ -466,7 +466,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 13,
             "filter_image": polandFlag,
-            "filter_text": "Poland",
+            "filter_text": "filters.poland",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return fighter.Nationality == "Poland";
@@ -474,7 +474,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 14,
             "filter_image": nigeriaFlag,
-            "filter_text": "Nigeria",
+            "filter_text": "filters.nigeria",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return fighter.Nationality == "Nigeria";
@@ -482,7 +482,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 15,
             "filter_image": australiaFlag,
-            "filter_text": "Australia",
+            "filter_text": "filters.australia",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return fighter.Nationality == "Australia";
@@ -491,7 +491,7 @@ const Filters = (): FilterDifficulty => {
         {
             "id": 16,
             "filter_image": russiaFlag,
-            "filter_text": "Russia",
+            "filter_text": "filters.russia",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return fighter.Nationality == "Russia";
@@ -499,7 +499,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 17,
             "filter_image": null,
-            "filter_text": "Octagon Debut",
+            "filter_text": "filters.octagonDebut",
             "filter_no_image_text": "2015>",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return parseInt(fighter.OctagonDebut) > 2015;
@@ -508,7 +508,7 @@ const Filters = (): FilterDifficulty => {
         {
             "id": 18,
             "filter_image": orthodoxStance,
-            "filter_text": "Orthodox",
+            "filter_text": "filters.orthodox",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
@@ -516,7 +516,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 19,
             "filter_image": switchStance,
-            "filter_text": "Switch",
+            "filter_text": "filters.switch",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return fighter.Stance == "Switch";
@@ -524,7 +524,7 @@ const Filters = (): FilterDifficulty => {
         }, {
             "id": 20,
             "filter_image": southpawStance,
-            "filter_text": "Southpaw",
+            "filter_text": "filters.southpaw",
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
@@ -533,7 +533,7 @@ const Filters = (): FilterDifficulty => {
         {
             "id": 21,
             "filter_image": null,
-            "filter_text": "Total Title Bouts",
+            "filter_text": "filters.totalTitleBouts",
             "filter_no_image_text": ">2",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return parseInt(fighter.TotalTitleBouts) > 2;
@@ -542,7 +542,7 @@ const Filters = (): FilterDifficulty => {
         {
             "id": 22,
             "filter_image": null,
-            "filter_text": "Height",
+            "filter_text": "filters.height",
             "filter_no_image_text": ">180",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return parseFloat(fighter.HeightCms) > 180;
@@ -551,7 +551,7 @@ const Filters = (): FilterDifficulty => {
         {
             "id": 23,
             "filter_image": null,
-            "filter_text": "Rounds Fought",
+            "filter_text": "filters.roundsFought",
             "filter_no_image_text": ">20",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return parseFloat(fighter.totalRoundsFought) > 20;
@@ -560,7 +560,7 @@ const Filters = (): FilterDifficulty => {
         {
             "id": 24,
             "filter_image": null,
-            "filter_text": "Octagon Debut",
+            "filter_text": "filters.octagonDebut",
             "filter_no_image_text": "2014<",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return parseInt(fighter.OctagonDebut) < 2014;

@@ -1,0 +1,169 @@
+import { useContext, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import trFlag from "../assets/tr.png";
+import enFlag from "../assets/en.jpg";
+import ptFlag from "../assets/pt.png";
+import spFlag from "../assets/sp.png";
+import light from "../assets/light.png";
+import { ThemeContext } from "../context/ThemeContext";
+import return_img from "../assets/return.png";
+import dark from "../assets/dark.png";
+import { useNavigate, useLocation } from "react-router-dom";
+
+const Header = () => {
+  const { theme, toggleTheme: contextToggleTheme } = useContext(ThemeContext);
+  const toggleTheme = contextToggleTheme;
+  const { t, i18n } = useTranslation();
+  const [languageDropdown, setLanguageDropdown] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
+    setLanguageDropdown(false);
+  };
+  const handleLanguageClick = () => {
+    // Always open dropdown since we have 4 languages now
+    setLanguageDropdown(!languageDropdown);
+  };
+
+  const handleExit = () => {
+    if (location.pathname === "/menu" || location.pathname === "/login") {
+      navigate("/");
+    } else {
+      navigate("/menu");
+    }
+  };
+
+  return (
+    <div className="absolute top-0 left-0 w-full z-50 bg-transparent flex flex-wrap gap-4 justify-between items-center p-4">
+      <div>
+        <div className="flex items-center gap-3">
+          <div
+            onClick={toggleTheme}
+            className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
+              theme === "dark"
+                ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
+                : "bg-white/80 border-slate-200/50 hover:bg-white/90"
+            } shadow-xl hover:scale-110`}
+          >
+            {theme === "dark" ? (
+              <img
+                src={light}
+                className="lg:w-6 lg:h-6 w-5 h-5"
+                alt="Light mode"
+              />
+            ) : (
+              <img
+                src={dark}
+                className="lg:w-6 lg:h-6 w-5 h-5"
+                alt="Dark mode"
+              />
+            )}
+          </div>
+          <div className="relative">
+            <button
+              onClick={handleLanguageClick}
+              className="lg:w-[50px] lg:h-[50px] w-[46px] h-[46px] bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900 dark:to-cyan-900 border border-red-500 flex items-center justify-center rounded-full cursor-pointer transition-all hover:scale-110 shadow-blue-300/50 dark:shadow-blue-900/50 duration-300 overflow-hidden"
+              title="Change Language"
+            >
+              <img
+                src={
+                  i18n.language === "tr"
+                    ? trFlag
+                    : i18n.language === "pt"
+                    ? ptFlag
+                    : i18n.language === "sp"
+                    ? spFlag
+                    : enFlag
+                }
+                alt={
+                  i18n.language === "tr"
+                    ? "Turkish"
+                    : i18n.language === "pt"
+                    ? "Portuguese"
+                    : i18n.language === "sp"
+                    ? "Spanish"
+                    : "English"
+                }
+                className="w-full h-full rounded-full object-cover"
+              />
+            </button>
+
+            {/* Dropdown Menu */}
+            {languageDropdown && (
+              <div className="z-60 w-36 absolute top-14 left-0 bg-slate-200/10 text-white rounded-br-xl rounded-tl-xl shadow-xl dark:shadow-2xl border border-slate-600/40 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20">
+                <button
+                  onClick={() => changeLanguage("tr")}
+                  className="z-80 flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left hover:bg-blue-200/10 transition-colors border-b border-slate-600/40"
+                >
+                  <img
+                    src={trFlag}
+                    alt="Turkish"
+                    className="w-6 h-6 rounded object-cover rounded-full"
+                  />
+                  <span className="font-medium">Türkçe</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("en")}
+                  className="flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left hover:bg-blue-200/10 transition-colors border-b border-slate-600/40"
+                >
+                  <img
+                    src={enFlag}
+                    alt="English"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">English</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("pt")}
+                  className="flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left hover:bg-blue-200/10 transition-colors border-b border-slate-600/40"
+                >
+                  <img
+                    src={ptFlag}
+                    alt="Portuguese"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">Português</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("sp")}
+                  className="flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left hover:bg-blue-200/10 transition-colors"
+                >
+                  <img
+                    src={spFlag}
+                    alt="Spanish"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">Español</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      {location.pathname !== "/" && (
+        <div>
+          <div
+            onClick={handleExit}
+            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
+              theme === "dark"
+                ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
+                : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
+            }`}
+          >
+            <div className="flex gap-2">
+              <img
+                src={return_img || "/placeholder.svg"}
+                className="w-6"
+              />
+              <p className="font-semibold">{t("room.backToMenu")}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Header;

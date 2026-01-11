@@ -12,6 +12,7 @@ import {
   getDoc,
   getDocs,
 } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
 import { db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -23,6 +24,10 @@ import {
   removeFriend,
 } from "../services/friends";
 import return_img from "../assets/return.png";
+import trFlag from "../assets/tr.png";
+import enFlag from "../assets/en.jpg";
+import dark from "../assets/dark.png";
+import light from "../assets/light.png";
 
 type Req = {
   id: string;
@@ -33,6 +38,7 @@ type Req = {
 };
 
 export default function Friends() {
+  const { t, i18n } = useTranslation();
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -51,6 +57,7 @@ export default function Friends() {
   const [friendsLoading, setFriendsLoading] = useState(true);
   const [docLoaded, setDocLoaded] = useState(false);
   const [acceptedLoaded, setAcceptedLoaded] = useState(false);
+  const [languageDropdown, setLanguageDropdown] = useState(false);
 
   // Yıldızları bir kez üret (re-render'da zıplamasın)
   const stars = useMemo(
@@ -65,6 +72,27 @@ export default function Friends() {
       })),
     []
   );
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
+    setLanguageDropdown(false);
+  };
+
+  const handleLanguageClick = () => {
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(min-width: 768px)").matches
+    ) {
+      // Desktop / md+ -> open dropdown
+      setLanguageDropdown(!languageDropdown);
+    } else {
+      // Mobile -> toggle language directly
+      const newLang = i18n.language === "tr" ? "en" : "tr";
+      changeLanguage(newLang);
+    }
+  };
 
   useEffect(() => {
     if (!currentUser?.email) return;
@@ -240,53 +268,7 @@ export default function Friends() {
         ))}
       </div>
 
-      <div className="absolute z-30 top-6 left-6">
-        <div
-          onClick={toggleTheme}
-          className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
-            theme === "dark"
-              ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
-              : "bg-white/80 border-slate-200/50 hover:bg-white/90"
-          } shadow-xl hover:scale-110`}
-        >
-          {theme === "dark" ? (
-            <img
-              src="https://clipart-library.com/images/6iypd9jin.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Light mode"
-            />
-          ) : (
-            <img
-              src="https://clipart-library.com/img/1669853.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Dark mode"
-            />
-          )}
-        </div>
-      </div>
-
-      <div
-        className="absolute z-30 top-6 right-6"
-        onClick={handleExit}
-      >
-        <div
-          className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
-            theme === "dark"
-              ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
-              : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
-          }`}
-        >
-          <div className="flex gap-2 items-center">
-            <img
-              src={return_img || "/placeholder.svg"}
-              className="w-6"
-            />
-            <p className="font-semibold">Go Back</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-10 pt-24">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-10 lg:pt-24 pt-32">
         {!canUse && (
           <div
             className={`rounded-xl p-4 mb-6 border text-center ${
@@ -295,7 +277,7 @@ export default function Friends() {
                 : "bg-white/80 border-slate-300 text-slate-800"
             }`}
           >
-            Please login to use friends.
+            {t("friends.pleaseLoginToUseFriends")}
           </div>
         )}
 
@@ -308,10 +290,10 @@ export default function Friends() {
                   : "bg-white/80 border-slate-300 text-slate-800"
               }`}
             >
-              <div className="font-semibold mb-3">Add friend</div>
+              <div className="font-semibold mb-3">{t("friends.addFriend")}</div>
               <input
                 type="text"
-                placeholder="username"
+                placeholder={t("friends.usernameLabel")}
                 value={addUsername}
                 onChange={(e) => setAddUsername(e.target.value.trim())}
                 className={`w-full px-3 py-2 rounded-lg border mb-3 ${
@@ -324,7 +306,7 @@ export default function Friends() {
                 onClick={async () => {
                   try {
                     if (!addUsername) {
-                      toast.error("Please enter a username");
+                      toast.error(t("friends.pleaseEnterUsername"));
                       return;
                     }
 
@@ -336,16 +318,16 @@ export default function Friends() {
                     const result = await getDocs(q);
 
                     if (result.empty) {
-                      toast.error("Username not found");
+                      toast.error(t("friends.usernameNotFound"));
                       return;
                     }
 
                     const friendEmail = result.docs[0].id;
                     await sendFriendRequest(me, friendEmail);
                     setAddUsername("");
-                    toast.success("Friend request sent");
+                    toast.success(t("friends.friendRequestSent"));
                   } catch (e: any) {
-                    toast.error(e.message || "Failed to send request");
+                    toast.error(e.message || t("friends.failedToSendRequest"));
                   }
                 }}
                 className={`w-full py-2 rounded-lg font-semibold cursor-pointer ${
@@ -354,7 +336,7 @@ export default function Friends() {
                     : "bg-indigo-500 hover:bg-indigo-600 text-white"
                 }`}
               >
-                Send request
+                {t("friends.sendRequest")}
               </button>
             </div>
 
@@ -366,9 +348,11 @@ export default function Friends() {
                   : "bg-white/80 border-slate-300 text-slate-800"
               }`}
             >
-              <div className="font-semibold mb-3">Incoming</div>
+              <div className="font-semibold mb-3">{t("friends.incoming")}</div>
               {incoming.length === 0 && (
-                <div className="text-sm opacity-70">No incoming requests</div>
+                <div className="text-sm opacity-70">
+                  {t("friends.noIncomingRequests")}
+                </div>
               )}
               {incoming.map((r) => (
                 <div
@@ -383,13 +367,13 @@ export default function Friends() {
                       }
                       className="px-3 py-1 rounded-lg bg-green-600 text-white text-sm cursor-pointer"
                     >
-                      Accept
+                      {t("friends.accept")}
                     </button>
                     <button
                       onClick={() => declineFriendRequest(r.id)}
                       className="px-3 py-1 rounded-lg bg-slate-500 text-white text-sm cursor-pointer"
                     >
-                      Decline
+                      {t("friends.decline")}
                     </button>
                   </div>
                 </div>
@@ -404,9 +388,11 @@ export default function Friends() {
                   : "bg-white/80 border-slate-300 text-slate-800"
               }`}
             >
-              <div className="font-semibold mb-3">Sent</div>
+              <div className="font-semibold mb-3">{t("friends.sent")}</div>
               {sent.length === 0 && (
-                <div className="text-sm opacity-70">No pending requests</div>
+                <div className="text-sm opacity-70">
+                  {t("friends.noPendingRequests")}
+                </div>
               )}
               {sent.map((r) => (
                 <div
@@ -418,7 +404,7 @@ export default function Friends() {
                     onClick={() => cancelFriendRequest(r.id)}
                     className="px-3 py-1 rounded-lg bg-slate-500 text-white text-sm cursor-pointer"
                   >
-                    Cancel
+                    {t("friends.cancel")}
                   </button>
                 </div>
               ))}
@@ -435,15 +421,19 @@ export default function Friends() {
                 : "bg-white/80 border-slate-300 text-slate-800"
             }`}
           >
-            <div className="font-semibold mb-3">Friends ({friends.length})</div>
+            <div className="font-semibold mb-3">
+              {t("friends.friendsList")} ({friends.length})
+            </div>
             {friendsLoading && (
               <div className="flex items-center gap-2 text-sm opacity-70">
                 <span className="w-3 h-3 rounded-full border-2 border-current border-t-transparent animate-spin" />
-                Loading friends...
+                {t("friends.loadingFriends")}
               </div>
             )}
             {!friendsLoading && friends.length === 0 && (
-              <div className="text-sm opacity-70">No friends yet</div>
+              <div className="text-sm opacity-70">
+                {t("friends.noFriendsYet")}
+              </div>
             )}
             {!friendsLoading && friends.length > 0 && (
               <div className="space-y-2">
@@ -452,7 +442,18 @@ export default function Friends() {
                     key={e}
                     className="flex items-center justify-between py-2 border-b last:border-none border-slate-600/30"
                   >
-                    <div className="truncate">
+                    <div
+                      className="truncate cursor-pointer hover:text-indigo-500 transition"
+                      onClick={() =>
+                        navigate(
+                          `/profile/${encodeURIComponent(
+                            (
+                              friendsUsernames[e] || e.split("@")[0]
+                            ).toLowerCase()
+                          )}`
+                        )
+                      }
+                    >
                       {(friendsUsernames[e] || e.split("@")[0]).slice(0, 14)}
                     </div>
                     <div className="flex gap-2">
@@ -464,13 +465,13 @@ export default function Friends() {
                         }
                         className="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm cursor-pointer"
                       >
-                        Invite
+                        {t("friends.invite")}
                       </button>
                       <button
                         onClick={() => removeFriend(me, e)}
                         className="px-3 py-1 rounded-lg bg-red-600 text-white text-sm cursor-pointer"
                       >
-                        Remove
+                        {t("friends.remove")}
                       </button>
                     </div>
                   </div>

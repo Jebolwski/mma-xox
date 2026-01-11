@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../context/ThemeContext";
 import {
   signInWithEmailAndPassword,
@@ -7,7 +8,10 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import trFlag from "../assets/tr.png";
+import enFlag from "../assets/en.jpg";
 import { toast, ToastContainer } from "react-toastify";
+import return_img from "../assets/return.png";
 import {
   doc,
   setDoc,
@@ -16,11 +20,18 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
+import { usePageTitle } from "../hooks/usePageTitle";
 import { db } from "../firebase";
+import light from "../assets/light.png";
+import dark from "../assets/dark.png";
+import logo from "../assets/logo.png";
 
 const Login = () => {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useContext(ThemeContext);
+
+  usePageTitle(t("auth.loginTitle"));
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,20 +41,25 @@ const Login = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
-
+  const [languageDropdown, setLanguageDropdown] = useState(false);
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
+    setLanguageDropdown(false);
+  };
   const handleLogin = async (e: any) => {
     e.preventDefault();
 
     if (isSignUp) {
       // Sign up: email, password, username zorunlu
       if (!email || !password || !username) {
-        toast.error("Please fill all fields!");
+        toast.error(t("auth.fillAllFields"));
         return;
       }
     } else {
       // Sign in: email, password zorunlu
       if (!email || !password) {
-        toast.error("Please fill all fields!");
+        toast.error(t("auth.fillAllFields"));
         return;
       }
     }
@@ -56,15 +72,13 @@ const Login = () => {
 
         // Username validasyonu
         if (desiredUsername.length < 3) {
-          toast.error("Username must be at least 3 characters!");
+          toast.error(t("auth.usernameShort"));
           setLoading(false);
           return;
         }
 
         if (!/^[a-z0-9_-]+$/.test(desiredUsername)) {
-          toast.error(
-            "Username can only contain letters, numbers, underscore and dash!"
-          );
+          toast.error(t("auth.usernameInvalid"));
           setLoading(false);
           return;
         }
@@ -76,7 +90,7 @@ const Login = () => {
         );
         const usernameSnap = await getDocs(usernameQuery);
         if (!usernameSnap.empty) {
-          toast.error("Username already taken. Try another.");
+          toast.error(t("auth.usernameTaken"));
           setLoading(false);
           return;
         }
@@ -118,11 +132,11 @@ const Login = () => {
 
         await setDoc(userRef, newUserProfile);
 
-        toast.success("Account created successfully!");
+        toast.success(t("auth.signupSuccess"));
       } else {
         // Sign in işlemi
         await signInWithEmailAndPassword(auth, email, password);
-        toast.success("Logged in successfully!");
+        toast.success(t("auth.loginSuccess"));
       }
       navigate("/menu");
     } catch (error: any) {
@@ -132,16 +146,34 @@ const Login = () => {
     }
   };
 
+  const handleLanguageClick = () => {
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(min-width: 768px)").matches
+    ) {
+      // Desktop / md+ -> open dropdown
+      setLanguageDropdown(!languageDropdown);
+    } else {
+      // Mobile -> toggle language directly
+      const newLang = i18n.language === "tr" ? "en" : "tr";
+      changeLanguage(newLang);
+    }
+  };
+  const handleExit = async () => {
+    navigate(-1);
+  };
+
   const handleForgotPassword = async () => {
     if (!resetEmail) {
-      toast.error("Please enter your email!");
+      toast.error(t("auth.enterEmailAddress"));
       return;
     }
 
     setResetLoading(true);
     try {
       await sendPasswordResetEmail(auth, resetEmail);
-      toast.success("Password reset email sent! Check your inbox.");
+      toast.success(t("auth.resetSuccess"));
       setShowForgotPassword(false);
       setResetEmail("");
     } catch (error: any) {
@@ -164,36 +196,10 @@ const Login = () => {
         theme={theme === "dark" ? "dark" : "light"}
       />
 
-      {/* Theme Toggle */}
-      <div className="absolute z-30 top-6 left-6">
-        <div
-          onClick={toggleTheme}
-          className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
-            theme === "dark"
-              ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
-              : "bg-white/80 border-slate-200/50 hover:bg-white/90"
-          } shadow-xl hover:scale-110`}
-        >
-          {theme === "dark" ? (
-            <img
-              src="https://clipart-library.com/images/6iypd9jin.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Light mode"
-            />
-          ) : (
-            <img
-              src="https://clipart-library.com/img/1669853.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Dark mode"
-            />
-          )}
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="flex items-center justify-center p-6">
         <div
-          className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-md transition-all duration-300 ${
+          className={`mt-16 p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-md transition-all duration-300 ${
             theme === "dark"
               ? "bg-slate-800/90 border-slate-600/50 text-slate-100"
               : "bg-white/90 border-slate-200/50 text-slate-800"
@@ -202,7 +208,7 @@ const Login = () => {
           <div className="flex items-center justify-center mb-8">
             <div className="flex items-center gap-3">
               <img
-                src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                src={logo}
                 alt="MMA XOX"
                 className="w-12 h-12 drop-shadow-lg"
               />
@@ -215,7 +221,7 @@ const Login = () => {
                     theme === "dark" ? "text-slate-400" : "text-slate-600"
                   }`}
                 >
-                  Ultimate Tic-Tac-Toe
+                  {t("auth.ultimateTicTacToe")}
                 </p>
               </div>
             </div>
@@ -226,7 +232,9 @@ const Login = () => {
             className="space-y-6"
           >
             <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+              <label className="block text-sm font-medium mb-2">
+                {t("auth.email")}
+              </label>
               <input
                 type="email"
                 value={email}
@@ -236,14 +244,14 @@ const Login = () => {
                     ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
                     : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
                 }`}
-                placeholder="your@email.com"
+                placeholder={t("auth.emailPlaceholder")}
               />
             </div>
             {/* YENİ: Username input - sadece sign up sırasında göster */}
             {isSignUp && (
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Username
+                  {t("auth.username")}
                 </label>
                 <input
                   type="text"
@@ -254,15 +262,17 @@ const Login = () => {
                       ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
                       : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
                   }`}
-                  placeholder="your_username"
+                  placeholder={t("auth.usernamePlaceholder")}
                 />
                 <p className="text-xs mt-1 text-slate-500">
-                  3+ characters, letters, numbers, underscore and dash allowed
+                  {t("auth.usernameValidation")}
                 </p>
               </div>
             )}{" "}
             <div>
-              <label className="block text-sm font-medium mb-2">Password</label>
+              <label className="block text-sm font-medium mb-2">
+                {t("auth.password")}
+              </label>
               <input
                 type="password"
                 value={password}
@@ -289,7 +299,11 @@ const Login = () => {
                   : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
               } text-white shadow-lg`}
             >
-              {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
+              {loading
+                ? "Loading..."
+                : isSignUp
+                ? t("auth.signup")
+                : t("auth.login")}
             </button>
           </form>
 
@@ -307,9 +321,7 @@ const Login = () => {
                   : "text-indigo-600 hover:text-indigo-500"
               }`}
             >
-              {isSignUp
-                ? "Already have an account? Sign in"
-                : "Don't have an account? Sign up"}
+              {isSignUp ? t("auth.haveAccount") : t("auth.noAccount")}
             </button>
           </div>
 
@@ -324,7 +336,7 @@ const Login = () => {
                     : "text-slate-600 hover:text-slate-500"
                 }`}
               >
-                Forgot your password?
+                {t("auth.forgotPassword")}
               </button>
             </div>
           )}
@@ -338,7 +350,7 @@ const Login = () => {
                   : "text-slate-600 hover:text-slate-500 hover:bg-slate-200/50"
               }`}
             >
-              Back to Home
+              {t("auth.backToHome")}
             </button>
           </div>
         </div>
@@ -355,13 +367,13 @@ const Login = () => {
             }`}
           >
             <h2 className="text-2xl font-bold mb-6 text-center">
-              Reset Password
+              {t("auth.resetPassword")}
             </h2>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Enter your email address
+                  {t("auth.enterEmailAddress")}
                 </label>
                 <input
                   type="email"
@@ -377,7 +389,7 @@ const Login = () => {
                       ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
                       : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
                   }`}
-                  placeholder="your@email.com"
+                  placeholder={t("auth.emailPlaceholder")}
                 />
               </div>
 
@@ -386,7 +398,7 @@ const Login = () => {
                   theme === "dark" ? "text-slate-400" : "text-slate-600"
                 }`}
               >
-                We'll send you an email with a link to reset your password.
+                {t("auth.resetEmailDescription")}
               </p>
 
               <div className="flex gap-3 pt-4">
@@ -406,7 +418,7 @@ const Login = () => {
                       : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
                   }`}
                 >
-                  Cancel
+                  {t("auth.cancel")}
                 </button>
                 <button
                   onClick={handleForgotPassword}
@@ -417,7 +429,7 @@ const Login = () => {
                       : "hover:scale-105 cursor-pointer hover:shadow-xl"
                   } bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg`}
                 >
-                  {resetLoading ? "Sending..." : "Send Reset Link"}
+                  {resetLoading ? "Sending..." : t("auth.sendResetLink")}
                 </button>
               </div>
             </div>

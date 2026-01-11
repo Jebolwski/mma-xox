@@ -1,24 +1,66 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { toast } from "react-toastify";
 import { usePageTitle } from "../hooks/usePageTitle";
+import trFlag from "../assets/tr.png";
+import enFlag from "../assets/en.jpg";
+import ptFlag from "../assets/pt.png";
+import light from "../assets/light.png";
+import dark from "../assets/dark.png";
+import logo from "../assets/logo.png";
+
 const Home = () => {
   const { theme, toggleTheme: contextToggleTheme } = useContext(ThemeContext);
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
-
-  usePageTitle("MMA XOX - Home");
+  const [username, setUsername] = useState<string | null>(null);
+  const [languageDropdown, setLanguageDropdown] = useState(false);
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
+    setLanguageDropdown(false);
+  };
+  const handleLanguageClick = () => {
+    // Always open dropdown since we have 3 languages now
+    setLanguageDropdown(!languageDropdown);
+  };
+  usePageTitle(t("home.pageTitle"));
 
   const toggleTheme = contextToggleTheme;
+
+  // Firestore'dan username'i çek
+  useEffect(() => {
+    if (currentUser?.email) {
+      const fetchUsername = async () => {
+        try {
+          const q = query(
+            collection(db, "users"),
+            where("email", "==", currentUser.email)
+          );
+          const snap = await getDocs(q);
+          if (!snap.empty) {
+            setUsername(snap.docs[0].data().username);
+          }
+        } catch (error) {
+          console.error("Error fetching username:", error);
+        }
+      };
+      fetchUsername();
+    }
+  }, [currentUser?.email]);
 
   const handleLogout = async () => {
     try {
       await logout();
-      toast.success("Logged out successfully!");
+      toast.success(t("home.logoutSuccess"));
     } catch (error) {
-      toast.error("Failed to logout");
+      toast.error(t("errors.logout"));
     }
   };
 
@@ -60,47 +102,6 @@ const Home = () => {
         ))}
       </div>
 
-      {/* Theme Toggle */}
-      <div className="absolute z-30 top-6 left-6">
-        <div
-          onClick={toggleTheme}
-          className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
-            theme === "dark"
-              ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
-              : "bg-white/80 border-slate-200/50 hover:bg-white/90"
-          } shadow-xl hover:scale-110`}
-        >
-          {theme === "dark" ? (
-            <img
-              src="https://clipart-library.com/images/6iypd9jin.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Light mode"
-            />
-          ) : (
-            <img
-              src="https://clipart-library.com/img/1669853.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Dark mode"
-            />
-          )}
-        </div>
-      </div>
-
-      {/* User Info - Sağ üstte */}
-      {currentUser && (
-        <div className="absolute z-30 top-6 right-6">
-          <div
-            className={`px-4 py-2 rounded-xl backdrop-blur-md border ${
-              theme === "dark"
-                ? "bg-slate-800/80 border-slate-600/50 text-white"
-                : "bg-white/80 border-slate-200/50 text-slate-800"
-            } shadow-lg`}
-          >
-            <span className="text-sm font-medium">👤 {currentUser.email}</span>
-          </div>
-        </div>
-      )}
-
       {/* Main Content */}
       <div className="relative z-10 flex flex-col min-h-[calc(100vh-61px)] items-center justify-center px-3 lg:px-4 pt-12 lg:pt-0">
         {/* Game Logo */}
@@ -116,7 +117,7 @@ const Home = () => {
             <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-orange-400 rounded-full animate-pulse delay-500" />
             <div className="flex justify-center">
               <img
-                src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                src={logo}
                 alt="logo"
                 className="lg:w-20 lg:h-20 w-16 h-16 mb-1"
               />
@@ -158,19 +159,18 @@ const Home = () => {
           } shadow-xl`}
         >
           <p className="text-base md:text-xl text-center leading-relaxed">
-            <span className="font-bold text-red-500">MMA XOX</span> combines the
-            classic Tic Tac Toe game with fighters and an arena!
+            <span className="font-bold text-red-500">MMA XOX</span>{" "}
+            {t("home.title")}
           </p>
           <p className="text-sm md:text-lg text-center mt-2 lg:mt-4 opacity-90">
-            Play with your friends or on a single screen, create rooms and
-            invite your rivals.
+            {t("home.description")}
           </p>
           <p
             className={`text-base md:text-xl text-center mt-2 lg:mt-4 font-bold ${
               theme === "dark" ? "text-yellow-400" : "text-red-600"
             }`}
           >
-            Choose your fighter, plan your strategy, and win in the arena! 🥊
+            {t("home.tagline")}
           </p>
         </div>
 
@@ -190,7 +190,7 @@ const Home = () => {
                   textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                 }}
               >
-                🎮 PLAY
+                🎮 {t("home.play")}
               </div>
 
               <div
@@ -204,7 +204,7 @@ const Home = () => {
                   textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                 }}
               >
-                🚪 LOGOUT
+                🚪 {t("home.logout")}
               </div>
             </>
           ) : (
@@ -221,7 +221,7 @@ const Home = () => {
                   textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                 }}
               >
-                🎮 PLAY AS GUEST
+                🎮 {t("home.playAsGuest")}
               </div>
 
               <div
@@ -235,7 +235,7 @@ const Home = () => {
                   textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                 }}
               >
-                🔐 LOGIN
+                🔐 {t("home.login")}
               </div>
             </>
           )}
