@@ -16,7 +16,12 @@ i18n
             pt: { translation: pt },
             sp: { translation: sp },
         },
+        lng: 'en',
         fallbackLng: 'en',
+        detection: {
+            order: ['localStorage', 'navigator'],
+            lookupLocalStorage: 'language',
+        },
         interpolation: {
             escapeValue: false,
         },
