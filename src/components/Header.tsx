@@ -4,6 +4,7 @@ import trFlag from "../assets/tr.png";
 import enFlag from "../assets/en.jpg";
 import ptFlag from "../assets/pt.png";
 import spFlag from "../assets/sp.png";
+import ruFlag from "../assets/russia_flag.jpg";
 import light from "../assets/light.png";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
@@ -75,6 +76,8 @@ const Header = () => {
                     ? ptFlag
                     : i18n.language === "sp"
                     ? spFlag
+                    : i18n.language === "ru"
+                    ? ruFlag
                     : enFlag
                 }
                 alt={
@@ -84,6 +87,8 @@ const Header = () => {
                     ? "Portuguese"
                     : i18n.language === "sp"
                     ? "Spanish"
+                    : i18n.language === "ru"
+                    ? "Russian"
                     : "English"
                 }
                 className="w-full h-full rounded-full object-cover"
@@ -158,6 +163,21 @@ const Header = () => {
                     className="w-6 h-6 rounded-full object-cover"
                   />
                   <span className="font-medium">Español</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("ru")}
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    theme === "dark"
+                      ? "hover:bg-blue-200/20"
+                      : "hover:bg-blue-100/50"
+                  }`}
+                >
+                  <img
+                    src={ruFlag}
+                    alt="Russian"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">Русский</span>
                 </button>
               </div>
             )}
