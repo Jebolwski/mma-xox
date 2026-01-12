@@ -45,6 +45,7 @@ import logo from "../assets/logo.png";
 import ptFlag from "../assets/pt.png";
 import spFlag from "../assets/sp.png";
 import ruFlag from "../assets/russia_flag.jpg";
+import deFlag from "../assets/ge.png";
 
 const Room = () => {
   const { roomId } = useParams();
@@ -2187,6 +2188,8 @@ const Room = () => {
                       ? spFlag
                       : i18n.language === "ru"
                       ? ruFlag
+                      : i18n.language === "de"
+                      ? deFlag
                       : enFlag
                   }
                   alt={
@@ -2198,6 +2201,8 @@ const Room = () => {
                       ? "Spanish"
                       : i18n.language === "ru"
                       ? "Russian"
+                      : i18n.language === "de"
+                      ? "German"
                       : "English"
                   }
                   className="w-full h-full rounded-full object-cover"
@@ -2275,10 +2280,10 @@ const Room = () => {
                   </button>
                   <button
                     onClick={() => changeLanguage("ru")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
-                        ? "hover:bg-blue-200/20"
-                        : "hover:bg-blue-100/50"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
                     }`}
                   >
                     <img
@@ -2287,6 +2292,21 @@ const Room = () => {
                       className="w-6 h-6 rounded-full object-cover"
                     />
                     <span className="font-medium">Русский</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("de")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20"
+                        : "hover:bg-blue-100/50"
+                    }`}
+                  >
+                    <img
+                      src={deFlag}
+                      alt="German"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">Deutsch</span>
                   </button>
                 </div>
               )}

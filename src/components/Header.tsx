@@ -5,6 +5,7 @@ import enFlag from "../assets/en.jpg";
 import ptFlag from "../assets/pt.png";
 import spFlag from "../assets/sp.png";
 import ruFlag from "../assets/russia_flag.jpg";
+import deFlag from "../assets/ge.png";
 import light from "../assets/light.png";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
@@ -78,6 +79,8 @@ const Header = () => {
                     ? spFlag
                     : i18n.language === "ru"
                     ? ruFlag
+                    : i18n.language === "de"
+                    ? deFlag
                     : enFlag
                 }
                 alt={
@@ -89,6 +92,8 @@ const Header = () => {
                     ? "Spanish"
                     : i18n.language === "ru"
                     ? "Russian"
+                    : i18n.language === "de"
+                    ? "German"
                     : "English"
                 }
                 className="w-full h-full rounded-full object-cover"
@@ -166,10 +171,10 @@ const Header = () => {
                 </button>
                 <button
                   onClick={() => changeLanguage("ru")}
-                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                     theme === "dark"
-                      ? "hover:bg-blue-200/20"
-                      : "hover:bg-blue-100/50"
+                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
                   }`}
                 >
                   <img
@@ -178,6 +183,21 @@ const Header = () => {
                     className="w-6 h-6 rounded-full object-cover"
                   />
                   <span className="font-medium">Русский</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("de")}
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    theme === "dark"
+                      ? "hover:bg-blue-200/20"
+                      : "hover:bg-blue-100/50"
+                  }`}
+                >
+                  <img
+                    src={deFlag}
+                    alt="German"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">Deutsch</span>
                 </button>
               </div>
             )}
