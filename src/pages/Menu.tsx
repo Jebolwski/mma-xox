@@ -481,7 +481,7 @@ const Menu = () => {
                     theme === "dark" ? "text-slate-400" : "text-slate-600"
                   }`}
                 >
-                  Ultimate Tic-Tac-Toe
+                  {t("auth.ultimateTicTacToe")}
                 </p>
               </div>
             </div>
