@@ -46,6 +46,8 @@ import ptFlag from "../assets/pt.png";
 import spFlag from "../assets/sp.png";
 import ruFlag from "../assets/russia_flag.jpg";
 import deFlag from "../assets/ge.png";
+import arFlag from "../assets/sa.png";
+import hiFlag from "../assets/in.png";
 
 const Room = () => {
   const { roomId } = useParams();
@@ -2175,7 +2177,7 @@ const Room = () => {
             <div className="relative">
               <button
                 onClick={handleLanguageClick}
-                className="lg:w-[50px] lg:h-[50px] w-[46px] h-[46px] bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900 dark:to-cyan-900 border border-red-500 flex items-center justify-center rounded-full cursor-pointer transition-all hover:scale-110 shadow-blue-300/50 dark:shadow-blue-900/50 duration-300 overflow-hidden"
+                className="lg:w-[50px] lg:h-[50px] w-[46px] h-[46px] bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900 dark:to-cyan-900 border border-slate-500 flex items-center justify-center rounded-full cursor-pointer transition-all hover:scale-110 shadow-blue-300/50 dark:shadow-blue-900/50 duration-300 overflow-hidden"
                 title="Change Language"
               >
                 <img
@@ -2190,6 +2192,10 @@ const Room = () => {
                       ? ruFlag
                       : i18n.language === "de"
                       ? deFlag
+                      : i18n.language === "ar"
+                      ? arFlag
+                      : i18n.language === "hi"
+                      ? hiFlag
                       : enFlag
                   }
                   alt={
@@ -2203,6 +2209,10 @@ const Room = () => {
                       ? "Russian"
                       : i18n.language === "de"
                       ? "German"
+                      : i18n.language === "ar"
+                      ? "Arabic"
+                      : i18n.language === "hi"
+                      ? "Hindi"
                       : "English"
                   }
                   className="w-full h-full rounded-full object-cover"
@@ -2295,10 +2305,10 @@ const Room = () => {
                   </button>
                   <button
                     onClick={() => changeLanguage("de")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
-                        ? "hover:bg-blue-200/20"
-                        : "hover:bg-blue-100/50"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
                     }`}
                   >
                     <img
@@ -2307,6 +2317,36 @@ const Room = () => {
                       className="w-6 h-6 rounded-full object-cover"
                     />
                     <span className="font-medium">Deutsch</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("ar")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={arFlag}
+                      alt="Arabic"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">العربية</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("hi")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20"
+                        : "hover:bg-blue-100/50"
+                    }`}
+                  >
+                    <img
+                      src={hiFlag}
+                      alt="Hindi"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">हिन्दी</span>
                   </button>
                 </div>
               )}

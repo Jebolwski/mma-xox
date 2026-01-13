@@ -7,6 +7,8 @@ import pt from './locales/pt.json';
 import sp from './locales/sp.json';
 import ru from './locales/ru.json';
 import de from './locales/de.json';
+import ar from './locales/ar.json';
+import hi from './locales/in.json';
 
 i18n
     .use(LanguageDetector)
@@ -19,6 +21,8 @@ i18n
             sp: { translation: sp },
             ru: { translation: ru },
             de: { translation: de },
+            ar: { translation: ar },
+            hi: { translation: hi },
         },
         lng: 'en',
         fallbackLng: 'en',
