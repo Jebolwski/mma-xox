@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 
 export default function Footer() {
@@ -61,12 +61,12 @@ export default function Footer() {
               theme === "dark" ? "text-slate-200" : "text-slate-600"
             }`}
           >
-            <a
-              href="/terms-of-service"
+            <Link
+              to="/terms-of-service"
               className="mx-2"
             >
               📜 {t("terms.title")}
-            </a>
+            </Link>
           </div>
           <div
             className={`text-center text-xs ${
@@ -80,12 +80,12 @@ export default function Footer() {
               theme === "dark" ? "text-slate-200" : "text-slate-600"
             }`}
           >
-            <a
-              href="/privacy-policy"
+            <Link
+              to="/privacy-policy"
               className="mx-2"
             >
               🔒 {t("privacy.title")}
-            </a>
+            </Link>
           </div>
           <div className="text-center sm:text-left">
             <p>{t("footer.copyright", { year: currentYear })}</p>
