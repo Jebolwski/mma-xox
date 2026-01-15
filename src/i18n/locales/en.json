@@ -189,6 +189,14 @@
     "madeWith": "Made with ❤️ for MMA fans",
     "copyright": "© {{year}} MMA XOX. All rights reserved."
   },
+  "terms": {
+    "title": "Terms of Service",
+    "intro": "Welcome to MMA XOX. By using our service you agree to follow these terms. This page is a short placeholder — replace with your full Terms of Service before publishing.",
+    "section1Title": "Using the Service",
+    "section1Text": "Users must be 13+ or have parental permission. Do not impersonate others or abuse the service. Respect other users.",
+    "section2Title": "Intellectual Property",
+    "section2Text": "All content and trademarks are property of their respective owners. Do not redistribute without permission."
+  },
   "home": {
     "title": "MMA XOX combines the classic Tic Tac Toe game with fighters and an arena!",
     "description": "Play with your friends or on a single screen, create rooms and invite your rivals.",

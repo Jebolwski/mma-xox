@@ -188,6 +188,14 @@
     "supportMe": "Beni destekle",
     "madeWith": "MMA tutkunları için ❤️ ile yapıldı",
     "copyright": "© {{year}} MMA XOX. Tüm hakları saklıdır."  },
+  "terms": {
+    "title": "Kullanım Şartları",
+    "intro": "MMA XOX'a hoş geldiniz. Hizmetimizi kullanarak bu koşullara uymayı kabul edersiniz. Bu sayfa kısa bir yer tutucudur — yayınlamadan önce tam Kullanım Şartları ile değiştirin.",
+    "section1Title": "Hizmeti Kullanma",
+    "section1Text": "Kullanıcılar 13 yaşından büyük olmalı veya ebeveyn izni olmalıdır. Başkalarının yerine geçmeyin veya hizmeti kötüye kullanmayın. Diğer kullanıcılara saygı gösterin.",
+    "section2Title": "Fikri Mülkiyet",
+    "section2Text": "Tüm içerik ve ticari markalar ilgili sahiplerine aittir. İzin almadan yeniden dağıtmayın."
+  },
   "home": {
     "title": "MMA XOX, klasik Tic Tac Toe oyununu dövüşçülerle ve bir arenasıyla birleştirir!",
     "description": "Arkadaşlarınızla veya tek ekranda oynayın, odalar oluşturun ve rakiplerinizi davet edin.",

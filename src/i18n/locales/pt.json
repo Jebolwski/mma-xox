@@ -189,6 +189,14 @@
     "madeWith": "Feito com ❤️ para fãs de MMA",
     "copyright": "© {{year}} MMA XOX. Todos os direitos reservados."
   },
+  "terms": {
+    "title": "Termos de Serviço",
+    "intro": "Bem-vindo ao MMA XOX. Ao usar nosso serviço você concorda em seguir estes termos. Esta página é um espaço reservado — substitua pelo seu texto completo antes de publicar.",
+    "section1Title": "Uso do Serviço",
+    "section1Text": "Usuários devem ter 13 anos ou mais, ou ter permissão dos pais. Não se passe por outros ou abuse do serviço. Respeite os demais usuários.",
+    "section2Title": "Propriedade Intelectual",
+    "section2Text": "Todo o conteúdo e marcas são propriedade de seus respectivos donos. Não redistribua sem permissão."
+  },
   "home": {
     "title": "MMA XOX combina o clássico Jogo da Velha com lutadores e uma arena!",
     "description": "Jogue com seus amigos ou na mesma tela, crie salas e convide seus rivais.",

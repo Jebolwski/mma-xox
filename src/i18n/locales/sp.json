@@ -189,6 +189,14 @@
     "madeWith": "Hecho con ❤️ para fans del MMA",
     "copyright": "© {{year}} MMA XOX. Todos los derechos reservados."
   },
+  "terms": {
+    "title": "Términos de Servicio",
+    "intro": "Bienvenido a MMA XOX. Al usar nuestro servicio aceptas seguir estos términos. Esta página es un marcador — reemplácela con sus Términos completos antes de publicar.",
+    "section1Title": "Uso del Servicio",
+    "section1Text": "Los usuarios deben tener 13+ años o contar con permiso parental. No suplantar identidades ni abusar del servicio. Respeta a los demás usuarios.",
+    "section2Title": "Propiedad Intelectual",
+    "section2Text": "Todo el contenido y marcas son propiedad de sus respectivos dueños. No redistribuya sin permiso."
+  },
   "home": {
     "title": "¡MMA XOX combina el clásico Tres en Raya con luchadores y una arena!",
     "description": "Juega con tus amigos o en pantalla única, crea salas e invita a tus rivales.",
