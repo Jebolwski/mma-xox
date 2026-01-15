@@ -1,21 +1,34 @@
-/* Scrollbar Genel Ayarları */
-::-webkit-scrollbar {
-  width: 8px !important; /* Scroll çubuğu genişliği */
+/* Scrollbar styling */
+.language-dropdown-light::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* Scrollbar Track (arka plan) */
-::-webkit-scrollbar-track {
-  background: #222 !important; /* Koyu arka plan */
-  border-radius: 10px !important; /* Yuvarlatılmış kenarlar */
+.language-dropdown-light::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-/* Scrollbar Thumb (kaydırılabilir alan) */
-::-webkit-scrollbar-thumb {
-  background: #666 !important; /* Gri tonlu kaydırma rengi */
-  border-radius: 10px !important;
+.language-dropdown-light::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.4);
+  border-radius: 4px;
 }
 
-/* Scrollbar üzerine gelince */
-::-webkit-scrollbar-thumb:hover {
-  background: #888 !important; /* Açık gri */
+.language-dropdown-light::-webkit-scrollbar-thumb:hover {
+  background: rgba(71, 85, 105, 0.6);
+}
+
+.language-dropdown-dark::-webkit-scrollbar {
+  width: 8px;
+}
+
+.language-dropdown-dark::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.language-dropdown-dark::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 4px;
+}
+
+.language-dropdown-dark::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
 }

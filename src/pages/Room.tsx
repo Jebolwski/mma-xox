@@ -2222,11 +2222,12 @@ const Room = () => {
               {/* Dropdown Menu */}
               {languageDropdown && (
                 <div
-                  className={`z-60 w-36 absolute top-14 left-0 rounded-br-xl rounded-tl-xl shadow-xl border overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20 ${
+                  className={`z-60 w-40 absolute top-14 left-0 rounded-br-xl rounded-tl-xl shadow-xl border overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20 ${
                     theme === "dark"
                       ? "bg-slate-700 text-white border-slate-500/40 shadow-2xl"
                       : "bg-slate-100 text-slate-800 border-slate-500/40"
                   }`}
+                  style={{ height: "200px", overflowY: "auto" }}
                 >
                   <button
                     onClick={() => changeLanguage("tr")}

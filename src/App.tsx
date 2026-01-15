@@ -18,6 +18,7 @@ import Room from "./pages/Room";
 import AvailableRooms from "./pages/AvailableRooms";
 import Profile from "./pages/Profile"; // EKLENDI
 import ResetPassword from "./pages/ResetPassword";
+import Privacy from "./pages/Privacy";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext"; // EKLENDI
 import WorldRanking from "./pages/WorldRanking";
@@ -60,6 +61,10 @@ function AppContent() {
         <Route
           path="/reset-password"
           element={<ResetPassword />}
+        />
+        <Route
+          path="/privacy"
+          element={<Privacy />}
         />
         <Route
           path="/menu"

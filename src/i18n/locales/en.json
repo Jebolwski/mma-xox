@@ -410,5 +410,23 @@
     "pointsUpdated": "Points have been updated!",
     "playAgainQuestion": "Play Again?",
     "waitForHost": "Wait for Host"
-  }
+    
+  },"privacy": {
+      "title": "Privacy Policy",
+      "section1Title": "🔒 Privacy Policy",
+      "section1Text": "At MMA-XOX, we respect user privacy. When you visit our site, some technical data such as IP address, device and browser information may be automatically collected. This information is used only to improve site performance and user experience.",
+      "section2Title": "📝 Voluntarily Shared Information",
+      "section2Text": "Information voluntarily shared by users (for example, email sent through a contact form) is used only for communication purposes and is not shared with third parties.",
+      "section3Title": "🍪 Cookies",
+      "section3Text": "Our site may use cookies. Cookies are used to make the site more efficient. You can control cookies from your browser settings.",
+      "section4Title": "🛡️ Data Security",
+      "section4Text": "MMA-XOX takes necessary security measures to protect user information, but there is no guarantee that data transmission over the internet is completely secure.",
+      "section5Title": "🔗 Third Party Links",
+      "section5Text": "Our site may contain links to third-party sites. MMA-XOX is not responsible for the privacy practices of these sites.",
+      "section6Title": "📅 Policy Updates",
+      "section6Text": "This privacy policy may be updated as needed. Updates become effective when published on this page.",
+      "section7Title": "✉️ Contact",
+      "section7TextPrefix": "Email: ",
+      "section7Email": "mertgkmeen@gmail.com"
+    }
 }

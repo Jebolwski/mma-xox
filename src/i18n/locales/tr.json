@@ -406,6 +406,23 @@
     "rankedMatchCompleted": "🏆 Sıralama Maçı Tamamlandı",
     "pointsUpdated": "Puanlar güncellendi!",
     "playAgainQuestion": "Tekrar Oyna?",
-    "waitForHost": "Oda Sahibini Bekle"
-  }
+    "waitForHost": "Ev Sahibini Bekle"
+  },"privacy": {
+      "title": "Gizlilik Politikası",
+      "section1Title": "🔒 Gizlilik Politikası",
+      "section1Text": "MMA-XOX olarak kullanıcı gizliliğine önem veriyoruz. Sitemizi ziyaret ettiğinizde IP adresi, cihaz ve tarayıcı bilgileri gibi bazı teknik veriler otomatik olarak toplanabilir. Bu bilgiler yalnızca site performansını artırmak ve kullanıcı deneyimini geliştirmek amacıyla kullanılır.",
+      "section2Title": "📝 Gönüllü Olarak Paylaşılan Bilgiler",
+      "section2Text": "Kullanıcı tarafından gönüllü olarak paylaşılan bilgiler (örneğin iletişim formu üzerinden gönderilen e-posta) sadece iletişim kurmak için kullanılır ve üçüncü kişilerle paylaşılmaz.",
+      "section3Title": "🍪 Çerezler (Cookies)",
+      "section3Text": "Sitemiz çerezler (cookies) kullanabilir. Çerezler, siteyi daha verimli hale getirmek için kullanılır. Tarayıcı ayarlarınızdan çerezleri kontrol edebilirsiniz.",
+      "section4Title": "🛡️ Veri Güvenliği",
+      "section4Text": "MMA-XOX, kullanıcı bilgilerini korumak için gerekli güvenlik önlemlerini alır ancak internet üzerinden yapılan veri aktarımının tamamen güvenli olduğu garanti edilemez.",
+      "section5Title": "🔗 Üçüncü Taraf Sitelere Yönlendirmeler",
+      "section5Text": "Sitemizde üçüncü taraf sitelere yönlendiren bağlantılar olabilir. Bu sitelerin gizlilik uygulamalarından MMA-XOX sorumlu değildir.",
+      "section6Title": "📅 Politika Güncellemeleri",
+      "section6Text": "Bu gizlilik politikası gerektiğinde güncellenebilir. Güncellemeler bu sayfada yayınlandığı anda geçerli olur.",
+      "section7Title": "✉️ İletişim",
+      "section7TextPrefix": "E-posta: ",
+      "section7Email": "mertgkmeen@gmail.com"
+    }
 }

@@ -409,6 +409,23 @@
     "rankedMatchCompleted": "🏆 Rangiertes Spiel abgeschlossen",
     "pointsUpdated": "Punkte wurden aktualisiert!",
     "playAgainQuestion": "Erneut spielen?",
-    "waitForHost": "Auf Host warten"
-  }
+    "waitForHost": "Auf Gastgeber Warten"
+  },"privacy": {
+      "title": "Datenschutzrichtlinie",
+      "section1Title": "🔒 Datenschutzrichtlinie",
+      "section1Text": "Bei MMA-XOX schätzen wir die Privatsphäre der Benutzer. Wenn Sie unsere Website besuchen, können einige technische Daten wie IP-Adresse, Geräte- und Browserinformationen automatisch erfasst werden. Diese Informationen werden nur verwendet, um die Website-Leistung und das Benutzererlebnis zu verbessern.",
+      "section2Title": "📝 Freiwillig Freigegebene Informationen",
+      "section2Text": "Informationen, die von Benutzern freiwillig weitergegeben werden (z. B. E-Mail über ein Kontaktformular), werden nur für Kommunikationszwecke verwendet und nicht an Dritte weitergegeben.",
+      "section3Title": "🍪 Cookies",
+      "section3Text": "Unsere Website kann Cookies verwenden. Cookies werden verwendet, um die Website effizienter zu gestalten. Sie können Cookies in Ihren Browsereinstellungen verwalten.",
+      "section4Title": "🛡️ Datensicherheit",
+      "section4Text": "MMA-XOX trifft notwendige Sicherheitsmaßnahmen zum Schutz von Benutzerinformationen, garantiert aber nicht, dass die Datenübertragung über das Internet vollständig sicher ist.",
+      "section5Title": "🔗 Links zu Drittanbieter-Websites",
+      "section5Text": "Unsere Website kann Links zu Websites von Drittanbietern enthalten. MMA-XOX ist nicht verantwortlich für die Datenschutzpraktiken dieser Websites.",
+      "section6Title": "📅 Richtlinienaktualisierungen",
+      "section6Text": "Diese Datenschutzrichtlinie kann nach Bedarf aktualisiert werden. Aktualisierungen werden wirksam, wenn sie auf dieser Seite veröffentlicht werden.",
+      "section7Title": "✉️ Kontakt",
+      "section7TextPrefix": "E-Mail: ",
+      "section7Email": "mertgkmeen@gmail.com"
+    }
 }

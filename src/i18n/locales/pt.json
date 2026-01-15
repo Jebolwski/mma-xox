@@ -410,5 +410,22 @@
     "pointsUpdated": "Pontos foram atualizados!",
     "playAgainQuestion": "Jogar Novamente?",
     "waitForHost": "Aguardar Anfitrião"
-  }
+  },"privacy": {
+      "title": "Política de Privacidade",
+      "section1Title": "🔒 Política de Privacidade",
+      "section1Text": "Na MMA-XOX, valorizamos a privacidade do usuário. Quando você visita nosso site, alguns dados técnicos como endereço IP, informações de dispositivo e navegador podem ser coletados automaticamente. Essas informações são usadas apenas para melhorar o desempenho do site e a experiência do usuário.",
+      "section2Title": "📝 Informações Compartilhadas Voluntariamente",
+      "section2Text": "Informações compartilhadas voluntariamente pelos usuários (por exemplo, e-mail enviado através de um formulário de contato) são usadas apenas para fins de comunicação e não são compartilhadas com terceiros.",
+      "section3Title": "🍪 Cookies",
+      "section3Text": "Nosso site pode usar cookies. Os cookies são usados para tornar o site mais eficiente. Você pode controlar os cookies nas configurações do seu navegador.",
+      "section4Title": "🛡️ Segurança de Dados",
+      "section4Text": "MMA-XOX toma as medidas de segurança necessárias para proteger as informações do usuário, mas não há garantia de que a transmissão de dados pela internet seja completamente segura.",
+      "section5Title": "🔗 Links de Terceiros",
+      "section5Text": "Nosso site pode conter links para sites de terceiros. MMA-XOX não é responsável pelas práticas de privacidade desses sites.",
+      "section6Title": "📅 Atualizações da Política",
+      "section6Text": "Esta política de privacidade pode ser atualizada conforme necessário. As atualizações entram em vigor quando publicadas nesta página.",
+      "section7Title": "✉️ Contato",
+      "section7TextPrefix": "E-mail: ",
+      "section7Email": "mertgkmeen@gmail.com"
+    }
 }
