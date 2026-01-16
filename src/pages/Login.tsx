@@ -359,7 +359,7 @@ const Login = () => {
                 className={`w-full mt-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 border-2 ${
                   socialLoading
                     ? "opacity-50 cursor-not-allowed"
-                    : "hover:scale-102 cursor-pointer hover:shadow-lg"
+                    : "hover:scale-101 cursor-pointer hover:shadow-lg"
                 } ${
                   theme === "dark"
                     ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700/80 text-white"
