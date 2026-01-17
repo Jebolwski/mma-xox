@@ -10,7 +10,7 @@ const Terms = () => {
 
   return (
     <div
-      className={`pt-28 min-h-[calc(100vh-61px)] px-6 transition-all duration-1000 ${
+      className={`pt-28 pb-8 min-h-[calc(100vh-61px)] px-6 transition-all duration-1000 ${
         theme === "dark"
           ? "bg-gradient-to-br from-stone-900 via-indigo-900 to-stone-800"
           : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
