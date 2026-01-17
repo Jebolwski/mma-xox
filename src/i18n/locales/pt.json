@@ -105,7 +105,10 @@
     "haveAccount": "Já tem uma conta? Entrar",
     "noAccount": "Não tem uma conta? Cadastrar",
     "backToHome": "Voltar",
-    "ultimateTicTacToe": "Jogo da Velha Ultimate"
+    "ultimateTicTacToe": "Jogo da Velha Ultimate",
+    "google": "Google",
+    "twitter": "Twitter (X)",
+    "connecting": "Conectando..."
   },
   "ranking": {
     "title": "Ranking Mundial",

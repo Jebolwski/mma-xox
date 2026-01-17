@@ -105,7 +105,10 @@
     "haveAccount": "¿Ya tienes una cuenta? Inicia sesión",
     "noAccount": "¿No tienes una cuenta? Regístrate",
     "backToHome": "Volver al Inicio",
-    "ultimateTicTacToe": "Tres en Raya Definitivo"
+    "ultimateTicTacToe": "Tres en Raya Definitivo",
+    "google": "Google",
+    "twitter": "Twitter (X)",
+    "connecting": "Conectando..."
   },
   "ranking": {
     "title": "Ranking Mundial",

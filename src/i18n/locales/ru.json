@@ -113,7 +113,10 @@
     "haveAccount": "Уже есть аккаунт? Войти",
     "noAccount": "Нет аккаунта? Зарегистрироваться",
     "backToHome": "Вернуться на главную",
-    "ultimateTicTacToe": "Крестики-нолики"
+    "ultimateTicTacToe": "Крестики-нолики",
+    "google": "Google",
+    "twitter": "Twitter (X)",
+    "connecting": "Подключение..."
   },
   "ranking": {
     "title": "Мировой рейтинг",

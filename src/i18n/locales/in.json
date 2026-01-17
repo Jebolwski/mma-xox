@@ -105,7 +105,10 @@
     "haveAccount": "पहले से खाता है? लॉगिन करें",
     "noAccount": "खाता नहीं है? साइन अप करें",
     "backToHome": "होम पर वापस जाएं",
-    "ultimateTicTacToe": "अंतिम टिक-टैक-टो"
+    "ultimateTicTacToe": "अंतिम टिक-टैक-टो",
+    "google": "Google",
+    "twitter": "Twitter (X)",
+    "connecting": "जुड़ रहा है..."
   },
   "ranking": {
     "title": "विश्व रैंकिंग",

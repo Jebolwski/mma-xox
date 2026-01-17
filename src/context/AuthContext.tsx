@@ -7,7 +7,7 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-  OAuthProvider,
+  TwitterAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import {
@@ -162,9 +162,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signInWithTwitter = async (): Promise<void> => {
     try {
-      const provider = new OAuthProvider("twitter.com");
-      provider.addScope("tweet.read");
-      provider.addScope("users.read");
+      const provider = new TwitterAuthProvider();
 
       const result = await signInWithPopup(auth, provider);
       const user = result.user;

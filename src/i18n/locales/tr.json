@@ -105,7 +105,10 @@
     "haveAccount": "Zaten bir hesabın var mı? Giriş yap",
     "noAccount": "Hesabın yok mu? Kaydol",
     "backToHome": "Anasayfaya Dön",
-    "ultimateTicTacToe": "XOX’te Son Nokta"
+    "ultimateTicTacToe": "XOX’te Son Nokta",
+    "google": "Google",
+    "twitter": "Twitter (X)",
+    "connecting": "Bağlanıyor..."
   },
   "ranking": {
     "title": "Dünya Sıralaması",

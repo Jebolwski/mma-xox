@@ -105,7 +105,10 @@
     "haveAccount": "Haben Sie bereits ein Konto? Anmelden",
     "noAccount": "Haben Sie kein Konto? Registrieren",
     "backToHome": "Zurück zur Startseite",
-    "ultimateTicTacToe": "Ultimatives Tic-Tac-Toe"
+    "ultimateTicTacToe": "Ultimatives Tic-Tac-Toe",
+    "google": "Google",
+    "twitter": "Twitter (X)",
+    "connecting": "Verbinde..."
   },
   "ranking": {
     "title": "Weltrangliste",

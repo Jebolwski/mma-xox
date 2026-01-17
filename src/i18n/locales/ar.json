@@ -105,7 +105,10 @@
     "haveAccount": "هل لديك حساب بالفعل؟ دخول",
     "noAccount": "ليس لديك حساب؟ تسجيل",
     "backToHome": "العودة إلى الرئيسية",
-    "ultimateTicTacToe": "لعبة إكس أو النهائية"
+    "ultimateTicTacToe": "لعبة إكس أو النهائية",
+    "google": "Google",
+    "twitter": "Twitter (X)",
+    "connecting": "جاري الاتصال..."
   },
   "ranking": {
     "title": "التصنيف العالمي",
