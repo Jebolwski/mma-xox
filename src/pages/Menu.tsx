@@ -98,7 +98,7 @@ const Menu = () => {
     },
     {
       key: "random",
-      title: t("menu.playLocal"),
+      title: t("menu.randomMatch"),
       subtitle: t("menu.casualMatch"),
       icon: "🎲",
       gradient: "from-orange-500 to-orange-600",
@@ -286,7 +286,7 @@ const Menu = () => {
       const q = query(
         roomsRef,
         where("guest.now", "==", null), // DOĞRU
-        where("isRankedRoom", "==", false)
+        where("isRankedRoom", "==", false),
       );
       const querySnapshot = await getDocs(q);
 
@@ -330,7 +330,7 @@ const Menu = () => {
       const q = query(
         roomsRef,
         where("guest.now", "==", null), // DOĞRU - burada hata vardı
-        where("isRankedRoom", "==", true)
+        where("isRankedRoom", "==", true),
       );
       const querySnapshot = await getDocs(q);
 
@@ -562,7 +562,7 @@ const Menu = () => {
                         const value = e.target.value;
                         try {
                           setPlayerName(
-                            sanitizePlayerName(value).slice(0, NAME_MAX)
+                            sanitizePlayerName(value).slice(0, NAME_MAX),
                           );
                         } catch {
                           // Allow empty string when user deletes everything
@@ -638,7 +638,7 @@ const Menu = () => {
                         const value = e.target.value;
                         try {
                           setPlayerName(
-                            sanitizePlayerName(value).slice(0, NAME_MAX)
+                            sanitizePlayerName(value).slice(0, NAME_MAX),
                           );
                         } catch {
                           // Allow empty string when user deletes everything
@@ -759,7 +759,7 @@ const Menu = () => {
                         const value = e.target.value;
                         try {
                           setPlayerName(
-                            sanitizePlayerName(value).slice(0, NAME_MAX)
+                            sanitizePlayerName(value).slice(0, NAME_MAX),
                           );
                         } catch {
                           // Allow empty string when user deletes everything
