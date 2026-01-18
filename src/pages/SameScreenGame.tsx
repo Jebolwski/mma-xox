@@ -117,7 +117,7 @@ function SameScreenGame() {
     text: "",
     bg:
       theme === "dark"
-        ? "from-stone-700 to-stone-800"
+        ? "from-stone-700/70 to-stone-800/70"
         : "from-stone-300 to-stone-400",
   });
   const [fighter01, setFighter01]: any = useState({
@@ -125,7 +125,7 @@ function SameScreenGame() {
     text: "",
     bg:
       theme === "dark"
-        ? "from-stone-700 to-stone-800"
+        ? "from-stone-700/70 to-stone-800/70"
         : "from-stone-300 to-stone-400",
   });
   const [fighter02, setFighter02]: any = useState({
@@ -133,7 +133,7 @@ function SameScreenGame() {
     text: "",
     bg:
       theme === "dark"
-        ? "from-stone-700 to-stone-800"
+        ? "from-stone-700/70 to-stone-800/70"
         : "from-stone-300 to-stone-400",
   });
   const [fighter10, setFighter10]: any = useState({
@@ -141,7 +141,7 @@ function SameScreenGame() {
     text: "",
     bg:
       theme === "dark"
-        ? "from-stone-700 to-stone-800"
+        ? "from-stone-700/70 to-stone-800/70"
         : "from-stone-300 to-stone-400",
   });
   const [fighter11, setFighter11]: any = useState({
@@ -149,7 +149,7 @@ function SameScreenGame() {
     text: "",
     bg:
       theme === "dark"
-        ? "from-stone-700 to-stone-800"
+        ? "from-stone-700/70 to-stone-800/70"
         : "from-stone-300 to-stone-400",
   });
   const [fighter12, setFighter12]: any = useState({
@@ -157,7 +157,7 @@ function SameScreenGame() {
     text: "",
     bg:
       theme === "dark"
-        ? "from-stone-700 to-stone-800"
+        ? "from-stone-700/70 to-stone-800/70"
         : "from-stone-300 to-stone-400",
   });
   const [fighter20, setFighter20]: any = useState({
@@ -165,7 +165,7 @@ function SameScreenGame() {
     text: "",
     bg:
       theme === "dark"
-        ? "from-stone-700 to-stone-800"
+        ? "from-stone-700/70 to-stone-800/70"
         : "from-stone-300 to-stone-400",
   });
   const [fighter21, setFighter21]: any = useState({
@@ -173,7 +173,7 @@ function SameScreenGame() {
     text: "",
     bg:
       theme === "dark"
-        ? "from-stone-700 to-stone-800"
+        ? "from-stone-700/70 to-stone-800/70"
         : "from-stone-300 to-stone-400",
   });
   const [fighter22, setFighter22]: any = useState({
@@ -181,7 +181,7 @@ function SameScreenGame() {
     text: "",
     bg:
       theme === "dark"
-        ? "from-stone-700 to-stone-800"
+        ? "from-stone-700/70 to-stone-800/70"
         : "from-stone-300 to-stone-400",
   });
 
@@ -193,72 +193,72 @@ function SameScreenGame() {
       text: "",
       bg:
         theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
+          ? "from-stone-700/70 to-stone-800/70"
+          : "from-stone-200/70 to-stone-300/70",
     });
     setFighter01({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
       bg:
         theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
+          ? "from-stone-700/70 to-stone-800/70"
+          : "from-stone-200/70 to-stone-300/70",
     });
     setFighter02({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
       bg:
         theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
+          ? "from-stone-700/70 to-stone-800/70"
+          : "from-stone-200/70 to-stone-300/70",
     });
     setFighter10({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
       bg:
         theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
+          ? "from-stone-700/70 to-stone-800/70"
+          : "from-stone-200/70 to-stone-300/70",
     });
     setFighter11({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
       bg:
         theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
+          ? "from-stone-700/70 to-stone-800/70"
+          : "from-stone-200/70 to-stone-300/70",
     });
     setFighter12({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
       bg:
         theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
+          ? "from-stone-700/70 to-stone-800/70"
+          : "from-stone-200/70 to-stone-300/70",
     });
     setFighter20({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
       bg:
         theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
+          ? "from-stone-700/70 to-stone-800/70"
+          : "from-stone-200/70 to-stone-300/70",
     });
     setFighter21({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
       bg:
         theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
+          ? "from-stone-700/70 to-stone-800/70"
+          : "from-stone-200/70 to-stone-300/70",
     });
     setFighter22({
       url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
       text: "",
       bg:
         theme === "dark"
-          ? "from-stone-700 to-stone-800"
-          : "from-stone-200 to-stone-300",
+          ? "from-stone-700/70 to-stone-800/70"
+          : "from-stone-200/70 to-stone-300/70",
     });
 
     // Oyunun ilk sırası kırmızı olsun
@@ -349,7 +349,7 @@ function SameScreenGame() {
           matrix[i][j] = Math.min(
             matrix[i - 1][j - 1] + 1, // Değiştir
             matrix[i][j - 1] + 1, // Ekle
-            matrix[i - 1][j] + 1 // Sil
+            matrix[i - 1][j] + 1, // Sil
           );
         }
       }
@@ -474,7 +474,7 @@ function SameScreenGame() {
 
       if (!filters_arr[3] || !filters_arr[4] || !filters_arr[5]) {
         console.error(
-          "HATA: filters_arr[3], filters_arr[4] veya filters_arr[5] undefined!"
+          "HATA: filters_arr[3], filters_arr[4] veya filters_arr[5] undefined!",
         );
         continue;
       }
@@ -485,22 +485,22 @@ function SameScreenGame() {
         const intersection3 =
           filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
             filters_arr[3]?.filter_fighters?.some(
-              (fighter2: Fighter) => fighter1.Id === fighter2.Id
-            )
+              (fighter2: Fighter) => fighter1.Id === fighter2.Id,
+            ),
           ) || [];
 
         const intersection4 =
           filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
             filters_arr[4]?.filter_fighters?.some(
-              (fighter2: Fighter) => fighter1.Id === fighter2.Id
-            )
+              (fighter2: Fighter) => fighter1.Id === fighter2.Id,
+            ),
           ) || [];
 
         const intersection5 =
           filters_arr[i]?.filter_fighters?.filter((fighter1: Fighter) =>
             filters_arr[5]?.filter_fighters?.some(
-              (fighter2: Fighter) => fighter1.Id === fighter2.Id
-            )
+              (fighter2: Fighter) => fighter1.Id === fighter2.Id,
+            ),
           ) || [];
 
         if (
@@ -603,8 +603,8 @@ function SameScreenGame() {
       const cellC = board[c[0]][c[1]];
 
       if (
-        cellA !== "from-stone-700 to-stone-800" &&
-        cellA !== "from-stone-200 to-stone-300" && // Boş değilse
+        cellA !== "from-stone-700/70 to-stone-800/70" &&
+        cellA !== "from-stone-200/70 to-stone-300/70" && // Boş değilse
         cellA === cellB &&
         cellB === cellC
       ) {
@@ -617,8 +617,8 @@ function SameScreenGame() {
       .flat()
       .every(
         (cell) =>
-          cell !== "from-stone-700 to-stone-800" &&
-          cell !== "from-stone-200 to-stone-300"
+          cell !== "from-stone-700/70 to-stone-800/70" &&
+          cell !== "from-stone-200/70 to-stone-300/70",
       );
 
     if (isBoardFull) {
@@ -724,7 +724,7 @@ function SameScreenGame() {
   const findLineMove = (target: "blue" | "red"): string | null => {
     for (const pattern of winPatternsAI) {
       const owners = pattern.map(([r, c]) =>
-        ownerOf(stateByKey[gridKeys[r][c]].bg)
+        ownerOf(stateByKey[gridKeys[r][c]].bg),
       );
       const emptiesIdx = owners
         .map((o, i) => (o === null ? i : -1))
@@ -738,7 +738,7 @@ function SameScreenGame() {
     }
     for (const pattern of winPatternsAI) {
       const owners = pattern.map(([r, c]) =>
-        ownerOf(stateByKey[gridKeys[r][c]].bg)
+        ownerOf(stateByKey[gridKeys[r][c]].bg),
       );
       const emptyIndex = owners.findIndex((o) => o === null);
       if (emptyIndex < 0) continue;
@@ -761,12 +761,12 @@ function SameScreenGame() {
   };
 
   const chooseWrongFighterForPosition = (
-    posKey: keyof typeof positionsFighters
+    posKey: keyof typeof positionsFighters,
   ): Fighter | null => {
     const allowed: Fighter[] = (positionsFighters[posKey] as Fighter[]) || [];
     const allowedIds = new Set(allowed.map((f: any) => f.Id));
     const pool = (fighters_url as any as Fighter[]).filter(
-      (f: any) => !allowedIds.has(f.Id)
+      (f: any) => !allowedIds.has(f.Id),
     );
     if (pool.length === 0) return null;
     return pool[Math.floor(Math.random() * pool.length)];
@@ -805,10 +805,10 @@ function SameScreenGame() {
 
     // 6) Kalan boşlardan rastgele
     const empties = Object.keys(stateByKey).filter(
-      (k) => ownerOf(stateByKey[k].bg) === null
+      (k) => ownerOf(stateByKey[k].bg) === null,
     );
     const validRandoms = empties.filter(
-      (k) => (positionsFighters[positionKeyOf(k)] || []).length > 0
+      (k) => (positionsFighters[positionKeyOf(k)] || []).length > 0,
     );
     if (validRandoms.length === 0) return null;
     return validRandoms[Math.floor(Math.random() * validRandoms.length)];
@@ -880,8 +880,8 @@ function SameScreenGame() {
         ...fighter00,
         bg:
           theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+            ? "from-stone-700/70 to-stone-800/70"
+            : "from-stone-200/70 to-stone-300/70",
       });
     }
     if (
@@ -892,8 +892,8 @@ function SameScreenGame() {
         ...fighter01,
         bg:
           theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+            ? "from-stone-700/70 to-stone-800/70"
+            : "from-stone-200/70 to-stone-300/70",
       });
     }
     if (
@@ -904,8 +904,8 @@ function SameScreenGame() {
         ...fighter02,
         bg:
           theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+            ? "from-stone-700/70 to-stone-800/70"
+            : "from-stone-200/70 to-stone-300/70",
       });
     }
     if (
@@ -916,8 +916,8 @@ function SameScreenGame() {
         ...fighter10,
         bg:
           theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+            ? "from-stone-700/70 to-stone-800/70"
+            : "from-stone-200/70 to-stone-300/70",
       });
     }
     if (
@@ -928,8 +928,8 @@ function SameScreenGame() {
         ...fighter11,
         bg:
           theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+            ? "from-stone-700/70 to-stone-800/70"
+            : "from-stone-200/70 to-stone-300/70",
       });
     }
     if (
@@ -940,8 +940,8 @@ function SameScreenGame() {
         ...fighter12,
         bg:
           theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+            ? "from-stone-700/70 to-stone-800/70"
+            : "from-stone-200/70 to-stone-300/70",
       });
     }
     if (
@@ -952,8 +952,8 @@ function SameScreenGame() {
         ...fighter20,
         bg:
           theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+            ? "from-stone-700/70 to-stone-800/70"
+            : "from-stone-200/70 to-stone-300/70",
       });
     }
     if (
@@ -964,8 +964,8 @@ function SameScreenGame() {
         ...fighter21,
         bg:
           theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+            ? "from-stone-700/70 to-stone-800/70"
+            : "from-stone-200/70 to-stone-300/70",
       });
     }
     if (
@@ -976,8 +976,8 @@ function SameScreenGame() {
         ...fighter22,
         bg:
           theme === "dark"
-            ? "from-stone-700 to-stone-800"
-            : "from-stone-200 to-stone-300",
+            ? "from-stone-700/70 to-stone-800/70"
+            : "from-stone-200/70 to-stone-300/70",
       });
     }
   }, [theme]);
@@ -1021,7 +1021,7 @@ function SameScreenGame() {
   return (
     <>
       <div
-        className={`pt-[82px] max-w-[100vw] min-h-[calc(100vh-61px)] relative overflow-x-hidden overflow-y-auto transition-all duration-1000 ${
+        className={`pt-[82px] max-w-[100vw] min-h-[calc(100vh-61px)] relative overflow-x-hidden overflow-y-hidden transition-all duration-1000 ${
           theme === "dark"
             ? "bg-gradient-to-br from-stone-900 via-indigo-900 to-stone-800"
             : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
@@ -1286,9 +1286,9 @@ function SameScreenGame() {
                 <div
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                     theme === "dark"
-                      ? "border-stone-600 bg-neutral-900"
-                      : "border-stone-500 bg-neutral-400"
-                  } rounded-lg text-center flex items-center justify-center`}
+                      ? "border-stone-600 bg-neutral-900/70"
+                      : "border-stone-500 bg-neutral-200/70"
+                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center`}
                 >
                   <div>
                     <div className="flex items-center justify-center">
@@ -1299,7 +1299,7 @@ function SameScreenGame() {
                     </div>
                     <p
                       className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
-                        theme === "dark" ? "text-white" : "text-white"
+                        theme === "dark" ? "text-white" : "text-black"
                       }`}
                     >
                       MMA XOX
@@ -1309,12 +1309,12 @@ function SameScreenGame() {
                 <div
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                     theme === "dark"
-                      ? "border-stone-600 bg-stone-800"
-                      : "border-stone-400 bg-stone-300"
-                  } rounded-lg text-center flex items-center justify-center p-1`}
+                      ? "border-stone-600 bg-stone-800/70"
+                      : "border-stone-400 bg-stone-300/70"
+                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
-                    <div>
+                    <div className="w-full">
                       <div className="flex items-center justify-center">
                         {filtersSelected[0].filter_image != null ? (
                           <img
@@ -1336,6 +1336,11 @@ function SameScreenGame() {
                         className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
+                        style={{
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          width: "100%",
+                        }}
                       >
                         {t(filtersSelected[0].filter_text)}
                       </p>
@@ -1347,12 +1352,12 @@ function SameScreenGame() {
                 <div
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                     theme === "dark"
-                      ? "border-stone-600 bg-stone-800"
-                      : "border-stone-400 bg-stone-300"
-                  } rounded-lg text-center flex items-center justify-center p-1`}
+                      ? "border-stone-600 bg-stone-800/70"
+                      : "border-stone-400 bg-stone-300/70"
+                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
-                    <div>
+                    <div className="w-full">
                       <div className="flex items-center justify-center">
                         {filtersSelected[1].filter_image != null ? (
                           <img
@@ -1374,6 +1379,11 @@ function SameScreenGame() {
                         className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
+                        style={{
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          width: "100%",
+                        }}
                       >
                         {t(filtersSelected[1].filter_text)}
                       </p>
@@ -1385,12 +1395,12 @@ function SameScreenGame() {
                 <div
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                     theme === "dark"
-                      ? "border-stone-600 bg-stone-800"
-                      : "border-stone-400 bg-stone-300"
-                  } rounded-lg text-center flex items-center justify-center p-1`}
+                      ? "border-stone-600 bg-stone-800/70"
+                      : "border-stone-400 bg-stone-300/70"
+                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
-                    <div>
+                    <div className="w-full">
                       <div className="flex items-center justify-center">
                         {filtersSelected[2].filter_image != null ? (
                           <img
@@ -1412,6 +1422,11 @@ function SameScreenGame() {
                         className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
+                        style={{
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          width: "100%",
+                        }}
                       >
                         {t(filtersSelected[2].filter_text)}
                       </p>
@@ -1425,12 +1440,12 @@ function SameScreenGame() {
                 <div
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                     theme === "dark"
-                      ? "border-stone-600 bg-stone-800"
-                      : "border-stone-400 bg-stone-300"
-                  } rounded-lg text-center flex items-center justify-center p-1`}
+                      ? "border-stone-600 bg-stone-800/70"
+                      : "border-stone-400 bg-stone-300/70"
+                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
-                    <div>
+                    <div className="w-full">
                       <div className="flex items-center justify-center">
                         {filtersSelected[3].filter_image != null ? (
                           <img
@@ -1452,6 +1467,11 @@ function SameScreenGame() {
                         className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
+                        style={{
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          width: "100%",
+                        }}
                       >
                         {t(filtersSelected[3].filter_text)}
                       </p>
@@ -1463,8 +1483,8 @@ function SameScreenGame() {
                 <div
                   onClick={() => {
                     if (
-                      fighter00.bg === "from-stone-700 to-stone-800" ||
-                      fighter00.bg === "from-stone-200 to-stone-300"
+                      fighter00.bg === "from-stone-700/70 to-stone-800/70" ||
+                      fighter00.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter00");
@@ -1476,16 +1496,23 @@ function SameScreenGame() {
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
                   } rounded-lg shadow-md bg-gradient-to-b ${
                     fighter00.bg
-                  } text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center`}
                 >
-                  <div>
+                  <div className="w-full">
                     <div className="flex justify-center">
                       <img
                         src={fighter00.url}
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                    <p
+                      className="font-semibold xl:text-lg px-2 lg:text-base md:text-sm text-xs mt-2 leading-[15px]"
+                      style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        width: "100%",
+                      }}
+                    >
                       {fighter00.text}
                     </p>
                   </div>
@@ -1493,8 +1520,8 @@ function SameScreenGame() {
                 <div
                   onClick={() => {
                     if (
-                      fighter01.bg === "from-stone-700 to-stone-800" ||
-                      fighter01.bg === "from-stone-200 to-stone-300"
+                      fighter01.bg === "from-stone-700/70 to-stone-800/70" ||
+                      fighter01.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter01");
@@ -1506,16 +1533,23 @@ function SameScreenGame() {
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
                   } rounded-lg shadow-md bg-gradient-to-b ${
                     fighter01.bg
-                  } text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center`}
                 >
-                  <div>
+                  <div className="w-full">
                     <div className="flex justify-center">
                       <img
                         src={fighter01.url}
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                    <p
+                      className="font-semibold xl:text-lg px-2 lg:text-base md:text-sm text-xs mt-2 leading-[15px]"
+                      style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        width: "100%",
+                      }}
+                    >
                       {fighter01.text}
                     </p>
                   </div>
@@ -1523,8 +1557,8 @@ function SameScreenGame() {
                 <div
                   onClick={() => {
                     if (
-                      fighter02.bg === "from-stone-700 to-stone-800" ||
-                      fighter02.bg === "from-stone-200 to-stone-300"
+                      fighter02.bg === "from-stone-700/70 to-stone-800/70" ||
+                      fighter02.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter02");
@@ -1536,16 +1570,23 @@ function SameScreenGame() {
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
                   } rounded-lg shadow-md bg-gradient-to-b ${
                     fighter02.bg
-                  } text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center`}
                 >
-                  <div>
+                  <div className="w-full">
                     <div className="flex justify-center">
                       <img
                         src={fighter02.url}
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                    <p
+                      className="font-semibold xl:text-lg px-2 lg:text-base md:text-sm text-xs mt-2 leading-[15px]"
+                      style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        width: "100%",
+                      }}
+                    >
                       {fighter02.text}
                     </p>
                   </div>
@@ -1555,12 +1596,12 @@ function SameScreenGame() {
                 <div
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                     theme === "dark"
-                      ? "border-stone-600 bg-stone-800"
-                      : "border-stone-400 bg-stone-300"
-                  } rounded-lg text-center flex items-center justify-center p-1`}
+                      ? "border-stone-600 bg-stone-800/70"
+                      : "border-stone-400 bg-stone-300/70"
+                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
-                    <div>
+                    <div className="w-full">
                       <div className="flex items-center justify-center">
                         {filtersSelected[4].filter_image != null ? (
                           <img
@@ -1582,6 +1623,11 @@ function SameScreenGame() {
                         className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
+                        style={{
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          width: "100%",
+                        }}
                       >
                         {t(filtersSelected[4].filter_text)}
                       </p>
@@ -1593,8 +1639,8 @@ function SameScreenGame() {
                 <div
                   onClick={() => {
                     if (
-                      fighter10.bg === "from-stone-700 to-stone-800" ||
-                      fighter10.bg === "from-stone-200 to-stone-300"
+                      fighter10.bg === "from-stone-700/70 to-stone-800/70" ||
+                      fighter10.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter10");
@@ -1606,16 +1652,23 @@ function SameScreenGame() {
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
                   } rounded-lg shadow-md bg-gradient-to-b ${
                     fighter10.bg
-                  } text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center`}
                 >
-                  <div>
+                  <div className="w-full">
                     <div className="flex justify-center">
                       <img
                         src={fighter10.url}
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                    <p
+                      className="font-semibold xl:text-lg px-2 lg:text-base md:text-sm text-xs mt-2 leading-[15px]"
+                      style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        width: "100%",
+                      }}
+                    >
                       {fighter10.text}
                     </p>
                   </div>
@@ -1623,8 +1676,8 @@ function SameScreenGame() {
                 <div
                   onClick={() => {
                     if (
-                      fighter11.bg === "from-stone-700 to-stone-800" ||
-                      fighter11.bg === "from-stone-200 to-stone-300"
+                      fighter11.bg === "from-stone-700/70 to-stone-800/70" ||
+                      fighter11.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter11");
@@ -1636,16 +1689,23 @@ function SameScreenGame() {
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
                   } rounded-lg shadow-md bg-gradient-to-b ${
                     fighter11.bg
-                  } text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center`}
                 >
-                  <div>
+                  <div className="w-full">
                     <div className="flex justify-center">
                       <img
                         src={fighter11.url}
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                    <p
+                      className="font-semibold xl:text-lg px-2 lg:text-base md:text-sm text-xs mt-2 leading-[15px]"
+                      style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        width: "100%",
+                      }}
+                    >
                       {fighter11.text}
                     </p>
                   </div>
@@ -1653,8 +1713,8 @@ function SameScreenGame() {
                 <div
                   onClick={() => {
                     if (
-                      fighter12.bg === "from-stone-700 to-stone-800" ||
-                      fighter12.bg === "from-stone-200 to-stone-300"
+                      fighter12.bg === "from-stone-700/70 to-stone-800/70" ||
+                      fighter12.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter12");
@@ -1666,16 +1726,23 @@ function SameScreenGame() {
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
                   } rounded-lg shadow-md bg-gradient-to-b ${
                     fighter12.bg
-                  } text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center`}
                 >
-                  <div>
+                  <div className="w-full">
                     <div className="flex justify-center">
                       <img
                         src={fighter12.url}
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                    <p
+                      className="font-semibold xl:text-lg px-2 lg:text-base md:text-sm text-xs mt-2 leading-[15px]"
+                      style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        width: "100%",
+                      }}
+                    >
                       {fighter12.text}
                     </p>
                   </div>
@@ -1685,12 +1752,12 @@ function SameScreenGame() {
                 <div
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                     theme === "dark"
-                      ? "border-stone-600 bg-stone-800"
-                      : "border-stone-400 bg-stone-300"
-                  } rounded-lg text-center flex items-center justify-center p-1`}
+                      ? "border-stone-600 bg-stone-800/70"
+                      : "border-stone-400 bg-stone-300/70"
+                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
-                    <div>
+                    <div className="w-full">
                       <div className="flex items-center justify-center">
                         {filtersSelected[5].filter_image != null ? (
                           <img
@@ -1712,6 +1779,11 @@ function SameScreenGame() {
                         className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
                           theme === "dark" ? "text-white" : "text-black"
                         }`}
+                        style={{
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          width: "100%",
+                        }}
                       >
                         {t(filtersSelected[5].filter_text)}
                       </p>
@@ -1723,8 +1795,8 @@ function SameScreenGame() {
                 <div
                   onClick={() => {
                     if (
-                      fighter20.bg === "from-stone-700 to-stone-800" ||
-                      fighter20.bg === "from-stone-200 to-stone-300"
+                      fighter20.bg === "from-stone-700/70 to-stone-800/70" ||
+                      fighter20.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter20");
@@ -1736,16 +1808,23 @@ function SameScreenGame() {
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
                   } rounded-lg shadow-md bg-gradient-to-b ${
                     fighter20.bg
-                  } text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center`}
                 >
-                  <div>
+                  <div className="w-full">
                     <div className="flex justify-center">
                       <img
                         src={fighter20.url}
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                    <p
+                      className="font-semibold xl:text-lg px-2 lg:text-base md:text-sm text-xs mt-2 leading-[15px]"
+                      style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        width: "100%",
+                      }}
+                    >
                       {fighter20.text}
                     </p>
                   </div>
@@ -1753,8 +1832,8 @@ function SameScreenGame() {
                 <div
                   onClick={() => {
                     if (
-                      fighter21.bg === "from-stone-700 to-stone-800" ||
-                      fighter21.bg === "from-stone-200 to-stone-300"
+                      fighter21.bg === "from-stone-700/70 to-stone-800/70" ||
+                      fighter21.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter21");
@@ -1766,16 +1845,23 @@ function SameScreenGame() {
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
                   } rounded-lg shadow-md bg-gradient-to-b ${
                     fighter21.bg
-                  } text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center`}
                 >
-                  <div>
+                  <div className="w-full">
                     <div className="flex justify-center">
                       <img
                         src={fighter21.url}
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                    <p
+                      className="font-semibold xl:text-lg px-2 lg:text-base md:text-sm text-xs mt-2 leading-[15px]"
+                      style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        width: "100%",
+                      }}
+                    >
                       {fighter21.text}
                     </p>
                   </div>
@@ -1783,8 +1869,8 @@ function SameScreenGame() {
                 <div
                   onClick={() => {
                     if (
-                      fighter22.bg === "from-stone-700 to-stone-800" ||
-                      fighter22.bg === "from-stone-200 to-stone-300"
+                      fighter22.bg === "from-stone-700/70 to-stone-800/70" ||
+                      fighter22.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
                       toggleFighterPick();
                       setSelected("fighter22");
@@ -1796,16 +1882,23 @@ function SameScreenGame() {
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
                   } rounded-lg shadow-md bg-gradient-to-b ${
                     fighter22.bg
-                  } text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center`}
                 >
-                  <div>
+                  <div className="w-full">
                     <div className="flex justify-center">
                       <img
                         src={fighter22.url}
                         className="xl:w-12 lg:w-10 md:w-9 w-6"
                       />
                     </div>
-                    <p className="font-semibold xl:text-lg lg:text-base md:text-sm text-xs mt-1 leading-[15px]">
+                    <p
+                      className="font-semibold xl:text-lg px-2 lg:text-base md:text-sm text-xs mt-2 leading-[15px]"
+                      style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        width: "100%",
+                      }}
+                    >
                       {fighter22.text}
                     </p>
                   </div>
