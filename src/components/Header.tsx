@@ -11,6 +11,7 @@ import hiFlag from "../assets/in.png";
 import zhFlag from "../assets/ch.png";
 import jaFlag from "../assets/jp.png";
 import koFlag from "../assets/kr.png";
+import frFlag from "../assets/fr.png";
 import light from "../assets/light.png";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
@@ -96,7 +97,9 @@ const Header = () => {
                                     ? jaFlag
                                     : i18n.language === "ko"
                                       ? koFlag
-                                      : enFlag
+                                      : i18n.language === "fr"
+                                        ? frFlag
+                                        : enFlag
                 }
                 alt={
                   i18n.language === "tr"
@@ -119,7 +122,9 @@ const Header = () => {
                                     ? "Japanese"
                                     : i18n.language === "ko"
                                       ? "Korean"
-                                      : "English"
+                                      : i18n.language === "fr"
+                                        ? "French"
+                                        : "English"
                 }
                 className="w-full h-full rounded-full object-cover"
               />
@@ -136,23 +141,8 @@ const Header = () => {
                 style={{ height: "200px", overflowY: "auto" }}
               >
                 <button
-                  onClick={() => changeLanguage("tr")}
-                  className={`z-80 flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
-                    theme === "dark"
-                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
-                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
-                  }`}
-                >
-                  <img
-                    src={trFlag}
-                    alt="Turkish"
-                    className="w-6 h-6 rounded object-cover rounded-full"
-                  />
-                  <span className="font-medium">Türkçe</span>
-                </button>
-                <button
                   onClick={() => changeLanguage("en")}
-                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                  className={`z-80 flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                     theme === "dark"
                       ? "hover:bg-blue-200/20 border-b border-slate-500/40"
                       : "hover:bg-blue-100/50 border-b border-slate-500/40"
@@ -167,7 +157,7 @@ const Header = () => {
                 </button>
                 <button
                   onClick={() => changeLanguage("pt")}
-                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                     theme === "dark"
                       ? "hover:bg-blue-200/20 border-b border-slate-500/40"
                       : "hover:bg-blue-100/50 border-b border-slate-500/40"
@@ -181,19 +171,19 @@ const Header = () => {
                   <span className="font-medium">Português</span>
                 </button>
                 <button
-                  onClick={() => changeLanguage("sp")}
-                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                  onClick={() => changeLanguage("tr")}
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                     theme === "dark"
-                      ? "hover:bg-blue-200/20"
-                      : "hover:bg-blue-100/50"
+                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
                   }`}
                 >
                   <img
-                    src={spFlag}
-                    alt="Spanish"
+                    src={trFlag}
+                    alt="Turkish"
                     className="w-6 h-6 rounded-full object-cover"
                   />
-                  <span className="font-medium">Español</span>
+                  <span className="font-medium">Türkçe</span>
                 </button>
                 <button
                   onClick={() => changeLanguage("ru")}
@@ -211,6 +201,21 @@ const Header = () => {
                   <span className="font-medium">Русский</span>
                 </button>
                 <button
+                  onClick={() => changeLanguage("sp")}
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                    theme === "dark"
+                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                  }`}
+                >
+                  <img
+                    src={spFlag}
+                    alt="Spanish"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">Español</span>
+                </button>
+                <button
                   onClick={() => changeLanguage("de")}
                   className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                     theme === "dark"
@@ -226,7 +231,7 @@ const Header = () => {
                   <span className="font-medium">Deutsch</span>
                 </button>
                 <button
-                  onClick={() => changeLanguage("ar")}
+                  onClick={() => changeLanguage("fr")}
                   className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                     theme === "dark"
                       ? "hover:bg-blue-200/20 border-b border-slate-500/40"
@@ -234,41 +239,11 @@ const Header = () => {
                   }`}
                 >
                   <img
-                    src={arFlag}
-                    alt="Arabic"
+                    src={frFlag}
+                    alt="French"
                     className="w-6 h-6 rounded-full object-cover"
                   />
-                  <span className="font-medium">العربية</span>
-                </button>
-                <button
-                  onClick={() => changeLanguage("hi")}
-                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
-                    theme === "dark"
-                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
-                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
-                  }`}
-                >
-                  <img
-                    src={hiFlag}
-                    alt="Hindi"
-                    className="w-6 h-6 rounded-full object-cover"
-                  />
-                  <span className="font-medium">हिन्दी</span>
-                </button>
-                <button
-                  onClick={() => changeLanguage("zh")}
-                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
-                    theme === "dark"
-                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
-                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
-                  }`}
-                >
-                  <img
-                    src={zhFlag}
-                    alt="Chinese Simplified"
-                    className="w-6 h-6 rounded-full object-cover"
-                  />
-                  <span className="font-medium">中文</span>
+                  <span className="font-medium">Français</span>
                 </button>
                 <button
                   onClick={() => changeLanguage("ja")}
@@ -287,10 +262,10 @@ const Header = () => {
                 </button>
                 <button
                   onClick={() => changeLanguage("ko")}
-                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                     theme === "dark"
-                      ? "hover:bg-blue-200/20"
-                      : "hover:bg-blue-100/50"
+                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
                   }`}
                 >
                   <img
@@ -299,6 +274,51 @@ const Header = () => {
                     className="w-6 h-6 rounded-full object-cover"
                   />
                   <span className="font-medium">한국어</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("ar")}
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                    theme === "dark"
+                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                  }`}
+                >
+                  <img
+                    src={arFlag}
+                    alt="Arabic"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">العربية</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("zh")}
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                    theme === "dark"
+                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                  }`}
+                >
+                  <img
+                    src={zhFlag}
+                    alt="Chinese Simplified"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">中文</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("hi")}
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    theme === "dark"
+                      ? "hover:bg-blue-200/20"
+                      : "hover:bg-blue-100/50"
+                  }`}
+                >
+                  <img
+                    src={hiFlag}
+                    alt="Hindi"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">हिन्दी</span>
                 </button>
               </div>
             )}

@@ -191,7 +191,7 @@ const Profile = () => {
         // NOTE: 'username' field'ının Firestore'da indexed olduğundan emin ol
         const q = query(
           collection(db, "users"),
-          where("username", "==", username)
+          where("username", "==", username),
         );
         const snap = await getDocs(q);
         if (!snap.empty) {
@@ -222,11 +222,11 @@ const Profile = () => {
 
         // not found
         console.error("User profile not found for username:", username);
-        toast.error("Could not find the profile.");
+        toast.error(t("profile.profileNotFound"));
         setProfile(null);
       } catch (error) {
         console.error("Error fetching user profile:", error);
-        toast.error("Failed to load profile data");
+        toast.error(t("profile.loadProfileFailed"));
       } finally {
         setLoading(false);
       }
@@ -244,53 +244,53 @@ const Profile = () => {
     try {
       await updateDoc(userRef, { activeTitle: newTitle });
       setProfile((prev) => (prev ? { ...prev, activeTitle: newTitle } : null));
-      toast.success("Title updated!");
+      toast.success(t("profile.titleUpdated"));
       setTitlesOpen(false);
     } catch (error) {
-      toast.error("Failed to update title.");
+      toast.error(t("profile.titleUpdateFailed"));
     }
   };
 
   const handleChangePassword = async () => {
     if (!newPassword || !currentPassword || !confirmPassword) {
-      toast.error("Please fill all password fields!");
+      toast.error(t("profile.fillPasswordFields"));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords don't match!");
+      toast.error(t("profile.passwordsDontMatch"));
       return;
     }
 
     if (newPassword.length < 6) {
-      toast.error("New password must be at least 6 characters!");
+      toast.error(t("profile.passwordTooShort"));
       return;
     }
 
     if (newPassword === currentPassword) {
-      toast.error("New password must be different from current password!");
+      toast.error(t("profile.passwordMustDiffer"));
       return;
     }
 
     setPasswordLoading(true);
     try {
       if (!currentUser) {
-        toast.error("Not authenticated!");
+        toast.error(t("profile.notAuthenticated"));
         return;
       }
 
       // Şifreyi güncelle
       await updatePassword(currentUser, newPassword);
-      toast.success("Password changed successfully!");
+      toast.success(t("profile.passwordChanged"));
       setShowChangePassword(false);
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (error: any) {
       if (error.code === "auth/weak-password") {
-        toast.error("Password is too weak!");
+        toast.error(t("profile.passwordTooWeak"));
       } else if (error.code === "auth/wrong-password") {
-        toast.error("Current password is incorrect!");
+        toast.error(t("profile.incorrectPassword"));
       } else {
         toast.error(error.message);
       }
@@ -302,7 +302,7 @@ const Profile = () => {
   // YENİ: Username değiştirme fonksiyonu
   const handleChangeUsername = async () => {
     if (!newUsername || !currentUser?.email || !profile) {
-      toast.error("Invalid input!");
+      toast.error(t("profile.invalidInput"));
       return;
     }
 
@@ -310,24 +310,22 @@ const Profile = () => {
 
     // Validation
     if (desiredUsername.length < 3) {
-      toast.error("Username must be at least 3 characters!");
+      toast.error(t("profile.usernameTooShort"));
       return;
     }
 
     if (desiredUsername.length > 14) {
-      toast.error("Username cannot be longer than 14 characters!");
+      toast.error(t("profile.usernameTooLong"));
       return;
     }
 
     if (!/^[a-z0-9_-]+$/.test(desiredUsername)) {
-      toast.error(
-        "Username can only contain letters, numbers, underscore and dash!"
-      );
+      toast.error(t("profile.usernameInvalidChars"));
       return;
     }
 
     if (desiredUsername === profile.username) {
-      toast.error("New username must be different from current!");
+      toast.error(t("profile.usernameMustDiffer"));
       return;
     }
 
@@ -335,12 +333,12 @@ const Profile = () => {
     if (!canChangeUsername) {
       const lastChange = new Date(profile.lastUsernameChangeAt || "");
       const nextChange = new Date(
-        lastChange.getTime() + 2 * 24 * 60 * 60 * 1000
+        lastChange.getTime() + 2 * 24 * 60 * 60 * 1000,
       );
       const daysLeft = Math.ceil(
-        (nextChange.getTime() - new Date().getTime()) / (24 * 60 * 60 * 1000)
+        (nextChange.getTime() - new Date().getTime()) / (24 * 60 * 60 * 1000),
       );
-      toast.error(`You can change username again in ${daysLeft} days!`);
+      toast.error(t("profile.usernameCooldown", { days: daysLeft }));
       return;
     }
 
@@ -349,11 +347,11 @@ const Profile = () => {
       // Check if new username is already taken
       const usernameQuery = query(
         collection(db, "users"),
-        where("username", "==", desiredUsername)
+        where("username", "==", desiredUsername),
       );
       const usernameSnap = await getDocs(usernameQuery);
       if (!usernameSnap.empty) {
-        toast.error("Username already taken. Try another.");
+        toast.error(t("profile.usernameTaken"));
         setUsernameLoading(false);
         return;
       }
@@ -372,10 +370,10 @@ const Profile = () => {
               username: desiredUsername,
               lastUsernameChangeAt: new Date().toISOString(),
             }
-          : null
+          : null,
       );
 
-      toast.success("Username changed successfully!");
+      toast.success(t("profile.usernameChanged"));
       setShowChangeUsername(false);
       setNewUsername("");
       setCanChangeUsername(false);
@@ -386,7 +384,7 @@ const Profile = () => {
       }, 2000);
     } catch (error) {
       console.error("Error changing username:", error);
-      toast.error("Failed to change username!");
+      toast.error(t("profile.failedChangeUsername"));
     } finally {
       setUsernameLoading(false);
     }
@@ -886,8 +884,8 @@ const Profile = () => {
                         profile.activeTitle === title
                           ? "bg-green-600 text-white cursor-not-allowed"
                           : theme === "dark"
-                          ? "bg-slate-700 hover:bg-slate-600"
-                          : "bg-slate-200 hover:bg-slate-300"
+                            ? "bg-slate-700 hover:bg-slate-600"
+                            : "bg-slate-200 hover:bg-slate-300"
                       }`}
                     >
                       {title}

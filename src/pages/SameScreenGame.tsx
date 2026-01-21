@@ -1016,7 +1016,7 @@ function SameScreenGame() {
     }
   }, [turn, playWithAI, gameStart, gameWinner]);
 
-  const notify = () => toast.error("Fighter doesnt meet the requirements.");
+  const notify = () => toast.error(t("game.fighterNotMeetRequirements"));
 
   return (
     <>

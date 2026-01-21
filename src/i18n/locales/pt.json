@@ -109,7 +109,9 @@
     "ultimateTicTacToe": "Jogo da Velha Ultimate",
     "google": "Google",
     "twitter": "Twitter (X)",
-    "connecting": "Conectando..."
+    "connecting": "Conectando...",
+    "googleLoginCanceled": "Login do Google cancelado",
+    "twitterLoginCanceled": "Login do Twitter cancelado"
   },
   "ranking": {
     "title": "Ranking Mundial",
@@ -165,6 +167,68 @@
     "silverNote": "Experiência básica.",
     "goldNote": "Jogador avançado.",
     "diamondNote": "Elite."
+  },
+  "profile": {
+    "profileNotFound": "Não foi possível encontrar o perfil.",
+    "loadProfileFailed": "Falha ao carregar dados do perfil",
+    "titleUpdated": "Título atualizado!",
+    "titleUpdateFailed": "Falha ao atualizar o título.",
+    "fillPasswordFields": "Por favor, preencha todos os campos de senha!",
+    "passwordsDontMatch": "As senhas não correspondem!",
+    "passwordTooShort": "A nova senha deve ter pelo menos 6 caracteres!",
+    "passwordMustDiffer": "A nova senha deve ser diferente da senha atual!",
+    "notAuthenticated": "Não autenticado!",
+    "passwordChanged": "Senha alterada com sucesso!",
+    "passwordTooWeak": "A senha é muito fraca!",
+    "incorrectPassword": "Senha atual incorreta!",
+    "invalidInput": "Entrada inválida!",
+    "usernameTooShort": "O nome de usuário deve ter pelo menos 3 caracteres!",
+    "usernameTooLong": "O nome de usuário não pode ter mais de 14 caracteres!",
+    "usernameInvalidChars": "O nome de usuário pode conter apenas letras, números, sublinhado e travessão!",
+    "usernameMustDiffer": "O novo nome de usuário deve ser diferente do atual!",
+    "usernameCooldown": "Você pode alterar o nome de usuário novamente em {{days}} dias!",
+    "usernameTaken": "Este nome de usuário já foi utilizado. Tente outro.",
+    "usernameChanged": "Nome de usuário alterado com sucesso!"
+  },
+  "room": {
+    "hostDisconnected": "🏆 Anfitrião desconectado! Você vence!",
+    "guestDisconnected": "🏆 Convidado desconectado! Você vence!",
+    "hostLeft": "O anfitrião saiu do jogo!",
+    "bothPlayersReady": "🏆 Ambos os jogadores prontos! Iniciando partida classificada...",
+    "playerJoined": "{{player}} entrou no jogo!",
+    "playerLeft": "{{player}} saiu do jogo!",
+    "firstBloodUnlocked": "🏆 Nova conquista desbloqueada! Primeiro Sangue",
+    "arenaManagerUnlocked": "🏆 Nova conquista desbloqueada! Mestre da Arena",
+    "rankedMatchCompleted": "🏆 Partida classificada concluída! Estatísticas atualizadas.",
+    "failedUpdateStats": "Falha ao atualizar estatísticas do jogador.",
+    "newRankedMatch": "🏆 Nova partida classificada começando!",
+    "opponentsTurn": "É a vez do seu oponente!",
+    "roomDeleted": "Sala deletada com sucesso!",
+    "exitError": "Ocorreu um erro ao sair!",
+    "guestWinsForfeited": "🏆 Convidado vence! Anfitrião desistiu!",
+    "forfeitError": "Ocorreu um erro durante a desistência!",
+    "couldNotDeterminePlayers": "Não foi possível determinar os jogadores!",
+    "hostWinsForfeited": "🏆 Anfitrião vence! Você desistiu!",
+    "guestForfeitedYouWin": "🏆 Convidado desistiu, você vence!",
+    "fighterRequirements": "O lutador não atende aos requisitos.",
+    "noParticipantFound": "Nenhum participante encontrado para o jogo!",
+    "fighterAlreadySelected": "Lutador já selecionado."
+  },
+  "password": {
+    "resetInvalidLink": "Link de redefinição inválido!",
+    "resetExpired": "O link de redefinição expirou ou é inválido!",
+    "fillAllFields": "Por favor, preencha todos os campos!",
+    "passwordsNoMatch": "As senhas não correspondem!",
+    "passwordMinLength": "A senha deve ter pelo menos 6 caracteres!",
+    "resetSuccess": "Senha redefinida com sucesso!",
+    "passwordTooWeak": "A senha é muito fraca!",
+    "resetExpiredGeneric": "O link de redefinição expirou!"
+  },
+  "profile": {
+    "failedChangeUsername": "Falha ao alterar o nome de usuário!"
+  },
+  "game": {
+    "fighterNotMeetRequirements": "O lutador não atende aos requisitos."
   },
   "errors": {
     "createRoom": "Ocorreu um erro ao criar a sala!",
@@ -421,7 +485,11 @@
     "rankedMatchCompleted": "🏆 Partida Classificada Concluída",
     "pointsUpdated": "Pontos foram atualizados!",
     "playAgainQuestion": "Jogar Novamente?",
-    "waitForHost": "Aguardar Anfitrião"
+    "waitForHost": "Aguardar Anfitrião",
+    "enterNameError": "Por favor, insira seu nome!",
+    "noRoomSelected": "Nenhuma sala selecionada!",
+    "joinRoomFailed": "Falha ao entrar na sala!",
+    "listenRoomsFailed": "Falha ao ouvir salas."
   },"privacy": {
       "title": "Política de Privacidade",
       "section1Title": "🔒 Política de Privacidade",

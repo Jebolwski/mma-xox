@@ -109,7 +109,9 @@
     "ultimateTicTacToe": "Ultimatives Tic-Tac-Toe",
     "google": "Google",
     "twitter": "Twitter (X)",
-    "connecting": "Verbinde..."
+    "connecting": "Verbinden...",
+    "googleLoginCanceled": "Google-Anmeldung abgebrochen",
+    "twitterLoginCanceled": "Twitter-Anmeldung abgebrochen"
   },
   "ranking": {
     "title": "Weltrangliste",
@@ -165,6 +167,68 @@
     "silverNote": "Grundlegende Erfahrung.",
     "goldNote": "Fortgeschrittener Spieler.",
     "diamondNote": "Oberste Stufe."
+  },
+  "profile": {
+    "profileNotFound": "Profil konnte nicht gefunden werden.",
+    "loadProfileFailed": "Fehler beim Laden der Profildaten",
+    "titleUpdated": "Titel aktualisiert!",
+    "titleUpdateFailed": "Fehler beim Aktualisieren des Titels.",
+    "fillPasswordFields": "Bitte füllen Sie alle Passwortfelder aus!",
+    "passwordsDontMatch": "Passwörter stimmen nicht überein!",
+    "passwordTooShort": "Das neue Passwort muss mindestens 6 Zeichen lang sein!",
+    "passwordMustDiffer": "Das neue Passwort muss sich vom aktuellen Passwort unterscheiden!",
+    "notAuthenticated": "Nicht authentifiziert!",
+    "passwordChanged": "Passwort erfolgreich geändert!",
+    "passwordTooWeak": "Das Passwort ist zu schwach!",
+    "incorrectPassword": "Aktuelles Passwort ist falsch!",
+    "invalidInput": "Ungültige Eingabe!",
+    "usernameTooShort": "Der Benutzername muss mindestens 3 Zeichen lang sein!",
+    "usernameTooLong": "Der Benutzername darf nicht länger als 14 Zeichen sein!",
+    "usernameInvalidChars": "Der Benutzername darf nur Buchstaben, Zahlen, Unterstriche und Bindestriche enthalten!",
+    "usernameMustDiffer": "Der neue Benutzername muss sich vom aktuellen unterscheiden!",
+    "usernameCooldown": "Sie können den Benutzernamen in {{days}} Tagen erneut ändern!",
+    "usernameTaken": "Dieser Benutzername ist bereits vergeben. Bitte versuchen Sie einen anderen.",
+    "usernameChanged": "Benutzername erfolgreich geändert!"
+  },
+  "room": {
+    "hostDisconnected": "🏆 Anbieter getrennt! Du gewinnst!",
+    "guestDisconnected": "🏆 Gast getrennt! Du gewinnst!",
+    "hostLeft": "Anbieter hat das Spiel verlassen!",
+    "bothPlayersReady": "🏆 Beide Spieler bereit! Starten Sie das Ranked Match...",
+    "playerJoined": "{{player}} ist dem Spiel beigetreten!",
+    "playerLeft": "{{player}} hat das Spiel verlassen!",
+    "firstBloodUnlocked": "🏆 Neue Errungenschaft freigeschaltet! Erstes Blut",
+    "arenaManagerUnlocked": "🏆 Neue Errungenschaft freigeschaltet! Arena-Meister",
+    "rankedMatchCompleted": "🏆 Ranked Match abgeschlossen! Statistiken aktualisiert.",
+    "failedUpdateStats": "Fehler beim Aktualisieren der Spielerstatistiken.",
+    "newRankedMatch": "🏆 Neues Ranked Match startet!",
+    "opponentsTurn": "Zug deines Gegners!",
+    "roomDeleted": "Raum erfolgreich gelöscht!",
+    "exitError": "Ein Fehler beim Beenden ist aufgetreten!",
+    "guestWinsForfeited": "🏆 Gast gewinnt! Anbieter hat aufgegeben!",
+    "forfeitError": "Ein Fehler bei der Aufgabe ist aufgetreten!",
+    "couldNotDeterminePlayers": "Spieler konnten nicht ermittelt werden!",
+    "hostWinsForfeited": "🏆 Anbieter gewinnt! Du hast aufgegeben!",
+    "guestForfeitedYouWin": "🏆 Gast hat aufgegeben, du gewinnst!",
+    "fighterRequirements": "Kämpfer erfüllt die Anforderungen nicht.",
+    "noParticipantFound": "Kein Teilnehmer für das Spiel gefunden!",
+    "fighterAlreadySelected": "Kämpfer bereits ausgewählt."
+  },
+  "password": {
+    "resetInvalidLink": "Ungültige Rücksetzverlinkung!",
+    "resetExpired": "Rücksetzverlinkung ist abgelaufen oder ungültig!",
+    "fillAllFields": "Bitte füllen Sie alle Felder aus!",
+    "passwordsNoMatch": "Passwörter stimmen nicht überein!",
+    "passwordMinLength": "Das Passwort muss mindestens 6 Zeichen lang sein!",
+    "resetSuccess": "Passwort erfolgreich zurückgesetzt!",
+    "passwordTooWeak": "Das Passwort ist zu schwach!",
+    "resetExpiredGeneric": "Rücksetzverlinkung ist abgelaufen!"
+  },
+  "profile": {
+    "failedChangeUsername": "Fehler beim Ändern des Benutzernamens!"
+  },
+  "game": {
+    "fighterNotMeetRequirements": "Kämpfer erfüllt die Anforderungen nicht."
   },
   "errors": {
     "createRoom": "Fehler beim Erstellen des Raums!",
@@ -421,7 +485,11 @@
     "rankedMatchCompleted": "🏆 Rangiertes Spiel abgeschlossen",
     "pointsUpdated": "Punkte wurden aktualisiert!",
     "playAgainQuestion": "Erneut spielen?",
-    "waitForHost": "Auf Gastgeber Warten"
+    "waitForHost": "Auf Gastgeber Warten",
+    "enterNameError": "Bitte geben Sie Ihren Namen ein!",
+    "noRoomSelected": "Kein Raum ausgewählt!",
+    "joinRoomFailed": "Fehler beim Beitreten des Raums!",
+    "listenRoomsFailed": "Fehler beim Abhören von Räumen."
   },"privacy": {
       "title": "Datenschutzrichtlinie",
       "section1Title": "🔒 Datenschutzrichtlinie",

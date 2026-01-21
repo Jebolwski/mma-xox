@@ -109,7 +109,9 @@
     "ultimateTicTacToe": "Ultimate Tic-Tac-Toe",
     "google": "Google",
     "twitter": "Twitter (X)",
-    "connecting": "Connecting..."
+    "connecting": "Connecting...",
+    "googleLoginCanceled": "Google login canceled",
+    "twitterLoginCanceled": "Twitter login canceled"
   },
   "ranking": {
     "title": "World Ranking",
@@ -166,12 +168,73 @@
     "goldNote": "Advanced player.",
     "diamondNote": "Top tier."
   },
+  "profile": {
+    "profileNotFound": "Could not find the profile.",
+    "loadProfileFailed": "Failed to load profile data",
+    "titleUpdated": "Title updated!",
+    "titleUpdateFailed": "Failed to update title.",
+    "fillPasswordFields": "Please fill all password fields!",
+    "passwordsDontMatch": "Passwords don't match!",
+    "passwordTooShort": "New password must be at least 6 characters!",
+    "passwordMustDiffer": "New password must be different from current password!",
+    "notAuthenticated": "Not authenticated!",
+    "passwordChanged": "Password changed successfully!",
+    "passwordTooWeak": "Password is too weak!",
+    "incorrectPassword": "Current password is incorrect!",
+    "invalidInput": "Invalid input!",
+    "usernameTooShort": "Username must be at least 3 characters!",
+    "usernameTooLong": "Username cannot be longer than 14 characters!",
+    "usernameInvalidChars": "Username can only contain letters, numbers, underscore and dash!",
+    "usernameMustDiffer": "New username must be different from current!",
+    "usernameCooldown": "You can change username again in {{days}} days!",
+    "usernameTaken": "Username already taken. Try another.",
+    "usernameChanged": "Username changed successfully!"},
+  "room": {
+    "hostDisconnected": "🏆 Host disconnected! You win!",
+    "guestDisconnected": "🏆 Guest disconnected! You win!",
+    "hostLeft": "Host has left the game!",
+    "bothPlayersReady": "🏆 Both players ready! Starting ranked match...",
+    "playerJoined": "{{player}} joined the game!",
+    "playerLeft": "{{player}} left the game!",
+    "firstBloodUnlocked": "🏆 New achievement unlocked! First Blood",
+    "arenaManagerUnlocked": "🏆 New achievement unlocked! Arena Master",
+    "rankedMatchCompleted": "🏆 Ranked match completed! Stats updated.",
+    "failedUpdateStats": "Failed to update player stats.",
+    "newRankedMatch": "🏆 New ranked match starting!",
+    "opponentsTurn": "Its your opponents turn!",
+    "roomDeleted": "Room deleted successfully!",
+    "exitError": "An error occurred while exiting!",
+    "guestWinsForfeited": "🏆 Guest wins! Host forfeited!",
+    "forfeitError": "An error occurred during forfeit!",
+    "couldNotDeterminePlayers": "Could not determine players!",
+    "hostWinsForfeited": "🏆 Host wins! You forfeited!",
+    "guestForfeitedYouWin": "🏆 Guest forfeited, you win!",
+    "fighterRequirements": "Fighter doesnt meet the requirements.",
+    "noParticipantFound": "No participant found for the game!",
+    "fighterAlreadySelected": "Fighter already selected."
+  },
   "errors": {
     "createRoom": "An error occurred while creating the room!",
     "joinRoom": "An error occurred while joining the room!",
     "randomMatch": "An error occurred while finding a random match!",
     "rankedMatch": "An error occurred while finding a ranked match!",
     "logout": "Failed to logout"
+  },
+  "password": {
+    "resetInvalidLink": "Invalid reset link!",
+    "resetExpired": "Reset link has expired or is invalid!",
+    "fillAllFields": "Please fill all fields!",
+    "passwordsNoMatch": "Passwords don't match!",
+    "passwordMinLength": "Password must be at least 6 characters!",
+    "resetSuccess": "Password reset successfully!",
+    "passwordTooWeak": "Password is too weak!",
+    "resetExpiredGeneric": "Reset link has expired!"
+  },
+  "profile": {
+    "failedChangeUsername": "Failed to change username!"
+  },
+  "game": {
+    "fighterNotMeetRequirements": "Fighter doesnt meet the requirements."
   },
   "common": {
     "loading": "Loading...",
@@ -421,9 +484,12 @@
     "rankedMatchCompleted": "🏆 Ranked Match Completed",
     "pointsUpdated": "Points have been updated!",
     "playAgainQuestion": "Play Again?",
-    "waitForHost": "Wait for Host"
-    
-  },"privacy": {
+    "waitForHost": "Wait for Host",
+    "enterNameError": "Please enter your name!",
+    "noRoomSelected": "No room selected!",
+    "joinRoomFailed": "Failed to join the room!",
+    "listenRoomsFailed": "Failed to listen rooms."},
+    "privacy": {
       "title": "Privacy Policy",
       "section1Title": "🔒 Privacy Policy",
       "section1Text": "At MMA-XOX, we respect user privacy. When you visit our site, some technical data such as IP address, device and browser information may be automatically collected. This information is used only to improve site performance and user experience.",

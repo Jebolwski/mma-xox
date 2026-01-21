@@ -51,6 +51,7 @@ import hiFlag from "../assets/in.png";
 import zhFlag from "../assets/ch.png";
 import jaFlag from "../assets/jp.png";
 import koFlag from "../assets/kr.png";
+import frFlag from "../assets/fr.png";
 
 const Room = () => {
   const { roomId } = useParams();
@@ -335,7 +336,7 @@ const Room = () => {
 
             // Modal aç - guest seçim yapabilir
             setHostForfeitModal(true);
-            toast.success("🏆 Host disconnected! You win!");
+            toast.success(t("room.hostDisconnected"));
           }
         } else if (role === "host") {
           // Guest timeout kontrol et (host bakısı)
@@ -383,7 +384,7 @@ const Room = () => {
 
             // Modal aç - host seçim yapabilir
             setGuestForfeitModal(true);
-            toast.success("🏆 Guest disconnected! You win!");
+            toast.success(t("room.guestDisconnected"));
           }
         }
       } catch (error) {
@@ -415,7 +416,7 @@ const Room = () => {
     const unsubscribe = onSnapshot(q, async (snapshot) => {
       if (snapshot.empty) {
         if (role === "guest") {
-          toast.info("Host has left the game!");
+          toast.info(t("room.hostLeft"));
           setTimeout(() => {
             navigate("/");
           }, 1500);
@@ -667,7 +668,7 @@ const Room = () => {
 
       setDifficulty("MEDIUM");
       startGame("30");
-      toast.success("🏆 Both players ready! Starting ranked match...");
+      toast.success(t("room.bothPlayersReady"));
     }
   }, [
     gameState?.hostReady,
@@ -844,11 +845,11 @@ const Room = () => {
 
       // Önceki değer null iken şimdiki değer doluysa -> Biri katıldı
       if (prevGuestNow.current === null && currentGuestNow !== null) {
-        toast.success(`${currentGuestNow} joined the game!`);
+        toast.success(t("room.playerJoined", { player: currentGuestNow }));
       }
       // Önceki değer dolu iken şimdiki değer null ise -> Biri ayrıldı
       else if (prevGuestNow.current !== null && currentGuestNow === null) {
-        toast.info(`${prevGuestNow.current} left the game!`);
+        toast.info(t("room.playerLeft", { player: prevGuestNow.current }));
 
         // Guest çıkınca oyun ve ready state'lerini reset et
         const resetGame = async () => {
@@ -1003,13 +1004,13 @@ const Room = () => {
           if (!hostProfile.achievements.firstWin) {
             hostNewAchievements.firstWin = new Date().toISOString();
             hostNewUnlockedTitles.push("First Blood");
-            toast.success("🏆 New achievement unlocked! First Blood");
+            toast.success(t("room.firstBloodUnlocked"));
           }
           const newWinCount = (hostProfile.stats.wins || 0) + 1;
           if (newWinCount >= 10 && !hostProfile.achievements.tenWins) {
             hostNewAchievements.tenWins = new Date().toISOString();
             hostNewUnlockedTitles.push("Arena Master");
-            toast.success("🏆 New achievement unlocked! Arena Master");
+            toast.success(t("room.arenaManagerUnlocked"));
           }
         }
 
@@ -1027,7 +1028,7 @@ const Room = () => {
           updateWinRates(hostEmail, guestEmail);
         });
 
-        toast.success("🏆 Ranked match completed! Stats updated.");
+        toast.success(t("room.rankedMatchCompleted"));
       } else if (isGuest) {
         // 👥 GUEST: Sadece kendi stats'ını güncelle
         const guestRef = doc(db, "users", guestEmail);
@@ -1045,13 +1046,13 @@ const Room = () => {
           if (!guestProfile.achievements.firstWin) {
             guestNewAchievements.firstWin = new Date().toISOString();
             guestNewUnlockedTitles.push("First Blood");
-            toast.success("🏆 New achievement unlocked! First Blood");
+            toast.success(t("room.firstBloodUnlocked"));
           }
           const newWinCount = (guestProfile.stats.wins || 0) + 1;
           if (newWinCount >= 10 && !guestProfile.achievements.tenWins) {
             guestNewAchievements.tenWins = new Date().toISOString();
             guestNewUnlockedTitles.push("Arena Master");
-            toast.success("🏆 New achievement unlocked! Arena Master");
+            toast.success(t("room.arenaManagerUnlocked"));
           }
         }
 
@@ -1069,11 +1070,11 @@ const Room = () => {
           updateWinRates(hostEmail, guestEmail);
         });
 
-        toast.success("🏆 Ranked match completed! Stats updated.");
+        toast.success(t("room.rankedMatchCompleted"));
       }
     } catch (error) {
       console.error("❌ Failed to update player stats:", error);
-      toast.error("Failed to update player stats.");
+      toast.error(t("room.failedUpdateStats"));
     }
   };
 
@@ -1281,7 +1282,7 @@ const Room = () => {
     setGameStarted(false);
     setShowConfetti(false);
 
-    toast.success("🏆 New ranked match starting!");
+    toast.success(t("room.newRankedMatch"));
   };
 
   const getFilters = async () => {
@@ -1458,10 +1459,10 @@ const Room = () => {
 
   const toggleFighterPick = () => {
     if (role == "host" && gameState.turn == "blue") {
-      toast.error("Its your opponents turn!");
+      toast.error(t("room.opponentsTurn"));
       return;
     } else if (role == "guest" && gameState.turn == "red") {
-      toast.error("Its your opponents turn!");
+      toast.error(t("room.opponentsTurn"));
       return;
     }
     const div = document.querySelector(".select-fighter");
@@ -1602,10 +1603,10 @@ const Room = () => {
     const name = fighter.Fighter;
 
     if (role == "host" && gameState.turn == "blue") {
-      toast.error("Its your opponents turn!");
+      toast.error(t("room.opponentsTurn"));
       return;
     } else if (role == "guest" && gameState.turn == "red") {
-      toast.error("Its your opponents turn!");
+      toast.error(t("room.opponentsTurn"));
       return;
     }
 
@@ -1855,7 +1856,7 @@ const Room = () => {
           });
 
           // Toast mesajını göster ve 1.5 saniye sonra yönlendir
-          toast.success("Room deleted successfully!");
+          toast.success(t("room.roomDeleted"));
           setTimeout(() => {
             navigate("/menu");
           }, 1500);
@@ -1877,7 +1878,7 @@ const Room = () => {
         "Hata detayı:",
         error instanceof Error ? error.message : "Bilinmeyen hata",
       );
-      toast.error("An error occurred while exiting!");
+      toast.error(t("room.exitError"));
       // Hata durumunda da ana sayfaya yönlendir
       navigate("/menu");
     } finally {
@@ -1920,7 +1921,7 @@ const Room = () => {
         });
       });
 
-      toast.success("🏆 Guest wins! Host forfeited!");
+      toast.success(t("room.guestWinsForfeited"));
 
       // Host goes to menu immediately
       navigate("/menu");
@@ -1938,7 +1939,7 @@ const Room = () => {
       }).catch((err) => console.warn("Room deletion error:", err));
     } catch (error) {
       console.error("Forfeit failed:", error);
-      toast.error("An error occurred during forfeit!");
+      toast.error(t("room.forfeitError"));
       setIsExiting(false);
     }
   };
@@ -1955,7 +1956,7 @@ const Room = () => {
       const guestEmail = gameState.guestEmail;
 
       if (!hostEmail || !guestEmail) {
-        toast.error("Could not determine players!");
+        toast.error(t("room.couldNotDeterminePlayers"));
         setIsExiting(false);
         return;
       }
@@ -2026,7 +2027,7 @@ const Room = () => {
         });
       });
 
-      toast.success("🏆 Host wins! You forfeited!");
+      toast.success(t("room.hostWinsForfeited"));
 
       // Delete room in background
       runTransaction(db, async (transaction) => {
@@ -2044,7 +2045,7 @@ const Room = () => {
       navigate("/menu");
     } catch (error) {
       console.error("Guest forfeit failed:", error);
-      toast.error("An error occurred during forfeit!");
+      toast.error(t("room.forfeitError"));
       setIsExiting(false);
     }
   };
@@ -2055,7 +2056,7 @@ const Room = () => {
 
     // If host wins by forfeit, show toast and redirect to menu
     if (gameState?.forfeit && gameState?.winner === "red") {
-      toast.success("🏆 Guest forfeited, you win!");
+      toast.success(t("room.guestForfeitedYouWin"));
 
       setTimeout(() => {
         navigate("/menu");
@@ -2063,7 +2064,7 @@ const Room = () => {
     }
   }, [gameState?.forfeit, gameState?.winner, role, roomId, navigate]);
 
-  const notify = () => toast.error("Fighter doesnt meet the requirements.");
+  const notify = () => toast.error(t("room.fighterRequirements"));
 
   if (!gameState) {
     return (
@@ -2205,7 +2206,9 @@ const Room = () => {
                                       ? jaFlag
                                       : i18n.language === "ko"
                                         ? koFlag
-                                        : enFlag
+                                        : i18n.language === "fr"
+                                          ? frFlag
+                                          : enFlag
                   }
                   alt={
                     i18n.language === "tr"
@@ -2228,7 +2231,9 @@ const Room = () => {
                                       ? "Japanese"
                                       : i18n.language === "ko"
                                         ? "Korean"
-                                        : "English"
+                                        : i18n.language === "fr"
+                                          ? "French"
+                                          : "English"
                   }
                   className="w-full h-full rounded-full object-cover"
                 />
@@ -2245,23 +2250,8 @@ const Room = () => {
                   style={{ height: "200px", overflowY: "auto" }}
                 >
                   <button
-                    onClick={() => changeLanguage("tr")}
-                    className={`z-80 flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
-                      theme === "dark"
-                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
-                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
-                    }`}
-                  >
-                    <img
-                      src={trFlag}
-                      alt="Turkish"
-                      className="w-6 h-6 rounded object-cover rounded-full"
-                    />
-                    <span className="font-medium">Türkçe</span>
-                  </button>
-                  <button
                     onClick={() => changeLanguage("en")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    className={`z-80 flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
                         ? "hover:bg-blue-200/20 border-b border-slate-500/40"
                         : "hover:bg-blue-100/50 border-b border-slate-500/40"
@@ -2276,7 +2266,7 @@ const Room = () => {
                   </button>
                   <button
                     onClick={() => changeLanguage("pt")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
                         ? "hover:bg-blue-200/20 border-b border-slate-500/40"
                         : "hover:bg-blue-100/50 border-b border-slate-500/40"
@@ -2290,19 +2280,19 @@ const Room = () => {
                     <span className="font-medium">Português</span>
                   </button>
                   <button
-                    onClick={() => changeLanguage("sp")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    onClick={() => changeLanguage("tr")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
-                        ? "hover:bg-blue-200/20"
-                        : "hover:bg-blue-100/50"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
                     }`}
                   >
                     <img
-                      src={spFlag}
-                      alt="Spanish"
+                      src={trFlag}
+                      alt="Turkish"
                       className="w-6 h-6 rounded-full object-cover"
                     />
-                    <span className="font-medium">Español</span>
+                    <span className="font-medium">Türkçe</span>
                   </button>
                   <button
                     onClick={() => changeLanguage("ru")}
@@ -2320,6 +2310,21 @@ const Room = () => {
                     <span className="font-medium">Русский</span>
                   </button>
                   <button
+                    onClick={() => changeLanguage("sp")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={spFlag}
+                      alt="Spanish"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">Español</span>
+                  </button>
+                  <button
                     onClick={() => changeLanguage("de")}
                     className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
@@ -2335,7 +2340,7 @@ const Room = () => {
                     <span className="font-medium">Deutsch</span>
                   </button>
                   <button
-                    onClick={() => changeLanguage("ar")}
+                    onClick={() => changeLanguage("fr")}
                     className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
                         ? "hover:bg-blue-200/20 border-b border-slate-500/40"
@@ -2343,41 +2348,11 @@ const Room = () => {
                     }`}
                   >
                     <img
-                      src={arFlag}
-                      alt="Arabic"
+                      src={frFlag}
+                      alt="French"
                       className="w-6 h-6 rounded-full object-cover"
                     />
-                    <span className="font-medium">العربية</span>
-                  </button>
-                  <button
-                    onClick={() => changeLanguage("hi")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
-                      theme === "dark"
-                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
-                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
-                    }`}
-                  >
-                    <img
-                      src={hiFlag}
-                      alt="Hindi"
-                      className="w-6 h-6 rounded-full object-cover"
-                    />
-                    <span className="font-medium">हिन्दी</span>
-                  </button>
-                  <button
-                    onClick={() => changeLanguage("zh")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
-                      theme === "dark"
-                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
-                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
-                    }`}
-                  >
-                    <img
-                      src={zhFlag}
-                      alt="Chinese Simplified"
-                      className="w-6 h-6 rounded-full object-cover"
-                    />
-                    <span className="font-medium">中文</span>
+                    <span className="font-medium">Français</span>
                   </button>
                   <button
                     onClick={() => changeLanguage("ja")}
@@ -2396,10 +2371,10 @@ const Room = () => {
                   </button>
                   <button
                     onClick={() => changeLanguage("ko")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
-                        ? "hover:bg-blue-200/20"
-                        : "hover:bg-blue-100/50"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
                     }`}
                   >
                     <img
@@ -2408,6 +2383,51 @@ const Room = () => {
                       className="w-6 h-6 rounded-full object-cover"
                     />
                     <span className="font-medium">한국어</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("ar")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={arFlag}
+                      alt="Arabic"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">العربية</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("zh")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={zhFlag}
+                      alt="Chinese Simplified"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">中文</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("hi")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20"
+                        : "hover:bg-blue-100/50"
+                    }`}
+                  >
+                    <img
+                      src={hiFlag}
+                      alt="Hindi"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">हिन्दी</span>
                   </button>
                 </div>
               )}
@@ -3083,7 +3103,7 @@ const Room = () => {
                               }
                               startGame();
                             } else {
-                              toast.info("No participant found for the game!");
+                              toast.info(t("room.noParticipantFound"));
                             }
                           }}
                           className={`${
@@ -3338,7 +3358,7 @@ const Room = () => {
                           toggleFighterPick();
                           setSelected("fighter00");
                         } else {
-                          toast.info("Fighter already selected.");
+                          toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -3377,7 +3397,7 @@ const Room = () => {
                           toggleFighterPick();
                           setSelected("fighter01");
                         } else {
-                          toast.info("Fighter already selected.");
+                          toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -3416,7 +3436,7 @@ const Room = () => {
                           toggleFighterPick();
                           setSelected("fighter02");
                         } else {
-                          toast.info("Fighter already selected.");
+                          toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -3504,7 +3524,7 @@ const Room = () => {
                           toggleFighterPick();
                           setSelected("fighter10");
                         } else {
-                          toast.info("Fighter already selected.");
+                          toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -3543,7 +3563,7 @@ const Room = () => {
                           toggleFighterPick();
                           setSelected("fighter11");
                         } else {
-                          toast.info("Fighter already selected.");
+                          toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -3582,7 +3602,7 @@ const Room = () => {
                           toggleFighterPick();
                           setSelected("fighter12");
                         } else {
-                          toast.info("Fighter already selected.");
+                          toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -3670,7 +3690,7 @@ const Room = () => {
                           toggleFighterPick();
                           setSelected("fighter20");
                         } else {
-                          toast.info("Fighter already selected.");
+                          toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -3709,7 +3729,7 @@ const Room = () => {
                           toggleFighterPick();
                           setSelected("fighter21");
                         } else {
-                          toast.info("Fighter already selected.");
+                          toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -3748,7 +3768,7 @@ const Room = () => {
                           toggleFighterPick();
                           setSelected("fighter22");
                         } else {
-                          toast.info("Fighter already selected.");
+                          toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
@@ -4247,7 +4267,7 @@ const Room = () => {
                         startGame();
                       }
                     } else {
-                      toast.info("No participant found for the game!");
+                      toast.info(t("room.noParticipantFound"));
                     }
                   }}
                   disabled={gameState?.isRankedRoom && gameState.hostReady}

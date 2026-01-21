@@ -109,7 +109,9 @@
     "ultimateTicTacToe": "XOX’te Son Nokta",
     "google": "Google",
     "twitter": "Twitter (X)",
-    "connecting": "Bağlanıyor..."
+    "connecting": "Bağlanıyor...",
+    "googleLoginCanceled": "Google girişi iptal edildi",
+    "twitterLoginCanceled": "Twitter girişi iptal edildi"
   },
   "ranking": {
     "title": "Dünya Sıralaması",
@@ -165,6 +167,68 @@
     "silverNote": "Temel deneyim.",
     "goldNote": "Gelişmiş oyuncu.",
     "diamondNote": "En üst seviye."
+  },
+  "profile": {
+    "profileNotFound": "Profil bulunamadı.",
+    "loadProfileFailed": "Profil verileri yüklenemedi",
+    "titleUpdated": "Unvan güncellendi!",
+    "titleUpdateFailed": "Unvan güncellenemedi.",
+    "fillPasswordFields": "Lütfen tüm şifre alanlarını doldurun!",
+    "passwordsDontMatch": "Şifreler uyuşmuyor!",
+    "passwordTooShort": "Yeni şifre en az 6 karakter olmalı!",
+    "passwordMustDiffer": "Yeni şifre mevcut şifreden farklı olmalı!",
+    "notAuthenticated": "Kimlik doğrulama yapılmadı!",
+    "passwordChanged": "Şifre başarıyla değiştirildi!",
+    "passwordTooWeak": "Şifre çok zayıf!",
+    "incorrectPassword": "Mevcut şifre yanlış!",
+    "invalidInput": "Geçersiz giriş!",
+    "usernameTooShort": "Kullanıcı adı en az 3 karakter olmalı!",
+    "usernameTooLong": "Kullanıcı adı 14 karakterden uzun olamaz!",
+    "usernameInvalidChars": "Kullanıcı adı yalnızca harfler, sayılar, alt çizgi ve tire içerebilir!",
+    "usernameMustDiffer": "Yeni kullanıcı adı mevcut adından farklı olmalı!",
+    "usernameCooldown": "Kullanıcı adını {{days}} gün sonra değiştirebilirsiniz!",
+    "usernameTaken": "Bu kullanıcı adı zaten alınmış. Başka birini deneyin.",
+    "usernameChanged": "Kullanıcı adı başarıyla değiştirildi!"
+  },
+  "room": {
+    "hostDisconnected": "🏆 Anasayfayı bulunamadı! Kazanı!",
+    "guestDisconnected": "🏆 Konuk bağlantısı kesildi! Kazanı!",
+    "hostLeft": "Anasayfa oyunu terk etti!",
+    "bothPlayersReady": "🏆 Her iki oyuncu hazır! Sıralamaya katıl maçı başlatılıyor...",
+    "playerJoined": "{{player}} oyuna katıldı!",
+    "playerLeft": "{{player}} oyunu terk etti!",
+    "firstBloodUnlocked": "🏆 Yeni başarı açıldı! İlk Kan",
+    "arenaManagerUnlocked": "🏆 Yeni başarı açıldı! Arena Ustası",
+    "rankedMatchCompleted": "🏆 Sıralamaya katıl maçı tamamlandı! İstatistikler güncellendi.",
+    "failedUpdateStats": "Oyuncu istatistikleri güncellenemedi.",
+    "newRankedMatch": "🏆 Yeni sıralamaya katıl maçı başlatılıyor!",
+    "opponentsTurn": "Rakibinin sırası!",
+    "roomDeleted": "Oda başarıyla silindi!",
+    "exitError": "Çıkışta bir hata meydana geldi!",
+    "guestWinsForfeited": "🏆 Konuk kazanır! Anasayfa teslim oldu!",
+    "forfeitError": "Teslim olma sırasında bir hata meydana geldi!",
+    "couldNotDeterminePlayers": "Oyuncular belirlenemedi!",
+    "hostWinsForfeited": "🏆 Anasayfa kazanır! Sen teslim oldun!",
+    "guestForfeitedYouWin": "🏆 Konuk teslim oldu, sen kazanın!",
+    "fighterRequirements": "Dövüşçü gereklilikleri karşılamadı.",
+    "noParticipantFound": "Oyun için katılımcı bulunamadı!",
+    "fighterAlreadySelected": "Dövüşçü zaten seçildi."
+  },
+  "password": {
+    "resetInvalidLink": "Geçersiz sıfırlama bağlandısı!",
+    "resetExpired": "Sıfırlama bağlandısı zaman asımına uğramış veya geçersiz!",
+    "fillAllFields": "Lütfen tüm alanları doldurun!",
+    "passwordsNoMatch": "Şifreler eşleşmiyor!",
+    "passwordMinLength": "Şifre en az 6 karakter olmalıdır!",
+    "resetSuccess": "Şifre başarıyla sıfırlandı!",
+    "passwordTooWeak": "Şifre çok zayıf!",
+    "resetExpiredGeneric": "Sıfırlama bağlandısı zaman asımına uğramış!"
+  },
+  "profile": {
+    "failedChangeUsername": "Kullanıcı adı değiştirilemiyor!"
+  },
+  "game": {
+    "fighterNotMeetRequirements": "Dövüşçü gereklilikleri karşılamadı."
   },
   "errors": {
     "createRoom": "Oda oluşturulurken bir hata meydana geldi!",
@@ -418,7 +482,11 @@
     "rankedMatchCompleted": "🏆 Sıralama Maçı Tamamlandı",
     "pointsUpdated": "Puanlar güncellendi!",
     "playAgainQuestion": "Tekrar Oyna?",
-    "waitForHost": "Ev Sahibini Bekle"
+    "waitForHost": "Ev Sahibini Bekle",
+    "enterNameError": "Lütfen adınızı girin!",
+    "noRoomSelected": "Oda seçilmedi!",
+    "joinRoomFailed": "Odaya katılma başarısız!",
+    "listenRoomsFailed": "Odaları dinleme başarısız."
   },"privacy": {
       "title": "Gizlilik Politikası",
       "section1Title": "🔒 Gizlilik Politikası",

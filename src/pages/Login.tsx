@@ -176,7 +176,7 @@ const Login = () => {
       toast.success(t("auth.loginSuccess"));
     } catch (error: any) {
       if (error.code === "auth/popup-closed-by-user") {
-        toast.error("Google login canceled");
+        toast.error(t("auth.googleLoginCanceled"));
       } else {
         toast.error(error.message);
       }
@@ -193,7 +193,7 @@ const Login = () => {
       toast.success(t("auth.loginSuccess"));
     } catch (error: any) {
       if (error.code === "auth/popup-closed-by-user") {
-        toast.error("Twitter login canceled");
+        toast.error(t("auth.twitterLoginCanceled"));
       } else {
         toast.error(error.message);
       }

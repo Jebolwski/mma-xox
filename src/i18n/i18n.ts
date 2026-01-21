@@ -12,6 +12,7 @@ import hi from './locales/in.json';
 import zh from './locales/zh.json';
 import ja from './locales/ja.json';
 import ko from './locales/ko.json';
+import fr from './locales/fr.json';
 
 i18n
     .use(LanguageDetector)
@@ -29,6 +30,7 @@ i18n
             zh: { translation: zh },
             ja: { translation: ja },
             ko: { translation: ko },
+            fr: { translation: fr },
         },
         lng: 'en',
         fallbackLng: 'en',

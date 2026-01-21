@@ -109,7 +109,9 @@
     "ultimateTicTacToe": "Tres en Raya Definitivo",
     "google": "Google",
     "twitter": "Twitter (X)",
-    "connecting": "Conectando..."
+    "connecting": "Conectando...",
+    "googleLoginCanceled": "Inicio de sesión de Google cancelado",
+    "twitterLoginCanceled": "Inicio de sesión de Twitter cancelado"
   },
   "ranking": {
     "title": "Ranking Mundial",
@@ -166,12 +168,73 @@
     "goldNote": "Jugador avanzado.",
     "diamondNote": "Nivel superior."
   },
+  "profile": {
+    "profileNotFound": "No se pudo encontrar el perfil.",
+    "loadProfileFailed": "Falla al cargar datos del perfil",
+    "titleUpdated": "¡Título actualizado!",
+    "titleUpdateFailed": "Fallo al actualizar el título.",
+    "fillPasswordFields": "¡Por favor, rellene todos los campos de contraseña!",
+    "passwordsDontMatch": "¡Las contraseñas no coinciden!",
+    "passwordTooShort": "¡La nueva contraseña debe tener al menos 6 caracteres!",
+    "passwordMustDiffer": "¡La nueva contraseña debe ser diferente de la actual!",
+    "notAuthenticated": "¡No autenticado!",
+    "passwordChanged": "¡Contraseña cambiada correctamente!",
+    "passwordTooWeak": "¡La contraseña es demasiado débil!",
+    "incorrectPassword": "¡La contraseña actual es incorrecta!",
+    "invalidInput": "¡Entrada inválida!",
+    "usernameTooShort": "¡El nombre de usuario debe tener al menos 3 caracteres!",
+    "usernameTooLong": "¡El nombre de usuario no puede tener más de 14 caracteres!",
+    "usernameInvalidChars": "¡El nombre de usuario solo puede contener letras, números, guíión y guión bajo!",
+    "usernameMustDiffer": "¡El nuevo nombre de usuario debe ser diferente del actual!",
+    "usernameCooldown": "¡Puedes cambiar el nombre de usuario nuevamente en {{days}} días!",
+    "usernameTaken": "Nombre de usuario ya tomado. Intenta otro.",
+    "usernameChanged": "¡Nombre de usuario cambiado correctamente!"},
+  "room": {
+    "hostDisconnected": "🏆 ¡Anfitrión desconectado! ¡Ganas!",
+    "guestDisconnected": "🏆 ¡Invitado desconectado! ¡Ganas!",
+    "hostLeft": "¡El anfitrión ha abandonado el juego!",
+    "bothPlayersReady": "🏆 ¡Ambos jugadores listos! Iniciando partida clasificatoria...",
+    "playerJoined": "¡{{player}} se unió al juego!",
+    "playerLeft": "¡{{player}} dejó el juego!",
+    "firstBloodUnlocked": "🏆 ¡Nuevo logro desbloqueado! Primera Sangre",
+    "arenaManagerUnlocked": "🏆 ¡Nuevo logro desbloqueado! Maestro de Arena",
+    "rankedMatchCompleted": "🏆 ¡Partida clasificatoria completada! Estadísticas actualizadas.",
+    "failedUpdateStats": "No se pudieron actualizar las estadísticas del jugador.",
+    "newRankedMatch": "🏆 ¡Nueva partida clasificatoria iniciada!",
+    "opponentsTurn": "¡Es el turno de tu oponente!",
+    "roomDeleted": "¡Sala eliminada exitosamente!",
+    "exitError": "¡Ocurrió un error al salir!",
+    "guestWinsForfeited": "🏆 ¡Gana el invitado! ¡Anfitrión se rindió!",
+    "forfeitError": "¡Ocurrió un error durante la rendición!",
+    "couldNotDeterminePlayers": "¡No se pudieron determinar los jugadores!",
+    "hostWinsForfeited": "🏆 ¡Anfitrión gana! ¡Te rendiste!",
+    "guestForfeitedYouWin": "🏆 ¡Invitado se rindió, ganas!",
+    "fighterRequirements": "El dövüşçü no cumple con los requisitos.",
+    "noParticipantFound": "¡No se encontró participante para el juego!",
+    "fighterAlreadySelected": "Dövüşçü ya seleccionado."
+  },
   "errors": {
     "createRoom": "¡Ocurrió un error al crear la sala!",
     "joinRoom": "¡Ocurrió un error al unirse a la sala!",
     "randomMatch": "¡Ocurrió un error al buscar una partida aleatoria!",
     "rankedMatch": "¡Ocurrió un error al buscar una partida clasificada!",
     "logout": "Error al cerrar sesión"
+  },
+  "password": {
+    "resetInvalidLink": "¡Enlace de restablecimiento no válido!",
+    "resetExpired": "¡El enlace de restablecimiento ha expirado o no es válido!",
+    "fillAllFields": "¡Por favor, rellene todos los campos!",
+    "passwordsNoMatch": "¡Las contraseñas no coinciden!",
+    "passwordMinLength": "¡La contraseña debe tener al menos 6 caracteres!",
+    "resetSuccess": "¡Contraseña restablecida correctamente!",
+    "passwordTooWeak": "¡La contraseña es demasiado débil!",
+    "resetExpiredGeneric": "¡El enlace de restablecimiento ha expirado!"
+  },
+  "profile": {
+    "failedChangeUsername": "¡Error al cambiar el nombre de usuario!"
+  },
+  "game": {
+    "fighterNotMeetRequirements": "El dövüşçü no cumple con los requisitos."
   },
   "common": {
     "loading": "Cargando...",
@@ -421,7 +484,11 @@
     "rankedMatchCompleted": "🏆 Partida Clasificada Completada",
     "pointsUpdated": "¡Los puntos han sido actualizados!",
     "playAgainQuestion": "¿Jugar de Nuevo?",
-    "waitForHost": "Esperar Anfitrión"
+    "waitForHost": "Esperar Anfitrión",
+    "enterNameError": "¡Por favor ingresa tu nombre!",
+    "noRoomSelected": "¡No hay sala seleccionada!",
+    "joinRoomFailed": "¡Error al entrar a la sala!",
+    "listenRoomsFailed": "Error al escuchar salas."
   }, "privacy": {
       "title": "Política de Privacidad",
       "section1Title": "🔒 Política de Privacidad",

@@ -109,7 +109,9 @@
     "ultimateTicTacToe": "अंतिम टिक-टैक-टो",
     "google": "Google",
     "twitter": "Twitter (X)",
-    "connecting": "जुड़ रहा है..."
+    "connecting": "जुड़ रहा है...",
+    "googleLoginCanceled": "Google लॉगिन रद्द किया गया",
+    "twitterLoginCanceled": "Twitter लॉगिन रद्द किया गया"
   },
   "ranking": {
     "title": "विश्व रैंकिंग",
@@ -165,6 +167,46 @@
     "silverNote": "बुनियादी अनुभव।",
     "goldNote": "उन्नत खिलाड़ी।",
     "diamondNote": "शीर्ष स्तर।"
+  },
+  "room": {
+    "hostDisconnected": "🏆 Host terputus! Anda menang!",
+    "guestDisconnected": "🏆 Tamu terputus! Anda menang!",
+    "hostLeft": "Host telah meninggalkan permainan!",
+    "bothPlayersReady": "🏆 Kedua pemain siap! Memulai pertandingan peringkat...",
+    "playerJoined": "{{player}} bergabung dengan permainan!",
+    "playerLeft": "{{player}} meninggalkan permainan!",
+    "firstBloodUnlocked": "🏆 Pencapaian baru terbuka! Darah Pertama",
+    "arenaManagerUnlocked": "🏆 Pencapaian baru terbuka! Master Arena",
+    "rankedMatchCompleted": "🏆 Pertandingan peringkat selesai! Statistik diperbarui.",
+    "failedUpdateStats": "Gagal memperbarui statistik pemain.",
+    "newRankedMatch": "🏆 Pertandingan peringkat baru dimulai!",
+    "opponentsTurn": "Giliran lawan Anda!",
+    "roomDeleted": "Ruangan berhasil dihapus!",
+    "exitError": "Terjadi kesalahan saat keluar!",
+    "guestWinsForfeited": "🏆 Tamu menang! Host menyerah!",
+    "forfeitError": "Terjadi kesalahan saat menyerah!",
+    "couldNotDeterminePlayers": "Tidak dapat menentukan pemain!",
+    "hostWinsForfeited": "🏆 Host menang! Anda menyerah!",
+    "guestForfeitedYouWin": "🏆 Tamu menyerah, Anda menang!",
+    "fighterRequirements": "Petinju tidak memenuhi persyaratan.",
+    "noParticipantFound": "Tidak ada peserta yang ditemukan untuk permainan!",
+    "fighterAlreadySelected": "Petinju sudah dipilih."
+  },
+  "password": {
+    "resetInvalidLink": "Tautan pengaturan ulang tidak valid!",
+    "resetExpired": "Tautan pengaturan ulang telah kedaluwarsa atau tidak valid!",
+    "fillAllFields": "Harap isi semua bidang!",
+    "passwordsNoMatch": "Kata sandi tidak cocok!",
+    "passwordMinLength": "Kata sandi harus minimal 6 karakter!",
+    "resetSuccess": "Kata sandi berhasil diatur ulang!",
+    "passwordTooWeak": "Kata sandi terlalu lemah!",
+    "resetExpiredGeneric": "Tautan pengaturan ulang telah kedaluwarsa!"
+  },
+  "profile": {
+    "failedChangeUsername": "Gagal mengubah nama pengguna!"
+  },
+  "game": {
+    "fighterNotMeetRequirements": "Petinju tidak memenuhi persyaratan."
   },
   "errors": {
     "createRoom": "कमरा बनाने में विफल!",
@@ -421,7 +463,11 @@
     "rankedMatchCompleted": "🏆 रैंक किया हुआ गेम पूर्ण",
     "pointsUpdated": "अंक अपडेट किए गए!",
     "playAgainQuestion": "फिर से खेलें?",
-    "waitForHost": "होस्ट की प्रतीक्षा करें"
+    "waitForHost": "होस्ट की प्रतीक्षा करें",
+    "enterNameError": "कृपया अपना नाम दर्ज करें!",
+    "noRoomSelected": "कोई कमरा चुना नहीं गया!",
+    "joinRoomFailed": "कमरे में शामिल होने में विफल!",
+    "listenRoomsFailed": "कमरों को सुनने में विफल।"
     
   },"privacy": {
       "title": "गोपनीयता नीति",

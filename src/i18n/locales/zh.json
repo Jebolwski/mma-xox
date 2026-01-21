@@ -109,7 +109,9 @@
     "ultimateTicTacToe": "终极井字游戏",
     "google": "Google",
     "twitter": "Twitter (X)",
-    "connecting": "连接中..."
+    "connecting": "正在连接...",
+    "googleLoginCanceled": "Google 登录已取消",
+    "twitterLoginCanceled": "Twitter 登录已取消"
   },
   "ranking": {
     "title": "世界排名",
@@ -165,6 +167,68 @@
     "silverNote": "基础经验。",
     "goldNote": "高级玩家。",
     "diamondNote": "顶级玩家。"
+  },
+  "profile": {
+    "profileNotFound": "找不到流流。",
+    "loadProfileFailed": "无法加载个人资料",
+    "titleUpdated": "标题已更新！",
+    "titleUpdateFailed": "更新标题失败。",
+    "fillPasswordFields": "请填写所有密码字段！",
+    "passwordsDontMatch": "密码不匹配！",
+    "passwordTooShort": "新密码必须至少6个字符！",
+    "passwordMustDiffer": "新密码必须不同于当前密码！",
+    "notAuthenticated": "未认证！",
+    "passwordChanged": "密码已成功更改！",
+    "passwordTooWeak": "密码太此弱！",
+    "incorrectPassword": "当前密码不正确！",
+    "invalidInput": "无效输入！",
+    "usernameTooShort": "用户名必须至少3个字符！",
+    "usernameTooLong": "用户名不能超过14个字符！",
+    "usernameInvalidChars": "用户名只能包含字母、数字、下划线和破折号！",
+    "usernameMustDiffer": "新用户名必须不同于当前用户名！",
+    "usernameCooldown": "你可以在{{days}}天后再改变用户名！",
+    "usernameTaken": "该用户名已被使用。请尝试另一个。",
+    "usernameChanged": "用户名已成功更改！"
+  },
+  "room": {
+    "hostDisconnected": "🏆 主机断开连接！你赢了！",
+    "guestDisconnected": "🏆 客人断开连接！你赢了！",
+    "hostLeft": "主机已离开游戏！",
+    "bothPlayersReady": "🏆 两个玩家都准备好了！开始排名赛...",
+    "playerJoined": "{{player}} 加入了游戏！",
+    "playerLeft": "{{player}} 离开了游戏！",
+    "firstBloodUnlocked": "🏆 新成就已解锁！首次出血",
+    "arenaManagerUnlocked": "🏆 新成就已解锁！竞技场大师",
+    "rankedMatchCompleted": "🏆 排名赛已完成！统计数据已更新。",
+    "failedUpdateStats": "无法更新玩家统计数据。",
+    "newRankedMatch": "🏆 新排名赛开始！",
+    "opponentsTurn": "对手的回合！",
+    "roomDeleted": "房间已成功删除！",
+    "exitError": "退出时出错！",
+    "guestWinsForfeited": "🏆 客人赢了！主机投降了！",
+    "forfeitError": "投降期间出错！",
+    "couldNotDeterminePlayers": "无法判断玩家！",
+    "hostWinsForfeited": "🏆 主机赢了！你投降了！",
+    "guestForfeitedYouWin": "🏆 客人投降，你赢了！",
+    "fighterRequirements": "格斗士不符合要求。",
+    "noParticipantFound": "找不到游戏参下！",
+    "fighterAlreadySelected": "格斗士已选择。"
+  },
+  "password": {
+    "resetInvalidLink": "無效的重置鏈接！",
+    "resetExpired": "重置鏈接已過期或無效！",
+    "fillAllFields": "請填写所有字段！",
+    "passwordsNoMatch": "密碼不符！",
+    "passwordMinLength": "密碼最少需要 6 個字元！",
+    "resetSuccess": "密碼已成功重置！",
+    "passwordTooWeak": "密碼太短弱！",
+    "resetExpiredGeneric": "重置鏈接已過期！"
+  },
+  "profile": {
+    "failedChangeUsername": "无法改变用户名！"
+  },
+  "game": {
+    "fighterNotMeetRequirements": "格斗士不符合要求。"
   },
   "errors": {
     "createRoom": "创建房间时发生错误！",
@@ -293,7 +357,11 @@
     "seconds": "秒",
     "restartGame": "重新开始游戏",
     "rankedMatch": "排名赛",
-    "turn": "轮次："
+    "turn": "轮次：",
+    "enterNameError": "请输入您的名字！",
+    "noRoomSelected": "未选择房间！",
+    "joinRoomFailed": "加入房间失败！",
+    "listenRoomsFailed": "监听房间失败。"
   },
   "privacy": {
     "title": "隐私政策",

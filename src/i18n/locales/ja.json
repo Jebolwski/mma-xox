@@ -109,7 +109,9 @@
     "ultimateTicTacToe": "アルティメットTicTacToe",
     "google": "Google",
     "twitter": "Twitter (X)",
-    "connecting": "接続中..."
+    "connecting": "接続中...",
+    "googleLoginCanceled": "Googleログインがキャンセルされました",
+    "twitterLoginCanceled": "Twitterログインがキャンセルされました"
   },
   "ranking": {
     "title": "世界ランキング",
@@ -165,6 +167,68 @@
     "silverNote": "基本的な経験。",
     "goldNote": "上級プレイヤー。",
     "diamondNote": "トッププレイヤー。"
+  },
+  "profile": {
+    "profileNotFound": "プロフィールが設可漢。",
+    "loadProfileFailed": "プロフィールデータの読み込みに失敗しました",
+    "titleUpdated": "タイトルが更新されました！",
+    "titleUpdateFailed": "タイトルの更新に失敗しました。",
+    "fillPasswordFields": "すべてのパスワードフィールドを入力してください！",
+    "passwordsDontMatch": "パスワードが一致しません！",
+    "passwordTooShort": "新しいパスワードは6文字以上必需です！",
+    "passwordMustDiffer": "新しいパスワードは現在のパスワードと異なる必需があります！",
+    "notAuthenticated": "認証されていません！",
+    "passwordChanged": "パスワードが正常に変更されました！",
+    "passwordTooWeak": "パスワードが弱い。",
+    "incorrectPassword": "現在のパスワードが間違っています！",
+    "invalidInput": "不正な入力！",
+    "usernameTooShort": "ユーザー名は3文字以上必需です！",
+    "usernameTooLong": "ユーザー名は14文字を超えることはできません！",
+    "usernameInvalidChars": "ユーザー名は文字、数字、アンダースコア、ハイフンのみ使用可能！",
+    "usernameMustDiffer": "新しいユーザー名は現在と異なる必需があります！",
+    "usernameCooldown": "ユーザー名は{{days}}日後に再変更できます！",
+    "usernameTaken": "このユーザー名は既に使用されています。別のものをお試しください。",
+    "usernameChanged": "ユーザー名が正常に変更されました！"
+  },
+  "room": {
+    "hostDisconnected": "🏆 ホストが切断されました！あなたの勝ち！",
+    "guestDisconnected": "🏆 ゲストが切断されました！あなたの勝ち！",
+    "hostLeft": "ホストがゲームを去りました！",
+    "bothPlayersReady": "🏆 両プレイヤーが準備完了！ランク戦を開始...",
+    "playerJoined": "{{player}} がゲームに参加しました！",
+    "playerLeft": "{{player}} がゲームを去りました！",
+    "firstBloodUnlocked": "🏆 新しいアチーブメントがアンロック！ファーストブラッド",
+    "arenaManagerUnlocked": "🏆 新しいアチーブメントがアンロック！アリーナマスター",
+    "rankedMatchCompleted": "🏆 ランク戦が完了しました！統計情報が更新されました。",
+    "failedUpdateStats": "プレイヤーの統計情報を更新できませんでした。",
+    "newRankedMatch": "🏆 新しいランク戦が開始されます！",
+    "opponentsTurn": "対戦相手の番です！",
+    "roomDeleted": "ルームが正常に削除されました！",
+    "exitError": "終了中にエラーが発生しました！",
+    "guestWinsForfeited": "🏆 ゲストが勝ち！ホストが投げ出した！",
+    "forfeitError": "投げ出し中にエラーが発生しました！",
+    "couldNotDeterminePlayers": "プレイヤーを決定できませんでした！",
+    "hostWinsForfeited": "🏆 ホストが勝ち！あなたは投げ出しました！",
+    "guestForfeitedYouWin": "🏆 ゲストが投げ出して、あなたが勝ちました！",
+    "fighterRequirements": "格闘士は要件を満たしていません。",
+    "noParticipantFound": "ゲームの参加者が見つかりません！",
+    "fighterAlreadySelected": "格闘士は既に選ばれています。"
+  },
+  "password": {
+    "resetInvalidLink": "無効なリセットリンク！",
+    "resetExpired": "リセットリンクが有効期限切れまたは無効！",
+    "fillAllFields": "すべてのフィールドを入力してください！",
+    "passwordsNoMatch": "パスワードが一致しません！",
+    "passwordMinLength": "パスワードは6文字以上必需！",
+    "resetSuccess": "パスワードを正常にリセットしました！",
+    "passwordTooWeak": "パスワードが弱い。",
+    "resetExpiredGeneric": "リセットリンクが有効期限切れ。"
+  },
+  "profile": {
+    "failedChangeUsername": "ユーザー名の変更に失敗しました！"
+  },
+  "game": {
+    "fighterNotMeetRequirements": "格闘士は要件を満たしていません。"
   },
   "errors": {
     "createRoom": "ルーム作成中にエラーが発生しました！",
@@ -293,7 +357,11 @@
     "seconds": "秒",
     "restartGame": "ゲーム再開",
     "rankedMatch": "ランク戦",
-    "turn": "ターン :"
+    "turn": "ターン :",
+    "enterNameError": "お名前を入力してください！",
+    "noRoomSelected": "ルームが選択されていません！",
+    "joinRoomFailed": "ルームへの参加に失敗しました！",
+    "listenRoomsFailed": "ルームのリッスンに失敗しました。"
   },
   "privacy": {
     "title": "プライバシーポリシー",

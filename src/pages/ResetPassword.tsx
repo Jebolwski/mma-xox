@@ -21,7 +21,7 @@ const ResetPassword = () => {
   useEffect(() => {
     const verifyCode = async () => {
       if (!oobCode) {
-        toast.error("Invalid reset link!");
+        toast.error(t("password.resetInvalidLink"));
         navigate("/login");
         return;
       }
@@ -31,7 +31,7 @@ const ResetPassword = () => {
         setEmail(userEmail);
         setVerifying(false);
       } catch (error: any) {
-        toast.error("Reset link has expired or is invalid!");
+        toast.error(t("password.resetExpired"));
         navigate("/login");
       }
     };
@@ -43,30 +43,30 @@ const ResetPassword = () => {
     e.preventDefault();
 
     if (!newPassword || !confirmPassword) {
-      toast.error("Please fill all fields!");
+      toast.error(t("password.fillAllFields"));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords don't match!");
+      toast.error(t("password.passwordsNoMatch"));
       return;
     }
 
     if (newPassword.length < 6) {
-      toast.error("Password must be at least 6 characters!");
+      toast.error(t("password.passwordMinLength"));
       return;
     }
 
     setLoading(true);
     try {
       await confirmPasswordReset(auth, oobCode!, newPassword);
-      toast.success("Password reset successfully!");
+      toast.success(t("password.resetSuccess"));
       navigate("/login");
     } catch (error: any) {
       if (error.code === "auth/weak-password") {
-        toast.error("Password is too weak!");
+        toast.error(t("password.passwordTooWeak"));
       } else if (error.code === "auth/expired-action-code") {
-        toast.error("Reset link has expired!");
+        toast.error(t("password.resetExpiredGeneric"));
       } else {
         toast.error(error.message);
       }

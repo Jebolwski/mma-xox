@@ -84,7 +84,7 @@ const AvailableRooms = () => {
     const q = query(
       roomsRef,
       where("guest.now", "==", null),
-      where("isRankedRoom", "==", false)
+      where("isRankedRoom", "==", false),
     );
     const unsub = onSnapshot(
       q,
@@ -96,9 +96,9 @@ const AvailableRooms = () => {
       },
       (err) => {
         console.error("rooms subscribe failed:", err);
-        toast.error("Failed to listen rooms.");
+        toast.error(t("room.listenRoomsFailed"));
         setLoading(false);
-      }
+      },
     );
     return () => unsub();
   }, []);
@@ -124,12 +124,12 @@ const AvailableRooms = () => {
 
     // Guest kullanıcı için isim kontrolü
     if (!currentUser && !finalPlayerName) {
-      toast.error("Please enter your name!");
+      toast.error(t("room.enterNameError"));
       return;
     }
 
     if (!selectedRoom || typeof selectedRoom !== "string") {
-      toast.error("No room selected!");
+      toast.error(t("room.noRoomSelected"));
       return;
     }
 
@@ -145,7 +145,7 @@ const AvailableRooms = () => {
         state: { role: "guest", name: finalPlayerName },
       });
     } catch {
-      toast.error("Failed to join the room!");
+      toast.error(t("room.joinRoomFailed"));
     }
   };
 
@@ -165,7 +165,7 @@ const AvailableRooms = () => {
           state: { role: "guest", name: finalPlayerName },
         });
       } catch {
-        toast.error("Failed to join the room!");
+        toast.error(t("room.joinRoomFailed"));
       }
     } else {
       setSelectedRoom(roomId);
