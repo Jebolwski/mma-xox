@@ -4,8 +4,10 @@ import { ThemeContext } from "../context/ThemeContext";
 import { confirmPasswordReset, verifyPasswordResetCode } from "firebase/auth";
 import { auth } from "../firebase";
 import { toast, ToastContainer } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const ResetPassword = () => {
+  const { t, i18n } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useContext(ThemeContext);
