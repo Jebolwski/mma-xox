@@ -48,6 +48,9 @@ import ruFlag from "../assets/russia_flag.jpg";
 import deFlag from "../assets/ge.png";
 import arFlag from "../assets/sa.png";
 import hiFlag from "../assets/in.png";
+import zhFlag from "../assets/ch.png";
+import jaFlag from "../assets/jp.png";
+import koFlag from "../assets/kr.png";
 
 const Room = () => {
   const { roomId } = useParams();
@@ -2196,7 +2199,13 @@ const Room = () => {
                                 ? arFlag
                                 : i18n.language === "hi"
                                   ? hiFlag
-                                  : enFlag
+                                  : i18n.language === "zh"
+                                    ? zhFlag
+                                    : i18n.language === "ja"
+                                      ? jaFlag
+                                      : i18n.language === "ko"
+                                        ? koFlag
+                                        : enFlag
                   }
                   alt={
                     i18n.language === "tr"
@@ -2213,7 +2222,13 @@ const Room = () => {
                                 ? "Arabic"
                                 : i18n.language === "hi"
                                   ? "Hindi"
-                                  : "English"
+                                  : i18n.language === "zh"
+                                    ? "Chinese Simplified"
+                                    : i18n.language === "ja"
+                                      ? "Japanese"
+                                      : i18n.language === "ko"
+                                        ? "Korean"
+                                        : "English"
                   }
                   className="w-full h-full rounded-full object-cover"
                 />
@@ -2224,8 +2239,8 @@ const Room = () => {
                 <div
                   className={`z-60 w-40 absolute top-14 left-0 rounded-br-xl rounded-tl-xl shadow-xl border overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20 ${
                     theme === "dark"
-                      ? "bg-slate-700 text-white border-slate-500/40 shadow-2xl"
-                      : "bg-slate-100 text-slate-800 border-slate-500/40"
+                      ? "bg-slate-700 text-white border-slate-500/40 shadow-2xl language-dropdown-dark"
+                      : "bg-slate-100 text-slate-800 border-slate-500/40 language-dropdown-light"
                   }`}
                   style={{ height: "200px", overflowY: "auto" }}
                 >
@@ -2336,10 +2351,10 @@ const Room = () => {
                   </button>
                   <button
                     onClick={() => changeLanguage("hi")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
-                        ? "hover:bg-blue-200/20"
-                        : "hover:bg-blue-100/50"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
                     }`}
                   >
                     <img
@@ -2348,6 +2363,51 @@ const Room = () => {
                       className="w-6 h-6 rounded-full object-cover"
                     />
                     <span className="font-medium">हिन्दी</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("zh")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={zhFlag}
+                      alt="Chinese Simplified"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">中文</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("ja")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={jaFlag}
+                      alt="Japanese"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">日本語</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("ko")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20"
+                        : "hover:bg-blue-100/50"
+                    }`}
+                  >
+                    <img
+                      src={koFlag}
+                      alt="Korean"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">한국어</span>
                   </button>
                 </div>
               )}

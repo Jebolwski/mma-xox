@@ -1,7 +1,8 @@
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./i18n/i18n";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import ReactGA from "react-ga4";
 import {
   BrowserRouter,
   Routes,
@@ -45,6 +46,14 @@ function AppContent() {
   };
 
   const location = useLocation();
+
+  // Track page views
+  useEffect(() => {
+    ReactGA.event("page_view", {
+      page_path: location.pathname,
+      page_title: document.title,
+    });
+  }, [location.pathname]);
 
   return (
     <>

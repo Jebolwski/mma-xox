@@ -3,6 +3,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ReactGA from "react-ga4";
 import { ToastContainer, toast } from "react-toastify";
 import {
   doc,
@@ -19,6 +20,15 @@ import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
 import trFlag from "../assets/tr.png";
 import enFlag from "../assets/en.jpg";
+import ptFlag from "../assets/pt.png";
+import spFlag from "../assets/sp.png";
+import ruFlag from "../assets/russia_flag.jpg";
+import deFlag from "../assets/ge.png";
+import arFlag from "../assets/sa.png";
+import hiFlag from "../assets/in.png";
+import zhFlag from "../assets/ch.png";
+import jaFlag from "../assets/jp.png";
+import koFlag from "../assets/kr.png";
 import { useAuth } from "../context/AuthContext";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { sanitizePlayerName } from "../utils/security";
@@ -313,6 +323,14 @@ const Menu = () => {
       navigate(`/room/${randomRoom.id}`, {
         state: { role: "guest", name: finalPlayerName },
       });
+
+      // Track event
+      ReactGA.event("casual_match_joined", {
+        player_name: finalPlayerName,
+        opponent: randomRoom.host,
+        language: i18n.language,
+      });
+
       toast.success(t("menu.matchedWith", { player: randomRoom.host }));
     } catch (error) {
       toast.error(t("errors.randomMatch"));
@@ -358,6 +376,14 @@ const Menu = () => {
       navigate(`/room/${randomRoom.id}`, {
         state: { role: "guest", name: finalPlayerName },
       });
+
+      // Track event
+      ReactGA.event("ranked_match_joined", {
+        player_name: finalPlayerName,
+        opponent: randomRoom.host,
+        language: i18n.language,
+      });
+
       toast.success(t("menu.rankedMatchFound", { player: randomRoom.host }));
     } catch (error) {
       toast.error(t("errors.rankedMatch"));

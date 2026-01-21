@@ -8,6 +8,9 @@ import ruFlag from "../assets/russia_flag.jpg";
 import deFlag from "../assets/ge.png";
 import arFlag from "../assets/sa.png";
 import hiFlag from "../assets/in.png";
+import zhFlag from "../assets/ch.png";
+import jaFlag from "../assets/jp.png";
+import koFlag from "../assets/kr.png";
 import light from "../assets/light.png";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
@@ -76,35 +79,47 @@ const Header = () => {
                   i18n.language === "tr"
                     ? trFlag
                     : i18n.language === "pt"
-                    ? ptFlag
-                    : i18n.language === "sp"
-                    ? spFlag
-                    : i18n.language === "ru"
-                    ? ruFlag
-                    : i18n.language === "de"
-                    ? deFlag
-                    : i18n.language === "ar"
-                    ? arFlag
-                    : i18n.language === "hi"
-                    ? hiFlag
-                    : enFlag
+                      ? ptFlag
+                      : i18n.language === "sp"
+                        ? spFlag
+                        : i18n.language === "ru"
+                          ? ruFlag
+                          : i18n.language === "de"
+                            ? deFlag
+                            : i18n.language === "ar"
+                              ? arFlag
+                              : i18n.language === "hi"
+                                ? hiFlag
+                                : i18n.language === "zh"
+                                  ? zhFlag
+                                  : i18n.language === "ja"
+                                    ? jaFlag
+                                    : i18n.language === "ko"
+                                      ? koFlag
+                                      : enFlag
                 }
                 alt={
                   i18n.language === "tr"
                     ? "Turkish"
                     : i18n.language === "pt"
-                    ? "Portuguese"
-                    : i18n.language === "sp"
-                    ? "Spanish"
-                    : i18n.language === "ru"
-                    ? "Russian"
-                    : i18n.language === "de"
-                    ? "German"
-                    : i18n.language === "ar"
-                    ? "Arabic"
-                    : i18n.language === "hi"
-                    ? "Hindi"
-                    : "English"
+                      ? "Portuguese"
+                      : i18n.language === "sp"
+                        ? "Spanish"
+                        : i18n.language === "ru"
+                          ? "Russian"
+                          : i18n.language === "de"
+                            ? "German"
+                            : i18n.language === "ar"
+                              ? "Arabic"
+                              : i18n.language === "hi"
+                                ? "Hindi"
+                                : i18n.language === "zh"
+                                  ? "Chinese Simplified"
+                                  : i18n.language === "ja"
+                                    ? "Japanese"
+                                    : i18n.language === "ko"
+                                      ? "Korean"
+                                      : "English"
                 }
                 className="w-full h-full rounded-full object-cover"
               />
@@ -227,10 +242,10 @@ const Header = () => {
                 </button>
                 <button
                   onClick={() => changeLanguage("hi")}
-                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                     theme === "dark"
-                      ? "hover:bg-blue-200/20"
-                      : "hover:bg-blue-100/50"
+                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
                   }`}
                 >
                   <img
@@ -239,6 +254,51 @@ const Header = () => {
                     className="w-6 h-6 rounded-full object-cover"
                   />
                   <span className="font-medium">हिन्दी</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("zh")}
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                    theme === "dark"
+                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                  }`}
+                >
+                  <img
+                    src={zhFlag}
+                    alt="Chinese Simplified"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">中文</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("ja")}
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                    theme === "dark"
+                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                  }`}
+                >
+                  <img
+                    src={jaFlag}
+                    alt="Japanese"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">日本語</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("ko")}
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    theme === "dark"
+                      ? "hover:bg-blue-200/20"
+                      : "hover:bg-blue-100/50"
+                  }`}
+                >
+                  <img
+                    src={koFlag}
+                    alt="Korean"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">한국어</span>
                 </button>
               </div>
             )}
