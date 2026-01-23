@@ -54,6 +54,7 @@ import koFlag from "../assets/kr.png";
 import frFlag from "../assets/fr.png";
 import swFlag from "../assets/sw.png";
 import plFlag from "../assets/pl.png";
+import unknown_fighter from "../assets/unknown.png";
 
 const Room = () => {
   const { roomId } = useParams();
@@ -89,47 +90,47 @@ const Room = () => {
     !!currentUser || (!isRankedRoom && (role === "host" || role === "guest"));
 
   const [fighter00, setFighter00]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg: "from-stone-300/70 to-stone-500/70",
   });
   const [fighter01, setFighter01]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg: "from-stone-300/70 to-stone-500/70",
   });
   const [fighter02, setFighter02]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg: "from-stone-300/70 to-stone-500/70",
   });
   const [fighter10, setFighter10]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg: "from-stone-300/70 to-stone-500/70",
   });
   const [fighter11, setFighter11]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg: "from-stone-300/70 to-stone-500/70",
   });
   const [fighter12, setFighter12]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg: "from-stone-300/70 to-stone-500/70",
   });
   const [fighter20, setFighter20]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg: "from-stone-300/70 to-stone-500/70",
   });
   const [fighter21, setFighter21]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg: "from-stone-300/70 to-stone-500/70",
   });
   const [fighter22, setFighter22]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg: "from-stone-300/70 to-stone-500/70",
   });
@@ -558,47 +559,47 @@ const Room = () => {
           guestLastActive: serverTimestamp(),
           expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
           fighter00: {
-            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            url: unknown_fighter,
             text: "",
             bg: "from-stone-300/70 to-stone-500/70",
           },
           fighter01: {
-            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            url: unknown_fighter,
             text: "",
             bg: "from-stone-300/70 to-stone-500/70",
           },
           fighter02: {
-            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            url: unknown_fighter,
             text: "",
             bg: "from-stone-300/70 to-stone-500/70",
           },
           fighter10: {
-            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            url: unknown_fighter,
             text: "",
             bg: "from-stone-300/70 to-stone-500/70",
           },
           fighter11: {
-            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            url: unknown_fighter,
             text: "",
             bg: "from-stone-300/70 to-stone-500/70",
           },
           fighter12: {
-            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            url: unknown_fighter,
             text: "",
             bg: "from-stone-300/70 to-stone-500/70",
           },
           fighter20: {
-            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            url: unknown_fighter,
             text: "",
             bg: "from-stone-300/70 to-stone-500/70",
           },
           fighter21: {
-            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            url: unknown_fighter,
             text: "",
             bg: "from-stone-300/70 to-stone-500/70",
           },
           fighter22: {
-            url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+            url: unknown_fighter,
             text: "",
             bg: "from-stone-300/70 to-stone-500/70",
           },
@@ -1231,47 +1232,47 @@ const Room = () => {
       hostWantsRematch: false, // SIFIRLA
       guestWantsRematch: false, // SIFIRLA
       fighter00: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter01: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter02: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter10: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter11: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter12: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter20: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter21: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter22: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
@@ -1486,47 +1487,47 @@ const Room = () => {
       positionsFighters: {},
       statsUpdated: false,
       fighter00: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter01: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter02: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter10: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter11: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter12: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter20: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter21: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
       fighter22: {
-        url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+        url: unknown_fighter,
         text: "",
         bg: "from-stone-300/70 to-stone-500/70",
       },
@@ -1550,47 +1551,47 @@ const Room = () => {
 
     setFilters(null);
     setFighter00({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg: "from-stone-300/70 to-stone-500/70",
     });
     setFighter01({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg: "from-stone-300/70 to-stone-500/70",
     });
     setFighter02({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg: "from-stone-300/70 to-stone-500/70",
     });
     setFighter10({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg: "from-stone-300/70 to-stone-500/70",
     });
     setFighter11({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg: "from-stone-300/70 to-stone-500/70",
     });
     setFighter12({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg: "from-stone-300/70 to-stone-500/70",
     });
     setFighter20({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg: "from-stone-300/70 to-stone-500/70",
     });
     setFighter21({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg: "from-stone-300/70 to-stone-500/70",
     });
     setFighter22({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg: "from-stone-300/70 to-stone-500/70",
     });
@@ -1599,9 +1600,7 @@ const Room = () => {
 
   const updateBox = async (fighter: Fighter) => {
     const picture =
-      fighter.Picture === "Unknown"
-        ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
-        : fighter.Picture;
+      fighter.Picture === "Unknown" ? unknown_fighter : fighter.Picture;
     const name = fighter.Fighter;
 
     if (role == "host" && gameState.turn == "blue") {
@@ -2252,12 +2251,12 @@ const Room = () => {
               {/* Dropdown Menu */}
               {languageDropdown && (
                 <div
-                  className={`z-60 w-40 absolute top-14 left-0 rounded-br-xl rounded-tl-xl shadow-xl border overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20 ${
+                  className={`z-60 w-40 absolute top-14 left-0 rounded-tr-xl rounded-bl-xl border overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20 ${
                     theme === "dark"
-                      ? "bg-slate-700 text-white border-slate-500/40 shadow-2xl language-dropdown-dark"
-                      : "bg-slate-100 text-slate-800 border-slate-500/40 language-dropdown-light"
+                      ? "bg-gradient-to-r from-slate-700 to-slate-800 text-white border-slate-500/40 shadow-2xl language-dropdown-dark"
+                      : "bg-gradient-to-r from-slate-100 to-slate-300 text-slate-800 border-slate-500/40 language-dropdown-light"
                   }`}
-                  style={{ height: "200px", overflowY: "auto" }}
+                  style={{ height: "195px", overflowY: "auto" }}
                 >
                   <button
                     onClick={() => changeLanguage("en")}
@@ -3872,7 +3871,7 @@ const Room = () => {
                               <img
                                 src={
                                   fighter.Picture == "Unknown"
-                                    ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
+                                    ? unknown_fighter
                                     : fighter.Picture
                                 }
                                 onLoad={(e) => {

@@ -20,7 +20,13 @@ import return_img from "../assets/return.png";
 import dark from "../assets/dark.png";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const Header = () => {
+const Header = ({
+  muted,
+  setMuted,
+}: {
+  muted?: boolean;
+  setMuted?: (m: boolean | ((prev: boolean) => boolean)) => void;
+} = {}) => {
   const { theme, toggleTheme: contextToggleTheme } = useContext(ThemeContext);
   const toggleTheme = contextToggleTheme;
   const { t, i18n } = useTranslation();
@@ -143,12 +149,12 @@ const Header = () => {
             {/* Dropdown Menu */}
             {languageDropdown && (
               <div
-                className={`z-60 w-40 absolute top-14 left-0 rounded-br-xl rounded-tl-xl shadow-xl border overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20 ${
+                className={`z-60 w-40 absolute top-14 left-0 rounded-tr-xl rounded-bl-xl border overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20 ${
                   theme === "dark"
-                    ? "bg-slate-700 text-white border-slate-500/40 shadow-2xl language-dropdown-dark"
-                    : "bg-slate-100 text-slate-800 border-slate-500/40 language-dropdown-light"
+                    ? "bg-gradient-to-r from-slate-700 to-slate-800 text-white border-slate-500/40 shadow-2xl language-dropdown-dark"
+                    : "bg-gradient-to-r from-slate-100 to-slate-300 text-slate-800 border-slate-500/40 language-dropdown-light"
                 }`}
-                style={{ height: "200px", overflowY: "auto" }}
+                style={{ height: "195px", overflowY: "auto" }}
               >
                 <button
                   onClick={() => changeLanguage("en")}
@@ -366,7 +372,22 @@ const Header = () => {
         </div>
       </div>
       {location.pathname !== "/" && (
-        <div>
+        <div className="z-30 flex items-center gap-3">
+          {muted !== undefined && setMuted && (
+            <button
+              onClick={() => setMuted((m: any) => !m)}
+              aria-pressed={muted}
+              aria-label={muted ? "Unmute sounds" : "Mute sounds"}
+              title={muted ? "Unmute" : "Mute"}
+              className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
+                theme === "dark"
+                  ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
+                  : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
+              }`}
+            >
+              <span className="text-xl">{muted ? "🔇" : "🔊"}</span>
+            </button>
+          )}
           <div
             onClick={handleExit}
             className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${

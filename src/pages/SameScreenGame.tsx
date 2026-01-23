@@ -14,12 +14,9 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { useTranslation } from "react-i18next";
-import trFlag from "../assets/tr.png";
-import enFlag from "../assets/en.jpg";
-import ptFlag from "../assets/pt.png";
-import dark from "../assets/dark.png";
-import light from "../assets/light.png";
+import unknown_fighter from "../assets/unknown.png";
 import logo from "../assets/logo.png";
+import Header from "../components/Header";
 
 function SameScreenGame() {
   useEffect(() => {
@@ -113,7 +110,7 @@ function SameScreenGame() {
   const canSkip = !playWithAI && gameStart && !isGameOver;
 
   const [fighter00, setFighter00]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg:
       theme === "dark"
@@ -121,7 +118,7 @@ function SameScreenGame() {
         : "from-stone-300 to-stone-400",
   });
   const [fighter01, setFighter01]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg:
       theme === "dark"
@@ -129,7 +126,7 @@ function SameScreenGame() {
         : "from-stone-300 to-stone-400",
   });
   const [fighter02, setFighter02]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg:
       theme === "dark"
@@ -137,7 +134,7 @@ function SameScreenGame() {
         : "from-stone-300 to-stone-400",
   });
   const [fighter10, setFighter10]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg:
       theme === "dark"
@@ -145,7 +142,7 @@ function SameScreenGame() {
         : "from-stone-300 to-stone-400",
   });
   const [fighter11, setFighter11]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg:
       theme === "dark"
@@ -153,7 +150,7 @@ function SameScreenGame() {
         : "from-stone-300 to-stone-400",
   });
   const [fighter12, setFighter12]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg:
       theme === "dark"
@@ -161,7 +158,7 @@ function SameScreenGame() {
         : "from-stone-300 to-stone-400",
   });
   const [fighter20, setFighter20]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg:
       theme === "dark"
@@ -169,7 +166,7 @@ function SameScreenGame() {
         : "from-stone-300 to-stone-400",
   });
   const [fighter21, setFighter21]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg:
       theme === "dark"
@@ -177,7 +174,7 @@ function SameScreenGame() {
         : "from-stone-300 to-stone-400",
   });
   const [fighter22, setFighter22]: any = useState({
-    url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+    url: unknown_fighter,
     text: "",
     bg:
       theme === "dark"
@@ -189,7 +186,7 @@ function SameScreenGame() {
     setGameStart(false);
     // Tüm kutuları başlangıç durumuna döndür
     setFighter00({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg:
         theme === "dark"
@@ -197,7 +194,7 @@ function SameScreenGame() {
           : "from-stone-200/70 to-stone-300/70",
     });
     setFighter01({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg:
         theme === "dark"
@@ -205,7 +202,7 @@ function SameScreenGame() {
           : "from-stone-200/70 to-stone-300/70",
     });
     setFighter02({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg:
         theme === "dark"
@@ -213,7 +210,7 @@ function SameScreenGame() {
           : "from-stone-200/70 to-stone-300/70",
     });
     setFighter10({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg:
         theme === "dark"
@@ -221,7 +218,7 @@ function SameScreenGame() {
           : "from-stone-200/70 to-stone-300/70",
     });
     setFighter11({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg:
         theme === "dark"
@@ -229,7 +226,7 @@ function SameScreenGame() {
           : "from-stone-200/70 to-stone-300/70",
     });
     setFighter12({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg:
         theme === "dark"
@@ -237,7 +234,7 @@ function SameScreenGame() {
           : "from-stone-200/70 to-stone-300/70",
     });
     setFighter20({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg:
         theme === "dark"
@@ -245,7 +242,7 @@ function SameScreenGame() {
           : "from-stone-200/70 to-stone-300/70",
     });
     setFighter21({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg:
         theme === "dark"
@@ -253,7 +250,7 @@ function SameScreenGame() {
           : "from-stone-200/70 to-stone-300/70",
     });
     setFighter22({
-      url: "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png",
+      url: unknown_fighter,
       text: "",
       bg:
         theme === "dark"
@@ -365,9 +362,7 @@ function SameScreenGame() {
 
   const updateBox = (fighter: Fighter, selectedParam: string | null) => {
     const picture =
-      fighter.Picture === "Unknown"
-        ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
-        : fighter.Picture;
+      fighter.Picture === "Unknown" ? unknown_fighter : fighter.Picture;
     const name = fighter.Fighter;
 
     const fighterMap: { [key: string]: keyof typeof positionsFighters } = {
@@ -1020,6 +1015,10 @@ function SameScreenGame() {
 
   return (
     <>
+      <Header
+        muted={muted}
+        setMuted={setMuted}
+      />
       <div
         className={`pt-[82px] max-w-[100vw] min-h-[calc(100vh-61px)] relative overflow-x-hidden overflow-y-hidden transition-all duration-1000 ${
           theme === "dark"
@@ -1127,10 +1126,10 @@ function SameScreenGame() {
                 onClick={() => {
                   if (!isGameOver) setShowRestartModal(true);
                 }}
-                className={`flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
+                className={`z-30 flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
                   theme === "dark"
                     ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-white"
-                    : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80"
+                    : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-black"
                 } ${
                   isGameOver
                     ? "opacity-50 cursor-not-allowed pointer-events-none"
@@ -1153,7 +1152,7 @@ function SameScreenGame() {
               </div>
               {turn == "red" ? (
                 <div
-                  className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
+                  className={`z-30 cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
                       ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-red-400"
                       : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-red-600"
@@ -1179,7 +1178,7 @@ function SameScreenGame() {
                 </div>
               ) : (
                 <div
-                  className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
+                  className={`z-30 cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
                       ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-blue-400"
                       : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-blue-600"
@@ -1225,7 +1224,7 @@ function SameScreenGame() {
                       theme === "dark"
                         ? "bg-gradient-to-r from-indigo-800 to-indigo-900 border-indigo-700 shadow-indigo-900"
                         : "bg-gradient-to-r from-indigo-100 to-sky-200 border-indigo-300 shadow-indigo-300/50"
-                    } border-2 w-72 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg`}
+                    } border-2 w-72 lg:px-6 lg:py-4 px-4 py-2 rounded-lg shadow-lg z-30`}
                   >
                     <p className="xl:text-2xl text-center lg:text-xl text-lg font-semibold">
                       {t("game.gameFinished")}
@@ -1502,7 +1501,7 @@ function SameScreenGame() {
                     <div className="flex justify-center">
                       <img
                         src={fighter00.url}
-                        className="xl:w-12 lg:w-10 md:w-9 w-6"
+                        className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                       />
                     </div>
                     <p
@@ -1539,7 +1538,7 @@ function SameScreenGame() {
                     <div className="flex justify-center">
                       <img
                         src={fighter01.url}
-                        className="xl:w-12 lg:w-10 md:w-9 w-6"
+                        className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                       />
                     </div>
                     <p
@@ -1576,7 +1575,7 @@ function SameScreenGame() {
                     <div className="flex justify-center">
                       <img
                         src={fighter02.url}
-                        className="xl:w-12 lg:w-10 md:w-9 w-6"
+                        className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                       />
                     </div>
                     <p
@@ -1658,7 +1657,7 @@ function SameScreenGame() {
                     <div className="flex justify-center">
                       <img
                         src={fighter10.url}
-                        className="xl:w-12 lg:w-10 md:w-9 w-6"
+                        className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                       />
                     </div>
                     <p
@@ -1695,7 +1694,7 @@ function SameScreenGame() {
                     <div className="flex justify-center">
                       <img
                         src={fighter11.url}
-                        className="xl:w-12 lg:w-10 md:w-9 w-6"
+                        className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                       />
                     </div>
                     <p
@@ -1732,7 +1731,7 @@ function SameScreenGame() {
                     <div className="flex justify-center">
                       <img
                         src={fighter12.url}
-                        className="xl:w-12 lg:w-10 md:w-9 w-6"
+                        className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                       />
                     </div>
                     <p
@@ -1814,7 +1813,7 @@ function SameScreenGame() {
                     <div className="flex justify-center">
                       <img
                         src={fighter20.url}
-                        className="xl:w-12 lg:w-10 md:w-9 w-6"
+                        className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                       />
                     </div>
                     <p
@@ -1851,7 +1850,7 @@ function SameScreenGame() {
                     <div className="flex justify-center">
                       <img
                         src={fighter21.url}
-                        className="xl:w-12 lg:w-10 md:w-9 w-6"
+                        className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                       />
                     </div>
                     <p
@@ -1888,7 +1887,7 @@ function SameScreenGame() {
                     <div className="flex justify-center">
                       <img
                         src={fighter22.url}
-                        className="xl:w-12 lg:w-10 md:w-9 w-6"
+                        className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                       />
                     </div>
                     <p
@@ -1937,7 +1936,7 @@ function SameScreenGame() {
                           <img
                             src={
                               fighter.Picture == "Unknown"
-                                ? "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6-1/128/profile-image-male-question-512.png"
+                                ? unknown_fighter
                                 : fighter.Picture
                             }
                             className="xl:w-13 w-10 opacity-0 transition-opacity duration-500"
