@@ -12,6 +12,7 @@ import zhFlag from "../assets/ch.png";
 import jaFlag from "../assets/jp.png";
 import koFlag from "../assets/kr.png";
 import frFlag from "../assets/fr.png";
+import swFlag from "../assets/sw.png";
 import light from "../assets/light.png";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
@@ -99,7 +100,9 @@ const Header = () => {
                                       ? koFlag
                                       : i18n.language === "fr"
                                         ? frFlag
-                                        : enFlag
+                                        : i18n.language === "sw"
+                                          ? swFlag
+                                          : enFlag
                 }
                 alt={
                   i18n.language === "tr"
@@ -124,7 +127,9 @@ const Header = () => {
                                       ? "Korean"
                                       : i18n.language === "fr"
                                         ? "French"
-                                        : "English"
+                                        : i18n.language === "sw"
+                                          ? "Swedish"
+                                          : "English"
                 }
                 className="w-full h-full rounded-full object-cover"
               />
@@ -244,6 +249,21 @@ const Header = () => {
                     className="w-6 h-6 rounded-full object-cover"
                   />
                   <span className="font-medium">Français</span>
+                </button>
+                <button
+                  onClick={() => changeLanguage("sw")}
+                  className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                    theme === "dark"
+                      ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                      : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                  }`}
+                >
+                  <img
+                    src={swFlag}
+                    alt="Swedish"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span className="font-medium">Svenska</span>
                 </button>
                 <button
                   onClick={() => changeLanguage("ja")}
