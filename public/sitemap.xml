@@ -28,6 +28,7 @@
     <alternate:link rel="alternate" hreflang="ar" href="https://www.mma-xox.online/?lang=ar" />
     <alternate:link rel="alternate" hreflang="hi" href="https://www.mma-xox.online/?lang=hi" />
     <alternate:link rel="alternate" hreflang="sv" href="https://www.mma-xox.online/?lang=sw" />
+    <alternate:link rel="alternate" hreflang="pl" href="https://www.mma-xox.online/?lang=pl" />
   </url>
   
   <!-- Play Game Menu -->
@@ -55,6 +56,20 @@
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
     <mobile:mobile/>
+    <alternate:link rel="alternate" hreflang="en" href="https://www.mma-xox.online/available-rooms" />
+    <alternate:link rel="alternate" hreflang="tr" href="https://www.mma-xox.online/available-rooms?lang=tr" />
+    <alternate:link rel="alternate" hreflang="pt" href="https://www.mma-xox.online/available-rooms?lang=pt" />
+    <alternate:link rel="alternate" hreflang="es" href="https://www.mma-xox.online/available-rooms?lang=sp" />
+    <alternate:link rel="alternate" hreflang="ru" href="https://www.mma-xox.online/available-rooms?lang=ru" />
+    <alternate:link rel="alternate" hreflang="de" href="https://www.mma-xox.online/available-rooms?lang=de" />
+    <alternate:link rel="alternate" hreflang="fr" href="https://www.mma-xox.online/available-rooms?lang=fr" />
+    <alternate:link rel="alternate" hreflang="ja" href="https://www.mma-xox.online/available-rooms?lang=ja" />
+    <alternate:link rel="alternate" hreflang="zh" href="https://www.mma-xox.online/available-rooms?lang=zh" />
+    <alternate:link rel="alternate" hreflang="ko" href="https://www.mma-xox.online/available-rooms?lang=ko" />
+    <alternate:link rel="alternate" hreflang="ar" href="https://www.mma-xox.online/available-rooms?lang=ar" />
+    <alternate:link rel="alternate" hreflang="hi" href="https://www.mma-xox.online/available-rooms?lang=hi" />
+    <alternate:link rel="alternate" hreflang="sv" href="https://www.mma-xox.online/available-rooms?lang=sw" />
+    <alternate:link rel="alternate" hreflang="pl" href="https://www.mma-xox.online/available-rooms?lang=pl" />
   </url>
   
   <!-- Profile -->
@@ -64,6 +79,20 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <mobile:mobile/>
+    <alternate:link rel="alternate" hreflang="en" href="https://www.mma-xox.online/profile" />
+    <alternate:link rel="alternate" hreflang="tr" href="https://www.mma-xox.online/profile?lang=tr" />
+    <alternate:link rel="alternate" hreflang="pt" href="https://www.mma-xox.online/profile?lang=pt" />
+    <alternate:link rel="alternate" hreflang="es" href="https://www.mma-xox.online/profile?lang=sp" />
+    <alternate:link rel="alternate" hreflang="ru" href="https://www.mma-xox.online/profile?lang=ru" />
+    <alternate:link rel="alternate" hreflang="de" href="https://www.mma-xox.online/profile?lang=de" />
+    <alternate:link rel="alternate" hreflang="fr" href="https://www.mma-xox.online/profile?lang=fr" />
+    <alternate:link rel="alternate" hreflang="ja" href="https://www.mma-xox.online/profile?lang=ja" />
+    <alternate:link rel="alternate" hreflang="zh" href="https://www.mma-xox.online/profile?lang=zh" />
+    <alternate:link rel="alternate" hreflang="ko" href="https://www.mma-xox.online/profile?lang=ko" />
+    <alternate:link rel="alternate" hreflang="ar" href="https://www.mma-xox.online/profile?lang=ar" />
+    <alternate:link rel="alternate" hreflang="hi" href="https://www.mma-xox.online/profile?lang=hi" />
+    <alternate:link rel="alternate" hreflang="sv" href="https://www.mma-xox.online/profile?lang=sw" />
+    <alternate:link rel="alternate" hreflang="pl" href="https://www.mma-xox.online/profile?lang=pl" />
   </url>
   
   <!-- Friends -->
@@ -73,6 +102,20 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <mobile:mobile/>
+    <alternate:link rel="alternate" hreflang="en" href="https://www.mma-xox.online/friends" />
+    <alternate:link rel="alternate" hreflang="tr" href="https://www.mma-xox.online/friends?lang=tr" />
+    <alternate:link rel="alternate" hreflang="pt" href="https://www.mma-xox.online/friends?lang=pt" />
+    <alternate:link rel="alternate" hreflang="es" href="https://www.mma-xox.online/friends?lang=sp" />
+    <alternate:link rel="alternate" hreflang="ru" href="https://www.mma-xox.online/friends?lang=ru" />
+    <alternate:link rel="alternate" hreflang="de" href="https://www.mma-xox.online/friends?lang=de" />
+    <alternate:link rel="alternate" hreflang="fr" href="https://www.mma-xox.online/friends?lang=fr" />
+    <alternate:link rel="alternate" hreflang="ja" href="https://www.mma-xox.online/friends?lang=ja" />
+    <alternate:link rel="alternate" hreflang="zh" href="https://www.mma-xox.online/friends?lang=zh" />
+    <alternate:link rel="alternate" hreflang="ko" href="https://www.mma-xox.online/friends?lang=ko" />
+    <alternate:link rel="alternate" hreflang="ar" href="https://www.mma-xox.online/friends?lang=ar" />
+    <alternate:link rel="alternate" hreflang="hi" href="https://www.mma-xox.online/friends?lang=hi" />
+    <alternate:link rel="alternate" hreflang="sv" href="https://www.mma-xox.online/friends?lang=sw" />
+    <alternate:link rel="alternate" hreflang="pl" href="https://www.mma-xox.online/friends?lang=pl" />
   </url>
   
   <!-- Privacy Policy -->
