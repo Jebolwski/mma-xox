@@ -166,9 +166,7 @@
     "bronzeNote": "For beginners.",
     "silverNote": "Basic experience.",
     "goldNote": "Advanced player.",
-    "diamondNote": "Top tier."
-  },
-  "profile": {
+    "diamondNote": "Top tier.",
     "profileNotFound": "Could not find the profile.",
     "loadProfileFailed": "Failed to load profile data",
     "titleUpdated": "Title updated!",
@@ -188,30 +186,8 @@
     "usernameMustDiffer": "New username must be different from current!",
     "usernameCooldown": "You can change username again in {{days}} days!",
     "usernameTaken": "Username already taken. Try another.",
-    "usernameChanged": "Username changed successfully!"},
-  "room": {
-    "hostDisconnected": "🏆 Host disconnected! You win!",
-    "guestDisconnected": "🏆 Guest disconnected! You win!",
-    "hostLeft": "Host has left the game!",
-    "bothPlayersReady": "🏆 Both players ready! Starting ranked match...",
-    "playerJoined": "{{player}} joined the game!",
-    "playerLeft": "{{player}} left the game!",
-    "firstBloodUnlocked": "🏆 New achievement unlocked! First Blood",
-    "arenaManagerUnlocked": "🏆 New achievement unlocked! Arena Master",
-    "rankedMatchCompleted": "🏆 Ranked match completed! Stats updated.",
-    "failedUpdateStats": "Failed to update player stats.",
-    "newRankedMatch": "🏆 New ranked match starting!",
-    "opponentsTurn": "Its your opponents turn!",
-    "roomDeleted": "Room deleted successfully!",
-    "exitError": "An error occurred while exiting!",
-    "guestWinsForfeited": "🏆 Guest wins! Host forfeited!",
-    "forfeitError": "An error occurred during forfeit!",
-    "couldNotDeterminePlayers": "Could not determine players!",
-    "hostWinsForfeited": "🏆 Host wins! You forfeited!",
-    "guestForfeitedYouWin": "🏆 Guest forfeited, you win!",
-    "fighterRequirements": "Fighter doesnt meet the requirements.",
-    "noParticipantFound": "No participant found for the game!",
-    "fighterAlreadySelected": "Fighter already selected."
+    "usernameChanged": "Username changed successfully!",
+    "failedChangeUsername": "Failed to change username!"
   },
   "errors": {
     "createRoom": "An error occurred while creating the room!",
@@ -229,12 +205,6 @@
     "resetSuccess": "Password reset successfully!",
     "passwordTooWeak": "Password is too weak!",
     "resetExpiredGeneric": "Reset link has expired!"
-  },
-  "profile": {
-    "failedChangeUsername": "Failed to change username!"
-  },
-  "game": {
-    "fighterNotMeetRequirements": "Fighter doesnt meet the requirements."
   },
   "common": {
     "loading": "Loading...",
@@ -306,7 +276,8 @@
     "fighterAlreadySelected": "Fighter already selected.",
     "searchForFighter": "Search for a fighter...",
     "cancel": "Cancel",
-    "pageTitle": "MMA XOX - Same Screen Game"
+    "pageTitle": "MMA XOX - Same Screen Game",
+    "fighterNotMeetRequirements": "Fighter doesnt meet the requirements."
   },
   "filters": {
     "brazilian": "Brazilian",
@@ -471,7 +442,6 @@
     "noTimeLimit": "No time limit",
     "twentySeconds": "20 Seconds",
     "fortySeconds": "40 Seconds",
-    "noParticipantFound": "No participant found for the game!",
     "youAreReady": "You are ready! Waiting for host...",
     "readyWaitingForHost": "✅ Ready! Waiting for host...",
     "imReady": "🚀 I'm Ready!",
@@ -481,15 +451,36 @@
     "gameFinished": "Game Finished!",
     "wins": "{{player}} wins! 🏆",
     "draw": "Draw! 🤝",
-    "rankedMatchCompleted": "🏆 Ranked Match Completed",
     "pointsUpdated": "Points have been updated!",
     "playAgainQuestion": "Play Again?",
     "waitForHost": "Wait for Host",
     "enterNameError": "Please enter your name!",
     "noRoomSelected": "No room selected!",
     "joinRoomFailed": "Failed to join the room!",
-    "listenRoomsFailed": "Failed to listen rooms."},
-    "privacy": {
+    "listenRoomsFailed": "Failed to listen rooms.",
+    "hostDisconnected": "🏆 Host disconnected! You win!",
+    "guestDisconnected": "🏆 Guest disconnected! You win!",
+    "hostLeft": "Host has left the game!",
+    "bothPlayersReady": "🏆 Both players ready! Starting ranked match...",
+    "playerJoined": "{{player}} joined the game!",
+    "playerLeft": "{{player}} left the game!",
+    "firstBloodUnlocked": "🏆 New achievement unlocked! First Blood",
+    "arenaManagerUnlocked": "🏆 New achievement unlocked! Arena Master",
+    "rankedMatchCompleted": "🏆 Ranked match completed! Stats updated.",
+    "failedUpdateStats": "Failed to update player stats.",
+    "newRankedMatch": "🏆 New ranked match starting!",
+    "opponentsTurn": "Its your opponents turn!",
+    "roomDeleted": "Room deleted successfully!",
+    "exitError": "An error occurred while exiting!",
+    "guestWinsForfeited": "🏆 Guest wins! Host forfeited!",
+    "forfeitError": "An error occurred during forfeit!",
+    "hostWinsForfeited": "🏆 Host wins! You forfeited!",
+    "guestForfeitedYouWin": "🏆 Guest forfeited, you win!",
+    "fighterRequirements": "Fighter doesnt meet the requirements.",
+    "noParticipantFound": "No participant found for the game!",
+    "fighterAlreadySelected": "Fighter already selected."
+  },
+  "privacy": {
       "title": "Privacy Policy",
       "section1Title": "🔒 Privacy Policy",
       "section1Text": "At MMA-XOX, we respect user privacy. When you visit our site, some technical data such as IP address, device and browser information may be automatically collected. This information is used only to improve site performance and user experience.",
@@ -506,5 +497,5 @@
       "section7Title": "✉️ Contact",
       "section7TextPrefix": "Email: ",
       "section7Email": "mertgkmeen@gmail.com"
-    }
+  }
 }

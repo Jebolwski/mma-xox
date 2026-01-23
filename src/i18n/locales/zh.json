@@ -166,9 +166,7 @@
     "bronzeNote": "初学者级别。",
     "silverNote": "基础经验。",
     "goldNote": "高级玩家。",
-    "diamondNote": "顶级玩家。"
-  },
-  "profile": {
+    "diamondNote": "顶级玩家。",
     "profileNotFound": "找不到流流。",
     "loadProfileFailed": "无法加载个人资料",
     "titleUpdated": "标题已更新！",
@@ -223,9 +221,6 @@
     "resetSuccess": "密碼已成功重置！",
     "passwordTooWeak": "密碼太短弱！",
     "resetExpiredGeneric": "重置鏈接已過期！"
-  },
-  "profile": {
-    "failedChangeUsername": "无法改变用户名！"
   },
   "game": {
     "fighterNotMeetRequirements": "格斗士不符合要求。"

@@ -169,7 +169,8 @@
     "diamondNote": "최고 티어.",
     "failedChangeUsername": "사용자명 변경을 실패했습니다！"
   },
-  "room": { "title": "게임 방",
+  "room": { 
+    "title": "게임 방",
     "player1": "플레이어 1",
     "player2": "플레이어 2",
     "startGame": "게임 시작",
@@ -207,8 +208,8 @@
     "failedUpdateStats": "플레이어 통계 업데이트에 실패했습니다.",
     "newRankedMatch": "🏆 새 순위 매치 시작!",
     "opponentsTurn": "상대의 차례입니다!",
-    "roomDeleted": "방이 성공적으로 삭제되었습니다!",
     "exitError": "종료 중 오류가 발생했습니다!",
+    "roomDeleted": "방이 성공적으로 삭제되었습니다!",
     "guestWinsForfeited": "🏆 게스트 승리! 호스트 항복!",
     "forfeitError": "항복 중 오류가 발생했습니다!",
     "couldNotDeterminePlayers": "플레이어를 결정할 수 없습니다!",

@@ -166,9 +166,7 @@
     "bronzeNote": "Başlangıçlar için.",
     "silverNote": "Temel deneyim.",
     "goldNote": "Gelişmiş oyuncu.",
-    "diamondNote": "En üst seviye."
-  },
-  "profile": {
+    "diamondNote": "En üst seviye.",
     "profileNotFound": "Profil bulunamadı.",
     "loadProfileFailed": "Profil verileri yüklenemedi",
     "titleUpdated": "Unvan güncellendi!",
@@ -188,7 +186,8 @@
     "usernameMustDiffer": "Yeni kullanıcı adı mevcut adından farklı olmalı!",
     "usernameCooldown": "Kullanıcı adını {{days}} gün sonra değiştirebilirsiniz!",
     "usernameTaken": "Bu kullanıcı adı zaten alınmış. Başka birini deneyin.",
-    "usernameChanged": "Kullanıcı adı başarıyla değiştirildi!"
+    "usernameChanged": "Kullanıcı adı başarıyla değiştirildi!",
+    "failedChangeUsername": "Kullanıcı adı değiştirilemiyor!"
   },
   "room": {
     "hostDisconnected": "🏆 Anasayfayı bulunamadı! Kazanı!",
@@ -223,9 +222,6 @@
     "resetSuccess": "Şifre başarıyla sıfırlandı!",
     "passwordTooWeak": "Şifre çok zayıf!",
     "resetExpiredGeneric": "Sıfırlama bağlandısı zaman asımına uğramış!"
-  },
-  "profile": {
-    "failedChangeUsername": "Kullanıcı adı değiştirilemiyor!"
   },
   "game": {
     "fighterNotMeetRequirements": "Dövüşçü gereklilikleri karşılamadı."

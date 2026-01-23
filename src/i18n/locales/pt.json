@@ -166,9 +166,7 @@
     "bronzeNote": "Para iniciantes.",
     "silverNote": "Experiência básica.",
     "goldNote": "Jogador avançado.",
-    "diamondNote": "Elite."
-  },
-  "profile": {
+    "diamondNote": "Elite.",
     "profileNotFound": "Não foi possível encontrar o perfil.",
     "loadProfileFailed": "Falha ao carregar dados do perfil",
     "titleUpdated": "Título atualizado!",
@@ -223,9 +221,6 @@
     "resetSuccess": "Senha redefinida com sucesso!",
     "passwordTooWeak": "A senha é muito fraca!",
     "resetExpiredGeneric": "O link de redefinição expirou!"
-  },
-  "profile": {
-    "failedChangeUsername": "Falha ao alterar o nome de usuário!"
   },
   "game": {
     "fighterNotMeetRequirements": "O lutador não atende aos requisitos."

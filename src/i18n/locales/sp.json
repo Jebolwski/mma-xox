@@ -166,9 +166,7 @@
     "bronzeNote": "Para principiantes.",
     "silverNote": "Experiencia básica.",
     "goldNote": "Jugador avanzado.",
-    "diamondNote": "Nivel superior."
-  },
-  "profile": {
+    "diamondNote": "Nivel superior.",
     "profileNotFound": "No se pudo encontrar el perfil.",
     "loadProfileFailed": "Falla al cargar datos del perfil",
     "titleUpdated": "¡Título actualizado!",
@@ -229,9 +227,6 @@
     "resetSuccess": "¡Contraseña restablecida correctamente!",
     "passwordTooWeak": "¡La contraseña es demasiado débil!",
     "resetExpiredGeneric": "¡El enlace de restablecimiento ha expirado!"
-  },
-  "profile": {
-    "failedChangeUsername": "¡Error al cambiar el nombre de usuario!"
   },
   "game": {
     "fighterNotMeetRequirements": "El dövüşçü no cumple con los requisitos."

@@ -166,18 +166,30 @@
     "bronzeNote": "初心者向け。",
     "silverNote": "基本的な経験。",
     "goldNote": "上級プレイヤー。",
-    "diamondNote": "トッププレイヤー。"
-  },
-  "profile": {
-    "profileNotFound": "プロフィールが設可漢。",
+    "diamondNote": "トッププレイヤー。",
+    "profileNotFound": "プロフィールが見つかりません。",
     "loadProfileFailed": "プロフィールデータの読み込みに失敗しました",
     "titleUpdated": "タイトルが更新されました！",
     "titleUpdateFailed": "タイトルの更新に失敗しました。",
     "fillPasswordFields": "すべてのパスワードフィールドを入力してください！",
     "passwordsDontMatch": "パスワードが一致しません！",
-    "passwordTooShort": "新しいパスワードは6文字以上必需です！",
-    "passwordMustDiffer": "新しいパスワードは現在のパスワードと異なる必需があります！",
+    "passwordTooShort": "新しいパスワードは6文字以上である必要があります！",
+    "passwordMustDiffer": "新しいパスワードは現在のパスワードと異なる必要があります！",
     "notAuthenticated": "認証されていません！",
+    "passwordChanged": "パスワードが正常に変更されました！",
+    "passwordTooWeak": "パスワードが弱すぎます！",
+    "incorrectPassword": "現在のパスワードが正しくありません！",
+    "invalidInput": "無効な入力！",
+    "usernameTooShort": "ユーザー名は最低3文字である必要があります！",
+    "usernameTooLong": "ユーザー名は14文字を超えることはできません！",
+    "usernameInvalidChars": "ユーザー名には文字、数字、アンダースコア、ダッシュのみを含めることができます！",
+    "usernameMustDiffer": "新しいユーザー名は現在のものと異なる必要があります！",
+    "usernameCooldown": "{{days}}日後にユーザー名を再度変更できます！",
+    "usernameTaken": "ユーザー名はすでに使用されています。別のものを試してください。",
+    "usernameChanged": "ユーザー名が正常に変更されました！",
+    "failedChangeUsername": "ユーザー名の変更に失敗しました！"
+  },
+  "room": {
     "passwordChanged": "パスワードが正常に変更されました！",
     "passwordTooWeak": "パスワードが弱い。",
     "incorrectPassword": "現在のパスワードが間違っています！",
@@ -203,8 +215,8 @@
     "failedUpdateStats": "プレイヤーの統計情報を更新できませんでした。",
     "newRankedMatch": "🏆 新しいランク戦が開始されます！",
     "opponentsTurn": "対戦相手の番です！",
-    "roomDeleted": "ルームが正常に削除されました！",
-    "exitError": "終了中にエラーが発生しました！",
+    "exitError": "終了中にエラーが発生しました！",    
+    "roomDeleted": "ルームが正常に削除されました！",    
     "guestWinsForfeited": "🏆 ゲストが勝ち！ホストが投げ出した！",
     "forfeitError": "投げ出し中にエラーが発生しました！",
     "couldNotDeterminePlayers": "プレイヤーを決定できませんでした！",
@@ -223,9 +235,6 @@
     "resetSuccess": "パスワードを正常にリセットしました！",
     "passwordTooWeak": "パスワードが弱い。",
     "resetExpiredGeneric": "リセットリンクが有効期限切れ。"
-  },
-  "profile": {
-    "failedChangeUsername": "ユーザー名の変更に失敗しました！"
   },
   "game": {
     "fighterNotMeetRequirements": "格闘士は要件を満たしていません。"

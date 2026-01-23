@@ -1000,7 +1000,7 @@ const Menu = () => {
                     : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
                 }`}
               >
-                Cancel
+                {t("menu.back")}
               </button>
               <button
                 onClick={() => {
@@ -1010,7 +1010,7 @@ const Menu = () => {
                 }}
                 className="flex-1 py-3 rounded-xl cursor-pointer font-bold transition-all duration-200 hover:scale-105 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg shadow-orange-600/30"
               >
-                Create Room 🎮
+                {t("menu.createRoom")}
               </button>
             </div>
           </div>

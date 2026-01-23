@@ -166,9 +166,7 @@
     "bronzeNote": "Für Anfänger.",
     "silverNote": "Grundlegende Erfahrung.",
     "goldNote": "Fortgeschrittener Spieler.",
-    "diamondNote": "Oberste Stufe."
-  },
-  "profile": {
+    "diamondNote": "Oberste Stufe.",
     "profileNotFound": "Profil konnte nicht gefunden werden.",
     "loadProfileFailed": "Fehler beim Laden der Profildaten",
     "titleUpdated": "Titel aktualisiert!",
@@ -188,7 +186,8 @@
     "usernameMustDiffer": "Der neue Benutzername muss sich vom aktuellen unterscheiden!",
     "usernameCooldown": "Sie können den Benutzernamen in {{days}} Tagen erneut ändern!",
     "usernameTaken": "Dieser Benutzername ist bereits vergeben. Bitte versuchen Sie einen anderen.",
-    "usernameChanged": "Benutzername erfolgreich geändert!"
+    "usernameChanged": "Benutzername erfolgreich geändert!",
+    "failedChangeUsername": "Fehler beim Ändern des Benutzernamens!"
   },
   "room": {
     "hostDisconnected": "🏆 Anbieter getrennt! Du gewinnst!",
@@ -223,9 +222,6 @@
     "resetSuccess": "Passwort erfolgreich zurückgesetzt!",
     "passwordTooWeak": "Das Passwort ist zu schwach!",
     "resetExpiredGeneric": "Rücksetzverlinkung ist abgelaufen!"
-  },
-  "profile": {
-    "failedChangeUsername": "Fehler beim Ändern des Benutzernamens!"
   },
   "game": {
     "fighterNotMeetRequirements": "Kämpfer erfüllt die Anforderungen nicht."
