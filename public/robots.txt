@@ -1,0 +1,31 @@
+# robots.txt for MMA XOX
+# Allow all crawlers to index the site
+User-agent: *
+Allow: /
+Allow: /menu
+Allow: /ranking
+Allow: /profile
+Allow: /friends
+Allow: /privacy
+Allow: /terms
+
+# Disallow private/admin areas (adjust as needed)
+Disallow: /.env
+Disallow: /admin
+Disallow: /api/admin
+
+# Crawl delay (in seconds) - be nice to the server
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://www.mma-xox.online/sitemap.xml
+Sitemap: https://www.mma-xox.online/sitemap-games.xml
+
+# For Bing/Yahoo
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: Yandex
+Allow: /
+Crawl-delay: 1
