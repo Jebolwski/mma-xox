@@ -479,17 +479,15 @@ const Menu = () => {
                 : "bg-white/90 border-slate-200/50 text-slate-800"
             }`}
           >
-            <div className="flex items-center justify-center mb-8">
+            <div className="flex items-center justify-center gap-2 mb-8">
               <div className="relative">
                 <img
                   src={logo}
                   alt="MMA XOX Logo"
-                  className="w-16 h-16 mr-4"
-                />
-                <div
-                  className={`absolute -inset-1 rounded-full blur-sm ${
-                    theme === "dark" ? "bg-purple-500/20" : "bg-indigo-500/20"
-                  }`}
+                  className="w-18 h-18"
+                  style={{
+                    filter: "drop-shadow(0 12px 24px #af1f91)",
+                  }}
                 />
               </div>
               <div>

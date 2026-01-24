@@ -1293,11 +1293,11 @@ function SameScreenGame() {
                     <div className="flex items-center justify-center">
                       <img
                         src={logo}
-                        className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                        className="xl:w-16 lg:w-12 md:w-10 w-8 rounded-md"
                       />
                     </div>
                     <p
-                      className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
+                      className={`font-semibold xl:text-base md:text-lg sm:text-sm text-[12px] ${
                         theme === "dark" ? "text-white" : "text-black"
                       }`}
                     >
@@ -1986,7 +1986,7 @@ function SameScreenGame() {
                   : "from-indigo-100/90 to-sky-200/90 border-indigo-300/50 text-indigo-900"
               } shadow-2xl py-6 px-12 border-2 rounded-xl transition-all duration-300 hover:shadow-indigo-500/20`}
             >
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-2 justify-center items-center">
                 <img
                   src={logo}
                   alt="logo"

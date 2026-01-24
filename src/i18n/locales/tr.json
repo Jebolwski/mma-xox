@@ -2,7 +2,7 @@
   "menu": {
     "title": "MMA XOX - Menü",
     "playLocal": "Aynı Ekranda",
-    "playRanked": "Sıralamaya Katıl",
+    "playRanked": "Rekabetçi",
     "createRoom": "Oda Oluştur",
     "joinRoom": "Odaya Katıl",
     "friends": "Arkadaşlar",
@@ -11,7 +11,7 @@
     "profile": "Profilim",
     "logout": "Çıkış Yap",
     "playLocally": "Yerel olarak oyna",
-    "randomMatch": "Sırasız Maç",
+    "randomMatch": "Rastgele Maç",
     "casualMatch": "Eğlenmek için oyna",
     "competeForPoints": "Puanlar için yarış",
     "browseRooms": "Herkese açık odaları gözat",

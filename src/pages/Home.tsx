@@ -41,7 +41,7 @@ const Home = () => {
         try {
           const q = query(
             collection(db, "users"),
-            where("email", "==", currentUser.email)
+            where("email", "==", currentUser.email),
           );
           const snap = await getDocs(q);
           if (!snap.empty) {
@@ -119,7 +119,7 @@ const Home = () => {
               <img
                 src={logo}
                 alt="logo"
-                className="lg:w-20 lg:h-20 w-16 h-16 mb-1"
+                className="lg:w-22 lg:h-22 w-18 h-18 mb-1"
               />
             </div>
             <h1
@@ -137,13 +137,13 @@ const Home = () => {
             </h1>
             <h2
               className={`text-3xl md:text-6xl font-black tracking-widest ${
-                theme === "dark" ? "text-yellow-400" : "text-yellow-600"
+                theme === "dark" ? "text-purple-600" : "text-purple-500"
               } drop-shadow-lg`}
               style={{
                 textShadow:
                   theme === "dark"
-                    ? "3px 3px 0px #a16207, 6px 6px 0px #713f12"
-                    : "3px 3px 0px #d97706, 6px 6px 0px #92400e",
+                    ? "3px 3px 0px #5607a1, 6px 6px 0px #3a0e64"
+                    : "3px 3px 0px #5706d9, 6px 6px 0px #2a0966",
               }}
             >
               XOX
