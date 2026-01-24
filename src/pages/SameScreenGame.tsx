@@ -16,6 +16,7 @@ import { usePageTitle } from "../hooks/usePageTitle";
 import { useTranslation } from "react-i18next";
 import unknown_fighter from "../assets/unknown.png";
 import logo from "../assets/logo.png";
+import logo_text from "../assets/logo_text.png";
 import Header from "../components/Header";
 
 function SameScreenGame() {
@@ -1104,7 +1105,7 @@ function SameScreenGame() {
           ))}
         </div>
 
-        <div className="flex w-full justify-center mb-12">
+        <div className="flex w-full justify-center mb-8">
           <div>
             <div>
               {gameStart == true && parseInt(timerLength) >= 0 ? (
@@ -1292,17 +1293,10 @@ function SameScreenGame() {
                   <div>
                     <div className="flex items-center justify-center">
                       <img
-                        src={logo}
-                        className="xl:w-16 lg:w-12 md:w-10 w-8 rounded-md"
+                        src={logo_text}
+                        className="xl:w-24 lg:w-20 md:w-16 w-12 rounded-md"
                       />
                     </div>
-                    <p
-                      className={`font-semibold xl:text-base md:text-lg sm:text-sm text-[12px] ${
-                        theme === "dark" ? "text-white" : "text-black"
-                      }`}
-                    >
-                      MMA XOX
-                    </p>
                   </div>
                 </div>
                 <div

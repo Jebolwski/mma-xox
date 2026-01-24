@@ -42,6 +42,7 @@ import enFlag from "../assets/en.jpg";
 import dark from "../assets/dark.png";
 import light from "../assets/light.png";
 import logo from "../assets/logo.png";
+import logo_text from "../assets/logo_text.png";
 import ptFlag from "../assets/pt.png";
 import spFlag from "../assets/sp.png";
 import ruFlag from "../assets/russia_flag.jpg";
@@ -2759,7 +2760,7 @@ const Room = () => {
             theme == "dark" ? "text-white" : "text-black"
           }`}
         >
-          <div className="w-fit mb-4">
+          <div className="w-fit mb-8">
             <div className="text-2xl mb-2 mt-4 text-center">
               {t("room.roomCode")} {roomId}
             </div>
@@ -3184,17 +3185,10 @@ const Room = () => {
                       <div>
                         <div className="flex items-center justify-center">
                           <img
-                            src={logo}
-                            className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md"
+                            src={logo_text}
+                            className="xl:w-24 lg:w-20 md:w-16 w-12 rounded-md"
                           />
                         </div>
-                        <p
-                          className={`font-semibold xl:pt-2 pt-1 xl:text-base md:text-lg sm:text-sm text-[12px] ${
-                            theme === "dark" ? "text-white" : "text-black"
-                          }`}
-                        >
-                          MMA XOX
-                        </p>
                       </div>
                     </div>
                     <div
@@ -3412,7 +3406,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter00.url}
-                            className="xl:w-12 lg:w-10 md:w-9 w-6"
+                            className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
                         <p
@@ -3451,7 +3445,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter01.url}
-                            className="xl:w-12 lg:w-10 md:w-9 w-6"
+                            className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
                         <p
@@ -3490,7 +3484,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter02.url}
-                            className="xl:w-12 lg:w-10 md:w-9 w-6"
+                            className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
                         <p
@@ -3578,7 +3572,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter10.url}
-                            className="xl:w-12 lg:w-10 md:w-9 w-6"
+                            className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
                         <p
@@ -3617,7 +3611,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter11.url}
-                            className="xl:w-12 lg:w-10 md:w-9 w-6"
+                            className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
                         <p
@@ -3656,7 +3650,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter12.url}
-                            className="xl:w-12 lg:w-10 md:w-9 w-6"
+                            className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
                         <p
@@ -3744,7 +3738,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter20.url}
-                            className="xl:w-12 lg:w-10 md:w-9 w-6"
+                            className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
                         <p
@@ -3783,7 +3777,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter21.url}
-                            className="xl:w-12 lg:w-10 md:w-9 w-6"
+                            className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
                         <p
@@ -3822,7 +3816,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter22.url}
-                            className="xl:w-12 lg:w-10 md:w-9 w-6"
+                            className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
                         <p
