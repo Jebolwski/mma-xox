@@ -20,8 +20,8 @@ export default function Footer() {
             ? "bg-gradient-to-r from-slate-800 to-slate-700 border-slate-700/50 text-slate-200"
             : "bg-gradient-to-r from-green-200 to-emerald-200 border-emerald-200/50 text-slate-600"
           : theme === "dark"
-          ? "bg-gradient-to-r from-purple-800 to-indigo-600 border-indigo-700/50 text-slate-200"
-          : "bg-gradient-to-r from-purple-200 to-indigo-200 border-indigo-200/50 text-slate-600"
+            ? "bg-gradient-to-r from-purple-800 to-indigo-600 border-indigo-700/50 text-slate-200"
+            : "bg-gradient-to-r from-purple-200 to-indigo-200 border-indigo-200/50 text-slate-600"
       }`}
     >
       <div className="max-w-7xl mx-auto lg:px-4 px-3">
