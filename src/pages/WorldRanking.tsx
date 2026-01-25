@@ -17,6 +17,7 @@ import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { Helmet } from "react-helmet-async";
 import dark from "../assets/dark.png";
 import light from "../assets/light.png";
 import trFlag from "../assets/tr.png";
@@ -78,7 +79,7 @@ export default function WorldRanking() {
           base,
           orderBy("stats.points", "desc"),
           startAfter(cursor),
-          limit(PAGE_SIZE)
+          limit(PAGE_SIZE),
         )
       : query(base, orderBy("stats.points", "desc"), limit(PAGE_SIZE));
     const snap = await getDocs(q);
@@ -109,7 +110,7 @@ export default function WorldRanking() {
         if (myPoints != null) {
           const base = collection(db, "users");
           const countSnap = await getCountFromServer(
-            query(base, where("stats.points", ">", myPoints))
+            query(base, where("stats.points", ">", myPoints)),
           );
           setMyRank(countSnap.data().count + 1);
         } else {
@@ -166,170 +167,184 @@ export default function WorldRanking() {
   }, [currentUser?.email]);
 
   return (
-    <div
-      className={`min-h-[calc(100vh-61px)] w-full relative ${
-        theme === "dark"
-          ? "bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
-          : "bg-gradient-to-br from-blue-400 via-blue-300 to-green-400"
-      }`}
-    >
-      {/* Background sparkles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(24)].map((_, i) => (
-          <div
-            key={i}
-            className={`absolute rounded-full ${
-              theme === "dark" ? "bg-yellow-300/80" : "bg-white/90"
-            } animate-pulse`}
-            style={{
-              width: `${Math.random() * 3 + 2}px`,
-              height: `${Math.random() * 3 + 2}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 90}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 3}s`,
-              opacity: 0.8,
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4 py-8 lg:pt-24 pt-36">
-        {currentUser && myRank && (
-          <div
-            className={`mb-6 rounded-xl p-4 border ${
-              theme === "dark"
-                ? "bg-slate-800/70 border-slate-700 text-white"
-                : "bg-white/80 border-slate-300 text-black"
-            }`}
-          >
-            <div className="text-sm opacity-80 mb-1">
-              {t("ranking.yourGlobalRank")}
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="font-semibold">
-                #{myRank} {myRow?.username || currentUser.email?.split("@")[0]}
-              </div>
-              <div className="text-sm">
-                {t("ranking.points")}:{" "}
-                <span className="font-semibold">{myRow?.points ?? "-"}</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div
-          className={`rounded-2xl overflow-hidden border ${
-            theme === "dark"
-              ? "bg-slate-800/80 border-slate-700"
-              : "bg-white/90 border-slate-300"
-          }`}
-        >
-          <div
-            className={`grid grid-cols-6 gap-2 px-4 py-3 text-xs font-semibold ${
-              theme === "dark" ? "text-slate-300" : "text-slate-600"
-            }`}
-          >
-            <div>{t("ranking.rank")}</div>
-            <div className="col-span-2">{t("ranking.player")}</div>
-            <div className="text-right">{t("ranking.points")}</div>
-            <div className="text-right">{t("ranking.record")}</div>
-            <div className="text-right">{t("ranking.winRate")}</div>
-          </div>
-
-          {loading && (
+    <>
+      <Helmet>
+        <title>World Ranking - MMA XOX</title>
+        <meta
+          name="description"
+          content="Check the world rankings of MMA XOX players. See top players and their rankings."
+        />
+        <meta
+          name="robots"
+          content="index, follow"
+        />
+      </Helmet>
+      <div
+        className={`min-h-[calc(100vh-61px)] w-full relative ${
+          theme === "dark"
+            ? "bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
+            : "bg-gradient-to-br from-blue-400 via-blue-300 to-green-400"
+        }`}
+      >
+        {/* Background sparkles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(24)].map((_, i) => (
             <div
-              className={`p-6 text-center text-sm opacity-70 ${
-                theme === "dark" ? "text-white" : "text-black"
+              key={i}
+              className={`absolute rounded-full ${
+                theme === "dark" ? "bg-yellow-300/80" : "bg-white/90"
+              } animate-pulse`}
+              style={{
+                width: `${Math.random() * 3 + 2}px`,
+                height: `${Math.random() * 3 + 2}px`,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 90}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${2 + Math.random() * 3}s`,
+                opacity: 0.8,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="max-w-4xl mx-auto px-4 py-8 lg:pt-24 pt-36">
+          {currentUser && myRank && (
+            <div
+              className={`mb-6 rounded-xl p-4 border ${
+                theme === "dark"
+                  ? "bg-slate-800/70 border-slate-700 text-white"
+                  : "bg-white/80 border-slate-300 text-black"
               }`}
             >
-              {t("ranking.loading")}
+              <div className="text-sm opacity-80 mb-1">
+                {t("ranking.yourGlobalRank")}
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="font-semibold">
+                  #{myRank}{" "}
+                  {myRow?.username || currentUser.email?.split("@")[0]}
+                </div>
+                <div className="text-sm">
+                  {t("ranking.points")}:{" "}
+                  <span className="font-semibold">{myRow?.points ?? "-"}</span>
+                </div>
+              </div>
             </div>
           )}
 
-          {!loading &&
-            rows.map((r, idx) => {
-              const rank = idx + 1;
-              const highlight =
-                currentUser &&
-                (r.email === currentUser.email ||
-                  r.username === currentUser.email?.split("@")[0]);
-              const trophy =
-                rank === 1
-                  ? "🥇"
-                  : rank === 2
-                  ? "🥈"
-                  : rank === 3
-                  ? "🥉"
-                  : null;
-              const record = `${r.wins}-${r.losses}-${r.draws}`;
-              return (
-                <Link // YENİ: Satırı Link component'i ile sarmala
-                  to={`/profile/${r.username}`}
-                  key={r.id}
-                  className={`grid grid-cols-6 gap-2 px-4 py-3 text-sm border-t transition-colors duration-200 ${
-                    theme === "dark"
-                      ? "text-white border-slate-700 hover:bg-slate-700/50"
-                      : "text-black border-slate-200 hover:bg-slate-100"
-                  } ${
-                    highlight
-                      ? theme === "dark"
-                        ? "bg-indigo-900/30"
-                        : "bg-indigo-50"
-                      : ""
-                  }`}
-                >
-                  <div className="font-semibold">#{rank}</div>
-                  <div className="col-span-2 truncate flex items-center gap-2">
-                    {trophy && (
-                      <span
-                        className="text-lg"
-                        aria-label="trophy"
-                      >
-                        {trophy}
-                      </span>
-                    )}
-                    <span className="truncate">{r.username}</span>
-                  </div>
-                  <div className="text-right font-semibold">{r.points}</div>
-                  <div className="text-right tabular-nums">{record}</div>
-                  <div className="text-right">{r.winRate?.toFixed(1)}%</div>
-                </Link> // YENİ
-              );
-            })}
-
-          {!loading && rows.length === 0 && (
-            <div className="p-6 text-center text-sm opacity-70">
-              {t("ranking.noPlayersFound")}
-            </div>
-          )}
-        </div>
-
-        {/* Load more */}
-        <div className="flex justify-center py-6">
-          <button
-            disabled={!lastDoc || loadingMore}
-            onClick={loadMore}
-            className={`px-4 py-2 rounded-lg font-semibold ${
+          <div
+            className={`rounded-2xl overflow-hidden border ${
               theme === "dark"
-                ? "bg-slate-700 hover:bg-slate-600 text-white disabled:bg-slate-600/60"
-                : "bg-white/90 hover:bg-white text-slate-800 border border-slate-300 disabled:opacity-60"
-            } ${lastDoc && !loadingMore ? "cursor-pointer" : "cursor-default"}`}
-            aria-disabled={!lastDoc || loadingMore}
-            aria-busy={loadingMore}
+                ? "bg-slate-800/80 border-slate-700"
+                : "bg-white/90 border-slate-300"
+            }`}
           >
-            {lastDoc
-              ? loadingMore
-                ? t("ranking.loading")
-                : t("ranking.loadMore")
-              : t("ranking.endOfList")}
-          </button>
-        </div>
+            <div
+              className={`grid grid-cols-6 gap-2 px-4 py-3 text-xs font-semibold ${
+                theme === "dark" ? "text-slate-300" : "text-slate-600"
+              }`}
+            >
+              <div>{t("ranking.rank")}</div>
+              <div className="col-span-2">{t("ranking.player")}</div>
+              <div className="text-right">{t("ranking.points")}</div>
+              <div className="text-right">{t("ranking.record")}</div>
+              <div className="text-right">{t("ranking.winRate")}</div>
+            </div>
 
-        {error && (
-          <div className="mt-4 text-center text-sm text-red-500">{error}</div>
-        )}
+            {loading && (
+              <div
+                className={`p-6 text-center text-sm opacity-70 ${
+                  theme === "dark" ? "text-white" : "text-black"
+                }`}
+              >
+                {t("ranking.loading")}
+              </div>
+            )}
+
+            {!loading &&
+              rows.map((r, idx) => {
+                const rank = idx + 1;
+                const highlight =
+                  currentUser &&
+                  (r.email === currentUser.email ||
+                    r.username === currentUser.email?.split("@")[0]);
+                const trophy =
+                  rank === 1
+                    ? "🥇"
+                    : rank === 2
+                      ? "🥈"
+                      : rank === 3
+                        ? "🥉"
+                        : null;
+                const record = `${r.wins}-${r.losses}-${r.draws}`;
+                return (
+                  <Link // YENİ: Satırı Link component'i ile sarmala
+                    to={`/profile/${r.username}`}
+                    key={r.id}
+                    className={`grid grid-cols-6 gap-2 px-4 py-3 text-sm border-t transition-colors duration-200 ${
+                      theme === "dark"
+                        ? "text-white border-slate-700 hover:bg-slate-700/50"
+                        : "text-black border-slate-200 hover:bg-slate-100"
+                    } ${
+                      highlight
+                        ? theme === "dark"
+                          ? "bg-indigo-900/30"
+                          : "bg-indigo-50"
+                        : ""
+                    }`}
+                  >
+                    <div className="font-semibold">#{rank}</div>
+                    <div className="col-span-2 truncate flex items-center gap-2">
+                      {trophy && (
+                        <span
+                          className="text-lg"
+                          aria-label="trophy"
+                        >
+                          {trophy}
+                        </span>
+                      )}
+                      <span className="truncate">{r.username}</span>
+                    </div>
+                    <div className="text-right font-semibold">{r.points}</div>
+                    <div className="text-right tabular-nums">{record}</div>
+                    <div className="text-right">{r.winRate?.toFixed(1)}%</div>
+                  </Link> // YENİ
+                );
+              })}
+
+            {!loading && rows.length === 0 && (
+              <div className="p-6 text-center text-sm opacity-70">
+                {t("ranking.noPlayersFound")}
+              </div>
+            )}
+          </div>
+
+          {/* Load more */}
+          <div className="flex justify-center py-6">
+            <button
+              disabled={!lastDoc || loadingMore}
+              onClick={loadMore}
+              className={`px-4 py-2 rounded-lg font-semibold ${
+                theme === "dark"
+                  ? "bg-slate-700 hover:bg-slate-600 text-white disabled:bg-slate-600/60"
+                  : "bg-white/90 hover:bg-white text-slate-800 border border-slate-300 disabled:opacity-60"
+              } ${lastDoc && !loadingMore ? "cursor-pointer" : "cursor-default"}`}
+              aria-disabled={!lastDoc || loadingMore}
+              aria-busy={loadingMore}
+            >
+              {lastDoc
+                ? loadingMore
+                  ? t("ranking.loading")
+                  : t("ranking.loadMore")
+                : t("ranking.endOfList")}
+            </button>
+          </div>
+
+          {error && (
+            <div className="mt-4 text-center text-sm text-red-500">{error}</div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
