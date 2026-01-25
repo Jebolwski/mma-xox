@@ -26,6 +26,8 @@ import { db } from "../firebase";
 import light from "../assets/light.png";
 import dark from "../assets/dark.png";
 import logo from "../assets/logo.png";
+import eye_closed from "../assets/eye_closed.svg";
+import eye_open from "../assets/eye_open.svg";
 
 const Login = () => {
   const { t, i18n } = useTranslation();
@@ -45,6 +47,8 @@ const Login = () => {
   const [resetLoading, setResetLoading] = useState(false);
   const [languageDropdown, setLanguageDropdown] = useState(false);
   const [socialLoading, setSocialLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -313,20 +317,50 @@ const Login = () => {
               <label className="block text-sm font-medium mb-2">
                 {t("auth.password")}
               </label>
-              <input
-                type="password"
-                value={password}
-                autoComplete="password"
-                minLength={6}
-                maxLength={24}
-                onChange={(e) => setPassword(e.target.value)}
-                className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
-                  theme === "dark"
-                    ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
-                    : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
-                }`}
-                placeholder="••••••••"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  autoComplete="password"
+                  minLength={6}
+                  maxLength={24}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 pr-12 ${
+                    theme === "dark"
+                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                  }`}
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={`absolute right-3 top-1/2 -translate-y-1/2 p-1 cursor-pointer rounded transition-all duration-200 ${
+                    theme === "dark"
+                      ? "text-slate-400 hover:text-slate-300 hover:bg-slate-600/50"
+                      : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
+                  }`}
+                  title={
+                    showPassword
+                      ? t("auth.hidePassword") || "Hide password"
+                      : t("auth.showPassword") || "Show password"
+                  }
+                >
+                  {showPassword ? (
+                    <img
+                      src={eye_open}
+                      className={`w-6 ${theme === "dark" ? "invert" : ""}`}
+                      alt="Hide password"
+                    />
+                  ) : (
+                    <img
+                      src={eye_closed}
+                      className={`w-6 ${theme === "dark" ? "invert" : ""}`}
+                      alt="Hide password"
+                    />
+                  )}
+                </button>
+              </div>
             </div>
             <button
               type="submit"
@@ -512,22 +546,55 @@ const Login = () => {
                 <label className="block text-sm font-medium mb-2">
                   {t("auth.enterEmailAddress")}
                 </label>
-                <input
-                  type="email"
-                  value={resetEmail}
-                  onChange={(e) => setResetEmail(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !resetLoading) {
-                      handleForgotPassword();
-                    }
-                  }}
-                  className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
-                    theme === "dark"
-                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
-                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
-                  }`}
-                  placeholder={t("auth.emailPlaceholder")}
-                />
+                <div className="relative">
+                  <input
+                    type={showResetPassword ? "text" : "password"}
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !resetLoading) {
+                        handleForgotPassword();
+                      }
+                    }}
+                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 pr-12 ${
+                      theme === "dark"
+                        ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                        : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-indigo-500/50"
+                    }`}
+                    placeholder={t("auth.emailPlaceholder")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowResetPassword(!showResetPassword)}
+                    className={`absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded transition-all duration-200 ${
+                      theme === "dark"
+                        ? "text-slate-400 hover:text-slate-300 hover:bg-slate-600/50"
+                        : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
+                    }`}
+                  >
+                    {showResetPassword ? (
+                      <svg
+                        className={`w-5 h-5 ${
+                          theme === "dark" ? "text-white" : "text-slate-700"
+                        }`}
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M12 5C7.58 5 3.73 7.61 2.01 11.59c-.72 1.34-.72 2.88 0 4.22 1.72 3.98 5.57 6.59 10.99 6.59s9.27-2.61 10.99-6.59c.72-1.34.72-2.88 0-4.22C21.27 7.61 17.42 5 12 5zm0 9c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" />
+                      </svg>
+                    ) : (
+                      <svg
+                        className={`w-5 h-5 ${
+                          theme === "dark" ? "text-white" : "text-slate-700"
+                        }`}
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M11.83 9L15.29 12.46c.04-.3.07-.59.07-.9 0-1.66-1.34-3-3-3-.31 0-.59.03-.89.07L11.83 9zm7.08-2.32c.78.84 1.46 1.86 2.01 3.02.72 1.34.72 2.88 0 4.22-.6 1.4-1.39 2.5-2.29 3.27L20.9 21 19.47 19.57l-9-9L6.63 3.98 8.07 2.56l13.84 13.85zM12 4C6.58 4 2.73 6.61 1.01 10.59c-.72 1.34-.72 2.88 0 4.22C2.73 19.39 6.58 22 12 22c.04 0 .09 0 .13 0l-3.13-3.13c-.15-.02-.3-.03-.46-.03-1.66 0-3-1.34-3-3 0-.16.01-.31.03-.46L3.5 15.5C3.18 14.97 3.02 14.4 3.02 13.85c0-.55.16-1.12.48-1.65.6-1.4 1.39-2.5 2.29-3.27L5.1 3 6.53 4.44 4.9 6.07c.63-.57 1.31-1.08 2.05-1.52L6.2 2.5 7.64 4l5.36 5.36z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
               </div>
 
               <p
