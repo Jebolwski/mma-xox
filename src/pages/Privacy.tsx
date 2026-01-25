@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from "../hooks/usePageTitle";
-import { Helmet } from "react-helmet-async";
 
 const Privacy = () => {
   const { theme } = useContext(ThemeContext);
@@ -11,17 +10,6 @@ const Privacy = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{t("privacy.title")} - MMA XOX</title>
-        <meta
-          name="description"
-          content="Privacy Policy for MMA XOX - Learn how we collect, use, and protect your personal data."
-        />
-        <meta
-          name="robots"
-          content="index, follow"
-        />
-      </Helmet>
       <div
         className={`min-h-screen py-12 pt-28 px-6 transition-all duration-1000 ${
           theme === "dark"

@@ -26,8 +26,6 @@
     "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",
     "react-ga4": "^2.1.0",
-    "react-head": "^3.4.2",
-    "react-helmet-async": "^2.0.5",
     "react-i18next": "^16.5.0",
     "react-router-dom": "^7.4.0",
     "react-toastify": "^11.0.3",

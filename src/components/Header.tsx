@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import trFlag from "../assets/tr.png";
 import enFlag from "../assets/en.jpg";
@@ -31,29 +31,8 @@ const Header = ({
   const toggleTheme = contextToggleTheme;
   const { t, i18n } = useTranslation();
   const [languageDropdown, setLanguageDropdown] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setLanguageDropdown(false);
-      }
-    };
-
-    if (languageDropdown) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }
-  }, [languageDropdown]);
-
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("language", lang);
@@ -170,7 +149,6 @@ const Header = ({
             {/* Dropdown Menu */}
             {languageDropdown && (
               <div
-                ref={dropdownRef}
                 className={`z-60 w-40 absolute top-14 left-0 rounded-tr-xl rounded-bl-xl border overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20 ${
                   theme === "dark"
                     ? "bg-gradient-to-r from-slate-700 to-slate-800 text-white border-slate-500/40 shadow-2xl language-dropdown-dark"

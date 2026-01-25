@@ -7,7 +7,6 @@ import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { toast } from "react-toastify";
 import { usePageTitle } from "../hooks/usePageTitle";
-import { Helmet } from "react-helmet-async";
 import trFlag from "../assets/tr.png";
 import enFlag from "../assets/en.jpg";
 import ptFlag from "../assets/pt.png";
@@ -67,17 +66,6 @@ const Home = () => {
 
   return (
     <>
-      <Helmet>
-        <title>MMA XOX - Ultimate Tic Tac Toe Game with MMA Fighters</title>
-        <meta
-          name="description"
-          content="Play MMA XOX - The ultimate online tic tac toe game featuring real MMA fighters. Play locally or multiplayer, create rooms, and compete with friends."
-        />
-        <meta
-          name="robots"
-          content="index, follow"
-        />
-      </Helmet>
       <div
         className={`relative min-h-[calc(100vh-61px)] overflow-hidden transition-all duration-1000 ${
           theme === "dark"

@@ -17,7 +17,6 @@ import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
 import { usePageTitle } from "../hooks/usePageTitle";
-import { Helmet } from "react-helmet-async";
 import dark from "../assets/dark.png";
 import light from "../assets/light.png";
 import trFlag from "../assets/tr.png";
@@ -168,17 +167,6 @@ export default function WorldRanking() {
 
   return (
     <>
-      <Helmet>
-        <title>World Ranking - MMA XOX</title>
-        <meta
-          name="description"
-          content="Check the world rankings of MMA XOX players. See top players and their rankings."
-        />
-        <meta
-          name="robots"
-          content="index, follow"
-        />
-      </Helmet>
       <div
         className={`min-h-[calc(100vh-61px)] w-full relative ${
           theme === "dark"

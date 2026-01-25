@@ -16,7 +16,6 @@ import { ThemeContext } from "../context/ThemeContext";
 import { ToastContainer, toast } from "react-toastify";
 import return_img from "../assets/return.png";
 import { usePageTitle } from "../hooks/usePageTitle";
-import { Helmet } from "react-helmet-async";
 import { updatePassword } from "firebase/auth";
 import light from "../assets/light.png";
 import dark from "../assets/dark.png";
@@ -441,17 +440,6 @@ const Profile = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Profile - MMA XOX</title>
-        <meta
-          name="description"
-          content="View your MMA XOX profile, stats, achievements, and ranked standing."
-        />
-        <meta
-          name="robots"
-          content="noindex, follow"
-        />
-      </Helmet>
       <div
         className={`min-h-screen relative overflow-hidden transition-all duration-1000 ${
           theme === "dark"

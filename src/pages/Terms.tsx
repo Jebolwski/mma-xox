@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from "../hooks/usePageTitle";
-import { Helmet } from "react-helmet-async";
 
 const Terms = () => {
   const { theme } = useContext(ThemeContext);
@@ -11,17 +10,6 @@ const Terms = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{t("terms.title")} - MMA XOX</title>
-        <meta
-          name="description"
-          content="Terms of Service for MMA XOX - Read our complete terms and conditions for using our game."
-        />
-        <meta
-          name="robots"
-          content="index, follow"
-        />
-      </Helmet>
       <div
         className={`pt-28 pb-8 min-h-[calc(100vh-61px)] px-6 transition-all duration-1000 ${
           theme === "dark"
