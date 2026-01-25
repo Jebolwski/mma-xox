@@ -8,24 +8,36 @@ Allow: /profile
 Allow: /friends
 Allow: /privacy
 Allow: /terms
+Allow: /available-rooms
 
-# Disallow private/admin areas (adjust as needed)
+# Disallow private/admin areas
 Disallow: /.env
 Disallow: /admin
 Disallow: /api/admin
+Disallow: /*.json
+Disallow: /**/node_modules/
 
 # Crawl delay (in seconds) - be nice to the server
 Crawl-delay: 1
 
-# Sitemap location
+# Sitemap locations
 Sitemap: https://www.mma-xox.online/sitemap.xml
-Sitemap: https://www.mma-xox.online/sitemap-games.xml
 
-# For Bing/Yahoo
+# Google specific directives
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Bing/Yahoo
 User-agent: Slurp
 Allow: /
 Crawl-delay: 1
 
 User-agent: Yandex
+Allow: /
+Crawl-delay: 1
+
+# DuckDuckGo
+User-agent: DuckDuckBot
 Allow: /
 Crawl-delay: 1
