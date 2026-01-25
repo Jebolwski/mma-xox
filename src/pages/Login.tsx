@@ -295,6 +295,8 @@ const Login = () => {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  maxLength={16}
+                  minLength={3}
                   className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
                     theme === "dark"
                       ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
@@ -315,6 +317,8 @@ const Login = () => {
                 type="password"
                 value={password}
                 autoComplete="password"
+                minLength={6}
+                maxLength={24}
                 onChange={(e) => setPassword(e.target.value)}
                 className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
                   theme === "dark"

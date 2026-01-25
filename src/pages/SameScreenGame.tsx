@@ -1984,7 +1984,7 @@ function SameScreenGame() {
                 <img
                   src={logo}
                   alt="logo"
-                  className="w-10 drop-shadow-lg"
+                  className="w-9 drop-shadow-lg"
                 />
                 <h1 className="font-bold text-2xl bg-gradient-to-r from-indigo-400 to-indigo-400 bg-clip-text text-transparent">
                   MMA XOX

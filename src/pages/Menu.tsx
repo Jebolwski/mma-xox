@@ -484,7 +484,7 @@ const Menu = () => {
                 <img
                   src={logo}
                   alt="MMA XOX Logo"
-                  className="w-18 h-18"
+                  className="w-16 h-16"
                   style={{
                     filter: "drop-shadow(0 12px 24px #af1f91)",
                   }}
@@ -494,8 +494,8 @@ const Menu = () => {
                 <h1
                   className={`text-4xl font-bold bg-gradient-to-r ${
                     theme === "dark"
-                      ? "from-purple-400 to-pink-400"
-                      : "from-indigo-600 to-purple-600"
+                      ? "from-purple-400 to-red-600"
+                      : "from-purple-600 to-red-600"
                   } bg-clip-text text-transparent`}
                 >
                   MMA XOX

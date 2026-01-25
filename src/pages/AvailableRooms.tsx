@@ -299,13 +299,13 @@ const AvailableRooms = () => {
                 </h1>
                 <h2
                   className={`text-xl font-black tracking-widest ${
-                    theme === "dark" ? "text-yellow-400" : "text-yellow-600"
+                    theme === "dark" ? "text-purple-400" : "text-purple-600"
                   } drop-shadow-lg -mt-1`}
                   style={{
                     textShadow:
                       theme === "dark"
-                        ? "1px 1px 0px #a16207, 2px 2px 0px #713f12"
-                        : "1px 1px 0px #d97706, 2px 2px 0px #92400e",
+                        ? "1px 1px 0px #7007a1, 2px 2px 0px #5b1271"
+                        : "1px 1px 0px #8506d9, 2px 2px 0px #570e92",
                   }}
                 >
                   XOX
