@@ -444,15 +444,15 @@ const Home = () => {
                 : "bg-white/60 border-slate-300 text-slate-700"
             } shadow-xl`}
           >
-            <p className="text-base md:text-xl text-center leading-relaxed">
-              <span className="font-bold text-red-500">MMA XOX</span>{" "}
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-3">
+              <span className="font-bold text-red-500">MMA XOX</span> -{" "}
               {t("home.title")}
-            </p>
-            <p className="text-sm md:text-lg text-center mt-2 lg:mt-4 opacity-90">
+            </h2>
+            <p className="text-sm md:text-base text-center leading-relaxed mb-3">
               {t("home.description")}
             </p>
             <p
-              className={`text-base md:text-xl text-center mt-2 lg:mt-4 font-bold ${
+              className={`text-base md:text-lg text-center font-bold ${
                 theme === "dark" ? "text-yellow-400" : "text-red-600"
               }`}
             >
