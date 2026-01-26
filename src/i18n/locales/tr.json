@@ -483,7 +483,8 @@
     "noRoomSelected": "Oda seçilmedi!",
     "joinRoomFailed": "Odaya katılma başarısız!",
     "listenRoomsFailed": "Odaları dinleme başarısız."
-  },"privacy": {
+  },
+  "privacy": {
       "title": "Gizlilik Politikası",
       "section1Title": "🔒 Gizlilik Politikası",
       "section1Text": "MMA-XOX olarak kullanıcı gizliliğine önem veriyoruz. Sitemizi ziyaret ettiğinizde IP adresi, cihaz ve tarayıcı bilgileri gibi bazı teknik veriler otomatik olarak toplanabilir. Bu bilgiler yalnızca site performansını artırmak ve kullanıcı deneyimini geliştirmek amacıyla kullanılır.",
@@ -499,6 +500,15 @@
       "section6Text": "Bu gizlilik politikası gerektiğinde güncellenebilir. Güncellemeler bu sayfada yayınlandığı anda geçerli olur.",
       "section7Title": "✉️ İletişim",
       "section7TextPrefix": "E-posta: ",
+      "section7Title": "✉️ İletişim",
+      "section7TextPrefix": "E-posta: ",
       "section7Email": "mertgkmeen@gmail.com"
-    }
+  },
+  "notFound": {
+    "title": "404 - Sayfa Bulunamadı",
+    "heading": "Sayfa bulunamadı",
+    "message": "Aradığınız sayfa mevcut değildir veya taşınmıştır.",
+    "homeButton": "🏠 Anasayfaya Dön",
+    "menuButton": "🎮 Oyun Oyna"
+  }
 }

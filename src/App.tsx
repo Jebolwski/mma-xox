@@ -21,6 +21,7 @@ import Profile from "./pages/Profile"; // EKLENDI
 import ResetPassword from "./pages/ResetPassword";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext"; // EKLENDI
 import WorldRanking from "./pages/WorldRanking";
@@ -123,6 +124,12 @@ function AppContent() {
         <Route
           path="/room/:roomId"
           element={<Room />}
+        />
+
+        {/* 404 Not Found - wildcard route olarak en sonda */}
+        <Route
+          path="*"
+          element={<NotFound />}
         />
       </Routes>
       <Footer />

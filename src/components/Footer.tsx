@@ -7,7 +7,10 @@ export default function Footer() {
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
   const location = useLocation();
-  const isHome = location.pathname === "/";
+  const isHome =
+    location.pathname === "/" ||
+    location.pathname === "/available-rooms" ||
+    location.pathname === "/login";
   const currentYear = new Date().getFullYear();
   const email = "mertgkmeen@gmail.com";
   const buyMeACoffeeUrl = "https://buymeacoffee.com/jebolwski";

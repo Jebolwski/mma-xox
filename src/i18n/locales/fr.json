@@ -350,5 +350,12 @@
     "section7Title": "✉️ Contact",
     "section7TextPrefix": "E-mail: ",
     "section7Email": "mertgkmeen@gmail.com"
+  },
+  "notFound": {
+    "title": "404 - Page non trouvée",
+    "heading": "Page non trouvée",
+    "message": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "homeButton": "🏠 Retour à l'accueil",
+    "menuButton": "🎮 Jouer au jeu"
   }
 }

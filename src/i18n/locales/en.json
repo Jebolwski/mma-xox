@@ -497,5 +497,12 @@
       "section7Title": "✉️ Contact",
       "section7TextPrefix": "Email: ",
       "section7Email": "mertgkmeen@gmail.com"
+  },
+  "notFound": {
+    "title": "404 - Page Not Found",
+    "heading": "Page not found",
+    "message": "The page you are looking for does not exist or has been moved.",
+    "homeButton": "🏠 Back to Home",
+    "menuButton": "🎮 Play Game"
   }
 }

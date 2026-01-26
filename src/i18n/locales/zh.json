@@ -367,5 +367,12 @@
     "dataUsageText": "您的数据仅用于提供游戏服务，不会与第三方共享。",
     "security": "安全",
     "securityText": "我们采取措施保护您的个人信息安全。"
+  },
+  "notFound": {
+    "title": "404 - 找不到页面",
+    "heading": "找不到页面",
+    "message": "您要查找的页面不存在或已被移除。",
+    "homeButton": "🏠 返回主页",
+    "menuButton": "🎮 开始游戏"
   }
 }

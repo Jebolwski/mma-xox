@@ -484,7 +484,8 @@
     "noRoomSelected": "¡No hay sala seleccionada!",
     "joinRoomFailed": "¡Error al entrar a la sala!",
     "listenRoomsFailed": "Error al escuchar salas."
-  }, "privacy": {
+  }, 
+  "privacy": {
       "title": "Política de Privacidad",
       "section1Title": "🔒 Política de Privacidad",
       "section1Text": "En MMA-XOX, valoramos la privacidad del usuario. Cuando visitas nuestro sitio, algunos datos técnicos como dirección IP, información del dispositivo y navegador pueden recopilarse automáticamente. Esta información se utiliza solo para mejorar el desempeño del sitio y la experiencia del usuario.",
@@ -501,5 +502,12 @@
       "section7Title": "✉️ Contacto",
       "section7TextPrefix": "Correo electrónico: ",
       "section7Email": "mertgkmeen@gmail.com"
-    }
+  },
+  "notFound": {
+    "title": "404 - Página no encontrada",
+    "heading": "Página no encontrada",
+    "message": "La página que buscas no existe o ha sido movida.",
+    "homeButton": "🏠 Volver a Inicio",
+    "menuButton": "🎮 Jugar Juego"
+  }
 }

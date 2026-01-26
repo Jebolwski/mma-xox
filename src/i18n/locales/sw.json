@@ -451,5 +451,12 @@
   "privacy": {
     "title": "Integritetspolicy",
     "content": "Din sekretess är viktig för oss. Vi samlar in och använder din data enligt denna policy."
+  },
+  "notFound": {
+    "title": "404 - Sidan hittades inte",
+    "heading": "Sidan hittades inte",
+    "message": "Sidan du letar efter existerar inte eller har flyttats.",
+    "homeButton": "🏠 Tillbaka till hem",
+    "menuButton": "🎮 Spela spel"
   }
 }
