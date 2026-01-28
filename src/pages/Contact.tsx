@@ -16,7 +16,7 @@ const Contact = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  usePageTitle("Contact Us - MMA XOX");
+  usePageTitle(t("contact.pageTitle"));
 
   // Initialize EmailJS
   useEffect(() => {
@@ -37,7 +37,7 @@ const Contact = () => {
     e.preventDefault();
 
     if (!formData.name || !formData.email || !formData.message) {
-      toast.error("Please fill in all required fields");
+      toast.error(t("contact.form.requiredFields"));
       return;
     }
 
@@ -58,7 +58,7 @@ const Contact = () => {
       );
 
       // Success message
-      toast.success("Thank you for your message! We'll get back to you soon.");
+      toast.success(t("contact.form.successMessage"));
 
       // Reset form
       setFormData({
@@ -69,7 +69,7 @@ const Contact = () => {
       });
     } catch (error) {
       console.error("EmailJS Error:", error);
-      toast.error("Failed to send message. Please try again.");
+      toast.error(t("contact.form.errorMessage"));
     } finally {
       setLoading(false);
     }
@@ -97,14 +97,14 @@ const Contact = () => {
                   : "2px 2px 0px #dc2626, 4px 4px 0px #991b1b",
             }}
           >
-            Contact Us
+            {t("contact.heading")}
           </h1>
           <p
             className={`text-base md:text-lg ${
               theme === "dark" ? "text-slate-300" : "text-slate-700"
             }`}
           >
-            Have questions or feedback? We'd love to hear from you!
+            {t("contact.description")}
           </p>
         </div>
 
@@ -122,7 +122,7 @@ const Contact = () => {
                 theme === "dark" ? "text-purple-400" : "text-purple-600"
               }`}
             >
-              Send us a Message
+              {t("contact.formTitle")}
             </h2>
 
             <form
@@ -136,14 +136,14 @@ const Contact = () => {
                     theme === "dark" ? "text-slate-300" : "text-slate-700"
                   }`}
                 >
-                  Name *
+                  {t("contact.form.nameLabel")}
                 </label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Your name"
+                  placeholder={t("contact.form.namePlaceholder")}
                   className={`w-full px-4 py-2 rounded-lg border-2 transition-all ${
                     theme === "dark"
                       ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-purple-500"
@@ -160,14 +160,14 @@ const Contact = () => {
                     theme === "dark" ? "text-slate-300" : "text-slate-700"
                   }`}
                 >
-                  Email *
+                  {t("contact.form.emailLabel")}
                 </label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="your@email.com"
+                  placeholder={t("contact.form.emailPlaceholder")}
                   className={`w-full px-4 py-2 rounded-lg border-2 transition-all ${
                     theme === "dark"
                       ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-purple-500"
@@ -184,14 +184,14 @@ const Contact = () => {
                     theme === "dark" ? "text-slate-300" : "text-slate-700"
                   }`}
                 >
-                  Subject
+                  {t("contact.form.subjectLabel")}
                 </label>
                 <input
                   type="text"
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  placeholder="Message subject"
+                  placeholder={t("contact.form.subjectPlaceholder")}
                   className={`w-full px-4 py-2 rounded-lg border-2 transition-all ${
                     theme === "dark"
                       ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-purple-500"
@@ -207,13 +207,13 @@ const Contact = () => {
                     theme === "dark" ? "text-slate-300" : "text-slate-700"
                   }`}
                 >
-                  Message *
+                  {t("contact.form.messageLabel")}
                 </label>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Your message..."
+                  placeholder={t("contact.form.messagePlaceholder")}
                   rows={6}
                   className={`w-full px-4 py-2 rounded-lg border-2 transition-all resize-none ${
                     theme === "dark"
@@ -234,7 +234,9 @@ const Contact = () => {
                     : "bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-300 shadow-lg shadow-blue-500/30"
                 } disabled:opacity-50`}
               >
-                {loading ? "Sending..." : "Send Message"}
+                {loading
+                  ? t("contact.form.sendingButton")
+                  : t("contact.form.submitButton")}
               </button>
             </form>
           </div>
@@ -254,7 +256,7 @@ const Contact = () => {
                   theme === "dark" ? "text-blue-400" : "text-blue-600"
                 }`}
               >
-                📧 Email
+                {t("contact.infoBoxes.email.title")}
               </h3>
               <p
                 className={`text-base ${
@@ -265,7 +267,7 @@ const Contact = () => {
                   href="mailto:mertgkmeen@gmail.com"
                   className="text-blue-500 hover:underline"
                 >
-                  mertgkmeen@gmail.com
+                  {t("contact.infoBoxes.email.content")}
                 </a>
               </p>
             </div>
@@ -282,14 +284,14 @@ const Contact = () => {
                   theme === "dark" ? "text-blue-400" : "text-blue-600"
                 }`}
               >
-                🌐 Follow Us
+                {t("contact.infoBoxes.followUs.title")}
               </h3>
               <p
                 className={`text-base ${
                   theme === "dark" ? "text-slate-300" : "text-slate-700"
                 }`}
               >
-                Connect with us on social media for updates and announcements.
+                {t("contact.infoBoxes.followUs.content")}
               </p>
             </div>
             {/* Info Box 3 */}
@@ -305,14 +307,14 @@ const Contact = () => {
                   theme === "dark" ? "text-blue-400" : "text-blue-600"
                 }`}
               >
-                ⏱️ Response Time
+                {t("contact.infoBoxes.responseTime.title")}
               </h3>
               <p
                 className={`text-base ${
                   theme === "dark" ? "text-slate-300" : "text-slate-700"
                 }`}
               >
-                We typically respond to inquiries within 24-48 hours.
+                {t("contact.infoBoxes.responseTime.content")}
               </p>
             </div>
             {/* Info Box 4

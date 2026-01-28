@@ -458,5 +458,104 @@
     "message": "Sidan du letar efter existerar inte eller har flyttats.",
     "homeButton": "🏠 Tillbaka till hem",
     "menuButton": "🎮 Spela spel"
+  },
+  "contact": {
+    "pageTitle": "Kontakta oss - MMA XOX",
+    "heading": "Kontakta oss",
+    "description": "Har du frågor eller feedback? Vi skulle gärna höra från dig!",
+    "formTitle": "Skicka oss ett meddelande",
+    "form": {
+      "nameLabel": "Namn *",
+      "namePlaceholder": "Ditt namn",
+      "emailLabel": "E-post *",
+      "emailPlaceholder": "din@email.com",
+      "subjectLabel": "Ämne",
+      "subjectPlaceholder": "Meddelandeämne",
+      "messageLabel": "Meddelande *",
+      "messagePlaceholder": "Ditt meddelande...",
+      "submitButton": "Skicka meddelande",
+      "sendingButton": "Skickar...",
+      "requiredFields": "Vänligen fyll i alla obligatoriska fält",
+      "successMessage": "Tack för ditt meddelande! Vi kommer att kontakta dig snart.",
+      "errorMessage": "Det gick inte att skicka meddelandet. Vänligen försök igen."
+    },
+    "infoBoxes": {
+      "email": {
+        "title": "📧 E-post",
+        "content": "mertgkmeen@gmail.com"
+      },
+      "followUs": {
+        "title": "🌐 Följ oss",
+        "content": "Följ oss på sociala medier för uppdateringar och meddelanden."
+      },
+      "responseTime": {
+        "title": "⏱️ Svarstid",
+        "content": "Vi svarar vanligtvis på förfrågningar inom 24-48 timmar."
+      }
+    }
+  },
+  "about": {
+    "pageTitle": "Om - MMA XOX",
+    "heading": "Om MMA XOX",
+    "mission": {
+      "title": "🎮 Vår mission",
+      "text": "MMA XOX är en innovativ online-spelplattform som sammanför två passioner: det strategiska djupet i klassiska tre på rad och spänningen från blandad kampsport. Vår mission är att skapa en engagerande, kostnadsfri spelgalan där spelare från hela världen kan konkurrera, utforma strategier och ha roligt."
+    },
+    "offer": {
+      "title": "🥊 Det vi erbjuder",
+      "items": [
+        {
+          "label": "Gratis onlinespel:",
+          "text": "Spela när som helst och var som helst utan nedladdning eller betalning."
+        },
+        {
+          "label": "Multiplayer-upplevelse:",
+          "text": "Utmana vänner eller tävla mot globala spelare i realtidsmatcher."
+        },
+        {
+          "label": "Rankade tävlingar:",
+          "text": "Klättra på rankingen och visa upp dina färdigheter med vårt betygssystem."
+        },
+        {
+          "label": "Olika fighters:",
+          "text": "Välj från ett omfattande urval av verkliga MMA-fighters att representera i arenan."
+        },
+        {
+          "label": "Crossplattform-spel:",
+          "text": "Spela sömlöst på skrivbord, surfplattor eller mobila enheter."
+        },
+        {
+          "label": "Flerspråkig support:",
+          "text": "Tillgängligt på 14 språk för att nå spelare världen över."
+        }
+      ]
+    },
+    "values": {
+      "title": "💪 Våra värden",
+      "items": {
+        "fairPlay": {
+          "title": "Fair play",
+          "text": "Vi upprätthåller en jämn spelplan där skicklighet och strategi avgör framgång."
+        },
+        "community": {
+          "title": "Gemenskap",
+          "text": "Vi främjar en positiv gemenskap där spelare från alla bakgrunder kan ansluta."
+        },
+        "innovation": {
+          "title": "Innovation",
+          "text": "Vi förbättrar och utvecklar kontinuerligt vårt spel med nya funktioner och förbättringar."
+        },
+        "accessibility": {
+          "title": "Tillgänglighet",
+          "text": "Spel bör vara gratis och tillgängliga för alla överallt."
+        }
+      }
+    },
+    "getStarted": {
+      "title": "🌟 Börja idag",
+      "text": "Oavsett om du är en casual-spelare som söker roligt eller en konkurrerande gamer som strävar efter toppen av rankingen, har MMA XOX något för dig. Gå med i tusentals spelare och upplev den ultimata tre på rad-arenan med MMA-fighters!",
+      "contactText": "För mer information eller frågor, vänligen",
+      "contactLink": "kontakta oss"
+    }
   }
 }

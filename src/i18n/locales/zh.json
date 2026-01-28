@@ -374,5 +374,103 @@
     "message": "您要查找的页面不存在或已被移除。",
     "homeButton": "🏠 返回主页",
     "menuButton": "🎮 开始游戏"
-  }
+  },
+  "contact": {
+    "pageTitle": "联系我们 - MMA XOX",
+    "heading": "联系我们",
+    "description": "有问题或意见？我们很想听到您的意见！",
+    "formTitle": "给我们发送消息",
+    "form": {
+      "nameLabel": "名称 *",
+      "namePlaceholder": "您的名字",
+      "emailLabel": "电子邮件 *",
+      "emailPlaceholder": "your@email.com",
+      "subjectLabel": "主题",
+      "subjectPlaceholder": "消息主题",
+      "messageLabel": "消息 *",
+      "messagePlaceholder": "您的消息...",
+      "submitButton": "发送消息",
+      "sendingButton": "发送中...",
+      "requiredFields": "请填写所有必需字段",
+      "successMessage": "感谢您的消息！我们很快会与您联系。",
+      "errorMessage": "发送消息失败。请重试。"
+    },
+    "infoBoxes": {
+      "email": {
+        "title": "📧 电子邮件",
+        "content": "mertgkmeen@gmail.com"
+      },
+      "followUs": {
+        "title": "🌐 关注我们",
+        "content": "在社交媒体上关注我们以获取更新和公告。"
+      },
+      "responseTime": {
+        "title": "⏱️ 响应时间",
+        "content": "我们通常在24-48小时内回复查询。"
+      }
+    }
+  },
+  "about": {
+    "pageTitle": "关于 - MMA XOX",
+    "heading": "关于MMA XOX",
+    "mission": {
+      "title": "🎮 我们的使命",
+      "text": "MMA XOX是一个创新的在线游戏平台，将经典井字棋的战略深度与混合武术的刺激结合在一起。我们的使命是创造一个引人入胜的免费游戏竞技场，让全球玩家可以竞争、制定战略和享受乐趣。"
+    },
+    "offer": {
+      "title": "🥊 我们提供的",
+      "items": [
+        {
+          "label": "免费在线游戏：",
+          "text": "随时随地玩游戏，无需下载或支付。"
+        },
+        {
+          "label": "多人游戏体验：",
+          "text": "向朋友挑战或与全球玩家进行实时比赛竞争。"
+        },
+        {
+          "label": "排名竞争：",
+          "text": "在排行榜上攀升，通过我们的评分系统展示您的技能。"
+        },
+        {
+          "label": "多样化的格斗家：",
+          "text": "从广泛的真实MMA格斗家名单中选择在竞技场中代表的格斗家。"
+        },
+        {
+          "label": "跨平台游戏：",
+          "text": "在桌面、平板电脑或移动设备上无缝游玩。"
+        },
+        {
+          "label": "多语言支持：",
+          "text": "提供14种语言，覆盖全球玩家。"
+        }
+      ]
+    },
+    "values": {
+      "title": "💪 我们的价值",
+      "items": {
+        "fairPlay": {
+          "title": "公平游戏",
+          "text": "我们维持一个公平的竞争环境，技能和策略决定成功。"
+        },
+        "community": {
+          "title": "社区",
+          "text": "我们培养一个积极的社区，来自各行各业的玩家可以相互连接。"
+        },
+        "innovation": {
+          "title": "创新",
+          "text": "我们通过新功能和增强功能持续改进和发展我们的游戏。"
+        },
+        "accessibility": {
+          "title": "可访问性",
+          "text": "游戏应该对每个人在任何地方都免费且可访问。"
+        }
+      }
+    },
+    "getStarted": {
+      "title": "🌟 立即开始",
+      "text": "无论您是寻求乐趣的休闲玩家，还是致力于排行榜顶端的竞争游戏玩家，MMA XOX都为您提供了一些东西。加入数千名玩家，体验MMA格斗家的终极井字棋竞技场！",
+      "contactText": "如需更多信息或咨询，请",
+      "contactLink": "联系我们"
+    }  }
 }

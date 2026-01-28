@@ -510,5 +510,104 @@
     "message": "A página que você procura não existe ou foi movida.",
     "homeButton": "🏠 Voltar à Página Inicial",
     "menuButton": "🎮 Jogar Jogo"
+  },
+  "contact": {
+    "pageTitle": "Entre em Contato - MMA XOX",
+    "heading": "Entre em Contato",
+    "description": "Tem dúvidas ou comentários? Adoraríamos ouvir você!",
+    "formTitle": "Envie-nos uma Mensagem",
+    "form": {
+      "nameLabel": "Nome *",
+      "namePlaceholder": "Seu nome",
+      "emailLabel": "Email *",
+      "emailPlaceholder": "seu@email.com",
+      "subjectLabel": "Assunto",
+      "subjectPlaceholder": "Assunto da mensagem",
+      "messageLabel": "Mensagem *",
+      "messagePlaceholder": "Sua mensagem...",
+      "submitButton": "Enviar Mensagem",
+      "sendingButton": "Enviando...",
+      "requiredFields": "Por favor, preencha todos os campos obrigatórios",
+      "successMessage": "Obrigado pela sua mensagem! Entraremos em contato em breve.",
+      "errorMessage": "Falha ao enviar a mensagem. Por favor, tente novamente."
+    },
+    "infoBoxes": {
+      "email": {
+        "title": "📧 Email",
+        "content": "mertgkmeen@gmail.com"
+      },
+      "followUs": {
+        "title": "🌐 Siga-nos",
+        "content": "Siga-nos nas redes sociais para atualizações e anúncios."
+      },
+      "responseTime": {
+        "title": "⏱️ Tempo de Resposta",
+        "content": "Geralmente respondemos às consultas dentro de 24-48 horas."
+      }
+    }
+  },
+  "about": {
+    "pageTitle": "Sobre - MMA XOX",
+    "heading": "Sobre MMA XOX",
+    "mission": {
+      "title": "🎮 Nossa Missão",
+      "text": "MMA XOX é uma plataforma inovadora de jogos online que une duas paixões: a profundidade estratégica do clássico tic-tac-toe e a emoção das Artes Marciais Mistas. Nossa missão é criar uma arena atraente e gratuita onde os jogadores do mundo todo podem competir, elaborar estratégias e se divertir."
+    },
+    "offer": {
+      "title": "🥊 O que oferecemos",
+      "items": [
+        {
+          "label": "Jogos online gratuitos:",
+          "text": "Jogue a qualquer hora e em qualquer lugar sem download ou pagamento."
+        },
+        {
+          "label": "Experiência multiplayer:",
+          "text": "Desafie amigos ou compita com jogadores globais em partidas em tempo real."
+        },
+        {
+          "label": "Competições classificadas:",
+          "text": "Suba no ranking e mostre suas habilidades com nosso sistema de classificação."
+        },
+        {
+          "label": "Lutadores diversos:",
+          "text": "Escolha entre um extenso elenco de verdadeiros lutadores de MMA para representar na arena."
+        },
+        {
+          "label": "Jogo multiplataforma:",
+          "text": "Jogue perfeitamente em dispositivos de desktop, tablet ou móvel."
+        },
+        {
+          "label": "Suporte multilíngue:",
+          "text": "Disponível em 14 idiomas para alcançar jogadores em todo o mundo."
+        }
+      ]
+    },
+    "values": {
+      "title": "💪 Nossos valores",
+      "items": {
+        "fairPlay": {
+          "title": "Jogo Limpo",
+          "text": "Mantemos um campo de jogo equilibrado onde a habilidade e a estratégia determinam o sucesso."
+        },
+        "community": {
+          "title": "Comunidade",
+          "text": "Promovemos uma comunidade positiva onde jogadores de todos os contextos podem se conectar."
+        },
+        "innovation": {
+          "title": "Inovação",
+          "text": "Continuamos a melhorar e evoluir nosso jogo com novos recursos e aprimoramentos."
+        },
+        "accessibility": {
+          "title": "Acessibilidade",
+          "text": "Os jogos devem ser gratuitos e acessíveis a todos, em qualquer lugar."
+        }
+      }
+    },
+    "getStarted": {
+      "title": "🌟 Comece hoje",
+      "text": "Quer você seja um jogador casual procurando diversão ou um gamer competitivo buscando o topo da classificação, MMA XOX tem algo para você. Junte-se a milhares de jogadores e experimente a arena de tic-tac-toe final com lutadores de MMA!",
+      "contactText": "Para mais informações ou dúvidas, favor",
+      "contactLink": "entre em contato conosco"
+    }
   }
 }

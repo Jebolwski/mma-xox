@@ -503,6 +503,103 @@
     "heading": "Page not found",
     "message": "The page you are looking for does not exist or has been moved.",
     "homeButton": "🏠 Back to Home",
-    "menuButton": "🎮 Play Game"
-  }
+    "menuButton": "🎮 Play Game"  },
+  "contact": {
+    "pageTitle": "Contact Us - MMA XOX",
+    "heading": "Contact Us",
+    "description": "Have questions or feedback? We'd love to hear from you!",
+    "formTitle": "Send us a Message",
+    "form": {
+      "nameLabel": "Name *",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email *",
+      "emailPlaceholder": "your@email.com",
+      "subjectLabel": "Subject",
+      "subjectPlaceholder": "Message subject",
+      "messageLabel": "Message *",
+      "messagePlaceholder": "Your message...",
+      "submitButton": "Send Message",
+      "sendingButton": "Sending...",
+      "requiredFields": "Please fill in all required fields",
+      "successMessage": "Thank you for your message! We'll get back to you soon.",
+      "errorMessage": "Failed to send message. Please try again."
+    },
+    "infoBoxes": {
+      "email": {
+        "title": "📧 Email",
+        "content": "mertgkmeen@gmail.com"
+      },
+      "followUs": {
+        "title": "🌐 Follow Us",
+        "content": "Connect with us on social media for updates and announcements."
+      },
+      "responseTime": {
+        "title": "⏱️ Response Time",
+        "content": "We typically respond to inquiries within 24-48 hours."
+      }
+    }
+  },
+  "about": {
+    "pageTitle": "About Us - MMA XOX",
+    "heading": "About MMA XOX",
+    "mission": {
+      "title": "🎮 Our Mission",
+      "text": "MMA XOX is an innovative online gaming platform that brings together two passions: the strategic depth of classic tic-tac-toe and the excitement of Mixed Martial Arts. Our mission is to create an engaging, free-to-play arena where players worldwide can compete, strategize, and have fun."
+    },
+    "offer": {
+      "title": "🥊 What We Offer",
+      "items": [
+        {
+          "label": "Free Online Gaming:",
+          "text": "Play anytime, anywhere without downloading or paying."
+        },
+        {
+          "label": "Multiplayer Experience:",
+          "text": "Challenge friends or compete with global players in real-time matches."
+        },
+        {
+          "label": "Ranked Competitions:",
+          "text": "Climb the leaderboard and showcase your skills with our rating system."
+        },
+        {
+          "label": "Diverse Fighters:",
+          "text": "Choose from an extensive roster of real MMA fighters to represent in the arena."
+        },
+        {
+          "label": "Cross-Platform Play:",
+          "text": "Play on desktop, tablet, or mobile devices seamlessly."
+        },
+        {
+          "label": "Multi-Language Support:",
+          "text": "Available in 14 languages to reach players worldwide."
+        }
+      ]
+    },
+    "values": {
+      "title": "💪 Our Values",
+      "items": {
+        "fairPlay": {
+          "title": "Fair Play",
+          "text": "We maintain a level playing field where skill and strategy determine success."
+        },
+        "community": {
+          "title": "Community",
+          "text": "We foster a positive community where players from all backgrounds can connect."
+        },
+        "innovation": {
+          "title": "Innovation",
+          "text": "We continuously improve and evolve our game with new features and enhancements."
+        },
+        "accessibility": {
+          "title": "Accessibility",
+          "text": "Gaming should be free and accessible to everyone, everywhere."
+        }
+      }
+    },
+    "getStarted": {
+      "title": "🌟 Get Started Today",
+      "text": "Whether you're a casual player looking for fun or a competitive gamer aiming for the top of the leaderboard, MMA XOX has something for you. Join thousands of players and experience the ultimate tic-tac-toe arena with MMA fighters!",
+      "contactText": "For more information or inquiries, please",
+      "contactLink": "contact us"
+    }  }
 }

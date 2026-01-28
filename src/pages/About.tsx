@@ -7,7 +7,7 @@ const About = () => {
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
 
-  usePageTitle("About Us - MMA XOX");
+  usePageTitle(t("about.pageTitle"));
 
   return (
     <div
@@ -31,13 +31,13 @@ const About = () => {
                   : "2px 2px 0px #dc2626, 4px 4px 0px #991b1b",
             }}
           >
-            About MMA XOX
+            {t("about.heading")}
           </h1>
         </div>
 
         {/* Content */}
         <div className="space-y-6">
-          {/* Section 1 */}
+          {/* Mission Section */}
           <div
             className={`rounded-lg backdrop-blur-sm border-2 p-6 ${
               theme === "dark"
@@ -50,22 +50,18 @@ const About = () => {
                 theme === "dark" ? "text-purple-400" : "text-purple-600"
               }`}
             >
-              🎮 Our Mission
+              {t("about.mission.title")}
             </h2>
             <p
               className={`text-base leading-relaxed ${
                 theme === "dark" ? "text-slate-300" : "text-slate-700"
               }`}
             >
-              MMA XOX is an innovative online gaming platform that brings
-              together two passions: the strategic depth of classic tic-tac-toe
-              and the excitement of Mixed Martial Arts. Our mission is to create
-              an engaging, free-to-play arena where players worldwide can
-              compete, strategize, and have fun.
+              {t("about.mission.text")}
             </p>
           </div>
 
-          {/* Section 2 */}
+          {/* Offer Section */}
           <div
             className={`rounded-lg backdrop-blur-sm border-2 p-6 ${
               theme === "dark"
@@ -78,41 +74,24 @@ const About = () => {
                 theme === "dark" ? "text-purple-400" : "text-purple-600"
               }`}
             >
-              🥊 What We Offer
+              {t("about.offer.title")}
             </h2>
             <ul
               className={`text-base leading-relaxed space-y-3 ${
                 theme === "dark" ? "text-slate-300" : "text-slate-700"
               }`}
             >
-              <li>
-                <strong>Free Online Gaming:</strong> Play anytime, anywhere
-                without downloading or paying.
-              </li>
-              <li>
-                <strong>Multiplayer Experience:</strong> Challenge friends or
-                compete with global players in real-time matches.
-              </li>
-              <li>
-                <strong>Ranked Competitions:</strong> Climb the leaderboard and
-                showcase your skills with our rating system.
-              </li>
-              <li>
-                <strong>Diverse Fighters:</strong> Choose from an extensive
-                roster of real MMA fighters to represent in the arena.
-              </li>
-              <li>
-                <strong>Cross-Platform Play:</strong> Play on desktop, tablet,
-                or mobile devices seamlessly.
-              </li>
-              <li>
-                <strong>Multi-Language Support:</strong> Available in 14
-                languages to reach players worldwide.
-              </li>
+              {(t("about.offer.items", { returnObjects: true }) as any[]).map(
+                (item: any, index: number) => (
+                  <li key={index}>
+                    <strong>{item.label}</strong> {item.text}
+                  </li>
+                ),
+              )}
             </ul>
           </div>
 
-          {/* Section 3 */}
+          {/* Values Section */}
           <div
             className={`rounded-lg backdrop-blur-sm border-2 p-6 ${
               theme === "dark"
@@ -125,80 +104,33 @@ const About = () => {
                 theme === "dark" ? "text-purple-400" : "text-purple-600"
               }`}
             >
-              💪 Our Values
+              {t("about.values.title")}
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h3
-                  className={`font-bold mb-2 ${
-                    theme === "dark" ? "text-blue-400" : "text-blue-600"
-                  }`}
-                >
-                  Fair Play
-                </h3>
-                <p
-                  className={`text-sm ${
-                    theme === "dark" ? "text-slate-300" : "text-slate-700"
-                  }`}
-                >
-                  We maintain a level playing field where skill and strategy
-                  determine success.
-                </p>
-              </div>
-              <div>
-                <h3
-                  className={`font-bold mb-2 ${
-                    theme === "dark" ? "text-blue-400" : "text-blue-600"
-                  }`}
-                >
-                  Community
-                </h3>
-                <p
-                  className={`text-sm ${
-                    theme === "dark" ? "text-slate-300" : "text-slate-700"
-                  }`}
-                >
-                  We foster a positive community where players from all
-                  backgrounds can connect.
-                </p>
-              </div>
-              <div>
-                <h3
-                  className={`font-bold mb-2 ${
-                    theme === "dark" ? "text-blue-400" : "text-blue-600"
-                  }`}
-                >
-                  Innovation
-                </h3>
-                <p
-                  className={`text-sm ${
-                    theme === "dark" ? "text-slate-300" : "text-slate-700"
-                  }`}
-                >
-                  We continuously improve and evolve our game with new features
-                  and enhancements.
-                </p>
-              </div>
-              <div>
-                <h3
-                  className={`font-bold mb-2 ${
-                    theme === "dark" ? "text-blue-400" : "text-blue-600"
-                  }`}
-                >
-                  Accessibility
-                </h3>
-                <p
-                  className={`text-sm ${
-                    theme === "dark" ? "text-slate-300" : "text-slate-700"
-                  }`}
-                >
-                  Gaming should be free and accessible to everyone, everywhere.
-                </p>
-              </div>
+              {Object.entries(
+                t("about.values.items", { returnObjects: true }),
+              ).map(([key, value]: any) => (
+                <div key={key}>
+                  <h3
+                    className={`font-bold mb-2 ${
+                      theme === "dark" ? "text-blue-400" : "text-blue-600"
+                    }`}
+                  >
+                    {value.title}
+                  </h3>
+                  <p
+                    className={`text-sm ${
+                      theme === "dark" ? "text-slate-300" : "text-slate-700"
+                    }`}
+                  >
+                    {value.text}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Section 4 */}
+          {/* Get Started Section */}
           <div
             className={`rounded-lg backdrop-blur-sm border-2 p-6 ${
               theme === "dark"
@@ -211,29 +143,26 @@ const About = () => {
                 theme === "dark" ? "text-purple-400" : "text-purple-600"
               }`}
             >
-              🌟 Get Started Today
+              {t("about.getStarted.title")}
             </h2>
             <p
               className={`text-base leading-relaxed mb-4 ${
                 theme === "dark" ? "text-slate-300" : "text-slate-700"
               }`}
             >
-              Whether you're a casual player looking for fun or a competitive
-              gamer aiming for the top of the leaderboard, MMA XOX has something
-              for you. Join thousands of players and experience the ultimate
-              tic-tac-toe arena with MMA fighters!
+              {t("about.getStarted.text")}
             </p>
             <p
               className={`text-sm ${
                 theme === "dark" ? "text-slate-400" : "text-slate-600"
               }`}
             >
-              For more information or inquiries, please{" "}
+              {t("about.getStarted.contactText")}{" "}
               <a
                 href="/contact"
                 className="text-blue-500 hover:underline font-bold"
               >
-                contact us
+                {t("about.getStarted.contactLink")}
               </a>
               .
             </p>

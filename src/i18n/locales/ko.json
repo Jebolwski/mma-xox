@@ -350,5 +350,103 @@
     "message": "찾고 있는 페이지가 존재하지 않거나 이동되었습니다.",
     "homeButton": "🏠 홈으로 돌아가기",
     "menuButton": "🎮 게임하러 가기"
-  }
+  },
+  "contact": {
+    "pageTitle": "연락처 - MMA XOX",
+    "heading": "연락처",
+    "description": "질문이나 의견이 있으신가요? 여러분의 의견을 듣고 싶습니다!",
+    "formTitle": "메시지 보내기",
+    "form": {
+      "nameLabel": "이름 *",
+      "namePlaceholder": "당신의 이름",
+      "emailLabel": "이메일 *",
+      "emailPlaceholder": "your@email.com",
+      "subjectLabel": "제목",
+      "subjectPlaceholder": "메시지 제목",
+      "messageLabel": "메시지 *",
+      "messagePlaceholder": "메시지...",
+      "submitButton": "메시지 보내기",
+      "sendingButton": "보내는 중...",
+      "requiredFields": "모든 필수 필드를 채워주세요",
+      "successMessage": "메시지를 보내주셔서 감사합니다! 곧 연락드리겠습니다.",
+      "errorMessage": "메시지를 보낼 수 없습니다. 다시 시도해주세요."
+    },
+    "infoBoxes": {
+      "email": {
+        "title": "📧 이메일",
+        "content": "mertgkmeen@gmail.com"
+      },
+      "followUs": {
+        "title": "🌐 팔로우",
+        "content": "소식과 공지사항을 위해 소셜 미디어에서 팔로우하세요."
+      },
+      "responseTime": {
+        "title": "⏱️ 응답 시간",
+        "content": "일반적으로 24-48시간 이내에 응답합니다."
+      }
+    }
+  },
+  "about": {
+    "pageTitle": "정보 - MMA XOX",
+    "heading": "MMA XOX 정보",
+    "mission": {
+      "title": "🎮 우리의 사명",
+      "text": "MMA XOX는 틱택토의 전략적 깊이와 격투기의 흥분을 함께 가져오는 혁신적인 온라인 게임 플랫폼입니다. 우리의 사명은 전 세계 플레이어들이 경쟁하고 전략을 세우고 즐길 수 있는 매력적인 무료 게임 아레나를 만드는 것입니다."
+    },
+    "offer": {
+      "title": "🥊 우리가 제공하는 것",
+      "items": [
+        {
+          "label": "무료 온라인 게임:",
+          "text": "언제 어디서나 다운로드나 결제 없이 플레이하세요."
+        },
+        {
+          "label": "멀티플레이어 경험:",
+          "text": "친구들에게 도전하거나 전 세계 플레이어들과 실시간 매치에서 경쟁하세요."
+        },
+        {
+          "label": "순위 경쟁:",
+          "text": "리더보드를 올라가고 우리의 평점 시스템으로 당신의 기술을 선보이세요."
+        },
+        {
+          "label": "다양한 파이터:",
+          "text": "아레나에서 대표할 실제 MMA 파이터의 광범위한 명단을 선택하세요."
+        },
+        {
+          "label": "크로스 플랫폼 플레이:",
+          "text": "데스크톱, 태블릿 또는 모바일 기기에서 원활하게 플레이하세요."
+        },
+        {
+          "label": "다국어 지원:",
+          "text": "전 세계 플레이어에게 도달하기 위해 14개 언어로 사용 가능합니다."
+        }
+      ]
+    },
+    "values": {
+      "title": "💪 우리의 가치",
+      "items": {
+        "fairPlay": {
+          "title": "공정한 경기",
+          "text": "우리는 기술과 전략이 성공을 결정하는 공평한 경기장을 유지합니다."
+        },
+        "community": {
+          "title": "커뮤니티",
+          "text": "우리는 모든 배경의 플레이어들이 연결될 수 있는 긍정적인 커뮤니티를 육성합니다."
+        },
+        "innovation": {
+          "title": "혁신",
+          "text": "우리는 새로운 기능과 개선으로 우리의 게임을 지속적으로 개선하고 발전시킵니다."
+        },
+        "accessibility": {
+          "title": "접근성",
+          "text": "게임은 누구나 어디서나 무료로 접근 가능해야 합니다."
+        }
+      }
+    },
+    "getStarted": {
+      "title": "🌟 오늘 시작하세요",
+      "text": "재미를 찾는 캐주얼 플레이어든 리더보드 상위를 목표로 하는 경쟁 게이머든 MMA XOX는 당신을 위한 뭔가가 있습니다. 수천 명의 플레이어와 함께하고 MMA 파이터들과 함께 궁극의 틱택토 아레나를 경험하세요!",
+      "contactText": "더 많은 정보나 문의가 있으시면",
+      "contactLink": "문의하세요"
+    }  }
 }

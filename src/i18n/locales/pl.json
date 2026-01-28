@@ -505,5 +505,104 @@
     "message": "Szukana strona nie istnieje lub została przeniesiona.",
     "homeButton": "🏠 Powrót do domu",
     "menuButton": "🎮 Graj w grę"
+  },
+  "contact": {
+    "pageTitle": "Skontaktuj się z nami - MMA XOX",
+    "heading": "Skontaktuj się z nami",
+    "description": "Masz pytania lub uwagi? Chcielibyśmy o tym usłyszeć!",
+    "formTitle": "Wyślij nam wiadomość",
+    "form": {
+      "nameLabel": "Imię *",
+      "namePlaceholder": "Twoje imię",
+      "emailLabel": "Email *",
+      "emailPlaceholder": "twoj@email.com",
+      "subjectLabel": "Temat",
+      "subjectPlaceholder": "Temat wiadomości",
+      "messageLabel": "Wiadomość *",
+      "messagePlaceholder": "Twoja wiadomość...",
+      "submitButton": "Wyślij wiadomość",
+      "sendingButton": "Wysyłanie...",
+      "requiredFields": "Proszę wypełnić wszystkie wymagane pola",
+      "successMessage": "Dziękujemy za wiadomość! Wkrótce się z Tobą skontaktujemy.",
+      "errorMessage": "Nie udało się wysłać wiadomości. Proszę spróbuj ponownie."
+    },
+    "infoBoxes": {
+      "email": {
+        "title": "📧 Email",
+        "content": "mertgkmeen@gmail.com"
+      },
+      "followUs": {
+        "title": "🌐 Śledź nas",
+        "content": "Śledź nas w mediach społecznościowych, aby otrzymać aktualizacje i ogłoszenia."
+      },
+      "responseTime": {
+        "title": "⏱️ Czas odpowiedzi",
+        "content": "Zwykle odpowiadamy na zapytania w ciągu 24-48 godzin."
+      }
+    }
+  },
+  "about": {
+    "pageTitle": "O nas - MMA XOX",
+    "heading": "O MMA XOX",
+    "mission": {
+      "title": "🎮 Nasza misja",
+      "text": "MMA XOX to innowacyjna platforma gier online, która łączy dwie pasje: strategiczną głębię klasycznego kółka i krzyżyka oraz ekscytację mieszanych sztuk walki. Nasza misja to stworzenie atrakcyjnej, bezpłatnej areny gier, gdzie gracze z całego świata mogą konkurować, opracowywać strategie i się bawić."
+    },
+    "offer": {
+      "title": "🥊 Co oferujemy",
+      "items": [
+        {
+          "label": "Darmowe gry online:",
+          "text": "Graj w dowolnym momencie i w dowolnym miejscu bez pobierania ani płacenia."
+        },
+        {
+          "label": "Doświadczenie dla wielu graczy:",
+          "text": "Wyzwij przyjaciół lub konkuruj z graczami z całego świata w meczach w czasie rzeczywistym."
+        },
+        {
+          "label": "Konkurencje rankingowe:",
+          "text": "Wspinaj się po klasyfikacji i pokazuj swoje umiejętności dzięki naszemu systemowi oceniania."
+        },
+        {
+          "label": "Zróżnicowani zawodnicy:",
+          "text": "Wybierz spośród obszernego zestawu rzeczywistych zawodników MMA do reprezentowania na arenie."
+        },
+        {
+          "label": "Gra międzyplatformowa:",
+          "text": "Bezproblemowo graj na komputerach stacjonarnych, tabletach lub urządzeniach mobilnych."
+        },
+        {
+          "label": "Obsługa wielojęzyczna:",
+          "text": "Dostępne w 14 językach, aby dotrzeć do graczy na całym świecie."
+        }
+      ]
+    },
+    "values": {
+      "title": "💪 Nasze wartości",
+      "items": {
+        "fairPlay": {
+          "title": "Uczciwa gra",
+          "text": "Utrzymujemy równy dostęp do gry, gdzie umiejętność i strategia decydują o sukcesie."
+        },
+        "community": {
+          "title": "Społeczność",
+          "text": "Wspieramy pozytywną społeczność, w której gracze ze wszystkich środowisk mogą się łączyć."
+        },
+        "innovation": {
+          "title": "Innowacja",
+          "text": "Stale ulepszamy i rozwijamy naszą grę dzięki nowym funkcjom i ulepszeniom."
+        },
+        "accessibility": {
+          "title": "Dostępność",
+          "text": "Gry powinny być bezpłatne i dostępne dla wszystkich wszędzie."
+        }
+      }
+    },
+    "getStarted": {
+      "title": "🌟 Zacznij dzisiaj",
+      "text": "Niezależnie od tego, czy jesteś przypadkowym graczem szukającym zabawy, czy konkurencyjnym graczem dążącym do szczytu klasyfikacji, MMA XOX ma coś dla ciebie. Dołącz do tysięcy graczy i doświadcz ostatecznej areny kółka i krzyżyka z zawodnikami MMA!",
+      "contactText": "Aby uzyskać więcej informacji lub zapytań, prosimy",
+      "contactLink": "skontaktuj się z nami"
+    }
   }
 }

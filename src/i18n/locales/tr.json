@@ -510,5 +510,103 @@
     "message": "Aradığınız sayfa mevcut değildir veya taşınmıştır.",
     "homeButton": "🏠 Anasayfaya Dön",
     "menuButton": "🎮 Oyun Oyna"
-  }
+  },
+  "contact": {
+    "pageTitle": "Bize Ulaşın - MMA XOX",
+    "heading": "Bize Ulaşın",
+    "description": "Soruları mı var yoksa geri bildirim vermek mi istersiniz? Sizi duymaktan mutlu olacağız!",
+    "formTitle": "Bize Mesaj Gönderin",
+    "form": {
+      "nameLabel": "Adı *",
+      "namePlaceholder": "Adınız",
+      "emailLabel": "E-posta *",
+      "emailPlaceholder": "sizin@email.com",
+      "subjectLabel": "Konu",
+      "subjectPlaceholder": "Mesaj konusu",
+      "messageLabel": "Mesaj *",
+      "messagePlaceholder": "Mesajınız...",
+      "submitButton": "Mesaj Gönder",
+      "sendingButton": "Gönderiliyor...",
+      "requiredFields": "Lütfen tüm gerekli alanları doldurun",
+      "successMessage": "Mesajınız için teşekkür ederiz! En kısa zamanda sizinle iletişime geçeceğiz.",
+      "errorMessage": "Mesaj gönderimi başarısız oldu. Lütfen tekrar deneyin."
+    },
+    "infoBoxes": {
+      "email": {
+        "title": "📧 E-posta",
+        "content": "mertgkmeen@gmail.com"
+      },
+      "followUs": {
+        "title": "🌐 Bizi Takip Edin",
+        "content": "Güncellemeler ve duyurular için bizi sosyal medyada takip edin."
+      },
+      "responseTime": {
+        "title": "⏱️ Yanıt Zamanı",
+        "content": "Sorgulara genellikle 24-48 saat içinde cevap veriz."
+      }
+    }
+  },
+  "about": {
+    "pageTitle": "Hakkımızda - MMA XOX",
+    "heading": "MMA XOX Hakkında",
+    "mission": {
+      "title": "🎮 Misyonumuz",
+      "text": "MMA XOX, klasik tic-tac-toe'nun stratejik derinliğini Mixed Martial Arts'ın heyecanıyla bir araya getiren yenilikçi bir çevrimiçi oyun platformudur. Misyonumuz, dünya çapındaki oyuncuların rekabet edebildiği, strateji geliştirebileceği ve eğlenebileceği ilişik bir oyun alanı yaratmaktır."
+    },
+    "offer": {
+      "title": "🥊 Sunduklarımız",
+      "items": [
+        {
+          "label": "Ücretsiz Çevrimiçi Oyun:",
+          "text": "İndirmeden veya ödeme yapmadan dilediğiniz zaman, dilediğiniz yerde oynayın."
+        },
+        {
+          "label": "Çok Oyunculu Deneyim:",
+          "text": "Arkadaşlarınıza meydan okuyun veya küresel oyuncularla gerçek zamanlı maçlarda rekabet edin."
+        },
+        {
+          "label": "Sıralı Rekabetler:",
+          "text": "Liderlik tablosunda yükselişe geçin ve derecelendirme sistemimizdeki becerilerinizi sergileyin."
+        },
+        {
+          "label": "Çeşitli Dövüşçüler:",
+          "text": "Arena'da temsil etmek için geniş bir gerçek MMA dövüşçü kadrosu seçin."
+        },
+        {
+          "label": "Platformlar Arası Oyun:",
+          "text": "Masaüstü, tablet veya mobil cihazlarda sorunsuz bir şekilde oynayın."
+        },
+        {
+          "label": "Çok Dil Desteği:",
+          "text": "Dünya çapındaki oyunculara ulaşmak için 14 dilde mevcuttur."
+        }
+      ]
+    },
+    "values": {
+      "title": "💪 Değerlerimiz",
+      "items": {
+        "fairPlay": {
+          "title": "Adil Oyun",
+          "text": "Beceri ve strateji başarıyı belirleyen eşit bir oyun alanı sağlarız."
+        },
+        "community": {
+          "title": "Topluluk",
+          "text": "Tüm geçmişlerden gelen oyuncuların bağlantı kurabileceği pozitif bir topluluk oluştururuz."
+        },
+        "innovation": {
+          "title": "İnovasyon",
+          "text": "Oyunumuzu yeni özellikler ve geliştirmelerle sürekli olarak iyileştiririz ve geliştiririz."
+        },
+        "accessibility": {
+          "title": "Erişilebilirlik",
+          "text": "Oyun herkes ve her yerde ücretsiz ve erişilebilir olmalıdır."
+        }
+      }
+    },
+    "getStarted": {
+      "title": "🌟 Bugün Başlayın",
+      "text": "Eğlence arayan bir oyuncu olun ya da liderlik tablosunun tepesine ulaşmak isteyen rekabetçi bir gamer olun, MMA XOX sizin için birşeyler vardır. Binlerce oyuncu ile katılın ve MMA dövüşçüler ile en iyi tic-tac-toe arenasını yaşayın!",
+      "contactText": "Daha fazla bilgi veya sorularınız için, lütfen",
+      "contactLink": "bize ulaşın"
+    }  }
 }

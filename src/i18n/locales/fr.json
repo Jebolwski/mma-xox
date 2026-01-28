@@ -357,5 +357,104 @@
     "message": "La page que vous recherchez n'existe pas ou a été déplacée.",
     "homeButton": "🏠 Retour à l'accueil",
     "menuButton": "🎮 Jouer au jeu"
+  },
+  "contact": {
+    "pageTitle": "Nous contacter - MMA XOX",
+    "heading": "Nous contacter",
+    "description": "Vous avez des questions ou des commentaires ? Nous aimerions avoir de vos nouvelles !",
+    "formTitle": "Envoyez-nous un message",
+    "form": {
+      "nameLabel": "Nom *",
+      "namePlaceholder": "Votre nom",
+      "emailLabel": "Email *",
+      "emailPlaceholder": "votre@email.com",
+      "subjectLabel": "Sujet",
+      "subjectPlaceholder": "Sujet du message",
+      "messageLabel": "Message *",
+      "messagePlaceholder": "Votre message...",
+      "submitButton": "Envoyer le message",
+      "sendingButton": "Envoi en cours...",
+      "requiredFields": "Veuillez remplir tous les champs obligatoires",
+      "successMessage": "Merci pour votre message ! Nous vous recontacterons bientôt.",
+      "errorMessage": "Impossible d'envoyer le message. Veuillez réessayer."
+    },
+    "infoBoxes": {
+      "email": {
+        "title": "📧 Email",
+        "content": "mertgkmeen@gmail.com"
+      },
+      "followUs": {
+        "title": "🌐 Suivez-nous",
+        "content": "Suivez-nous sur les réseaux sociaux pour les mises à jour et les annonces."
+      },
+      "responseTime": {
+        "title": "⏱️ Délai de réponse",
+        "content": "Nous répondons généralement aux demandes dans un délai de 24 à 48 heures."
+      }
+    }
+  },
+  "about": {
+    "pageTitle": "À propos - MMA XOX",
+    "heading": "À propos de MMA XOX",
+    "mission": {
+      "title": "🎮 Notre mission",
+      "text": "MMA XOX est une plateforme de jeu en ligne innovante qui réunit deux passions : la profondeur stratégique du tic-tac-toe classique et l'excitation des arts martiaux mixtes. Notre mission est de créer une arène de jeu attrayante et gratuite où les joueurs du monde entier peuvent rivaliser, élaborer des stratégies et s'amuser."
+    },
+    "offer": {
+      "title": "🥊 Ce que nous offrons",
+      "items": [
+        {
+          "label": "Jeux en ligne gratuits :",
+          "text": "Jouez à tout moment et n'importe où sans téléchargement ni paiement."
+        },
+        {
+          "label": "Expérience multijoueur :",
+          "text": "Défiez vos amis ou rivaliser avec des joueurs mondiaux dans des matchs en temps réel."
+        },
+        {
+          "label": "Compétitions classées :",
+          "text": "Grimpez le classement et montrez vos compétences avec notre système de notation."
+        },
+        {
+          "label": "Combattants variés :",
+          "text": "Choisissez parmi un vaste répertoire de vrais combattants d'arts martiaux mixtes pour représenter dans l'arène."
+        },
+        {
+          "label": "Jeu multiplateforme :",
+          "text": "Jouez de manière transparente sur les appareils de bureau, tablettes ou mobiles."
+        },
+        {
+          "label": "Support multilingue :",
+          "text": "Disponible en 14 langues pour atteindre les joueurs du monde entier."
+        }
+      ]
+    },
+    "values": {
+      "title": "💪 Nos valeurs",
+      "items": {
+        "fairPlay": {
+          "title": "Jeu équitable",
+          "text": "Nous maintenons un terrain égalitaire où les compétences et la stratégie déterminent le succès."
+        },
+        "community": {
+          "title": "Communauté",
+          "text": "Nous favorisons une communauté positive où les joueurs de tous horizons peuvent se connecter."
+        },
+        "innovation": {
+          "title": "Innovation",
+          "text": "Nous améliorons et développons continuellement notre jeu avec de nouvelles fonctionnalités et améliorations."
+        },
+        "accessibility": {
+          "title": "Accessibilité",
+          "text": "Le jeu doit être gratuit et accessible à tous, partout."
+        }
+      }
+    },
+    "getStarted": {
+      "title": "🌟 Commencez dès aujourd'hui",
+      "text": "Que vous soyez un joueur occasionnel à la recherche de plaisir ou un gamer compétitif visant le sommet du classement, MMA XOX a quelque chose pour vous. Rejoignez des milliers de joueurs et vivez l'arène de tic-tac-toe ultime avec des combattants d'arts martiaux mixtes!",
+      "contactText": "Pour plus d'informations ou de demandes, veuillez",
+      "contactLink": "nous contacter"
+    }
   }
 }
