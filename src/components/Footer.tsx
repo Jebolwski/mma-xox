@@ -10,7 +10,9 @@ export default function Footer() {
   const isHome =
     location.pathname === "/" ||
     location.pathname === "/available-rooms" ||
-    location.pathname === "/login";
+    location.pathname === "/login" ||
+    location.pathname === "/contact" ||
+    location.pathname === "/about";
   const currentYear = new Date().getFullYear();
   const email = "mertgkmeen@gmail.com";
   const buyMeACoffeeUrl = "https://buymeacoffee.com/jebolwski";
@@ -57,6 +59,32 @@ export default function Footer() {
             >
               ☕ {t("footer.buyMeACoffee")}
             </a>
+          </div>
+
+          <div
+            className={`text-sm ${
+              theme === "dark" ? "text-slate-200" : "text-slate-600"
+            }`}
+          >
+            <Link
+              to="/about"
+              className="mx-2"
+            >
+              ℹ️ About
+            </Link>
+          </div>
+
+          <div
+            className={`text-sm ${
+              theme === "dark" ? "text-slate-200" : "text-slate-600"
+            }`}
+          >
+            <Link
+              to="/contact"
+              className="mx-2"
+            >
+              📧 Contact
+            </Link>
           </div>
 
           <div

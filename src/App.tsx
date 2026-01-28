@@ -21,6 +21,8 @@ import Profile from "./pages/Profile"; // EKLENDI
 import ResetPassword from "./pages/ResetPassword";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext"; // EKLENDI
@@ -80,6 +82,14 @@ function AppContent() {
         <Route
           path="/terms-of-service"
           element={<Terms />}
+        />
+        <Route
+          path="/about"
+          element={<About />}
+        />
+        <Route
+          path="/contact"
+          element={<Contact />}
         />
         <Route
           path="/menu"

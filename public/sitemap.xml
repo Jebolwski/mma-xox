@@ -120,7 +120,7 @@
   
   <!-- Privacy Policy -->
   <url>
-    <loc>https://www.mma-xox.online/privacy</loc>
+    <loc>https://www.mma-xox.online/privacy-policy</loc>
     <lastmod>2024-01-23</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
@@ -128,10 +128,26 @@
   
   <!-- Terms of Service -->
   <url>
-    <loc>https://www.mma-xox.online/terms</loc>
+    <loc>https://www.mma-xox.online/terms-of-service</loc>
     <lastmod>2024-01-23</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
+  </url>
+  
+  <!-- About Us -->
+  <url>
+    <loc>https://www.mma-xox.online/about</loc>
+    <lastmod>2024-01-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Contact Us -->
+  <url>
+    <loc>https://www.mma-xox.online/contact</loc>
+    <lastmod>2024-01-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
   </url>
   
 </urlset>
