@@ -29,22 +29,9 @@ export default function Footer() {
             : "bg-gradient-to-r from-purple-200 to-indigo-200 border-indigo-200/50 text-slate-600"
       }`}
     >
-      <div className="max-w-7xl mx-auto lg:px-4 px-3">
+      <div className="mx-auto lg:px-32 md:px-16 sm:px-6 px-4">
         <div className="flex flex-wrap flex-col sm:flex-row items-center justify-between gap-4 text-sm">
           <div className="flex items-center gap-4">
-            {/* Email */}
-            <a
-              href={`mailto:${email}`}
-              className={`hover:underline transition-colors ${
-                theme === "dark"
-                  ? "hover:text-slate-300"
-                  : "hover:text-slate-700"
-              }`}
-              title={t("footer.sendEmail")}
-            >
-              📧 {t("footer.contactMe")}
-            </a>
-
             {/* Buy Me A Coffee */}
             <a
               href={buyMeACoffeeUrl}
