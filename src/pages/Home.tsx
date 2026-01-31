@@ -34,6 +34,13 @@ const Home = () => {
 
   const toggleTheme = contextToggleTheme;
 
+  // AdSense ads push
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  }, []);
+
   // Firestore'dan username'i çek
   useEffect(() => {
     if (currentUser?.email) {
@@ -459,7 +466,6 @@ const Home = () => {
               {t("home.tagline")}
             </p>
           </div>
-
           {/* Menu Buttons */}
           <div className="flex flex-wrap justify-center lg:gap-4 gap-3 ">
             {currentUser ? (
@@ -525,6 +531,17 @@ const Home = () => {
                 </div>
               </>
             )}
+          </div>
+          {/* AdSense Ad */}
+          <div className="w-full my-4 flex justify-center">
+            <ins
+              className="adsbygoogle"
+              style={{ display: "block" }}
+              data-ad-client="ca-pub-8479780597628659"
+              data-ad-slot="2618909847"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            />
           </div>
         </div>
       </div>

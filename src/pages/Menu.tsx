@@ -90,6 +90,13 @@ const Menu = () => {
 
   usePageTitle(t("menu.title"));
 
+  // AdSense ads push
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  }, []);
+
   // Grid görünüm mü? (form ekranlarında max-w-md kalsın)
   const isGrid =
     !showJoinFields &&
@@ -821,6 +828,20 @@ const Menu = () => {
                 </p>
               </div>
             </div>
+
+            {/* AdSense Ad */}
+            {isGrid && (
+              <div className="w-full mb-6 flex justify-center">
+                <ins
+                  className="adsbygoogle"
+                  style={{ display: "block" }}
+                  data-ad-client="ca-pub-8479780597628659"
+                  data-ad-slot="2618909847"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"
+                />
+              </div>
+            )}
 
             {isGrid ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
