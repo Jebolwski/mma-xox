@@ -830,9 +830,11 @@ const Menu = () => {
             </div>
 
             {/* AdSense Ad */}
-            {isGrid && (
+            {/* {isGrid && (
               <div className="w-full mb-6 px-4 flex justify-center">
-                <div style={{ minWidth: "280px", width: "100%", maxWidth: "100%" }}>
+                <div
+                  style={{ minWidth: "280px", width: "100%", maxWidth: "100%" }}
+                >
                   <ins
                     className="adsbygoogle"
                     style={{ display: "block" }}
@@ -843,7 +845,7 @@ const Menu = () => {
                   />
                 </div>
               </div>
-            )}
+            )} */}
 
             {isGrid ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

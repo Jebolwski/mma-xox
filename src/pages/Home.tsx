@@ -533,7 +533,7 @@ const Home = () => {
             )}
           </div>
           {/* AdSense Ad */}
-          <div className="w-full my-6 px-4 flex justify-center">
+          {/* <div className="w-full my-6 px-4 flex justify-center">
             <div style={{ minWidth: "280px", width: "100%", maxWidth: "100%" }}>
               <ins
                 className="adsbygoogle"
@@ -544,7 +544,7 @@ const Home = () => {
                 data-full-width-responsive="true"
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
