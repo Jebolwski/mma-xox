@@ -533,15 +533,17 @@ const Home = () => {
             )}
           </div>
           {/* AdSense Ad */}
-          <div className="w-full my-4 flex justify-center">
-            <ins
-              className="adsbygoogle"
-              style={{ display: "block" }}
-              data-ad-client="ca-pub-8479780597628659"
-              data-ad-slot="2618909847"
-              data-ad-format="auto"
-              data-full-width-responsive="true"
-            />
+          <div className="w-full my-6 px-4 flex justify-center">
+            <div style={{ minWidth: "280px", width: "100%", maxWidth: "100%" }}>
+              <ins
+                className="adsbygoogle"
+                style={{ display: "block" }}
+                data-ad-client="ca-pub-8479780597628659"
+                data-ad-slot="2618909847"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -831,15 +831,17 @@ const Menu = () => {
 
             {/* AdSense Ad */}
             {isGrid && (
-              <div className="w-full mb-6 flex justify-center">
-                <ins
-                  className="adsbygoogle"
-                  style={{ display: "block" }}
-                  data-ad-client="ca-pub-8479780597628659"
-                  data-ad-slot="2618909847"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"
-                />
+              <div className="w-full mb-6 px-4 flex justify-center">
+                <div style={{ minWidth: "280px", width: "100%", maxWidth: "100%" }}>
+                  <ins
+                    className="adsbygoogle"
+                    style={{ display: "block" }}
+                    data-ad-client="ca-pub-8479780597628659"
+                    data-ad-slot="2618909847"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"
+                  />
+                </div>
               </div>
             )}
 
