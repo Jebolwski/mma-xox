@@ -188,30 +188,6 @@
     "usernameTaken": "该用户名已被使用。请尝试另一个。",
     "usernameChanged": "用户名已成功更改！"
   },
-  "room": {
-    "hostDisconnected": "🏆 主机断开连接！你赢了！",
-    "guestDisconnected": "🏆 客人断开连接！你赢了！",
-    "hostLeft": "主机已离开游戏！",
-    "bothPlayersReady": "🏆 两个玩家都准备好了！开始排名赛...",
-    "playerJoined": "{{player}} 加入了游戏！",
-    "playerLeft": "{{player}} 离开了游戏！",
-    "firstBloodUnlocked": "🏆 新成就已解锁！首次出血",
-    "arenaManagerUnlocked": "🏆 新成就已解锁！竞技场大师",
-    "rankedMatchCompleted": "🏆 排名赛已完成！统计数据已更新。",
-    "failedUpdateStats": "无法更新玩家统计数据。",
-    "newRankedMatch": "🏆 新排名赛开始！",
-    "opponentsTurn": "对手的回合！",
-    "roomDeleted": "房间已成功删除！",
-    "exitError": "退出时出错！",
-    "guestWinsForfeited": "🏆 客人赢了！主机投降了！",
-    "forfeitError": "投降期间出错！",
-    "couldNotDeterminePlayers": "无法判断玩家！",
-    "hostWinsForfeited": "🏆 主机赢了！你投降了！",
-    "guestForfeitedYouWin": "🏆 客人投降，你赢了！",
-    "fighterRequirements": "格斗士不符合要求。",
-    "noParticipantFound": "找不到游戏参下！",
-    "fighterAlreadySelected": "格斗士已选择。"
-  },
   "password": {
     "resetInvalidLink": "無效的重置鏈接！",
     "resetExpired": "重置鏈接已過期或無效！",
@@ -221,9 +197,6 @@
     "resetSuccess": "密碼已成功重置！",
     "passwordTooWeak": "密碼太短弱！",
     "resetExpiredGeneric": "重置鏈接已過期！"
-  },
-  "game": {
-    "fighterNotMeetRequirements": "格斗士不符合要求。"
   },
   "errors": {
     "createRoom": "创建房间时发生错误！",
@@ -302,7 +275,8 @@
     "fighterAlreadySelected": "格斗士已选择。",
     "searchForFighter": "搜索格斗士...",
     "cancel": "取消",
-    "pageTitle": "MMA XOX - 同屏游戏"
+    "pageTitle": "MMA XOX - 同屏游戏",
+    "fighterNotMeetRequirements": "格斗士不符合要求。"
   },
   "filters": {
     "brazilian": "巴西",
@@ -356,17 +330,47 @@
     "enterNameError": "请输入您的名字！",
     "noRoomSelected": "未选择房间！",
     "joinRoomFailed": "加入房间失败！",
-    "listenRoomsFailed": "监听房间失败。"
+    "listenRoomsFailed": "监听房间失败。",
+    "hostDisconnected": "🏆 主机断开连接！你赢了！",
+    "guestDisconnected": "🏆 客人断开连接！你赢了！",
+    "hostLeft": "主机已离开游戏！",
+    "bothPlayersReady": "🏆 两个玩家都准备好了！开始排名赛...",
+    "playerJoined": "{{player}} 加入了游戏！",
+    "playerLeft": "{{player}} 离开了游戏！",
+    "firstBloodUnlocked": "🏆 新成就已解锁！首次出血",
+    "arenaManagerUnlocked": "🏆 新成就已解锁！竞技场大师",
+    "rankedMatchCompleted": "🏆 排名赛已完成！统计数据已更新。",
+    "failedUpdateStats": "无法更新玩家统计数据。",
+    "newRankedMatch": "🏆 新排名赛开始！",
+    "opponentsTurn": "对手的回合！",
+    "roomDeleted": "房间已成功删除！",
+    "exitError": "退出时出错！",
+    "guestWinsForfeited": "🏆 客人赢了！主机投降了！",
+    "forfeitError": "投降期间出错！",
+    "couldNotDeterminePlayers": "无法判断玩家！",
+    "hostWinsForfeited": "🏆 主机赢了！你投降了！",
+    "guestForfeitedYouWin": "🏆 客人投降，你赢了！",
+    "fighterRequirements": "格斗士不符合要求。",
+    "noParticipantFound": "找不到游戏参下！",
+    "fighterAlreadySelected": "格斗士已选择。"
   },
   "privacy": {
     "title": "隐私政策",
-    "intro": "MMA XOX尊重您的隐私。本页是简短的占位符—发布前请替换为您的完整隐私政策。",
-    "dataCollection": "我们收集的数据",
-    "dataCollectionText": "我们收集必要的信息用于游戏功能、排行榜和用户体验改进。",
-    "dataUsage": "数据使用",
-    "dataUsageText": "您的数据仅用于提供游戏服务，不会与第三方共享。",
-    "security": "安全",
-    "securityText": "我们采取措施保护您的个人信息安全。"
+    "section1Title": "🔒 隐私政策",
+    "section1Text": "在MMA-XOX中，我们尊重用户的隐私。当您访问我们的网站时，可能会自动收集一些技术数据，如IP地址、设备信息和浏览器信息。这些信息仅用于改进网站性能和用户体验。",
+    "section2Title": "📝 自愿提供的信息",
+    "section2Text": "用户自愿提供的信息（例如通过联系表单发送的电子邮件）仅用于通信目的，不会与第三方共享。",
+    "section3Title": "🍪 曲奇饼",
+    "section3Text": "我们的网站可能使用Cookies。Cookies用于使网站更高效。您可以在浏览器设置中控制Cookies。",
+    "section4Title": "🛡️ 数据安全",
+    "section4Text": "MMA-XOX采取必要的安全措施来保护用户信息，但不保证通过互联网传输的数据完全安全。",
+    "section5Title": "🔗 第三方网站链接",
+    "section5Text": "我们的网站可能包含指向第三方网站的链接。MMA-XOX不对这些网站的隐私政策负责。",
+    "section6Title": "📅 政策更新",
+    "section6Text": "本隐私政策可能根据需要进行更新。更新在本页发布后生效。",
+    "section7Title": "✉️ 联系方式",
+    "section7TextPrefix": "邮箱: ",
+    "section7Email": "mertgkmeen@gmail.com"
   },
   "notFound": {
     "title": "404 - 找不到页面",
@@ -472,5 +476,6 @@
       "text": "无论您是寻求乐趣的休闲玩家，还是致力于排行榜顶端的竞争游戏玩家，MMA XOX都为您提供了一些东西。加入数千名玩家，体验MMA格斗家的终极井字棋竞技场！",
       "contactText": "如需更多信息或咨询，请",
       "contactLink": "联系我们"
-    }  }
+    }  
+  }
 }
