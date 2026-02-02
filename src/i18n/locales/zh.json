@@ -218,12 +218,14 @@
     "back": "返回"
   },
   "footer": {
+    "about": "关于",
+    "contact": "联系",
     "contactMe": "联系我",
     "sendEmail": "发送电子邮件",
     "buyMeACoffee": "给我买杯咖啡",
     "supportMe": "支持我",
     "madeWith": "用❤️为MMA迷制作",
-    "copyright": "© {{year}} MMA XOX。版权所有。"
+    "copyright": "© {{year}} MMA XOX。正版所有。"
   },
   "terms": {
     "title": "服务条款",

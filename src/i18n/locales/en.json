@@ -219,6 +219,8 @@
     "back": "Back"
   },
   "footer": {
+    "about":"About",
+    "contact":"Contact",
     "contactMe": "Contact Me",
     "sendEmail": "Send email",
     "buyMeACoffee": "Buy Me A Coffee",

@@ -218,8 +218,8 @@
     "delete": "Удалить",
     "back": "Назад"
   },
-  "footer": {
-    "contactMe": "Связаться со мной",
+  "footer": {    "about": "О нас",
+    "contact": "Контакт",    "contactMe": "Связаться со мной",
     "sendEmail": "Отправить email",
     "buyMeACoffee": "Купить мне кофе",
     "supportMe": "Поддержать меня",

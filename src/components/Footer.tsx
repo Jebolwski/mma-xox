@@ -57,7 +57,7 @@ export default function Footer() {
               to="/about"
               className="mx-2"
             >
-              ℹ️ About
+              ℹ️ {t("footer.about")}
             </Link>
           </div>
 
@@ -70,7 +70,7 @@ export default function Footer() {
               to="/contact"
               className="mx-2"
             >
-              📧 Contact
+              📧 {t("footer.contact")}
             </Link>
           </div>
 

@@ -248,8 +248,8 @@
     "delete": "삭제",
     "back": "돌아가기"
   },
-  "footer": {
-    "contactMe": "문의하기",
+  "footer": {    "about": "정보",
+    "contact": "연락처",    "contactMe": "문의하기",
     "sendEmail": "이메일 보내기",
     "buyMeACoffee": "커피 사기",
     "supportMe": "지원하기",

@@ -281,6 +281,8 @@
     "back": "Retour"
   },
   "footer": {
+    "about": "À propos",
+    "contact": "Contact",
     "contactMe": "Me contacter",
     "sendEmail": "Envoyer un e-mail",
     "buyMeACoffee": "Offrez-moi un café",

@@ -245,6 +245,8 @@
     "back": "Voltar"
   },
   "footer": {
+    "about": "Sobre",
+    "contact": "Contato",
     "contactMe": "Entre em Contato",
     "sendEmail": "Enviar email",
     "buyMeACoffee": "Me Pague um Café",
