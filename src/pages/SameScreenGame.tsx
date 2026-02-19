@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import fighters_url from "../assets/data/fighters_updated_new.json";
+import fighters_url from "../assets/data/fighters.json";
 import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";

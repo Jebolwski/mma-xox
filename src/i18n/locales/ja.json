@@ -50,7 +50,12 @@
     "createRoomModal": "ルーム作成 🎮",
     "rankedMatchFound": "ランク戦が見つかりました！{{player}}と対戦中！",
     "availableRoomsTitle": "MMA XOX - 利用可能なルーム",
-    "loginRequired": "ログインが必要です"
+    "loginRequired": "ログインが必要です",
+    "noCasualRoomsTitle": "カジュアルルームなし",
+    "noCasualRoomsMessage": "現在カジュアルルームは利用できません。AIと対戦するか、後でもう一度お試しください。",
+    "noRankedRoomsTitle": "ランク付きルームなし",
+    "noRankedRoomsMessage": "現在ランク付きルームは利用できません。ルームを作成するか、ランダムマッチングを試すか、AIと対戦できます。",
+    "playVsAI": "AIと対戦"
   },
   "friends": {
     "title": "友達",

@@ -26,7 +26,7 @@ import "react-toastify/dist/ReactToastify.css";
 import return_img from "../assets/return.png";
 import win from "../assets/sounds/win.mp3";
 import draw from "../assets/sounds/draw.mp3";
-import fighters_url from "../assets/data/fighters_updated_new.json";
+import fighters_url from "../assets/data/fighters.json";
 import wrong from "../assets/sounds/wrong.mp3";
 import correct from "../assets/sounds/correct.mp3";
 import Filters from "../logic/filters";

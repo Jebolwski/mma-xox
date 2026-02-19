@@ -50,6 +50,7 @@ const Menu = () => {
   const [isRankedRoom, setIsRankedRoom] = useState(false);
   const [showRankedConfirm, setShowRankedConfirm] = useState(false);
   const [showRankedNoRooms, setShowRankedNoRooms] = useState(false);
+  const [showNoCasualRoomsModal, setShowNoCasualRoomsModal] = useState(false);
   const [userUsername, setUserUsername] = useState("");
 
   useEffect(() => {
@@ -308,7 +309,7 @@ const Menu = () => {
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        toast.error(t("menu.noCasualRooms"));
+        setShowNoCasualRoomsModal(true);
         return;
       }
 
@@ -1302,34 +1303,27 @@ const Menu = () => {
             }`}
           >
             <div className="text-center">
-              <div className="text-6xl mb-4">🔍</div>
+              <div className="text-6xl mb-4">🏆</div>
               <h2
                 className={`text-2xl font-bold mb-4 ${
                   theme === "dark" ? "text-slate-200" : "text-slate-700"
                 }`}
               >
-                {t("menu.noRoomsTitle")}
+                {t("menu.noRankedRoomsTitle")}
               </h2>
               <p
                 className={`mb-6 ${
                   theme === "dark" ? "text-slate-300" : "text-slate-600"
                 }`}
               >
-                {t("menu.noRoomsMessage")}
-              </p>
-              <p
-                className={`text-sm mb-6 ${
-                  theme === "dark" ? "text-slate-400" : "text-slate-500"
-                }`}
-              >
-                {t("menu.othersCanJoin")}
+                {t("menu.noRankedRoomsMessage")}
               </p>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-3">
               <button
                 onClick={() => setShowRankedNoRooms(false)}
-                className={`flex-1 py-3 rounded-xl font-bold cursor-pointer transition-all duration-200 hover:scale-105 ${
+                className={`w-full py-3 rounded-xl font-bold cursor-pointer transition-all duration-200 hover:scale-105 ${
                   theme === "dark"
                     ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
                     : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
@@ -1343,9 +1337,75 @@ const Menu = () => {
                   setIsRankedRoom(true);
                   setShowCreateFields(true);
                 }}
-                className="flex-1 py-3 rounded-xl cursor-pointer font-bold transition-all duration-200 hover:scale-105 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg shadow-orange-600/30"
+                className="w-full py-3 rounded-xl cursor-pointer font-bold transition-all duration-200 hover:scale-105 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg shadow-orange-600/30"
               >
                 {t("menu.createRoom")}
+              </button>
+              <button
+                onClick={() => {
+                  setShowRankedNoRooms(false);
+                  navigate("/same-screen");
+                }}
+                className="w-full py-3 rounded-xl cursor-pointer font-bold transition-all duration-200 hover:scale-105 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg shadow-blue-600/30"
+              >
+                {t("menu.playVsAI")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* NO CASUAL ROOMS MODAL */}
+      {showNoCasualRoomsModal && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+          <div
+            className={`p-8 rounded-2xl shadow-2xl border-4 backdrop-blur-md transition-all duration-300 max-w-md w-full mx-4 ${
+              theme === "dark"
+                ? "bg-slate-800/95 border-blue-500 shadow-blue-500/30"
+                : "bg-white/95 border-blue-600 shadow-blue-600/30"
+            }`}
+          >
+            <div className="text-center">
+              <div className="text-6xl mb-4">🤖</div>
+              <h2
+                className={`text-2xl font-bold mb-4 ${
+                  theme === "dark" ? "text-slate-200" : "text-slate-700"
+                }`}
+              >
+                {t("menu.noCasualRoomsTitle")}
+              </h2>
+              <p
+                className={`mb-6 ${
+                  theme === "dark" ? "text-slate-300" : "text-slate-600"
+                }`}
+              >
+                {t("menu.noCasualRoomsMessage")}
+              </p>
+            </div>
+
+            <div className="flex gap-4">
+              <button
+                onClick={() => {
+                  setShowNoCasualRoomsModal(false);
+                  setShowRandomFields(false);
+                }}
+                className={`flex-1 py-3 rounded-xl font-bold cursor-pointer transition-all duration-200 hover:scale-105 ${
+                  theme === "dark"
+                    ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
+                    : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
+                }`}
+              >
+                {t("menu.back")}
+              </button>
+              <button
+                onClick={() => {
+                  setShowNoCasualRoomsModal(false);
+                  setShowRandomFields(false);
+                  navigate("/same-screen");
+                }}
+                className="flex-1 py-3 rounded-xl cursor-pointer font-bold transition-all duration-200 hover:scale-105 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg shadow-blue-600/30"
+              >
+                {t("menu.playVsAI")}
               </button>
             </div>
           </div>

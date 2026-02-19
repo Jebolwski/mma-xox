@@ -50,7 +50,12 @@
     "createRoomModal": "Skapa rum 🎮",
     "rankedMatchFound": "Rankad match hittad! Spelar mot {{player}}!",
     "availableRoomsTitle": "MMA XOX - Tillgängliga rum",
-    "loginRequired": "INLOGGNING KRÄVS"
+    "loginRequired": "INLOGGNING KRÄVS",
+    "noCasualRoomsTitle": "Inga vardagsrum",
+    "noCasualRoomsMessage": "Inga vardagsrum tillgängliga just nu. Du kan spela mot AI eller försöka senare.",
+    "noRankedRoomsTitle": "Inga rankade rum",
+    "noRankedRoomsMessage": "Inga rankade rum tillgängliga just nu. Du kan skapa ett rum, försöka slumpmässig matchning eller spela mot AI.",
+    "playVsAI": "Spela mot AI"
   },
   "friends": {
     "title": "Vänner",

@@ -50,7 +50,12 @@
     "createRoomModal": "Raum erstellen 🎮",
     "rankedMatchFound": "Rangiertes Spiel gefunden! Spielen gegen {{player}}!",
     "availableRoomsTitle": "MMA XOX - Verfügbare Räume",
-    "loginRequired": "ANMELDUNG ERFORDERLICH"
+    "loginRequired": "ANMELDUNG ERFORDERLICH",
+    "noCasualRoomsTitle": "Keine Casual-Räume",
+    "noCasualRoomsMessage": "Derzeit keine verfügbaren Casual-Räume. Sie können gegen KI spielen oder später erneut versuchen.",
+    "noRankedRoomsTitle": "Keine Ranked-Räume",
+    "noRankedRoomsMessage": "Derzeit keine verfügbaren Ranked-Räume. Sie können einen Raum erstellen, zufälliges Matching versuchen oder gegen KI spielen.",
+    "playVsAI": "Gegen KI spielen"
   },
   "friends": {
     "title": "Freunde",

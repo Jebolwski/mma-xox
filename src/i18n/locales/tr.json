@@ -50,7 +50,12 @@
     "createRoomModal": "Oda Oluştur 🎮",
     "rankedMatchFound": "Sıralamaya katıl maçı bulundu! {{player}}'ye karşı oynuyor!",
     "availableRoomsTitle": "MMA XOX - Mevcut Odalar",
-    "loginRequired": "GİRİŞ GEREKLİ"
+    "loginRequired": "GİRİŞ GEREKLİ",
+    "noCasualRoomsTitle": "Casual Oda Yok",
+    "noCasualRoomsMessage": "Şu anda boşta casual oda bulunmuyor. İsterseniz AI'a karşı oynayabilir veya sonra tekrar deneyebilirsiniz.",
+    "noRankedRoomsTitle": "Rekabetçi Oda Yok",
+    "noRankedRoomsMessage": "Şu anda boşta rekabetçi oda bulunmuyor. Oda oluşturabilir, rastgele maç aramayı deneyebilir ya da AI'a karşı oynayabilirsiniz.",
+    "playVsAI": "AI'a Karşı Oyna"
   },
   "friends": {
     "title": "Arkadaşlar",

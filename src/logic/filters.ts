@@ -1,4 +1,4 @@
-import fighters from "../assets/data/fighters_updated_new.json";
+import fighters from "../assets/data/fighters.json";
 import usaFlag from "../assets/usa_flag.png";
 import nigeriaFlag from "../assets/nigeria_flag.jpg";
 import russiaFlag from "../assets/russia_flag.jpg";

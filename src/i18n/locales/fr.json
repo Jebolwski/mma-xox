@@ -50,7 +50,12 @@
     "createRoomModal": "Créer une salle 🎮",
     "rankedMatchFound": "Match classé trouvé! Jouant contre {{player}}!",
     "availableRoomsTitle": "MMA XOX - Salles disponibles",
-    "loginRequired": "CONNEXION REQUISE"
+    "loginRequired": "CONNEXION REQUISE",
+    "noCasualRoomsTitle": "Aucune salle casual",
+    "noCasualRoomsMessage": "Aucune salle casual disponible en ce moment. Vous pouvez jouer contre l'IA ou réessayer plus tard.",
+    "noRankedRoomsTitle": "Aucune salle classée",
+    "noRankedRoomsMessage": "Aucune salle classée disponible en ce moment. Vous pouvez créer une salle, essayer l'appairage aléatoire ou jouer contre l'IA.",
+    "playVsAI": "Jouer contre l'IA"
   },
   "friends": {
     "title": "Amis",

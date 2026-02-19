@@ -50,7 +50,12 @@
     "createRoomModal": "创建房间 🎮",
     "rankedMatchFound": "找到排名赛对手！正在与 {{player}} 游戏！",
     "availableRoomsTitle": "MMA XOX - 可用房间",
-    "loginRequired": "需要登录"
+    "loginRequired": "需要登录",
+    "noCasualRoomsTitle": "没有休闲房间",
+    "noCasualRoomsMessage": "目前没有可用的休闲房间。您可以与AI对战或稍后重试。",
+    "noRankedRoomsTitle": "没有排名房间",
+    "noRankedRoomsMessage": "目前没有可用的排名房间。您可以创建房间、尝试随机匹配或与AI对战。",
+    "playVsAI": "与AI对战"
   },
   "friends": {
     "title": "朋友",
