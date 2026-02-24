@@ -361,6 +361,15 @@ function SameScreenGame() {
     input.value = "";
   };
 
+  const selectedClass = (id: string) =>
+    selected === id
+      ? theme === "dark"
+        ? "pulse-border-dark"
+        : "pulse-border-light"
+      : "";
+
+  const cornerColor = theme === "dark" ? "border-white/70" : "border-black/70";
+
   const updateBox = (fighter: Fighter, selectedParam: string | null) => {
     const picture =
       fighter.Picture === "Unknown" ? unknown_fighter : fighter.Picture;
@@ -420,9 +429,10 @@ function SameScreenGame() {
 
     setTurn(turn === "red" ? "blue" : "red");
     setTimer(timerLength);
-    toggleFighterPick();
+    toggleFighterPickModal();
     resetInput();
     setFigters([]);
+    setSelected(null);
   };
 
   const startGame = () => {
@@ -624,11 +634,27 @@ function SameScreenGame() {
     return null; // Oyun devam ediyor
   };
 
-  const toggleFighterPick = () => {
+  const toggleFighterPickModal = () => {
     if (selected) {
     }
     const div = document.querySelector(".select-fighter");
     div?.classList.toggle("hidden");
+  };
+
+  const openFighterPickModal = () => {
+    if (selected) {
+    }
+    const div = document.querySelector(".select-fighter");
+    div?.classList.remove("hidden");
+  };
+
+  const closeFighterPickModal = () => {
+    if (selected) {
+    }
+    const div = document.querySelector(".select-fighter");
+    if (div && !div.classList.contains("hidden")) {
+      div?.classList.add("hidden");
+    }
   };
 
   const positionKeyOf = (key: string): keyof typeof positionsFighters => {
@@ -1127,10 +1153,10 @@ function SameScreenGame() {
                 onClick={() => {
                   if (!isGameOver) setShowRestartModal(true);
                 }}
-                className={`z-30 flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
+                className={`z-30 flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 transition-all duration-300 ${
                   theme === "dark"
-                    ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-white"
-                    : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-black"
+                    ? "bg-gradient-to-r from-[#2b2c57] to-[#2b2740] border-slate-500/30 text-white"
+                    : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 text-black"
                 } ${
                   isGameOver
                     ? "opacity-50 cursor-not-allowed pointer-events-none"
@@ -1153,10 +1179,10 @@ function SameScreenGame() {
               </div>
               {turn == "red" ? (
                 <div
-                  className={`z-30 cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
+                  className={`z-30 cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
-                      ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-red-400"
-                      : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-red-600"
+                      ? "bg-gradient-to-r from-[#2b2c57] to-[#2b2740] border-slate-500/30 text-red-400"
+                      : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 text-red-600"
                   }`}
                 >
                   <p>{t("game.turnRed")}</p>
@@ -1169,9 +1195,9 @@ function SameScreenGame() {
                       }}
                       className={`${
                         theme === "dark"
-                          ? "bg-slate-500 border-slate-700 text-slate-200"
+                          ? "bg-[#2b2740] border-slate-700 text-slate-200"
                           : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
-                      } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
+                      } cursor-pointer xl:text-base text-xs px-2 border`}
                     >
                       {t("game.skip")}
                     </div>
@@ -1179,10 +1205,10 @@ function SameScreenGame() {
                 </div>
               ) : (
                 <div
-                  className={`z-30 cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
+                  className={`z-30 cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
-                      ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-blue-400"
-                      : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-blue-600"
+                      ? "bg-gradient-to-r from-[#2b2c57] to-[#2b2740] border-slate-500/30 text-blue-400"
+                      : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 text-blue-600"
                   }`}
                 >
                   <p>{t("game.turnBlue")}</p>
@@ -1195,9 +1221,9 @@ function SameScreenGame() {
                       }}
                       className={`${
                         theme === "dark"
-                          ? "bg-slate-500 border-slate-700 text-slate-200"
+                          ? "bg-[#2b2740] border-slate-700 text-slate-200"
                           : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
-                      } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border`}
+                      } cursor-pointer xl:text-base text-xs px-2 border`}
                     >
                       {t("game.skip")}
                     </div>
@@ -1288,7 +1314,7 @@ function SameScreenGame() {
                     theme === "dark"
                       ? "border-stone-600 bg-neutral-900/70"
                       : "border-stone-500 bg-neutral-200/70"
-                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center`}
                 >
                   <div>
                     <div className="flex items-center justify-center">
@@ -1304,7 +1330,7 @@ function SameScreenGame() {
                     theme === "dark"
                       ? "border-stone-600 bg-stone-800/70"
                       : "border-stone-400 bg-stone-300/70"
-                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                  } backdrop-blur-md text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
                     <div className="w-full">
@@ -1347,7 +1373,7 @@ function SameScreenGame() {
                     theme === "dark"
                       ? "border-stone-600 bg-stone-800/70"
                       : "border-stone-400 bg-stone-300/70"
-                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                  } backdrop-blur-md text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
                     <div className="w-full">
@@ -1390,7 +1416,7 @@ function SameScreenGame() {
                     theme === "dark"
                       ? "border-stone-600 bg-stone-800/70"
                       : "border-stone-400 bg-stone-300/70"
-                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                  } backdrop-blur-md text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
                     <div className="w-full">
@@ -1429,13 +1455,13 @@ function SameScreenGame() {
                   )}
                 </div>
               </div>
-              <div className={`flex gap-[2px] text-white`}>
+              <div className={`flex gap-[2px] mt-[2px] text-white`}>
                 <div
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                     theme === "dark"
                       ? "border-stone-600 bg-stone-800/70"
                       : "border-stone-400 bg-stone-300/70"
-                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                  } backdrop-blur-md text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
                     <div className="w-full">
@@ -1479,7 +1505,7 @@ function SameScreenGame() {
                       fighter00.bg === "from-stone-700/70 to-stone-800/70" ||
                       fighter00.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
-                      toggleFighterPick();
+                      openFighterPickModal();
                       setSelected("fighter00");
                     } else {
                       toast.info(t("game.fighterAlreadySelected"));
@@ -1487,10 +1513,20 @@ function SameScreenGame() {
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
-                  } rounded-lg shadow-md bg-gradient-to-b ${
+                  } shadow-md bg-gradient-to-b ${
                     fighter00.bg
-                  } backdrop-blur-md text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter00")}`}
                 >
+                  {selected === "fighter00" && (
+                    <>
+                      <span
+                        className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                      />
+                      <span
+                        className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                      />
+                    </>
+                  )}
                   <div className="w-full">
                     <div className="flex justify-center">
                       <img
@@ -1516,7 +1552,7 @@ function SameScreenGame() {
                       fighter01.bg === "from-stone-700/70 to-stone-800/70" ||
                       fighter01.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
-                      toggleFighterPick();
+                      openFighterPickModal();
                       setSelected("fighter01");
                     } else {
                       toast.info(t("game.fighterAlreadySelected"));
@@ -1524,10 +1560,20 @@ function SameScreenGame() {
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
-                  } rounded-lg shadow-md bg-gradient-to-b ${
+                  } shadow-md bg-gradient-to-b ${
                     fighter01.bg
-                  } backdrop-blur-md text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter01")}`}
                 >
+                  {selected === "fighter01" && (
+                    <>
+                      <span
+                        className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                      />
+                      <span
+                        className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                      />
+                    </>
+                  )}
                   <div className="w-full">
                     <div className="flex justify-center">
                       <img
@@ -1553,7 +1599,7 @@ function SameScreenGame() {
                       fighter02.bg === "from-stone-700/70 to-stone-800/70" ||
                       fighter02.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
-                      toggleFighterPick();
+                      openFighterPickModal();
                       setSelected("fighter02");
                     } else {
                       toast.info(t("game.fighterAlreadySelected"));
@@ -1561,10 +1607,20 @@ function SameScreenGame() {
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
-                  } rounded-lg shadow-md bg-gradient-to-b ${
+                  } shadow-md bg-gradient-to-b ${
                     fighter02.bg
-                  } backdrop-blur-md text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter02")}`}
                 >
+                  {selected === "fighter02" && (
+                    <>
+                      <span
+                        className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                      />
+                      <span
+                        className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                      />
+                    </>
+                  )}
                   <div className="w-full">
                     <div className="flex justify-center">
                       <img
@@ -1585,13 +1641,13 @@ function SameScreenGame() {
                   </div>
                 </div>
               </div>
-              <div className={`flex gap-[2px] text-white`}>
+              <div className={`flex gap-[2px] mt-[2px] text-white`}>
                 <div
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                     theme === "dark"
                       ? "border-stone-600 bg-stone-800/70"
                       : "border-stone-400 bg-stone-300/70"
-                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                  } backdrop-blur-md text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
                     <div className="w-full">
@@ -1635,7 +1691,7 @@ function SameScreenGame() {
                       fighter10.bg === "from-stone-700/70 to-stone-800/70" ||
                       fighter10.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
-                      toggleFighterPick();
+                      openFighterPickModal();
                       setSelected("fighter10");
                     } else {
                       toast.info(t("game.fighterAlreadySelected"));
@@ -1643,10 +1699,20 @@ function SameScreenGame() {
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
-                  } rounded-lg shadow-md bg-gradient-to-b ${
+                  } shadow-md bg-gradient-to-b ${
                     fighter10.bg
-                  } backdrop-blur-md text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter10")}`}
                 >
+                  {selected === "fighter10" && (
+                    <>
+                      <span
+                        className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                      />
+                      <span
+                        className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                      />
+                    </>
+                  )}
                   <div className="w-full">
                     <div className="flex justify-center">
                       <img
@@ -1672,7 +1738,7 @@ function SameScreenGame() {
                       fighter11.bg === "from-stone-700/70 to-stone-800/70" ||
                       fighter11.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
-                      toggleFighterPick();
+                      openFighterPickModal();
                       setSelected("fighter11");
                     } else {
                       toast.info(t("game.fighterAlreadySelected"));
@@ -1680,10 +1746,20 @@ function SameScreenGame() {
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
-                  } rounded-lg shadow-md bg-gradient-to-b ${
+                  } shadow-md bg-gradient-to-b ${
                     fighter11.bg
-                  } backdrop-blur-md text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter11")}`}
                 >
+                  {selected === "fighter11" && (
+                    <>
+                      <span
+                        className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                      />
+                      <span
+                        className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                      />
+                    </>
+                  )}
                   <div className="w-full">
                     <div className="flex justify-center">
                       <img
@@ -1709,7 +1785,7 @@ function SameScreenGame() {
                       fighter12.bg === "from-stone-700/70 to-stone-800/70" ||
                       fighter12.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
-                      toggleFighterPick();
+                      openFighterPickModal();
                       setSelected("fighter12");
                     } else {
                       toast.info(t("game.fighterAlreadySelected"));
@@ -1717,10 +1793,20 @@ function SameScreenGame() {
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
-                  } rounded-lg shadow-md bg-gradient-to-b ${
+                  } shadow-md bg-gradient-to-b ${
                     fighter12.bg
-                  } backdrop-blur-md text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter12")}`}
                 >
+                  {selected === "fighter12" && (
+                    <>
+                      <span
+                        className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                      />
+                      <span
+                        className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                      />
+                    </>
+                  )}
                   <div className="w-full">
                     <div className="flex justify-center">
                       <img
@@ -1741,13 +1827,13 @@ function SameScreenGame() {
                   </div>
                 </div>
               </div>
-              <div className={`flex gap-[2px] text-white`}>
+              <div className={`flex gap-[2px] mt-[2px] text-white`}>
                 <div
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                     theme === "dark"
                       ? "border-stone-600 bg-stone-800/70"
                       : "border-stone-400 bg-stone-300/70"
-                  } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                  } backdrop-blur-md text-center flex items-center justify-center p-1`}
                 >
                   {filtersSelected.length > 0 ? (
                     <div className="w-full">
@@ -1791,7 +1877,7 @@ function SameScreenGame() {
                       fighter20.bg === "from-stone-700/70 to-stone-800/70" ||
                       fighter20.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
-                      toggleFighterPick();
+                      openFighterPickModal();
                       setSelected("fighter20");
                     } else {
                       toast.info(t("game.fighterAlreadySelected"));
@@ -1799,10 +1885,20 @@ function SameScreenGame() {
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
-                  } rounded-lg shadow-md bg-gradient-to-b ${
+                  } shadow-md bg-gradient-to-b ${
                     fighter20.bg
-                  } backdrop-blur-md text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter20")}`}
                 >
+                  {selected === "fighter20" && (
+                    <>
+                      <span
+                        className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                      />
+                      <span
+                        className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                      />
+                    </>
+                  )}
                   <div className="w-full">
                     <div className="flex justify-center">
                       <img
@@ -1828,7 +1924,7 @@ function SameScreenGame() {
                       fighter21.bg === "from-stone-700/70 to-stone-800/70" ||
                       fighter21.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
-                      toggleFighterPick();
+                      openFighterPickModal();
                       setSelected("fighter21");
                     } else {
                       toast.info(t("game.fighterAlreadySelected"));
@@ -1836,10 +1932,20 @@ function SameScreenGame() {
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
-                  } rounded-lg shadow-md bg-gradient-to-b ${
+                  } shadow-md bg-gradient-to-b ${
                     fighter21.bg
-                  } backdrop-blur-md text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter21")}`}
                 >
+                  {selected === "fighter21" && (
+                    <>
+                      <span
+                        className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                      />
+                      <span
+                        className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                      />
+                    </>
+                  )}
                   <div className="w-full">
                     <div className="flex justify-center">
                       <img
@@ -1865,7 +1971,7 @@ function SameScreenGame() {
                       fighter22.bg === "from-stone-700/70 to-stone-800/70" ||
                       fighter22.bg === "from-stone-200/70 to-stone-300/70"
                     ) {
-                      toggleFighterPick();
+                      openFighterPickModal();
                       setSelected("fighter22");
                     } else {
                       toast.info(t("game.fighterAlreadySelected"));
@@ -1873,10 +1979,20 @@ function SameScreenGame() {
                   }}
                   className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                     theme === "dark" ? "border-stone-600" : "border-stone-400"
-                  } rounded-lg shadow-md bg-gradient-to-b ${
+                  } shadow-md bg-gradient-to-b ${
                     fighter22.bg
-                  } backdrop-blur-md text-center flex items-center justify-center`}
+                  } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter22")}`}
                 >
+                  {selected === "fighter22" && (
+                    <>
+                      <span
+                        className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                      />
+                      <span
+                        className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                      />
+                    </>
+                  )}
                   <div className="w-full">
                     <div className="flex justify-center">
                       <img
@@ -1900,9 +2016,9 @@ function SameScreenGame() {
               <div
                 className={`absolute hidden select-fighter w-full text-white bottom-0 ${
                   theme === "dark"
-                    ? "bg-stone-700 border-stone-600"
-                    : "bg-stone-200 border-stone-400"
-                } rounded-lg border shadow-lg left-0`}
+                    ? "bg-[#2b2740] border-stone-600"
+                    : "bg-[#d1d3de] border-stone-400"
+                }  border shadow-lg backdrop-blur-lg left-0`}
               >
                 <div className="p-2 w-full">
                   <input
@@ -1911,7 +2027,7 @@ function SameScreenGame() {
                       filterByName(e.target.value);
                     }}
                     placeholder={t("game.searchForFighter")}
-                    className="bg-white input-fighter text-black xl:text-base text-sm px-3 w-full py-1 rounded-lg hover:outline-0 focus:outline-1 outline-stone-500 shadow-lg"
+                    className="bg-white input-fighter text-black xl:text-base text-sm px-3 w-full py-1 hover:outline-0 focus:outline-1 outline-stone-500 shadow-lg"
                   />
                   {fighters && fighters.length > 0 ? (
                     <div className="w-full h-48 overflow-scroll overflow-x-hidden">
@@ -1921,11 +2037,11 @@ function SameScreenGame() {
                             updateBox(fighter, null);
                           }}
                           key={key}
-                          className={`flex items-center border cursor-pointer gap-6 my-3 px-2 pt-2 bg-gradient-to-r ${
+                          className={`flex items-center border cursor-pointer gap-6 my-3 px-2 pt-2 bg-gradient-to-r backdrop-blur-lg ${
                             theme === "dark"
-                              ? "from-stone-800 to-stone-900 border-stone-900 text-white"
-                              : "from-stone-300 to-stone-400 border-stone-400 text-black"
-                          } shadow-lg rounded-lg`}
+                              ? "from-[#393453] to-[#221f32] border-stone-900 text-white"
+                              : "from-stone-300/80 to-stone-400/80 border-stone-400 text-black"
+                          } shadow-lg`}
                         >
                           <img
                             src={
@@ -1950,12 +2066,12 @@ function SameScreenGame() {
                   <div className="flex justify-end py-2">
                     <button
                       onClick={() => {
-                        toggleFighterPick();
+                        closeFighterPickModal();
                       }}
                       className={` ${
                         theme === "dark"
-                          ? "bg-stone-800 text-white border-stone-600"
-                          : "bg-stone-300 text-black border-stone-400"
+                          ? "bg-[#232034] text-white border-[#403a5d]"
+                          : "bg-[#c7c8d3] text-black border-[#dfe2ee]"
                       } px-6 py-1 font-semibold rounded-tr-lg rounded-bl-lg shadow-lg border cursor-pointer`}
                     >
                       {t("game.cancel")}

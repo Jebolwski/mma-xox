@@ -1,4 +1,4 @@
-import { useEffect, useContext, useRef, useState } from "react";
+import { useEffect, useContext, useRef } from "react";
 import {
   useParams,
   useSearchParams,
@@ -17,10 +17,48 @@ import {
   runTransaction,
   where,
   serverTimestamp,
+  getDoc,
+  increment,
 } from "firebase/firestore";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { useTranslation } from "react-i18next";
 import { db } from "../firebase";
+import { updatePlayerStats, updateWinRates } from "../services/playerStats";
+import {
+  filterByName as filterByNameLogic,
+  checkWinner as checkWinnerLogic,
+} from "../services/gameLogic";
+import {
+  resetTimerFirestore,
+  switchTurn,
+  startGameDb,
+  startNewRankedMatchDb,
+  restartGameDb,
+  updateBoxDb,
+  updateWinnerDb,
+  handleHostExit,
+  handleGuestExitDb,
+  handleRankedForfeitDb,
+  handleGuestForfeitDb,
+} from "../services/gameFirestore";
+import {
+  changeLanguageHandler,
+  handleLanguageClickHandler,
+  startGameHandler,
+  startNewRankedMatchHandler,
+  restartGameHandler,
+  filterByNameHandler,
+  toggleFighterPickHandler,
+  resetInputHandler,
+  updateBoxHandler,
+  notifyHandler,
+} from "../services/gameUIHandlers";
+import { getFiltersHandler } from "../services/gameFilters";
+import {
+  handleExitHandler,
+  handleRankedForfeitHandler,
+  handleGuestForfeitHandler,
+} from "../services/gameExitHandlers";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import return_img from "../assets/return.png";
@@ -33,16 +71,16 @@ import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ThemeContext } from "../context/ThemeContext";
 import Confetti from "react-confetti";
-import { getDoc, increment } from "firebase/firestore";
 import { useWindowSize } from "react-use";
 import { ROOM_TTL_MS } from "../services/roomCleanup";
 import { useAuth } from "../context/AuthContext";
-import trFlag from "../assets/tr.png";
-import enFlag from "../assets/en.jpg";
 import dark from "../assets/dark.png";
 import light from "../assets/light.png";
 import logo from "../assets/logo.png";
 import logo_text from "../assets/logo_text.png";
+import unknown_fighter from "../assets/unknown.png";
+import trFlag from "../assets/tr.png";
+import enFlag from "../assets/en.jpg";
 import ptFlag from "../assets/pt.png";
 import spFlag from "../assets/sp.png";
 import ruFlag from "../assets/russia_flag.jpg";
@@ -55,150 +93,117 @@ import koFlag from "../assets/kr.png";
 import frFlag from "../assets/fr.png";
 import swFlag from "../assets/sw.png";
 import plFlag from "../assets/pl.png";
-import unknown_fighter from "../assets/unknown.png";
+// Import from new constants file
+import {
+  LANGUAGE_FLAGS,
+  DEFAULT_FIGHTER,
+  DIFFICULTY_LEVELS,
+  TIMER_OPTIONS,
+} from "../constants/roomConstants";
+// Import hook
+import { useGameRoom } from "../hooks/useGameRoom";
 
 const Room = () => {
-  const { roomId } = useParams();
+  // Route params
   const navigate = useNavigate();
   const location = useLocation();
+  const { roomId } = useParams();
+  const [searchParams] = useSearchParams();
 
+  // State from location or URL
   const stateRole = (location.state as any)?.role;
   const statePlayerName = (location.state as any)?.name;
   const stateIsRanked = (location.state as any)?.isRanked;
 
-  const [searchParams] = useSearchParams();
   const role = stateRole || searchParams.get("role");
   const playerName = statePlayerName || searchParams.get("name");
   const isRanked = stateIsRanked ?? searchParams.get("ranked") === "true";
+
+  // Context and hooks
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const cornerColor = theme === "dark" ? "border-white/70" : "border-black/70";
   const { currentUser } = useAuth();
-  const [gameState, setGameState] = useState<any>(null);
-  const [guest, setGuest] = useState<any>(null);
-  const [turn, setTurn] = useState<string | null>(null);
-  const [gameStarted, setGameStarted] = useState<boolean>(false);
-  const [filters, setFilters]: any = useState();
-  const [selected, setSelected]: any = useState();
-  const [showConfetti, setShowConfetti] = useState(false);
-  const prevGuestNow = useRef<string | null>(null);
-  const [languageDropdown, setLanguageDropdown] = useState(false);
   const { t, i18n } = useTranslation();
+  const { width, height } = useWindowSize();
+
+  const {
+    gameState,
+    setGameState,
+    guest,
+    setGuest,
+    turn,
+    setTurn,
+    gameStarted,
+    setGameStarted,
+    filters,
+    setFilters,
+    selected,
+    setSelected,
+    showConfetti,
+    setShowConfetti,
+    muted,
+    setMuted,
+    guestForfeitModal,
+    setGuestForfeitModal,
+    hostForfeitModal,
+    setHostForfeitModal,
+    rankedForfeitModal,
+    setRankedForfeitModal,
+    guestForfeitVictoryModal,
+    setGuestForfeitVictoryModal,
+    guestExitConfirmModal,
+    setGuestExitConfirmModal,
+    showWaitingGuest,
+    setShowWaitingGuest,
+    userUsername,
+    languageDropdown,
+    setLanguageDropdown,
+    hasExited,
+    setHasExited,
+    isExiting,
+    setIsExiting,
+    filtersSelected,
+    setFiltersSelected,
+    pushFirestore,
+    setPushFirestore,
+    fighters,
+    setFighters,
+    difficulty,
+    setDifficulty,
+    timerLength,
+    setTimerLength,
+    fighter00,
+    setFighter00,
+    fighter01,
+    setFighter01,
+    fighter02,
+    setFighter02,
+    fighter10,
+    setFighter10,
+    fighter11,
+    setFighter11,
+    fighter12,
+    setFighter12,
+    fighter20,
+    setFighter20,
+    fighter21,
+    setFighter21,
+    fighter22,
+    setFighter22,
+    positionsFighters,
+    setPositionsFighters,
+    prevGuestNow,
+    isRankedRoom,
+    playSfx,
+  } = useGameRoom(t, role, playerName, isRanked, currentUser);
 
   usePageTitle(roomId ? `MMA XOX - Room ${roomId}` : "MMA XOX • Room");
-
-  const isRankedRoom = (gameState?.isRankedRoom ?? isRanked) === true;
 
   const showUserBanner =
     !!currentUser || (!isRankedRoom && (role === "host" || role === "guest"));
 
-  const [fighter00, setFighter00]: any = useState({
-    url: unknown_fighter,
-    text: "",
-    bg: "from-stone-300/70 to-stone-500/70",
-  });
-  const [fighter01, setFighter01]: any = useState({
-    url: unknown_fighter,
-    text: "",
-    bg: "from-stone-300/70 to-stone-500/70",
-  });
-  const [fighter02, setFighter02]: any = useState({
-    url: unknown_fighter,
-    text: "",
-    bg: "from-stone-300/70 to-stone-500/70",
-  });
-  const [fighter10, setFighter10]: any = useState({
-    url: unknown_fighter,
-    text: "",
-    bg: "from-stone-300/70 to-stone-500/70",
-  });
-  const [fighter11, setFighter11]: any = useState({
-    url: unknown_fighter,
-    text: "",
-    bg: "from-stone-300/70 to-stone-500/70",
-  });
-  const [fighter12, setFighter12]: any = useState({
-    url: unknown_fighter,
-    text: "",
-    bg: "from-stone-300/70 to-stone-500/70",
-  });
-  const [fighter20, setFighter20]: any = useState({
-    url: unknown_fighter,
-    text: "",
-    bg: "from-stone-300/70 to-stone-500/70",
-  });
-  const [fighter21, setFighter21]: any = useState({
-    url: unknown_fighter,
-    text: "",
-    bg: "from-stone-300/70 to-stone-500/70",
-  });
-  const [fighter22, setFighter22]: any = useState({
-    url: unknown_fighter,
-    text: "",
-    bg: "from-stone-300/70 to-stone-500/70",
-  });
-
-  const [filtersSelected, setFiltersSelected]: any = useState([]);
-  const [pushFirestore, setPushFirestore]: any = useState(false);
-  const [fighters, setFighters] = useState<Fighter[]>([]);
-  const [positionsFighters, setPositionsFighters]: any = useState({
-    position03: {},
-    position04: {},
-    position05: {},
-    position13: {},
-    position14: {},
-    position15: {},
-    position23: {},
-    position24: {},
-    position25: {},
-  });
-  const [difficulty, setDifficulty] = useState("MEDIUM");
-  const [timerLength, setTimerLength] = useState("-2");
-  const [hasExited, setHasExited] = useState(false);
-  const [isExiting, setIsExiting] = useState(false);
-  const [guestForfeitModal, setGuestForfeitModal] = useState(false);
-  const [hostForfeitModal, setHostForfeitModal] = useState(false);
-  const [rankedForfeitModal, setRankedForfeitModal] = useState(false);
-  const [guestForfeitVictoryModal, setGuestForfeitVictoryModal] =
-    useState(false);
-  const [guestExitConfirmModal, setGuestExitConfirmModal] = useState(false);
-  const [showWaitingGuest, setShowWaitingGuest] = useState(false);
-  const [userUsername, setUserUsername] = useState("");
-  const { width, height } = useWindowSize();
-
-  const [muted, setMuted] = useState<boolean>(() => {
-    try {
-      return JSON.parse(localStorage.getItem("muted") || "false");
-    } catch {
-      return false;
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem("muted", JSON.stringify(muted));
-    } catch {}
-  }, [muted]);
-
-  // Firestore'dan username'i çek
-  useEffect(() => {
-    if (currentUser?.email) {
-      const userRef = doc(db, "users", currentUser.email);
-      getDoc(userRef).then((docSnap) => {
-        if (docSnap.exists()) {
-          setUserUsername(docSnap.data().username || "");
-        }
-      });
-    }
-  }, [currentUser]);
-
-  // sfx helper
-  const playSfx = (src: string) => {
-    if (muted) return;
-    try {
-      const a = new Audio(src);
-      a.volume = 0.9;
-      a.play();
-    } catch {}
-  };
+  // sfx helper (from useGameRoom)
+  // const playSfx = (src: string) => { ... } // Already in useGameRoom
 
   useEffect(() => {
     if (gameState?.winner) {
@@ -208,7 +213,14 @@ const Room = () => {
       // Bu useEffect sadece bir kere tetiklenir, bu yüzden kontrol ekleyelim
       if (!gameState.statsUpdated) {
         // statsUpdated gibi bir flag kontrolü
-        updatePlayerStats(gameState.winner);
+        updatePlayerStats(
+          db,
+          gameState,
+          currentUser,
+          gameState.winner,
+          toast,
+          t,
+        );
         // Tekrar çalışmasını önlemek için odaya bir flag yazabiliriz
         if (roomId && role === "host") {
           const roomRef = doc(db, "rooms", roomId);
@@ -335,7 +347,7 @@ const Room = () => {
             }).then(() => {
               const hostEmail = gameState.hostEmail;
               const guestEmail = gameState.guestEmail;
-              updateWinRates(hostEmail, guestEmail);
+              updateWinRates(db, hostEmail, guestEmail);
             });
 
             // Modal aç - guest seçim yapabilir
@@ -483,9 +495,8 @@ const Room = () => {
         updatedData.positionsFighters &&
         Object.keys(updatedData.positionsFighters).length > 0
       ) {
-        setPositionsFighters(
-          getFightersByPositions(updatedData.positionsFighters),
-        );
+        const converted = getFightersByPositions(updatedData.positionsFighters);
+        setPositionsFighters(converted);
       }
 
       if (updatedData.fighter00) setFighter00(updatedData.fighter00);
@@ -520,6 +531,27 @@ const Room = () => {
       unsubscribe();
     };
   }, [roomId, role]);
+
+  // Initialize fighters with default values if not already set
+  useEffect(() => {
+    if (!gameState) return;
+
+    const defaultFighter = {
+      url: unknown_fighter,
+      text: "",
+      bg: "from-stone-300/70 to-stone-500/70",
+    };
+
+    if (!fighter00) setFighter00(gameState.fighter00 || defaultFighter);
+    if (!fighter01) setFighter01(gameState.fighter01 || defaultFighter);
+    if (!fighter02) setFighter02(gameState.fighter02 || defaultFighter);
+    if (!fighter10) setFighter10(gameState.fighter10 || defaultFighter);
+    if (!fighter11) setFighter11(gameState.fighter11 || defaultFighter);
+    if (!fighter12) setFighter12(gameState.fighter12 || defaultFighter);
+    if (!fighter20) setFighter20(gameState.fighter20 || defaultFighter);
+    if (!fighter21) setFighter21(gameState.fighter21 || defaultFighter);
+    if (!fighter22) setFighter22(gameState.fighter22 || defaultFighter);
+  }, [gameState]);
 
   useEffect(() => {
     if (role === "host" && !gameState) {
@@ -671,19 +703,34 @@ const Room = () => {
       }
 
       setDifficulty("MEDIUM");
-      startGame("30");
-      toast.success(t("room.bothPlayersReady"));
+
+      // Ranked maçta: getFilters çağrıl, sonra startGame
+      // getFilters state'leri set eder, sonra game başlayabilir
+      (async () => {
+        const payload = await getFilters();
+        if (payload) {
+          // attach payload to filtersArg without mutating the real filters array
+          const filtersArg: any = Array.isArray(filters)
+            ? [...filters]
+            : filters || [];
+          (filtersArg as any)._payload = payload;
+          await startGame("30", filtersArg);
+        } else {
+          await startGame("30");
+        }
+        toast.success(t("room.bothPlayersReady"));
+      })();
     }
   }, [
     gameState?.hostReady,
     gameState?.guestReady,
     gameState?.gameStarted,
     role,
-    gameState?.isRankedRoom, // Bağımlılığı ekle
+    gameState?.isRankedRoom,
   ]);
 
   useEffect(() => {
-    if (!roomId) return;
+    if (!roomId || isRankedRoom) return; // Ranked maçta skip - snapshot handle eder
 
     const updateGameState = async () => {
       try {
@@ -734,9 +781,9 @@ const Room = () => {
 
         await updateDoc(roomRef, {
           gameStarted: gameStarted,
-          difficulty: difficulty,
-          timer: timerLength,
-          timerLength: timerLength,
+          difficulty: difficulty || "MEDIUM",
+          timer: timerLength || "-2",
+          timerLength: timerLength || "-2",
           filtersSelected: updatedDataFilters,
           positionsFighters: updatedDataPositionFighters,
           turn: "red",
@@ -754,16 +801,18 @@ const Room = () => {
       }
     };
 
+    // Sadece pushFirestore=true olduğunda ve casual maçta çalış
     if (gameStarted && pushFirestore) {
       updateGameState();
     }
   }, [pushFirestore]);
 
-  useEffect(() => {
-    if (filters != undefined) {
-      getFilters();
-    }
-  }, [filters]);
+  // GetFilters controlled by updateGameState effect - don't call it here to avoid infinite loops
+  // useEffect(() => {
+  //   if (filters != undefined && (!filtersSelected || filtersSelected.length === 0)) {
+  //     getFilters();
+  //   }
+  // }, [filters, filtersSelected.length]);
 
   useEffect(() => {
     if (
@@ -878,8 +927,9 @@ const Room = () => {
 
   useEffect(() => {
     if (
-      fighter00.bg != "from-red-800 to-red-900" &&
-      fighter00.bg != "from-blue-800 to-blue-900"
+      fighter00 &&
+      fighter00?.bg != "from-red-800 to-red-900" &&
+      fighter00?.bg != "from-blue-800 to-blue-900"
     ) {
       setFighter00({
         ...fighter00,
@@ -887,8 +937,9 @@ const Room = () => {
       });
     }
     if (
-      fighter01.bg != "from-red-800 to-red-900" &&
-      fighter01.bg != "from-blue-800 to-blue-900"
+      fighter01 &&
+      fighter01?.bg != "from-red-800 to-red-900" &&
+      fighter01?.bg != "from-blue-800 to-blue-900"
     ) {
       setFighter01({
         ...fighter01,
@@ -896,8 +947,9 @@ const Room = () => {
       });
     }
     if (
-      fighter02.bg != "from-red-800 to-red-900" &&
-      fighter02.bg != "from-blue-800 to-blue-900"
+      fighter02 &&
+      fighter02?.bg != "from-red-800 to-red-900" &&
+      fighter02?.bg != "from-blue-800 to-blue-900"
     ) {
       setFighter02({
         ...fighter02,
@@ -905,8 +957,9 @@ const Room = () => {
       });
     }
     if (
-      fighter10.bg != "from-red-800 to-red-900" &&
-      fighter10.bg != "from-blue-800 to-blue-900"
+      fighter10 &&
+      fighter10?.bg != "from-red-800 to-red-900" &&
+      fighter10?.bg != "from-blue-800 to-blue-900"
     ) {
       setFighter10({
         ...fighter10,
@@ -914,8 +967,9 @@ const Room = () => {
       });
     }
     if (
-      fighter11.bg != "from-red-800 to-red-900" &&
-      fighter11.bg != "from-blue-800 to-blue-900"
+      fighter11 &&
+      fighter11?.bg != "from-red-800 to-red-900" &&
+      fighter11?.bg != "from-blue-800 to-blue-900"
     ) {
       setFighter11({
         ...fighter11,
@@ -923,8 +977,9 @@ const Room = () => {
       });
     }
     if (
-      fighter12.bg != "from-red-800 to-red-900" &&
-      fighter12.bg != "from-blue-800 to-blue-900"
+      fighter12 &&
+      fighter12?.bg != "from-red-800 to-red-900" &&
+      fighter12?.bg != "from-blue-800 to-blue-900"
     ) {
       setFighter12({
         ...fighter12,
@@ -932,8 +987,9 @@ const Room = () => {
       });
     }
     if (
-      fighter20.bg != "from-red-800 to-red-900" &&
-      fighter20.bg != "from-blue-800 to-blue-900"
+      fighter20 &&
+      fighter20?.bg != "from-red-800 to-red-900" &&
+      fighter20?.bg != "from-blue-800 to-blue-900"
     ) {
       setFighter20({
         ...fighter20,
@@ -941,8 +997,9 @@ const Room = () => {
       });
     }
     if (
-      fighter21.bg != "from-red-800 to-red-900" &&
-      fighter21.bg != "from-blue-800 to-blue-900"
+      fighter21 &&
+      fighter21?.bg != "from-red-800 to-red-900" &&
+      fighter21?.bg != "from-blue-800 to-blue-900"
     ) {
       setFighter21({
         ...fighter21,
@@ -950,8 +1007,9 @@ const Room = () => {
       });
     }
     if (
-      fighter22.bg != "from-red-800 to-red-900" &&
-      fighter22.bg != "from-blue-800 to-blue-900"
+      fighter22 &&
+      fighter22?.bg != "from-red-800 to-red-900" &&
+      fighter22?.bg != "from-blue-800 to-blue-900"
     ) {
       setFighter22({
         ...fighter22,
@@ -960,851 +1018,146 @@ const Room = () => {
     }
   }, [theme]);
 
-  const updatePlayerStats = async (winner: "red" | "blue" | "draw") => {
-    // 🚩 FORFEIT CHECK: Eğer forfeit olmuşsa, stats zaten transaction'da güncellendi, skip et
-    if (gameState?.isForfeited) {
-      return;
-    }
-
-    if (!gameState?.isRankedRoom) {
-      return;
-    }
-
-    const hostEmail = gameState.hostEmail;
-    const guestEmail = gameState.guestEmail;
-
-    if (!hostEmail || !guestEmail) {
-      console.error("❌ Host or guest email is missing for ranked match.");
-      return;
-    }
-
-    // 🔑 Current user'ın kim olduğunu belirle
-    const isHost = currentUser?.email === hostEmail;
-    const isGuest = currentUser?.email === guestEmail;
-
-    if (!isHost && !isGuest) {
-      console.error("❌ Current user is neither host nor guest.");
-      return;
-    }
-
-    const hostIsWinner = winner === "red";
-    const guestIsWinner = winner === "blue";
-
-    try {
-      if (isHost) {
-        // 🏠 HOST: Sadece kendi stats'ını güncelle
-        const hostRef = doc(db, "users", hostEmail);
-        const hostDoc = await getDoc(hostRef);
-
-        if (!hostDoc.exists()) {
-          throw "Host profile could not be found.";
-        }
-
-        const hostProfile = hostDoc.data();
-        const hostNewAchievements = { ...hostProfile.achievements };
-        const hostNewUnlockedTitles = [];
-
-        if (hostIsWinner) {
-          if (!hostProfile.achievements.firstWin) {
-            hostNewAchievements.firstWin = new Date().toISOString();
-            hostNewUnlockedTitles.push("First Blood");
-            toast.success(t("room.firstBloodUnlocked"));
-          }
-          const newWinCount = (hostProfile.stats.wins || 0) + 1;
-          if (newWinCount >= 10 && !hostProfile.achievements.tenWins) {
-            hostNewAchievements.tenWins = new Date().toISOString();
-            hostNewUnlockedTitles.push("Arena Master");
-            toast.success(t("room.arenaManagerUnlocked"));
-          }
-        }
-
-        await updateDoc(hostRef, {
-          "stats.points": increment(
-            hostIsWinner ? 15 : winner === "draw" ? 2 : -5,
-          ),
-          "stats.wins": increment(hostIsWinner ? 1 : 0),
-          "stats.losses": increment(guestIsWinner ? 1 : 0),
-          "stats.draws": increment(winner === "draw" ? 1 : 0),
-          "stats.totalGames": increment(1),
-          achievements: hostNewAchievements,
-          unlockedTitles: arrayUnion(...hostNewUnlockedTitles),
-        }).then(() => {
-          updateWinRates(hostEmail, guestEmail);
-        });
-
-        toast.success(t("room.rankedMatchCompleted"));
-      } else if (isGuest) {
-        // 👥 GUEST: Sadece kendi stats'ını güncelle
-        const guestRef = doc(db, "users", guestEmail);
-        const guestDoc = await getDoc(guestRef);
-
-        if (!guestDoc.exists()) {
-          throw "Guest profile could not be found.";
-        }
-
-        const guestProfile = guestDoc.data();
-        const guestNewAchievements = { ...guestProfile.achievements };
-        const guestNewUnlockedTitles = [];
-
-        if (guestIsWinner) {
-          if (!guestProfile.achievements.firstWin) {
-            guestNewAchievements.firstWin = new Date().toISOString();
-            guestNewUnlockedTitles.push("First Blood");
-            toast.success(t("room.firstBloodUnlocked"));
-          }
-          const newWinCount = (guestProfile.stats.wins || 0) + 1;
-          if (newWinCount >= 10 && !guestProfile.achievements.tenWins) {
-            guestNewAchievements.tenWins = new Date().toISOString();
-            guestNewUnlockedTitles.push("Arena Master");
-            toast.success(t("room.arenaManagerUnlocked"));
-          }
-        }
-
-        await updateDoc(guestRef, {
-          "stats.points": increment(
-            guestIsWinner ? 15 : winner === "draw" ? 2 : -5,
-          ),
-          "stats.wins": increment(guestIsWinner ? 1 : 0),
-          "stats.losses": increment(hostIsWinner ? 1 : 0),
-          "stats.draws": increment(winner === "draw" ? 1 : 0),
-          "stats.totalGames": increment(1),
-          achievements: guestNewAchievements,
-          unlockedTitles: arrayUnion(...guestNewUnlockedTitles),
-        }).then(() => {
-          updateWinRates(hostEmail, guestEmail);
-        });
-
-        toast.success(t("room.rankedMatchCompleted"));
-      }
-    } catch (error) {
-      console.error("❌ Failed to update player stats:", error);
-      toast.error(t("room.failedUpdateStats"));
-    }
-  };
-
-  // Win rate güncelleme fonksiyonu (future use)
-  const updateWinRates = async (hostEmail: string, guestEmail: string) => {
-    try {
-      const hostDoc = await getDoc(doc(db, "users", hostEmail));
-      if (hostDoc.exists()) {
-        const hostStats = hostDoc.data().stats;
-        const hostWinRate =
-          hostStats.totalGames > 0
-            ? (hostStats.wins / hostStats.totalGames) * 100
-            : 0;
-
-        await updateDoc(doc(db, "users", hostEmail), {
-          "stats.winRate": Math.round(hostWinRate * 100) / 100,
-        });
-      }
-
-      const guestDoc = await getDoc(doc(db, "users", guestEmail));
-      if (guestDoc.exists()) {
-        const guestStats = guestDoc.data().stats;
-        const guestWinRate =
-          guestStats.totalGames > 0
-            ? (guestStats.wins / guestStats.totalGames) * 100
-            : 0;
-
-        await updateDoc(doc(db, "users", guestEmail), {
-          "stats.winRate": Math.round(guestWinRate * 100) / 100,
-        });
-      }
-    } catch (error) {
-      console.error("Win rate güncelleme hatası:", error);
-    }
-  };
-
-  const resetTimerFirestore = async () => {
-    if (!roomId || !gameState) return;
-
-    // gameState'teki currentTimer değerini orijinal timer değerine resetle
-    // Örnek: Timer 45 saniye olarak set edilmişse, hep 45'e geri dön
-    const roomRef = doc(db, "rooms", roomId);
-
-    // Oyun başlarken kaydedilen orijinal timerLength'i bul
-    // gameState.originalTimerLength varsa onu, yoksa gameState'i okunacak başlangıç değeri al
-    // En basit: user "30", "45", "60" seçti, oyun başlarken kaydedildi, o değer hep reset olmalı
-    // Bunu bilmek için başlangıçtaki timerLength'i roomData'dan oku
-    const roomDoc = await getDoc(roomRef);
-    const originalTimer = roomDoc.data()?.timer || 30;
-
-    await updateDoc(roomRef, {
-      timerLength: originalTimer,
-      lastActivityAt: serverTimestamp(),
-      expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
-    });
-  };
-
-  const switchTurn = async () => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-
-    await updateDoc(roomRef, {
-      turn: gameState.turn == "red" ? "blue" : "red",
-      lastActivityAt: serverTimestamp(),
-      expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
-    });
-  };
-
-  const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
-    localStorage.setItem("language", lang);
-    setLanguageDropdown(false);
-  };
-
-  const handleLanguageClick = () => {
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(min-width: 768px)").matches
-    ) {
-      // Desktop / md+ -> open dropdown
-      setLanguageDropdown(!languageDropdown);
-    } else {
-      // Mobile -> toggle language directly
-      const newLang = i18n.language === "tr" ? "en" : "tr";
-      changeLanguage(newLang);
-    }
-  };
-
-  const startGame = async (customTimerLength?: string) => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-
-    const roomSnap = await getDoc(roomRef);
-    if (roomSnap.exists()) {
-      const data = roomSnap.data();
-      // Eğer oyun zaten devam ediyorsa ve fighterlar doluysa resetleme
-      const hasFighters =
-        data.fighter00?.text || data.fighter01?.text || data.fighter02?.text;
-      if (hasFighters && data.gameStarted) {
-        return;
-      }
-    }
-
-    const f: FilterDifficulty = Filters();
-
-    if (difficulty == "EASY") {
-      setFilters(f.easy);
-    } else if (difficulty == "MEDIUM") {
-      setFilters(f.medium);
-    } else {
-      setFilters(f.hard);
-    }
-
-    setGameStarted(true);
-
-    // ✅ FIRESTORE'A DA YAZALIM
-    // customTimerLength varsa onu kullan (ranked maçta), yoksa state'i kullan
-    const finalTimerLength = customTimerLength || timerLength;
-    await updateDoc(roomRef, {
-      gameStarted: true,
-      difficulty: difficulty,
-      timerLength: finalTimerLength,
-      lastActivityAt: serverTimestamp(),
-      expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
-    });
-
-    setPushFirestore(true);
-  };
-
-  // Room.tsx - fonksiyonların arasına ekle
-
-  const startNewRankedMatch = async () => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-
-    // Oyunu sıfırla ama ranked ayarları koru
-    await updateDoc(roomRef, {
-      gameStarted: false,
-      gameEnded: false,
-      winner: null,
-      turn: "red",
-      timerLength: "30", // Ranked için sabit
-      difficulty: "MEDIUM", // Ranked için sabit
-      filtersSelected: [],
-      positionsFighters: {},
-      hostReady: false,
-      guestReady: false,
-      hostWantsRematch: false, // SIFIRLA
-      guestWantsRematch: false, // SIFIRLA
-      fighter00: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter01: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter02: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter10: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter11: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter12: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter20: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter21: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter22: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      statsUpdated: false, // 🔑 REMATCH'TE STATS GÜNCELLEMESINI TETIKLE
-      lastActivityAt: serverTimestamp(),
-      expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
-    });
-
-    // Local state'leri de sıfırla
-    setGameStarted(false);
-    setShowConfetti(false);
-
-    toast.success(t("room.newRankedMatch"));
-  };
-
-  const getFilters = async () => {
-    // Eğer state'teki filters boşsa fallback al
-    let activeFilters: any = filters;
-    if (
-      !activeFilters ||
-      (Array.isArray(activeFilters) && activeFilters.length === 0)
-    ) {
-      const all = Filters();
-      activeFilters =
-        difficulty === "EASY"
-          ? all.easy
-          : difficulty === "HARD"
-            ? all.hard
-            : all.medium;
-      setFilters(activeFilters);
-    }
-
-    let isDone: boolean = false;
-    let finish = 0;
-
-    while (!isDone && finish < 1500) {
-      finish += 1;
-      const filters_arr: any = [];
-      while (filters_arr.length < 6) {
-        const random_index = Math.floor(Math.random() * activeFilters.length);
-        if (!filters_arr.includes(activeFilters[random_index])) {
-          filters_arr.push(activeFilters[random_index]);
-        }
-      }
-
-      if (!filters_arr[3] || !filters_arr[4] || !filters_arr[5]) {
-        console.error(
-          "HATA: filters_arr[3], filters_arr[4] veya filters_arr[5] undefined!",
-        );
-        continue;
-      }
-
-      const newPositions: any = {
-        position03: [],
-        position04: [],
-        position05: [],
-        position13: [],
-        position14: [],
-        position15: [],
-        position23: [],
-        position24: [],
-        position25: [],
-      };
-
-      for (let i = 0; i < 3; i++) {
-        const a = filters_arr[i]?.filter_fighters || [];
-        const b3 = filters_arr[3]?.filter_fighters || [];
-        const b4 = filters_arr[4]?.filter_fighters || [];
-        const b5 = filters_arr[5]?.filter_fighters || [];
-
-        const intersection3 = a.filter((fighter1: Fighter) =>
-          b3.some((fighter2: Fighter) => fighter1.Id === fighter2.Id),
-        );
-        const intersection4 = a.filter((fighter1: Fighter) =>
-          b4.some((fighter2: Fighter) => fighter1.Id === fighter2.Id),
-        );
-        const intersection5 = a.filter((fighter1: Fighter) =>
-          b5.some((fighter2: Fighter) => fighter1.Id === fighter2.Id),
-        );
-
-        if (
-          intersection3.length < 3 ||
-          intersection4.length < 3 ||
-          intersection5.length < 3
-        ) {
-          break;
-        }
-
-        if (i === 0) {
-          newPositions.position03 = intersection3;
-          newPositions.position04 = intersection4;
-          newPositions.position05 = intersection5;
-        } else if (i === 1) {
-          newPositions.position13 = intersection3;
-          newPositions.position14 = intersection4;
-          newPositions.position15 = intersection5;
-        } else if (i === 2) {
-          newPositions.position23 = intersection3;
-          newPositions.position24 = intersection4;
-          newPositions.position25 = intersection5;
-        }
-
-        if (i === 2) {
-          isDone = true;
-          break;
-        }
-      }
-
-      if (isDone) {
-        setPositionsFighters(newPositions);
-        setFiltersSelected(filters_arr);
-        return { filters_arr, newPositions };
-      }
-    }
-
-    return null;
-  };
-
-  const levenshteinDistance = (a: string, b: string): number => {
-    const matrix: number[][] = [];
-    for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-
-    for (let i = 1; i <= b.length; i++) {
-      for (let j = 1; j <= a.length; j++) {
-        if (b.charAt(i - 1) === a.charAt(j - 1)) {
-          matrix[i][j] = matrix[i - 1][j - 1];
-        } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1,
-            matrix[i][j - 1] + 1,
-            matrix[i - 1][j] + 1,
-          );
-        }
-      }
-    }
-    return matrix[b.length][a.length];
-  };
-
-  const filterByName = (name: string) => {
-    if (name.length < 4) {
-      setFighters([]);
-      return;
-    }
-
-    const nameLower = name.toLowerCase();
-    const inputWords = nameLower.split(/\s+/).filter((w) => w.length > 0);
-
-    const scoredFighters = fighters_url.map((fighter) => {
-      const fighterNameLower = fighter.Fighter.toLowerCase();
-      const fighterWords = fighterNameLower.split(/\s+/);
-
-      let totalScore = 0;
-      let matchCount = 0;
-
-      for (const inputWord of inputWords) {
-        for (const fighterWord of fighterWords) {
-          const distance = levenshteinDistance(inputWord, fighterWord);
-
-          // Tolerance: 1-2 character edits
-          if (distance <= 2) {
-            totalScore += 10 - distance;
-            matchCount++;
-            break;
-          }
-
-          // Include match (higher priority)
-          if (fighterWord.includes(inputWord)) {
-            totalScore += 15;
-            matchCount++;
-            break;
-          }
-        }
-      }
-
-      return { fighter, score: totalScore, matchCount };
-    });
-
-    // Filter and sort by relevance
-    const filteredFighters = scoredFighters
-      .filter((item) => item.matchCount > 0)
-      .sort((a, b) => b.score - a.score)
-      .map((item) => item.fighter);
-
-    setFighters(filteredFighters);
-  };
-
-  const toggleFighterPick = () => {
-    if (role == "host" && gameState.turn == "blue") {
-      toast.error(t("room.opponentsTurn"));
-      return;
-    } else if (role == "guest" && gameState.turn == "red") {
-      toast.error(t("room.opponentsTurn"));
-      return;
+  // Database functions imported from gameFirestore.ts
+  const handleResetTimer = () => resetTimerFirestore(roomId, gameState);
+  const handleSwitchTurn = () => switchTurn(roomId, gameState);
+
+  const changeLanguage = (lang: string) =>
+    changeLanguageHandler(lang, i18n, setLanguageDropdown);
+
+  const handleLanguageClick = () =>
+    handleLanguageClickHandler(
+      i18n,
+      languageDropdown,
+      setLanguageDropdown,
+      changeLanguage,
+    );
+
+  const startGame = async (customTimerLength?: string, filtersArg?: any) =>
+    startGameHandler(
+      roomId!,
+      timerLength,
+      difficulty,
+      customTimerLength,
+      // prefer explicit filtersArg (may contain _payload), otherwise pass current filters state
+      filtersArg !== undefined ? filtersArg : filters,
+      setFilters,
+      setGameStarted,
+      setPushFirestore,
+    );
+
+  const startNewRankedMatch = async () =>
+    startNewRankedMatchHandler(
+      roomId!,
+      setGameStarted,
+      setShowConfetti,
+      toast,
+      t,
+    );
+
+  const getFilters = async () =>
+    getFiltersHandler(
+      filters,
+      difficulty,
+      setFilters,
+      setPositionsFighters,
+      setFiltersSelected,
+    );
+
+  const filterByNameLocal = (name: string) =>
+    filterByNameHandler(name, fighters_url, setFighters);
+
+  const toggleFighterPick = () =>
+    toggleFighterPickHandler(role, gameState.turn, toast, t);
+
+  const openFighterPickModal = () => {
+    if (selected) {
     }
     const div = document.querySelector(".select-fighter");
-    div?.classList.toggle("hidden");
+    div?.classList.remove("hidden");
   };
 
-  const restartGame = async () => {
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-
-    await updateDoc(roomRef, {
-      gameStarted: false,
-      gameEnded: false,
-      winner: null,
-      turn: "red",
-      timerLength: "-2",
-      filtersSelected: [],
-      positionsFighters: {},
-      statsUpdated: false,
-      fighter00: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter01: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter02: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter10: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter11: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter12: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter20: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter21: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-      fighter22: {
-        url: unknown_fighter,
-        text: "",
-        bg: "from-stone-300/70 to-stone-500/70",
-      },
-    });
-
-    // local state'leri de sıfırla
-    setGameStarted(false);
-    setFiltersSelected([]);
-    setPushFirestore(false);
-    setPositionsFighters({
-      position03: {},
-      position04: {},
-      position05: {},
-      position13: {},
-      position14: {},
-      position15: {},
-      position23: {},
-      position24: {},
-      position25: {},
-    });
-
-    setFilters(null);
-    setFighter00({
-      url: unknown_fighter,
-      text: "",
-      bg: "from-stone-300/70 to-stone-500/70",
-    });
-    setFighter01({
-      url: unknown_fighter,
-      text: "",
-      bg: "from-stone-300/70 to-stone-500/70",
-    });
-    setFighter02({
-      url: unknown_fighter,
-      text: "",
-      bg: "from-stone-300/70 to-stone-500/70",
-    });
-    setFighter10({
-      url: unknown_fighter,
-      text: "",
-      bg: "from-stone-300/70 to-stone-500/70",
-    });
-    setFighter11({
-      url: unknown_fighter,
-      text: "",
-      bg: "from-stone-300/70 to-stone-500/70",
-    });
-    setFighter12({
-      url: unknown_fighter,
-      text: "",
-      bg: "from-stone-300/70 to-stone-500/70",
-    });
-    setFighter20({
-      url: unknown_fighter,
-      text: "",
-      bg: "from-stone-300/70 to-stone-500/70",
-    });
-    setFighter21({
-      url: unknown_fighter,
-      text: "",
-      bg: "from-stone-300/70 to-stone-500/70",
-    });
-    setFighter22({
-      url: unknown_fighter,
-      text: "",
-      bg: "from-stone-300/70 to-stone-500/70",
-    });
-    setTurn("red");
-  };
-
-  const updateBox = async (fighter: Fighter) => {
-    const picture =
-      fighter.Picture === "Unknown" ? unknown_fighter : fighter.Picture;
-    const name = fighter.Fighter;
-
-    if (role == "host" && gameState.turn == "blue") {
-      toast.error(t("room.opponentsTurn"));
-      return;
-    } else if (role == "guest" && gameState.turn == "red") {
-      toast.error(t("room.opponentsTurn"));
-      return;
+  const closeFighterPickModal = () => {
+    if (selected) {
     }
-
-    if (!roomId) return;
-
-    const roomRef = doc(db, "rooms", roomId);
-
-    const fighterMap: { [key: string]: keyof typeof positionsFighters } = {
-      fighter00: "position03",
-      fighter01: "position13",
-      fighter02: "position23",
-      fighter10: "position04",
-      fighter11: "position14",
-      fighter12: "position24",
-      fighter20: "position05",
-      fighter21: "position15",
-      fighter22: "position25",
-    };
-
-    if (!fighterMap[selected]) return;
-
-    const positionKey = fighterMap[selected];
-    if (!positionsFighters[positionKey].includes(fighter)) {
-      notify();
-      playSfx(wrong); // ❌ Yanlış seçim sesi
-      await updateDoc(roomRef, {
-        timerLength: gameState.timer,
-        turn: gameState.turn === "red" ? "blue" : "red",
-        lastActivityAt: serverTimestamp(),
-        expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
-      });
-    } else {
-      const bgColor =
-        gameState.turn === "red"
-          ? "from-red-800 to-red-900"
-          : "from-blue-800 to-blue-900";
-
-      const setterMap: { [key: string]: Function } = {
-        fighter00: setFighter00,
-        fighter01: setFighter01,
-        fighter02: setFighter02,
-        fighter10: setFighter10,
-        fighter11: setFighter11,
-        fighter12: setFighter12,
-        fighter20: setFighter20,
-        fighter21: setFighter21,
-        fighter22: setFighter22,
-      };
-
-      setterMap[selected]({ url: picture, text: name, bg: bgColor });
-
-      playSfx(correct); // ✅ Doğru seçim sesi
-      await updateDoc(roomRef, {
-        [selected]: {
-          // selected değişkenini key olarak kullan (fighter01, fighter02 vs.)
-          url: picture,
-          text: name,
-          bg:
-            gameState.turn === "red"
-              ? "from-red-800 to-red-900"
-              : "from-blue-800 to-blue-900",
-          fighterId: fighter.Id,
-        },
-        guest: { prev: gameState?.guest.now, now: guest },
-        timerLength: gameState.timer,
-        turn: gameState.turn === "red" ? "blue" : "red",
-        lastActivityAt: serverTimestamp(),
-        expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
-      });
+    const div = document.querySelector(".select-fighter");
+    if (div && !div.classList.contains("hidden")) {
+      div?.classList.add("hidden");
     }
-
-    setTurn(turn === "red" ? "blue" : "red");
-    //setTimer(timerLength);
-    toggleFighterPick();
-    resetInput();
-    //setFigters([]);
   };
 
-  const resetInput = () => {
-    const input: any = document.querySelector(".input-fighter");
-    input.value = "";
-  };
+  const restartGame = async () =>
+    restartGameHandler(
+      roomId!,
+      setGameStarted,
+      setFiltersSelected,
+      setPushFirestore,
+      setPositionsFighters,
+      setFilters,
+      setFighter00,
+      setFighter01,
+      setFighter02,
+      setFighter10,
+      setFighter11,
+      setFighter12,
+      setFighter20,
+      setFighter21,
+      setFighter22,
+      setTurn,
+    );
+
+  const updateBox = async (fighter: Fighter) =>
+    updateBoxHandler(
+      fighter,
+      roomId!,
+      selected,
+      positionsFighters,
+      gameState,
+      guest,
+      role,
+      turn,
+      toast,
+      t,
+      playSfx,
+      setFighter00,
+      setFighter01,
+      setFighter02,
+      setFighter10,
+      setFighter11,
+      setFighter12,
+      setFighter20,
+      setFighter21,
+      setFighter22,
+      setTurn,
+      toggleFighterPick,
+      resetInput,
+      notify,
+      correct,
+      wrong,
+      setSelected,
+    );
+
+  const resetInput = () => resetInputHandler();
 
   const checkWinner = () => {
-    if (!gameState) {
-      return;
-    }
-    const board = [
-      [
-        gameState?.fighter00.bg,
-        gameState?.fighter01.bg,
-        gameState?.fighter02.bg,
-      ],
-      [
-        gameState?.fighter10.bg,
-        gameState?.fighter11.bg,
-        gameState?.fighter12.bg,
-      ],
-      [
-        gameState?.fighter20.bg,
-        gameState?.fighter21.bg,
-        gameState?.fighter22.bg,
-      ],
-    ];
+    const result = checkWinnerLogic(gameState);
 
-    const winPatterns = [
-      // Yatay Kazanma
-      [
-        [0, 0],
-        [0, 1],
-        [0, 2],
-      ],
-      [
-        [1, 0],
-        [1, 1],
-        [1, 2],
-      ],
-      [
-        [2, 0],
-        [2, 1],
-        [2, 2],
-      ],
-      // Dikey Kazanma
-      [
-        [0, 0],
-        [1, 0],
-        [2, 0],
-      ],
-      [
-        [0, 1],
-        [1, 1],
-        [2, 1],
-      ],
-      [
-        [0, 2],
-        [1, 2],
-        [2, 2],
-      ],
-      // Çapraz Kazanma
-      [
-        [0, 0],
-        [1, 1],
-        [2, 2],
-      ],
-      [
-        [0, 2],
-        [1, 1],
-        [2, 0],
-      ],
-    ];
-
-    // 🎯 Kazanan var mı kontrol et
-    for (const pattern of winPatterns) {
-      const [a, b, c] = pattern;
-      const cellA = board[a[0]][a[1]];
-      const cellB = board[b[0]][b[1]];
-      const cellC = board[c[0]][c[1]];
-
-      if (!roomId) return;
-      const roomRef = doc(db, "rooms", roomId);
-
-      if (
-        cellA !== "from-stone-300/70 to-stone-500/70" &&
-        cellA === cellB &&
-        cellB === cellC
-      ) {
-        if (cellA.includes("red")) {
-          updateDoc(roomRef, {
-            winner: "red",
-          });
-          // updatePlayerStats("red"); KALDIR
-          playSfx(win);
-          return "red";
-        } else {
-          updateDoc(roomRef, {
-            winner: "blue",
-          });
-          // updatePlayerStats("blue"); KALDIR
-          playSfx(win);
-          return "blue";
-        }
-      }
+    if (!result) {
+      return null;
     }
 
-    // 🎯 Beraberlik kontrolü
-    const isBoardFull = board
-      .flat()
-      .every((cell) => cell !== "from-stone-300/70 to-stone-500/70");
+    if (!roomId) return;
 
-    if (isBoardFull) {
-      if (!roomId) return;
-      const roomRef = doc(db, "rooms", roomId);
-      updateDoc(roomRef, {
-        winner: "draw",
-        gameStarted: false,
-      });
+    if (result === "red") {
+      updateWinnerDb(roomId, "red");
+      playSfx(win);
+      return "red";
+    } else if (result === "blue") {
+      updateWinnerDb(roomId, "blue");
+      playSfx(win);
+      return "blue";
+    } else if (result === "Draw!") {
+      updateWinnerDb(roomId, "draw");
       playSfx(draw);
       return "Draw!";
     }
@@ -1812,245 +1165,54 @@ const Room = () => {
     return null;
   };
 
-  const handleExit = async () => {
-    if (!roomId || !playerName || !role || isExiting) return;
+  const notify = () => notifyHandler(toast, t);
 
-    // Ranked maçta oyun devam ederken host çıkmak isterse modal aç
-    if (
-      gameState?.isRankedRoom &&
-      gameState?.gameStarted &&
-      !gameState?.winner &&
-      role === "host"
-    ) {
-      setRankedForfeitModal(true);
-      return;
-    }
+  const handleExit = async () =>
+    handleExitHandler(
+      roomId!,
+      playerName,
+      role,
+      isExiting,
+      gameState,
+      currentUser,
+      isRankedRoom,
+      setRankedForfeitModal,
+      setGuestExitConfirmModal,
+      setIsExiting,
+      setHasExited,
+      navigate,
+      toast,
+      t,
+    );
 
-    // Ranked maçta oyun devam ederken guest çıkmak isterse modal aç
-    if (
-      gameState?.isRankedRoom &&
-      gameState?.gameStarted &&
-      !gameState?.winner &&
-      role === "guest"
-    ) {
-      setGuestExitConfirmModal(true);
-      return;
-    }
+  const handleRankedForfeit = async () =>
+    handleRankedForfeitHandler(
+      roomId!,
+      gameState,
+      navigate,
+      toast,
+      t,
+      setRankedForfeitModal,
+      setIsExiting,
+    );
 
-    setIsExiting(true);
-    const roomRef = doc(db, "rooms", roomId);
+  const handleGuestForfeit = async () =>
+    handleGuestForfeitHandler(
+      roomId!,
+      gameState,
+      navigate,
+      toast,
+      t,
+      setGuestExitConfirmModal,
+      setIsExiting,
+    );
 
-    try {
-      if (role === "host") {
-        // Host çıkarsa odayı tamamen sil
-        if (currentUser) {
-          // Transaction içinde silme işlemini gerçekleştir
-          await runTransaction(db, async (transaction) => {
-            // Önce odayı kontrol et
-            const roomDoc = await transaction.get(roomRef);
-
-            if (!roomDoc.exists()) {
-              return;
-            }
-
-            // Odayı sil
-            transaction.delete(roomRef);
-          });
-
-          // Toast mesajını göster ve 1.5 saniye sonra yönlendir
-          toast.success(t("room.roomDeleted"));
-          setTimeout(() => {
-            navigate("/menu");
-          }, 1500);
-        } else {
-          navigate("/menu");
-        }
-      } else if (role === "guest") {
-        // Guest çıkarsa sadece guest'i null yap
-        setHasExited(true); // Guest'in çıkış yaptığını işaretle
-        await updateDoc(roomRef, {
-          guest: { prev: gameState.guest.now || null, now: null },
-          gameStarted: false,
-        });
-        navigate("/menu");
-      }
-    } catch (error) {
-      console.error("Çıkış yapılırken hata oluştu:", error);
-      console.error(
-        "Hata detayı:",
-        error instanceof Error ? error.message : "Bilinmeyen hata",
-      );
-      toast.error(t("room.exitError"));
-      // Hata durumunda da ana sayfaya yönlendir
-      navigate("/menu");
-    } finally {
-      setIsExiting(false);
-    }
-  };
-
-  // Handle ranked forfeit - host loses, guest wins
-  const handleRankedForfeit = async () => {
-    if (!roomId || !gameState) return;
-
-    setRankedForfeitModal(false);
-    setIsExiting(true);
-
-    try {
-      const roomRef = doc(db, "rooms", roomId);
-      const hostRef = doc(db, "users", gameState.hostEmail);
-      const guestRef = doc(db, "users", gameState.guestEmail);
-
-      // Update game result - guest wins by forfeit
-      await runTransaction(db, async (transaction) => {
-        transaction.update(roomRef, {
-          winner: "guest",
-          forfeit: true,
-          gameStarted: false,
-          filtersSelected: [],
-          positionsFighters: {},
-        });
-
-        // Host loses, guest wins
-        transaction.update(hostRef, {
-          "stats.totalGames": increment(1),
-          "stats.losses": increment(1),
-        });
-
-        transaction.update(guestRef, {
-          "stats.totalGames": increment(1),
-          "stats.wins": increment(1),
-          "stats.points": increment(15),
-        });
-      });
-
-      toast.success(t("room.guestWinsForfeited"));
-
-      // Host goes to menu immediately
-      navigate("/menu");
-
-      // Delete room in background (don't wait)
-      runTransaction(db, async (transaction) => {
-        try {
-          const roomDoc = await transaction.get(roomRef);
-          if (roomDoc.exists()) {
-            transaction.delete(roomRef);
-          }
-        } catch (err) {
-          console.warn("Room deletion failed:", err);
-        }
-      }).catch((err) => console.warn("Room deletion error:", err));
-    } catch (error) {
-      console.error("Forfeit failed:", error);
-      toast.error(t("room.forfeitError"));
-      setIsExiting(false);
-    }
-  };
-
-  // Handle guest forfeit - host wins, guest loses
-  const handleGuestForfeit = async () => {
-    if (!roomId || !gameState) return;
-
-    setGuestExitConfirmModal(false);
-    setIsExiting(true);
-
-    try {
-      const hostEmail = gameState.hostEmail;
-      const guestEmail = gameState.guestEmail;
-
-      if (!hostEmail || !guestEmail) {
-        toast.error(t("room.couldNotDeterminePlayers"));
-        setIsExiting(false);
-        return;
-      }
-
-      const hostRef = doc(db, "users", hostEmail);
-      const guestRef = doc(db, "users", guestEmail);
-      const roomRef = doc(db, "rooms", roomId);
-
-      // Transaction: Update stats and room
-      await runTransaction(db, async (transaction) => {
-        const hostDoc = await transaction.get(hostRef);
-        const guestDoc = await transaction.get(guestRef);
-
-        if (!hostDoc.exists() || !guestDoc.exists()) {
-          throw new Error("User documents not found");
-        }
-
-        const hostStats = hostDoc.data()?.stats || {
-          totalGames: 0,
-          wins: 0,
-          losses: 0,
-          draws: 0,
-          points: 0,
-          winRate: 0,
-        };
-        const guestStats = guestDoc.data()?.stats || {
-          totalGames: 0,
-          wins: 0,
-          losses: 0,
-          draws: 0,
-          points: 0,
-          winRate: 0,
-        };
-
-        // Host wins, guest loses
-        const newHostStats = {
-          totalGames: hostStats.totalGames + 1,
-          wins: hostStats.wins + 1,
-          losses: hostStats.losses,
-          draws: hostStats.draws,
-          points: hostStats.points + 15,
-          winRate:
-            ((hostStats.wins + 1) / (hostStats.totalGames + 1)) * 100 || 0,
-        };
-
-        const newGuestStats = {
-          totalGames: guestStats.totalGames + 1,
-          wins: guestStats.wins,
-          losses: guestStats.losses + 1,
-          draws: guestStats.draws,
-          points: Math.max(0, guestStats.points - 5),
-          winRate: (guestStats.wins / (guestStats.totalGames + 1)) * 100 || 0,
-        };
-
-        transaction.update(hostRef, { stats: newHostStats });
-        transaction.update(guestRef, { stats: newGuestStats });
-
-        // Update room: host wins, forfeit flag, room reset
-        transaction.update(roomRef, {
-          winner: "red",
-          forfeit: true,
-          gameStarted: false,
-          filtersSelected: [],
-          positionsFighters: {},
-          statsUpdated: true,
-          lastActivityAt: serverTimestamp(),
-          expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
-        });
-      });
-
-      toast.success(t("room.hostWinsForfeited"));
-
-      // Delete room in background
-      runTransaction(db, async (transaction) => {
-        try {
-          const roomDoc = await transaction.get(roomRef);
-          if (roomDoc.exists()) {
-            transaction.delete(roomRef);
-          }
-        } catch (err) {
-          console.warn("Room deletion failed:", err);
-        }
-      }).catch((err) => console.warn("Room deletion error:", err));
-
-      // Guest goes to menu immediately
-      navigate("/menu");
-    } catch (error) {
-      console.error("Guest forfeit failed:", error);
-      toast.error(t("room.forfeitError"));
-      setIsExiting(false);
-    }
-  };
+  const selectedClass = (id: string) =>
+    selected === id
+      ? theme === "dark"
+        ? "pulse-border-dark"
+        : "pulse-border-light"
+      : "";
 
   // Listener for host when guest forfeits
   useEffect(() => {
@@ -2065,8 +1227,6 @@ const Room = () => {
       }, 4500);
     }
   }, [gameState?.forfeit, gameState?.winner, role, roomId, navigate]);
-
-  const notify = () => toast.error(t("room.fighterRequirements"));
 
   if (!gameState) {
     return (
@@ -2803,10 +1963,10 @@ const Room = () => {
                     onClick={() => {
                       restartGame();
                     }}
-                    className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 transition-all duration-300 ${
+                    className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 transition-all duration-300 ${
                       theme === "dark"
-                        ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-white"
-                        : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80"
+                        ? "bg-[#413a5d] border-slate-500/30 text-white"
+                        : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30"
                     }`}
                   >
                     {t("room.restartGame")}
@@ -2843,10 +2003,10 @@ const Room = () => {
                 {/* Turn bilgisi ve Skip butonu */}
                 {gameState?.turn == "red" ? (
                   <div
-                    className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
+                    className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                       theme === "dark"
-                        ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-red-400"
-                        : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-red-600"
+                        ? "bg-[#413a5d] border-slate-500/30 text-red-400"
+                        : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 text-red-600"
                     }`}
                   >
                     <p>
@@ -2858,14 +2018,14 @@ const Room = () => {
                     {role == "host" && (
                       <div
                         onClick={() => {
-                          switchTurn();
-                          resetTimerFirestore();
+                          handleSwitchTurn();
+                          handleResetTimer();
                         }}
                         className={`${
                           theme === "dark"
-                            ? "bg-slate-500 border-slate-700 text-slate-200"
-                            : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
-                        } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border hover:opacity-80 transition-opacity`}
+                            ? "bg-[#544d71] border-slate-700 text-slate-200"
+                            : "bg-[#eef1f3] border-slate-300 text-slate-900"
+                        } cursor-pointer xl:text-base text-xs px-2 shadow-lg border hover:opacity-80 transition-opacity`}
                       >
                         Skip
                       </div>
@@ -2873,10 +2033,10 @@ const Room = () => {
                   </div>
                 ) : (
                   <div
-                    className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 rounded-lg shadow-xl backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
+                    className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                       theme === "dark"
-                        ? "bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-slate-500/30 hover:from-slate-600/80 hover:to-slate-500/80 text-blue-400"
-                        : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 hover:from-gray-50/80 hover:to-white/80 text-blue-600"
+                        ? "bg-[#413a5d] border-slate-500/30 text-blue-400"
+                        : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 text-blue-600"
                     }`}
                   >
                     <p>
@@ -2888,14 +2048,14 @@ const Room = () => {
                     {role == "guest" && (
                       <div
                         onClick={() => {
-                          switchTurn();
-                          resetTimerFirestore();
+                          handleSwitchTurn();
+                          handleResetTimer();
                         }}
                         className={`${
                           theme === "dark"
-                            ? "bg-slate-500 border-slate-700 text-slate-200"
-                            : "bg-gradient-to-b from-slate-200 to-slate-300 border-slate-400 text-slate-900"
-                        } cursor-pointer xl:text-base text-xs px-2 rounded-lg shadow-lg border hover:opacity-80 transition-opacity`}
+                            ? "bg-[#544d71] border-slate-700 text-slate-200"
+                            : "bg-[#eef1f3] border-slate-300 text-slate-900"
+                        } cursor-pointer xl:text-base text-xs px-2 border hover:opacity-80 transition-opacity`}
                       >
                         Skip
                       </div>
@@ -2988,8 +2148,8 @@ const Room = () => {
                                 <div
                                   className={`p-4 rounded-lg border-2 ${
                                     theme === "dark"
-                                      ? "bg-yellow-900/30 border-yellow-600"
-                                      : "bg-yellow-100/50 border-yellow-400"
+                                      ? "bg-yellow-900/30 border-yellow-600 text-white"
+                                      : "bg-yellow-100/50 border-yellow-400 text-black"
                                   }`}
                                 >
                                   <h2 className="font-semibold text-lg mb-2 flex items-center justify-center gap-2">
@@ -3000,13 +2160,13 @@ const Room = () => {
                                   </h2>
                                   <div className="space-y-2 text-sm">
                                     <div className="flex justify-between items-center">
-                                      <span>{t("room.difficulty")}:</span>
+                                      <span>{t("room.difficulty")}</span>
                                       <span className="font-bold text-orange-500">
                                         MEDIUM
                                       </span>
                                     </div>
                                     <div className="flex justify-between items-center">
-                                      <span>{t("room.timer")}:</span>
+                                      <span>{t("room.timer")}</span>
                                       <span className="font-bold text-blue-500">
                                         {t("room.thirtySeconds")}
                                       </span>
@@ -3032,8 +2192,8 @@ const Room = () => {
                                 <div
                                   className={`p-3 rounded-lg border ${
                                     theme === "dark"
-                                      ? "bg-slate-700/50 border-slate-600"
-                                      : "bg-slate-100 border-slate-300"
+                                      ? "bg-slate-700/50 border-slate-600 text-white"
+                                      : "bg-slate-100 border-slate-300 text-black"
                                   }`}
                                 >
                                   <div className="space-y-2 text-sm">
@@ -3180,7 +2340,7 @@ const Room = () => {
                         theme === "dark"
                           ? "border-stone-500 bg-stone-700/70"
                           : "border-stone-500 bg-stone-300/70"
-                      } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                      } backdrop-blur-md text-center flex items-center justify-center p-1`}
                     >
                       <div>
                         <div className="flex items-center justify-center">
@@ -3196,7 +2356,7 @@ const Room = () => {
                         theme === "dark"
                           ? "border-stone-500 bg-stone-700/70"
                           : "border-stone-500 bg-stone-300/70"
-                      } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                      } backdrop-blur-md text-center flex items-center justify-center p-1`}
                     >
                       {gameState != null &&
                       gameState?.filtersSelected.length > 0 ? (
@@ -3244,7 +2404,7 @@ const Room = () => {
                         theme === "dark"
                           ? "border-stone-500 bg-stone-700/70"
                           : "border-stone-500 bg-stone-300/70"
-                      } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                      } backdrop-blur-md text-center flex items-center justify-center p-1`}
                     >
                       {gameState?.filtersSelected.length > 0 ? (
                         <div className="w-full">
@@ -3291,7 +2451,7 @@ const Room = () => {
                         theme === "dark"
                           ? "border-stone-500 bg-stone-700/70"
                           : "border-stone-500 bg-stone-300/70"
-                      } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                      } backdrop-blur-md text-center flex items-center justify-center p-1`}
                     >
                       {gameState?.filtersSelected.length > 0 ? (
                         <div className="w-full">
@@ -3334,13 +2494,13 @@ const Room = () => {
                       )}
                     </div>
                   </div>
-                  <div className={`flex gap-[2px] text-white`}>
+                  <div className={`flex gap-[2px] mt-[2px] text-white`}>
                     <div
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                         theme === "dark"
                           ? "border-stone-500 bg-stone-700/70"
                           : "border-stone-500 bg-stone-300/70"
-                      } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                      } backdrop-blur-md text-center flex items-center justify-center p-1`}
                     >
                       {gameState?.filtersSelected.length > 0 ? (
                         <div className="w-full">
@@ -3388,7 +2548,7 @@ const Room = () => {
                           gameState.fighter00.bg ===
                           "from-stone-300/70 to-stone-500/70"
                         ) {
-                          toggleFighterPick();
+                          openFighterPickModal();
                           setSelected("fighter00");
                         } else {
                           toast.info(t("room.fighterAlreadySelected"));
@@ -3396,12 +2556,22 @@ const Room = () => {
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                         theme === "dark"
-                          ? "border-stone-700"
+                          ? "border-stone-500"
                           : "border-stone-500"
-                      } rounded-lg shadow-md bg-gradient-to-b ${
+                      } shadow-md bg-gradient-to-b ${
                         gameState.fighter00.bg
-                      } backdrop-blur-md text-center flex items-center justify-center`}
+                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter00")}`}
                     >
+                      {selected === "fighter00" && (
+                        <>
+                          <span
+                            className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                          />
+                          <span
+                            className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                          />
+                        </>
+                      )}
                       <div className="w-full">
                         <div className="flex justify-center">
                           <img
@@ -3427,7 +2597,7 @@ const Room = () => {
                           gameState.fighter01.bg ===
                           "from-stone-300/70 to-stone-500/70"
                         ) {
-                          toggleFighterPick();
+                          openFighterPickModal();
                           setSelected("fighter01");
                         } else {
                           toast.info(t("room.fighterAlreadySelected"));
@@ -3435,12 +2605,22 @@ const Room = () => {
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                         theme === "dark"
-                          ? "border-stone-700"
+                          ? "border-stone-500"
                           : "border-stone-500"
-                      } rounded-lg shadow-md bg-gradient-to-b ${
+                      } shadow-md bg-gradient-to-b ${
                         gameState.fighter01.bg
-                      } backdrop-blur-md text-center flex items-center justify-center`}
+                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter01")}`}
                     >
+                      {selected === "fighter01" && (
+                        <>
+                          <span
+                            className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                          />
+                          <span
+                            className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                          />
+                        </>
+                      )}
                       <div className="w-full">
                         <div className="flex justify-center">
                           <img
@@ -3466,7 +2646,7 @@ const Room = () => {
                           gameState.fighter02.bg ===
                           "from-stone-300/70 to-stone-500/70"
                         ) {
-                          toggleFighterPick();
+                          openFighterPickModal();
                           setSelected("fighter02");
                         } else {
                           toast.info(t("room.fighterAlreadySelected"));
@@ -3474,12 +2654,22 @@ const Room = () => {
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                         theme === "dark"
-                          ? "border-stone-700"
+                          ? "border-stone-500"
                           : "border-stone-500"
-                      } rounded-lg shadow-md bg-gradient-to-b ${
+                      } shadow-md bg-gradient-to-b ${
                         gameState.fighter02.bg
-                      } backdrop-blur-md text-center flex items-center justify-center`}
+                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter02")}`}
                     >
+                      {selected === "fighter02" && (
+                        <>
+                          <span
+                            className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                          />
+                          <span
+                            className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                          />
+                        </>
+                      )}
                       <div className="w-full">
                         <div className="flex justify-center">
                           <img
@@ -3500,13 +2690,13 @@ const Room = () => {
                       </div>
                     </div>
                   </div>
-                  <div className={`flex gap-[2px] text-white`}>
+                  <div className={`flex gap-[2px] mt-[2px] text-white`}>
                     <div
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                         theme === "dark"
                           ? "border-stone-500 bg-stone-700/70"
                           : "border-stone-500 bg-stone-300/70"
-                      } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                      } backdrop-blur-md text-center flex items-center justify-center p-1`}
                     >
                       {gameState?.filtersSelected.length > 0 ? (
                         <div className="w-full">
@@ -3554,7 +2744,7 @@ const Room = () => {
                           gameState.fighter10.bg ===
                           "from-stone-300/70 to-stone-500/70"
                         ) {
-                          toggleFighterPick();
+                          openFighterPickModal();
                           setSelected("fighter10");
                         } else {
                           toast.info(t("room.fighterAlreadySelected"));
@@ -3562,12 +2752,22 @@ const Room = () => {
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                         theme === "dark"
-                          ? "border-stone-700"
+                          ? "border-stone-500"
                           : "border-stone-500"
-                      } rounded-lg shadow-md bg-gradient-to-b ${
+                      } shadow-md bg-gradient-to-b ${
                         gameState.fighter10.bg
-                      } backdrop-blur-md text-center flex items-center justify-center`}
+                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter10")}`}
                     >
+                      {selected === "fighter10" && (
+                        <>
+                          <span
+                            className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                          />
+                          <span
+                            className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                          />
+                        </>
+                      )}
                       <div className="w-full">
                         <div className="flex justify-center">
                           <img
@@ -3593,7 +2793,7 @@ const Room = () => {
                           gameState.fighter11.bg ===
                           "from-stone-300/70 to-stone-500/70"
                         ) {
-                          toggleFighterPick();
+                          openFighterPickModal();
                           setSelected("fighter11");
                         } else {
                           toast.info(t("room.fighterAlreadySelected"));
@@ -3601,12 +2801,22 @@ const Room = () => {
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                         theme === "dark"
-                          ? "border-stone-700"
+                          ? "border-stone-500"
                           : "border-stone-500"
-                      } rounded-lg shadow-md bg-gradient-to-b ${
+                      } shadow-md bg-gradient-to-b ${
                         gameState.fighter11.bg
-                      } backdrop-blur-md text-center flex items-center justify-center`}
+                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter11")}`}
                     >
+                      {selected === "fighter11" && (
+                        <>
+                          <span
+                            className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                          />
+                          <span
+                            className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                          />
+                        </>
+                      )}
                       <div className="w-full">
                         <div className="flex justify-center">
                           <img
@@ -3632,7 +2842,7 @@ const Room = () => {
                           gameState.fighter12.bg ===
                           "from-stone-300/70 to-stone-500/70"
                         ) {
-                          toggleFighterPick();
+                          openFighterPickModal();
                           setSelected("fighter12");
                         } else {
                           toast.info(t("room.fighterAlreadySelected"));
@@ -3640,12 +2850,22 @@ const Room = () => {
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                         theme === "dark"
-                          ? "border-stone-700"
+                          ? "border-stone-500"
                           : "border-stone-500"
-                      } rounded-lg shadow-md bg-gradient-to-b ${
+                      } shadow-md bg-gradient-to-b ${
                         gameState.fighter12.bg
-                      } backdrop-blur-md text-center flex items-center justify-center`}
+                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter12")}`}
                     >
+                      {selected === "fighter12" && (
+                        <>
+                          <span
+                            className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                          />
+                          <span
+                            className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                          />
+                        </>
+                      )}
                       <div className="w-full">
                         <div className="flex justify-center">
                           <img
@@ -3666,13 +2886,13 @@ const Room = () => {
                       </div>
                     </div>
                   </div>
-                  <div className={`flex gap-[2px] text-white`}>
+                  <div className={`flex gap-[2px] mt-[2px] text-white`}>
                     <div
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
                         theme === "dark"
                           ? "border-stone-500 bg-stone-700/70"
                           : "border-stone-500 bg-stone-300/70"
-                      } backdrop-blur-md rounded-lg text-center flex items-center justify-center p-1`}
+                      } backdrop-blur-md text-center flex items-center justify-center p-1`}
                     >
                       {gameState?.filtersSelected.length > 0 ? (
                         <div className="w-full">
@@ -3720,7 +2940,7 @@ const Room = () => {
                           gameState.fighter20.bg ===
                           "from-stone-300/70 to-stone-500/70"
                         ) {
-                          toggleFighterPick();
+                          openFighterPickModal();
                           setSelected("fighter20");
                         } else {
                           toast.info(t("room.fighterAlreadySelected"));
@@ -3728,12 +2948,22 @@ const Room = () => {
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                         theme === "dark"
-                          ? "border-stone-700"
+                          ? "border-stone-500"
                           : "border-stone-500"
-                      } rounded-lg shadow-md bg-gradient-to-b ${
+                      } shadow-md bg-gradient-to-b ${
                         gameState.fighter20.bg
-                      } backdrop-blur-md text-center flex items-center justify-center`}
+                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter20")}`}
                     >
+                      {selected === "fighter20" && (
+                        <>
+                          <span
+                            className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                          />
+                          <span
+                            className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                          />
+                        </>
+                      )}
                       <div className="w-full">
                         <div className="flex justify-center">
                           <img
@@ -3759,7 +2989,7 @@ const Room = () => {
                           gameState.fighter21.bg ===
                           "from-stone-300/70 to-stone-500/70"
                         ) {
-                          toggleFighterPick();
+                          openFighterPickModal();
                           setSelected("fighter21");
                         } else {
                           toast.info(t("room.fighterAlreadySelected"));
@@ -3767,12 +2997,22 @@ const Room = () => {
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                         theme === "dark"
-                          ? "border-stone-700"
+                          ? "border-stone-500"
                           : "border-stone-500"
-                      } rounded-lg shadow-md bg-gradient-to-b ${
+                      } shadow-md bg-gradient-to-b ${
                         gameState.fighter21.bg
-                      } backdrop-blur-md text-center flex items-center justify-center`}
+                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter21")}`}
                     >
+                      {selected === "fighter21" && (
+                        <>
+                          <span
+                            className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                          />
+                          <span
+                            className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                          />
+                        </>
+                      )}
                       <div className="w-full">
                         <div className="flex justify-center">
                           <img
@@ -3798,7 +3038,7 @@ const Room = () => {
                           gameState.fighter22.bg ===
                           "from-stone-300/70 to-stone-500/70"
                         ) {
-                          toggleFighterPick();
+                          openFighterPickModal();
                           setSelected("fighter22");
                         } else {
                           toast.info(t("room.fighterAlreadySelected"));
@@ -3806,12 +3046,22 @@ const Room = () => {
                       }}
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
                         theme === "dark"
-                          ? "border-stone-700"
+                          ? "border-stone-500"
                           : "border-stone-500"
-                      } rounded-lg shadow-md bg-gradient-to-b ${
+                      } shadow-md bg-gradient-to-b ${
                         gameState.fighter22.bg
-                      } backdrop-blur-md text-center flex items-center justify-center`}
+                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter22")}`}
                     >
+                      {selected === "fighter22" && (
+                        <>
+                          <span
+                            className={`absolute top-[3px] right-[3px] w-3 h-3 border-t-2 border-r-2 ${cornerColor} corner-pulse pointer-events-none`}
+                          />
+                          <span
+                            className={`absolute bottom-[3px] left-[3px] w-3 h-3 border-b-2 border-l-2 ${cornerColor}  corner-pulse pointer-events-none`}
+                          />
+                        </>
+                      )}
                       <div className="w-full">
                         <div className="flex justify-center">
                           <img
@@ -3833,20 +3083,20 @@ const Room = () => {
                     </div>
                   </div>
                   <div
-                    className={`absolute hidden select-fighter backdrop-blur-md  bg-gradient-to-b w-full text-white bottom-0 ${
+                    className={`absolute hidden select-fighter backdrop-blur-md w-full text-white bottom-0 ${
                       theme === "dark"
-                        ? "from-stone-700 to-stone-800 border-stone-600"
-                        : "from-stone-200 to-stone-400 border-stone-400"
-                    } rounded-lg border shadow-lg left-0`}
+                        ? "bg-[#413b5d] border-stone-600"
+                        : "bg-[#d1d3de] to-stone-400 border-stone-400"
+                    } border shadow-lg left-0`}
                   >
                     <div className="p-2 w-full">
                       <input
                         type="text"
                         onChange={(e) => {
-                          filterByName(e.target.value);
+                          filterByNameLocal(e.target.value);
                         }}
                         placeholder={t("game.searchForFighter")}
-                        className="bg-white input-fighter text-black xl:text-base text-sm px-3 w-full py-1 rounded-lg hover:outline-0 focus:outline-1 outline-stone-500 shadow-lg"
+                        className="bg-white input-fighter text-black xl:text-base text-sm px-3 w-full py-1 hover:outline-0 focus:outline-1 outline-stone-500 shadow-lg"
                       />
                       {fighters && fighters.length > 0 ? (
                         <div className="w-full h-48 overflow-scroll overflow-x-hidden">
@@ -3858,9 +3108,9 @@ const Room = () => {
                               key={key}
                               className={`flex items-center border cursor-pointer gap-6 my-3 px-2 pt-2 bg-gradient-to-r ${
                                 theme === "dark"
-                                  ? "from-stone-800 to-stone-900 border-stone-900 text-white"
-                                  : "from-stone-300/70 to-stone-500/70 border-stone-400 text-black"
-                              } shadow-lg rounded-lg`}
+                                  ? "from-[#393453] to-[#221f32] border-stone-900 text-white"
+                                  : "from-stone-300/70 to-stone-400/70 border-stone-400 text-black"
+                              } shadow-lg`}
                             >
                               <img
                                 src={
@@ -3885,12 +3135,12 @@ const Room = () => {
                       <div className="flex justify-end py-2">
                         <button
                           onClick={() => {
-                            toggleFighterPick();
+                            closeFighterPickModal();
                           }}
                           className={` ${
                             theme === "dark"
-                              ? "bg-stone-800 text-white border-stone-600"
-                              : "bg-stone-300/70 text-black border-stone-400"
+                              ? "bg-[#232034] text-white border-[#403a5d]"
+                              : "bg-[#c7c8d3] text-black border-[#dfe2ee]"
                           } px-6 py-1 font-semibold rounded-tr-lg rounded-bl-lg shadow-lg border cursor-pointer`}
                         >
                           {t("room.cancel")}
@@ -3936,8 +3186,8 @@ const Room = () => {
                       <div
                         className={`p-4 rounded-lg border-2 ${
                           theme === "dark"
-                            ? "bg-yellow-900/30 border-yellow-600"
-                            : "bg-yellow-100/50 border-yellow-400"
+                            ? "bg-yellow-900/30 border-yellow-600 text-white"
+                            : "bg-yellow-100/50 border-yellow-400 text-black"
                         }`}
                       >
                         <h2 className="font-semibold text-lg mb-2 flex items-center justify-center gap-2">
@@ -3948,13 +3198,13 @@ const Room = () => {
                         </h2>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between items-center">
-                            <span>{t("room.difficulty")}:</span>
+                            <span>{t("room.difficulty")}</span>
                             <span className="font-bold text-orange-500">
                               {t("room.medium")}
                             </span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span>{t("room.timer")}:</span>
+                            <span>{t("room.timer")}</span>
                             <span className="font-bold text-blue-500">
                               {t("room.thirtySeconds")}
                             </span>
@@ -3977,8 +3227,8 @@ const Room = () => {
                       <div
                         className={`p-3 rounded-lg border ${
                           theme === "dark"
-                            ? "bg-slate-700/50 border-slate-600"
-                            : "bg-slate-100 border-slate-300"
+                            ? "bg-slate-700/50 border-slate-600 text-white"
+                            : "bg-slate-100 border-slate-300 text-black"
                         }`}
                       >
                         <div className="space-y-2 text-sm">
@@ -4128,8 +3378,8 @@ const Room = () => {
                         <div
                           className={`p-4 rounded-lg border-2 ${
                             theme === "dark"
-                              ? "bg-yellow-900/30 border-yellow-600"
-                              : "bg-yellow-100/50 border-yellow-400"
+                              ? "bg-yellow-900/30 border-yellow-600 text-white"
+                              : "bg-yellow-100/50 border-yellow-400 text-black"
                           }`}
                         >
                           <h2 className="font-semibold text-lg mb-2 flex items-center justify-center gap-2">
@@ -4140,13 +3390,13 @@ const Room = () => {
                           </h2>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between items-center">
-                              <span>{t("room.difficulty")}:</span>
+                              <span>{t("room.difficulty")}</span>
                               <span className="font-bold text-orange-500">
                                 {t("room.medium")}
                               </span>
                             </div>
                             <div className="flex justify-between items-center">
-                              <span>{t("room.timer")}:</span>
+                              <span>{t("room.timer")}</span>
                               <span className="font-bold text-blue-500">
                                 {t("room.thirtySeconds")}
                               </span>
@@ -4171,8 +3421,8 @@ const Room = () => {
                         <div
                           className={`p-3 rounded-lg border ${
                             theme === "dark"
-                              ? "bg-slate-700/50 border-slate-600"
-                              : "bg-slate-100 border-slate-300"
+                              ? "bg-slate-700/50 border-slate-600 text-white"
+                              : "bg-slate-100 border-slate-300 text-black"
                           }`}
                         >
                           <div className="space-y-2 text-sm">

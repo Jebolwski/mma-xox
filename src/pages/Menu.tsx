@@ -1236,8 +1236,8 @@ const Menu = () => {
               <div
                 className={`p-4 rounded-lg mb-6 ${
                   theme === "dark"
-                    ? "bg-slate-700/50 border border-slate-600"
-                    : "bg-slate-100 border border-slate-300"
+                    ? "bg-slate-700/50 text-slate-200 border border-slate-600"
+                    : "bg-slate-100 text-slate-700 border border-slate-300"
                 }`}
               >
                 <div className="text-sm space-y-1">
