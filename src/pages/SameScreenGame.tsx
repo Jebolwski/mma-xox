@@ -1153,7 +1153,7 @@ function SameScreenGame() {
                 onClick={() => {
                   if (!isGameOver) setShowRestartModal(true);
                 }}
-                className={`z-30 flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 transition-all duration-300 ${
+                className={`flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 transition-all duration-300 ${
                   theme === "dark"
                     ? "bg-gradient-to-r from-[#2b2c57] to-[#2b2740] border-slate-500/30 text-white"
                     : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 text-black"
@@ -1179,7 +1179,7 @@ function SameScreenGame() {
               </div>
               {turn == "red" ? (
                 <div
-                  className={`z-30 cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
+                  className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
                       ? "bg-gradient-to-r from-[#2b2c57] to-[#2b2740] border-slate-500/30 text-red-400"
                       : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 text-red-600"
@@ -1205,7 +1205,7 @@ function SameScreenGame() {
                 </div>
               ) : (
                 <div
-                  className={`z-30 cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
+                  className={`cursor-pointer flex gap-4 items-center xl:text-base text-xs font-semibold w-fit px-6 py-2 shadow-md backdrop-blur-sm border-2 duration-200 transition-all duration-300 ${
                     theme === "dark"
                       ? "bg-gradient-to-r from-[#2b2c57] to-[#2b2740] border-slate-500/30 text-blue-400"
                       : "bg-gradient-to-r from-white/80 to-gray-100/80 border-gray-200/30 text-blue-600"
