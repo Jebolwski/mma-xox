@@ -55,6 +55,8 @@ import koFlag from "../assets/kr.png";
 import frFlag from "../assets/fr.png";
 import swFlag from "../assets/sw.png";
 import plFlag from "../assets/pl.png";
+import itFlag from "../assets/it.png";
+import nlFlag from "../assets/nl.png";
 import unknown_fighter from "../assets/unknown.png";
 
 const Room = () => {
@@ -69,6 +71,7 @@ const Room = () => {
   const [searchParams] = useSearchParams();
   const role = stateRole || searchParams.get("role");
   const playerName = statePlayerName || searchParams.get("name");
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const isRanked = stateIsRanked ?? searchParams.get("ranked") === "true";
   const { theme, toggleTheme } = useContext(ThemeContext);
   const cornerColor = theme === "dark" ? "border-white/70" : "border-black/70";
@@ -1156,18 +1159,8 @@ const Room = () => {
   };
 
   const handleLanguageClick = () => {
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(min-width: 768px)").matches
-    ) {
-      // Desktop / md+ -> open dropdown
-      setLanguageDropdown(!languageDropdown);
-    } else {
-      // Mobile -> toggle language directly
-      const newLang = i18n.language === "tr" ? "en" : "tr";
-      changeLanguage(newLang);
-    }
+    // Always open dropdown for all screen sizes
+    setLanguageDropdown(!languageDropdown);
   };
 
   const startGame = async (customTimerLength?: string) => {
@@ -2205,10 +2198,13 @@ const Room = () => {
                 />
               )}
             </div>
-            <div className="relative">
+            <div
+              className="relative"
+              ref={dropdownRef}
+            >
               <button
                 onClick={handleLanguageClick}
-                className="lg:w-[50px] lg:h-[50px] w-[46px] h-[46px] bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900 dark:to-cyan-900 border border-slate-500 flex items-center justify-center rounded-full cursor-pointer transition-all hover:scale-110 shadow-blue-300/50 dark:shadow-blue-900/50 duration-300 overflow-hidden"
+                className="lg:w-[50px] lg:h-[50px] w-[46px] h-[46px] bg-gradient-to-br from-blue-100/75 to-cyan-100/75 dark:from-blue-900/75 dark:to-cyan-900/75 border border-slate-500 flex items-center justify-center rounded-full cursor-pointer transition-all hover:scale-110 shadow-blue-300/50 dark:shadow-blue-900/50 duration-300 overflow-hidden"
                 title="Change Language"
               >
                 <img
@@ -2239,7 +2235,11 @@ const Room = () => {
                                             ? swFlag
                                             : i18n.language === "pl"
                                               ? plFlag
-                                              : enFlag
+                                              : i18n.language === "it"
+                                                ? itFlag
+                                                : i18n.language === "nl"
+                                                  ? nlFlag
+                                                  : enFlag
                   }
                   alt={
                     i18n.language === "tr"
@@ -2268,7 +2268,11 @@ const Room = () => {
                                             ? "Swedish"
                                             : i18n.language === "pl"
                                               ? "Polish"
-                                              : "English"
+                                              : i18n.language === "it"
+                                                ? "Italian"
+                                                : i18n.language === "nl"
+                                                  ? "Dutch"
+                                                  : "English"
                   }
                   className="w-full h-full rounded-full object-cover"
                 />
@@ -2277,10 +2281,10 @@ const Room = () => {
               {/* Dropdown Menu */}
               {languageDropdown && (
                 <div
-                  className={`z-60 w-40 absolute top-14 left-0 rounded-tr-xl rounded-bl-xl border overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20 ${
+                  className={`z-60 w-40 absolute top-14 left-0 rounded-tr-xl rounded-bl-xl border backdrop-blur-md overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 z-20 ${
                     theme === "dark"
-                      ? "bg-gradient-to-r from-slate-700 to-slate-800 text-white border-slate-500/40 shadow-2xl language-dropdown-dark"
-                      : "bg-gradient-to-r from-slate-100 to-slate-300 text-slate-800 border-slate-500/40 language-dropdown-light"
+                      ? "bg-gradient-to-r from-slate-700/50 to-slate-800/50 text-white border-slate-500/40 shadow-2xl language-dropdown-dark"
+                      : "bg-gradient-to-r from-slate-100/75 to-slate-300/75 text-slate-800 border-slate-500/40 language-dropdown-light"
                   }`}
                   style={{ height: "195px", overflowY: "auto" }}
                 >
@@ -2330,51 +2334,6 @@ const Room = () => {
                     <span className="font-medium">Русский</span>
                   </button>
                   <button
-                    onClick={() => changeLanguage("ja")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
-                      theme === "dark"
-                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
-                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
-                    }`}
-                  >
-                    <img
-                      src={jaFlag}
-                      alt="Japanese"
-                      className="w-6 h-6 rounded-full object-cover"
-                    />
-                    <span className="font-medium">日本語</span>
-                  </button>
-                  <button
-                    onClick={() => changeLanguage("pl")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
-                      theme === "dark"
-                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
-                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
-                    }`}
-                  >
-                    <img
-                      src={plFlag}
-                      alt="Polish"
-                      className="w-6 h-6 rounded-full object-cover"
-                    />
-                    <span className="font-medium">Polski</span>
-                  </button>
-                  <button
-                    onClick={() => changeLanguage("fr")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
-                      theme === "dark"
-                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
-                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
-                    }`}
-                  >
-                    <img
-                      src={frFlag}
-                      alt="French"
-                      className="w-6 h-6 rounded-full object-cover"
-                    />
-                    <span className="font-medium">Français</span>
-                  </button>
-                  <button
                     onClick={() => changeLanguage("sp")}
                     className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
@@ -2388,36 +2347,6 @@ const Room = () => {
                       className="w-6 h-6 rounded-full object-cover"
                     />
                     <span className="font-medium">Español</span>
-                  </button>
-                  <button
-                    onClick={() => changeLanguage("zh")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
-                      theme === "dark"
-                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
-                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
-                    }`}
-                  >
-                    <img
-                      src={zhFlag}
-                      alt="Chinese Simplified"
-                      className="w-6 h-6 rounded-full object-cover"
-                    />
-                    <span className="font-medium">中文</span>
-                  </button>
-                  <button
-                    onClick={() => changeLanguage("ko")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
-                      theme === "dark"
-                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
-                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
-                    }`}
-                  >
-                    <img
-                      src={koFlag}
-                      alt="Korean"
-                      className="w-6 h-6 rounded-full object-cover"
-                    />
-                    <span className="font-medium">한국어</span>
                   </button>
                   <button
                     onClick={() => changeLanguage("tr")}
@@ -2435,6 +2364,36 @@ const Room = () => {
                     <span className="font-medium">Türkçe</span>
                   </button>
                   <button
+                    onClick={() => changeLanguage("ja")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={jaFlag}
+                      alt="Japanese"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">日本語</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("fr")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={frFlag}
+                      alt="French"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">Français</span>
+                  </button>
+                  <button
                     onClick={() => changeLanguage("de")}
                     className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
@@ -2450,6 +2409,36 @@ const Room = () => {
                     <span className="font-medium">Deutsch</span>
                   </button>
                   <button
+                    onClick={() => changeLanguage("pl")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={plFlag}
+                      alt="Polish"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">Polski</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("ko")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={koFlag}
+                      alt="Korean"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">한국어</span>
+                  </button>
+                  <button
                     onClick={() => changeLanguage("sw")}
                     className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
@@ -2463,6 +2452,51 @@ const Room = () => {
                       className="w-6 h-6 rounded-full object-cover"
                     />
                     <span className="font-medium">Svenska</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("zh")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={zhFlag}
+                      alt="Chinese Simplified"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">中文</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("nl")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={nlFlag}
+                      alt="Dutch"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">Nederlands</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("it")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={itFlag}
+                      alt="Italian"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">Italiano</span>
                   </button>
                   <button
                     onClick={() => changeLanguage("ar")}
@@ -2481,10 +2515,10 @@ const Room = () => {
                   </button>
                   <button
                     onClick={() => changeLanguage("hi")}
-                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors ${
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
                       theme === "dark"
-                        ? "hover:bg-blue-200/20"
-                        : "hover:bg-blue-100/50"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
                     }`}
                   >
                     <img

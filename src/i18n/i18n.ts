@@ -15,6 +15,8 @@ import ko from './locales/ko.json';
 import fr from './locales/fr.json';
 import sw from './locales/sw.json';
 import pl from './locales/pl.json';
+import it from './locales/it.json';
+import nl from './locales/nl.json';
 
 i18n
     .use(LanguageDetector)
@@ -35,6 +37,8 @@ i18n
             fr: { translation: fr },
             sw: { translation: sw },
             pl: { translation: pl },
+            it: { translation: it },
+            nl: { translation: nl },
         },
         lng: 'en',
         fallbackLng: 'en',
