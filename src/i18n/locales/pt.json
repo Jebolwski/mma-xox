@@ -191,7 +191,17 @@
     "usernameMustDiffer": "O novo nome de usuário deve ser diferente do atual!",
     "usernameCooldown": "Você pode alterar o nome de usuário novamente em {{days}} dias!",
     "usernameTaken": "Este nome de usuário já foi utilizado. Tente outro.",
-    "usernameChanged": "Nome de usuário alterado com sucesso!"
+    "usernameChanged": "Nome de usuário alterado com sucesso!",
+    "failedChangeUsername": "Falha ao alterar nome de usuário!",
+    "changeAvatar": "Mudar Avatar",
+    "uploadAvatar": "Enviar Avatar",
+    "uploading": "Enviando...",
+    "avatarUpdated": "Avatar atualizado com sucesso!",
+    "avatarUploadFailed": "Falha ao enviar avatar.",
+    "selectImage": "Selecionar Imagem",
+    "avatarHint": "Selecione um arquivo de imagem (JPG, PNG, etc.)",
+    "invalidFileType": "Selecione um arquivo de imagem",
+    "fileTooLarge": "O tamanho do arquivo deve ser menor que 5 MB"
   },
   "room": {
     "hostDisconnected": "🏆 Anfitrião desconectado! Você vence!",

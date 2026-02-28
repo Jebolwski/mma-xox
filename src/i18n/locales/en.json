@@ -192,7 +192,16 @@
     "usernameCooldown": "You can change username again in {{days}} days!",
     "usernameTaken": "Username already taken. Try another.",
     "usernameChanged": "Username changed successfully!",
-    "failedChangeUsername": "Failed to change username!"
+    "failedChangeUsername": "Failed to change username!",
+    "changeAvatar": "Change Avatar",
+    "uploadAvatar": "Upload Avatar",
+    "uploading": "Uploading...",
+    "avatarUpdated": "Avatar updated successfully!",
+    "avatarUploadFailed": "Failed to upload avatar.",
+    "selectImage": "Select Image",
+    "avatarHint": "Please select an image file (JPG, PNG, etc.)",
+    "invalidFileType": "Please select an image file",
+    "fileTooLarge": "File size must be less than 5 MB"
   },
   "errors": {
     "createRoom": "An error occurred while creating the room!",

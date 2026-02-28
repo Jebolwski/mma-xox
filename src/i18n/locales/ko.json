@@ -172,7 +172,17 @@
     "silverNote": "기본 경험.",
     "goldNote": "고급 플레이어.",
     "diamondNote": "최고 티어.",
-    "failedChangeUsername": "사용자명 변경을 실패했습니다！"
+    "failedChangeUsername": "사용자명 변경을 실패했습니다！",
+    "usernameChanged": "사용자 이름이 성공적으로 변경되었습니다!",
+    "changeAvatar": "아바타 변경",
+    "uploadAvatar": "아바타 업로드",
+    "uploading": "업로드 중...",
+    "avatarUpdated": "아바타가 성공적으로 업데이트되었습니다!",
+    "avatarUploadFailed": "아바타 업로드 실패.",
+    "selectImage": "이미지 선택",
+    "avatarHint": "이미지 파일을 선택해주세요 (JPG, PNG 등)",
+    "invalidFileType": "이미지 파일을 선택해주세요",
+    "fileTooLarge": "파일 크기는 5MB 미만이어야 합니다"
   },
   "room": { 
     "title": "게임 방",

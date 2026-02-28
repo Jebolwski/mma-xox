@@ -1,0 +1,26 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Avatar uploads - her kullanıcı kendi avatarını upload edebilir
+    // Path format: avatars/user@email.com-timestamp
+    match /avatars/{filename=**} {
+      // Herkes avatarları okuyabilir
+      allow read: if true;
+      
+      // Sadece kendi avatarını upload edebilir (max 1 MB)
+      // Filename format: email-timestamp (örn: user@example.com-1234567890)
+      allow create, update: if request.auth != null && 
+                              filename.matches(request.auth.token.email + '-.*') &&
+                              request.resource.size < 1 * 1024 * 1024 &&
+                              request.resource.contentType.matches('image/.*');
+      
+      // Sadece kendi avatarını silebilir
+      allow delete: if request.auth != null && filename.matches(request.auth.token.email + '-.*');
+    }
+    
+    // Diğer tüm dosyalara erişim kapalı
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

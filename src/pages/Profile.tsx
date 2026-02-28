@@ -17,10 +17,7 @@ import { ToastContainer, toast } from "react-toastify";
 import return_img from "../assets/return.png";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { updatePassword } from "firebase/auth";
-import light from "../assets/light.png";
-import dark from "../assets/dark.png";
-import trFlag from "../assets/tr.png";
-import enFlag from "../assets/en.jpg";
+import photo_machine from "../assets/photo-machine.png";
 
 // --- YENİ: Profil veri yapısı arayüzü ---
 interface UserProfile {
@@ -79,6 +76,11 @@ const Profile = () => {
   const [newUsername, setNewUsername] = useState(""); // YENİ
   const [usernameLoading, setUsernameLoading] = useState(false); // YENİ
   const [canChangeUsername, setCanChangeUsername] = useState(true); // YENİ
+  const [showChangeAvatar, setShowChangeAvatar] = useState(false); // YENİ: Avatar Modal
+  const [avatarFile, setAvatarFile] = useState<File | null>(null); // YENİ: Seçilen dosya
+  const [avatarPreview, setAvatarPreview] = useState<string>(""); // YENİ: Ön izleme
+  const [avatarLoading, setAvatarLoading] = useState(false); // YENİ: Yükleniyor durumu
+  const [showAvatarView, setShowAvatarView] = useState(false); // YENİ: Avatar büyük görüntü modal
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -87,18 +89,8 @@ const Profile = () => {
   };
 
   const handleLanguageClick = () => {
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(min-width: 768px)").matches
-    ) {
-      // Desktop / md+ -> open dropdown
-      setLanguageDropdown(!languageDropdown);
-    } else {
-      // Mobile -> toggle language directly
-      const newLang = i18n.language === "tr" ? "en" : "tr";
-      changeLanguage(newLang);
-    }
+    // Always open dropdown for all screen sizes
+    setLanguageDropdown(!languageDropdown);
   };
 
   // YENİ: Kendi profilimiz mi diye kontrol et
@@ -299,6 +291,102 @@ const Profile = () => {
     }
   };
 
+  // YENİ: Avatar dosya seçimi ve ön izleme
+  const handleAvatarFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Dosya boyutu kontrolü (max 1 MB)
+    if (file.size > 1 * 1024 * 1024) {
+      toast.error(
+        t("profile.fileTooLarge") || "File size must be less than 1 MB",
+      );
+      return;
+    }
+
+    // Dosya türü kontrolü
+    if (!file.type.startsWith("image/")) {
+      toast.error(
+        t("profile.invalidFileType") || "Please select an image file",
+      );
+      return;
+    }
+
+    setAvatarFile(file);
+
+    // Ön izleme oluştur
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setAvatarPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // YENİ: Avatar'ı Base64 olarak Firestore'da sakla
+  const handleAvatarUpload = async () => {
+    if (!avatarFile || !currentUser?.email || !profile) return;
+
+    setAvatarLoading(true);
+    try {
+      toast.loading(t("profile.uploading") || "Uploading...");
+
+      // FileReader kullanarak Base64'e çevir
+      const reader = new FileReader();
+
+      reader.onload = async () => {
+        try {
+          const base64String = reader.result as string;
+
+          // Firestore'da güncelle
+          const userRef = doc(db, "users", currentUser.email);
+          await updateDoc(userRef, {
+            avatarUrl: base64String,
+          });
+
+          // Local state'i güncelle
+          setProfile((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  avatarUrl: base64String,
+                }
+              : null,
+          );
+
+          toast.dismiss();
+          toast.success(
+            t("profile.avatarUpdated") || "Avatar updated successfully!",
+          );
+          setShowChangeAvatar(false);
+          setAvatarFile(null);
+          setAvatarPreview("");
+          setAvatarLoading(false);
+        } catch (error) {
+          console.error("Error updating avatar:", error);
+          toast.error(
+            t("profile.avatarUploadFailed") || "Failed to upload avatar.",
+          );
+          setAvatarLoading(false);
+        }
+      };
+
+      reader.onerror = () => {
+        toast.error(
+          t("profile.avatarUploadFailed") || "Failed to upload avatar.",
+        );
+        setAvatarLoading(false);
+      };
+
+      reader.readAsDataURL(avatarFile);
+    } catch (error) {
+      console.error("Error processing avatar:", error);
+      toast.error(
+        t("profile.avatarUploadFailed") || "Failed to upload avatar.",
+      );
+      setAvatarLoading(false);
+    }
+  };
+
   // YENİ: Username değiştirme fonksiyonu
   const handleChangeUsername = async () => {
     if (!newUsername || !currentUser?.email || !profile) {
@@ -471,9 +559,9 @@ const Profile = () => {
         </div>
 
         {/* Main Content */}
-        <div className="relative z-10 flex justify-center items-center min-h-screen p-6">
+        <div className="relative z-10 flex justify-center items-center min-h-screen p-6 mt-16">
           <div
-            className={`max-w-2xl w-full rounded-2xl backdrop-blur-md border-4 shadow-2xl p-8 ${
+            className={`max-w-2xl w-full rounded-2xl backdrop-blur-md border-4 shadow-2xl p-4 lg:p-8 ${
               theme === "dark"
                 ? "bg-slate-800/90 border-slate-600 text-white"
                 : "bg-white/90 border-slate-300 text-slate-800"
@@ -482,18 +570,32 @@ const Profile = () => {
             {/* --- GÜNCELLENDİ: Header --- */}
             <div className="text-center mb-8">
               <div className="flex justify-center items-center gap-4 mb-4">
-                <img
-                  src={profile.avatarUrl}
-                  alt="avatar"
-                  className="w-20 h-20 rounded-full hidden sm:block border-4 border-red-500"
-                />
+                <div className="relative">
+                  <img
+                    src={profile.avatarUrl}
+                    alt="avatar"
+                    className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-4 border-red-500 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => setShowAvatarView(true)}
+                    title="Click to view full avatar"
+                  />
+                  {/* YENİ: Avatar değiştir butonu - sadece kendi profilinde */}
+                  {isMyProfile && (
+                    <button
+                      onClick={() => setShowChangeAvatar(true)}
+                      className="cursor-pointer absolute -bottom-1 -right-1 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 text-sm transition-all hover:scale-110 shadow-lg h-8 w-8 flex items-center justify-center"
+                      title="Change Avatar"
+                    >
+                      <img src={photo_machine} />
+                    </button>
+                  )}
+                </div>
                 <div>
-                  <h1 className="text-3xl font-bold">
+                  <h1 className="text-2xl lg:text-3xl font-bold">
                     {profile.username.slice(0, 14)}
                   </h1>
                   <div
                     onClick={() => isMyProfile && setTitlesOpen(true)} // GÜNCELLENDİ: Sadece kendi profilinde tıkla
-                    className={`text-lg flex items-center gap-2 justify-center font-semibold transition-transform ${
+                    className={`text-base lg:text-lg flex items-center gap-2 justify-center font-semibold transition-transform ${
                       isMyProfile
                         ? "cursor-pointer hover:scale-105"
                         : "cursor-default"
@@ -1089,6 +1191,127 @@ const Profile = () => {
                     {usernameLoading
                       ? t("profile.updating")
                       : t("profile.updateUsername")}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* YENİ: Avatar Büyük Görüntü Modal */}
+        {showAvatarView && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-6"
+            onClick={() => setShowAvatarView(false)}
+          >
+            <div
+              className="relative flex flex-col items-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Kapatma Butonu */}
+              <button
+                onClick={() => setShowAvatarView(false)}
+                className="absolute -top-10 right-0 text-white hover:text-red-400 text-3xl font-bold transition-colors cursor-pointer"
+                title="Close"
+              >
+                ✕
+              </button>
+
+              {/* Avatar */}
+              <img
+                src={profile.avatarUrl}
+                alt="avatar"
+                className="w-64 h-64 sm:w-80 sm:h-80 rounded-2xl border-4 border-red-500 shadow-2xl"
+              />
+
+              {/* Kullanıcı Adı */}
+              <div className="mt-6 text-center">
+                <h2 className="text-2xl sm:text-3xl font-bold text-white">
+                  {profile.username}
+                </h2>
+                <p className="text-gray-300 mt-2">{profile.activeTitle}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* YENİ: Change Avatar Modal */}
+        {showChangeAvatar && isMyProfile && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-6">
+            <div
+              className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-md transition-all duration-300 ${
+                theme === "dark"
+                  ? "bg-slate-800/90 border-slate-600/50 text-slate-100"
+                  : "bg-white/90 border-slate-200/50 text-slate-800"
+              }`}
+            >
+              <h2 className="text-2xl font-bold mb-6 text-center">
+                {t("profile.changeAvatar")}
+              </h2>
+
+              <div className="space-y-4">
+                {/* Ön izleme veya mevcut avatar */}
+                <div className="flex justify-center mb-4">
+                  <img
+                    src={avatarPreview || profile.avatarUrl}
+                    alt="avatar preview"
+                    className="w-32 h-32 rounded-full border-4 border-blue-500 object-cover"
+                  />
+                </div>
+
+                {/* Dosya input */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    {t("profile.selectImage")}{" "}
+                    {avatarFile && `(${avatarFile.name})`}
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarFileSelect}
+                    disabled={avatarLoading}
+                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 ${
+                      theme === "dark"
+                        ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-blue-500/50"
+                        : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-blue-500/50"
+                    } ${avatarLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  />
+                  <p className="text-xs mt-1 text-slate-500">
+                    {t("profile.avatarHint")} (Max 5 MB)
+                  </p>
+                </div>
+
+                <div className="flex gap-3 pt-4">
+                  <button
+                    onClick={() => {
+                      setShowChangeAvatar(false);
+                      setAvatarFile(null);
+                      setAvatarPreview("");
+                    }}
+                    disabled={avatarLoading}
+                    className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      avatarLoading
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:scale-105 cursor-pointer"
+                    } ${
+                      theme === "dark"
+                        ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
+                        : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
+                    }`}
+                  >
+                    {t("common.cancel")}
+                  </button>
+                  <button
+                    onClick={handleAvatarUpload}
+                    disabled={avatarLoading || !avatarFile}
+                    className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      avatarLoading || !avatarFile
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:scale-105 cursor-pointer hover:shadow-xl"
+                    } bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-lg`}
+                  >
+                    {avatarLoading
+                      ? t("profile.uploading")
+                      : t("profile.uploadAvatar")}
                   </button>
                 </div>
               </div>

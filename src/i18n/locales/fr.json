@@ -192,7 +192,16 @@
     "usernameCooldown": "Vous pouvez modifier à nouveau votre nom d'utilisateur dans {{days}} jours!",
     "usernameTaken": "Ce nom d'utilisateur est déjà utilisé. Essayez un autre.",
     "usernameChanged": "Nom d'utilisateur modifié avec succès!",
-    "failedChangeUsername": "Échec de la modification du nom d'utilisateur!"
+    "failedChangeUsername": "Échec de la modification du nom d'utilisateur!",
+    "changeAvatar": "Changer l'avatar",
+    "uploadAvatar": "Télécharger l'avatar",
+    "uploading": "Téléchargement en cours...",
+    "avatarUpdated": "Avatar mis à jour avec succès!",
+    "avatarUploadFailed": "Échec du téléchargement de l'avatar.",
+    "selectImage": "Sélectionner une image",
+    "avatarHint": "Veuillez sélectionner un fichier image (JPG, PNG, etc.)",
+    "invalidFileType": "Veuillez sélectionner un fichier image",
+    "fileTooLarge": "La taille du fichier doit être inférieure à 5 MB"
   },
   "room": {
     "hostDisconnected": "🏆 Hôte déconnecté! Vous gagnez!",

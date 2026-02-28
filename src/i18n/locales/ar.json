@@ -192,7 +192,17 @@
     "usernameMustDiffer": "يجب أن يكون اسم المستخدم الجديد مختلفا عن الحالي!",
     "usernameCooldown": "يمكنك تغيير اسم المستخدم مرة أخرى بعد {{days}} أيام!",
     "usernameTaken": "اسم المستخدم هذا مأخوذ بالفعل. جرب آخر مختلف.",
-    "usernameChanged": "تم تغيير اسم المستخدم بنجاح!"
+    "usernameChanged": "تم تغيير اسم المستخدم بنجاح!",
+    "failedChangeUsername": "فشل تغيير اسم المستخدم!",
+    "changeAvatar": "تغيير الصورة",
+    "uploadAvatar": "تحميل الصورة",
+    "uploading": "جاري التحميل...",
+    "avatarUpdated": "تم تحديث الصورة بنجاح!",
+    "avatarUploadFailed": "فشل تحميل الصورة.",
+    "selectImage": "اختر صورة",
+    "avatarHint": "يرجى اختيار ملف صورة (JPG, PNG, إلخ)",
+    "invalidFileType": "يرجى اختيار ملف صورة",
+    "fileTooLarge": "يجب أن يكون حجم الملف أقل من 5 ميجابايت"
   },
   "password": {
     "resetInvalidLink": "رابط إعادة تعيين غير صحيح!",

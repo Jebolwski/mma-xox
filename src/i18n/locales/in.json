@@ -192,7 +192,16 @@
     "usernameCooldown": "आप {{days}} दिन में उपयोगकर्ता नाम फिर से बदल सकते हैं!",
     "usernameTaken": "उपयोगकर्ता नाम पहले से ही लिया गया है। दूसरा प्रयास करें।",
     "usernameChanged": "उपयोगकर्ता नाम सफलतापूर्वक बदल दिया गया!",
-    "failedChangeUsername": "उपयोगकर्ता नाम बदलने में विफल!"
+    "failedChangeUsername": "उपयोगकर्ता नाम बदलने में विफल!",
+    "changeAvatar": "अवतार बदलें",
+    "uploadAvatar": "अवतार अपलोड करें",
+    "uploading": "अपलोड किया जा रहा है...",
+    "avatarUpdated": "अवतार सफलतापूर्वक अपडेट किया गया!",
+    "avatarUploadFailed": "अवतार अपलोड करने में विफल।",
+    "selectImage": "छवि चुनें",
+    "avatarHint": "कृपया एक छवि फ़ाइल चुनें (JPG, PNG, आदि)",
+    "invalidFileType": "कृपया एक छवि फ़ाइल चुनें",
+    "fileTooLarge": "फ़ाइल आकार 5 MB से कम होना चाहिए"
   },
   "room": {
     "title": "गेम कमरा",

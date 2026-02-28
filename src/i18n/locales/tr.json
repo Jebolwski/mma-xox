@@ -192,7 +192,16 @@
     "usernameCooldown": "Kullanıcı adını {{days}} gün sonra değiştirebilirsiniz!",
     "usernameTaken": "Bu kullanıcı adı zaten alınmış. Başka birini deneyin.",
     "usernameChanged": "Kullanıcı adı başarıyla değiştirildi!",
-    "failedChangeUsername": "Kullanıcı adı değiştirilemiyor!"
+    "failedChangeUsername": "Kullanıcı adı değiştirilemedi!",
+    "changeAvatar": "Avatarı Değiştir",
+    "uploadAvatar": "Avatarı Yükle",
+    "uploading": "Yükleniyor...",
+    "avatarUpdated": "Avatar başarıyla güncellendi!",
+    "avatarUploadFailed": "Avatar yüklenemedi.",
+    "selectImage": "Resim Seç",
+    "avatarHint": "Lütfen bir resim dosyası seçin (JPG, PNG, vb.)",
+    "invalidFileType": "Lütfen bir resim dosyası seçin",
+    "fileTooLarge": "Dosya boyutu 5 MB'tan az olmalıdır"
   },
   "password": {
     "resetInvalidLink": "Geçersiz sıfırlama bağlandısı!",

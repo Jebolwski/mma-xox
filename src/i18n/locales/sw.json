@@ -192,7 +192,16 @@
     "usernameCooldown": "Du kan ändra ditt användarnamn igen om {{days}} dagar!",
     "usernameTaken": "Användarnamn redan taget. Prova ett annat.",
     "usernameChanged": "Användarnamn ändrat framgångsrikt!",
-    "failedChangeUsername": "Det gick inte att ändra användarnamn!"
+    "failedChangeUsername": "Det gick inte att ändra användarnamn!",
+    "changeAvatar": "Ändra avatar",
+    "uploadAvatar": "Ladda upp avatar",
+    "uploading": "Laddar upp...",
+    "avatarUpdated": "Avataren uppdaterad!",
+    "avatarUploadFailed": "Misslyckades att ladda upp avatar.",
+    "selectImage": "Välj bild",
+    "avatarHint": "Välj en bildfil (JPG, PNG, etc.)",
+    "invalidFileType": "Välj en bildfil",
+    "fileTooLarge": "Filstorlek måste vara mindre än 5 MB"
   },
   "room": {
     "hostDisconnected": "🏆 Värd frånkopplad! Du vinner!",

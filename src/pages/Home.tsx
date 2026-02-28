@@ -7,11 +7,6 @@ import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { toast } from "react-toastify";
 import { usePageTitle } from "../hooks/usePageTitle";
-import trFlag from "../assets/tr.png";
-import enFlag from "../assets/en.jpg";
-import ptFlag from "../assets/pt.png";
-import light from "../assets/light.png";
-import dark from "../assets/dark.png";
 import logo from "../assets/logo.png";
 
 const Home = () => {

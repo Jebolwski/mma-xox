@@ -192,7 +192,16 @@
     "usernameCooldown": "Je kunt de gebruikersnaam over {{days}} dagen opnieuw wijzigen!",
     "usernameTaken": "Gebruikersnaam al in gebruik. Probeer een andere.",
     "usernameChanged": "Gebruikersnaam succesvol gewijzigd!",
-    "failedChangeUsername": "Gebruikersnaam wijzigen mislukt!"
+    "failedChangeUsername": "Gebruikersnaam wijzigen mislukt!",
+    "changeAvatar": "Avatar wijzigen",
+    "uploadAvatar": "Avatar uploaden",
+    "uploading": "Bezig met uploaden...",
+    "avatarUpdated": "Avatar succesvol bijgewerkt!",
+    "avatarUploadFailed": "Avatar uploaden mislukt.",
+    "selectImage": "Afbeelding selecteren",
+    "avatarHint": "Selecteer een afbeeldingsbestand (JPG, PNG, enz.)",
+    "invalidFileType": "Selecteer een afbeeldingsbestand",
+    "fileTooLarge": "Bestandsgrootte moet kleiner zijn dan 5 MB"
   },
   "errors": {
     "createRoom": "Er is een fout opgetreden bij het aanmaken van de kamer!",

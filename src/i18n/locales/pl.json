@@ -192,7 +192,16 @@
     "usernameCooldown": "Możesz zmienić nazwę użytkownika za {{days}} dni!",
     "usernameTaken": "Nazwa użytkownika jest już zajęta. Spróbuj inną.",
     "usernameChanged": "Nazwa użytkownika zmieniona pomyślnie!",
-    "failedChangeUsername": "Nie udało się zmienić nazwy użytkownika!"
+    "failedChangeUsername": "Nie udało się zmienić nazwy użytkownika!",
+    "changeAvatar": "Zmień avatar",
+    "uploadAvatar": "Prześlij awatar",
+    "uploading": "Przesyłanie...",
+    "avatarUpdated": "Avatar zaktualizowany pomyślnie!",
+    "avatarUploadFailed": "Błąd przesyłania awatara.",
+    "selectImage": "Wybierz obraz",
+    "avatarHint": "Proszę wybrać plik obrazu (JPG, PNG, itp.)",
+    "invalidFileType": "Proszę wybrać plik obrazu",
+    "fileTooLarge": "Rozmiar pliku musi być mniejszy niż 5 MB"
   },
   "errors": {
     "createRoom": "Błąd podczas tworzenia pokoju!",

@@ -192,7 +192,16 @@
     "usernameCooldown": "Sie können den Benutzernamen in {{days}} Tagen erneut ändern!",
     "usernameTaken": "Dieser Benutzername ist bereits vergeben. Bitte versuchen Sie einen anderen.",
     "usernameChanged": "Benutzername erfolgreich geändert!",
-    "failedChangeUsername": "Fehler beim Ändern des Benutzernamens!"
+    "failedChangeUsername": "Fehler beim Ändern des Benutzernamens!",
+    "changeAvatar": "Avatar ändern",
+    "uploadAvatar": "Avatar hochladen",
+    "uploading": "Wird hochgeladen...",
+    "avatarUpdated": "Avatar erfolgreich aktualisiert!",
+    "avatarUploadFailed": "Fehler beim Hochladen des Avatars.",
+    "selectImage": "Bild auswählen",
+    "avatarHint": "Bitte wählen Sie eine Bilddatei (JPG, PNG, usw.)",
+    "invalidFileType": "Bitte wählen Sie eine Bilddatei",
+    "fileTooLarge": "Dateigröße muss kleiner als 5 MB sein"
   },
   "room": {
     "hostDisconnected": "🏆 Anbieter getrennt! Du gewinnst!",
