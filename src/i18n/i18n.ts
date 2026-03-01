@@ -17,6 +17,7 @@ import sw from './locales/sw.json';
 import pl from './locales/pl.json';
 import it from './locales/it.json';
 import nl from './locales/nl.json';
+import ua from './locales/ua.json';
 
 i18n
     .use(LanguageDetector)
@@ -39,6 +40,7 @@ i18n
             pl: { translation: pl },
             it: { translation: it },
             nl: { translation: nl },
+            ua: { translation: ua },
         },
         lng: 'en',
         fallbackLng: 'en',

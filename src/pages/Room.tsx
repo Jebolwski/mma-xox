@@ -60,6 +60,7 @@ import swFlag from "../assets/sw.png";
 import plFlag from "../assets/pl.png";
 import itFlag from "../assets/it.png";
 import nlFlag from "../assets/nl.png";
+import uaFlag from "../assets/ua_flag.png";
 import unknown_fighter from "../assets/unknown.png";
 
 const Room = () => {
@@ -2431,7 +2432,9 @@ const Room = () => {
                                                 ? itFlag
                                                 : i18n.language === "nl"
                                                   ? nlFlag
-                                                  : enFlag
+                                                  : i18n.language === "ua"
+                                                    ? uaFlag
+                                                    : enFlag
                   }
                   alt={
                     i18n.language === "tr"
@@ -2464,7 +2467,9 @@ const Room = () => {
                                                 ? "Italian"
                                                 : i18n.language === "nl"
                                                   ? "Dutch"
-                                                  : "English"
+                                                  : i18n.language === "ua"
+                                                    ? "Ukrainian"
+                                                    : "English"
                   }
                   className="w-full h-full rounded-full object-cover"
                 />
@@ -2704,6 +2709,21 @@ const Room = () => {
                       className="w-6 h-6 rounded-full object-cover"
                     />
                     <span className="font-medium">العربية</span>
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("ua")}
+                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 w-full text-left transition-colors border-b ${
+                      theme === "dark"
+                        ? "hover:bg-blue-200/20 border-b border-slate-500/40"
+                        : "hover:bg-blue-100/50 border-b border-slate-500/40"
+                    }`}
+                  >
+                    <img
+                      src={uaFlag}
+                      alt="Ukrainian"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="font-medium">Українська</span>
                   </button>
                   <button
                     onClick={() => changeLanguage("hi")}
