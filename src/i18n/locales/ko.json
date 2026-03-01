@@ -199,7 +199,7 @@
     "avatarUpdated": "🍀 아바타가 성공적으로 업데이트되었습니다!",
     "avatarUploadFailed": "❌ 아바타 업로드에 실패했습니다.",
     "selectImage": "이미지 선택",
-    "avatarHint": "🙏 이미지 파일(JPG, PNG 등)을 선택해주세요",
+    "avatarHint": " 이미지 파일(JPG, PNG 등)을 선택해주세요",
     "invalidFileType": "🙏 이미지 파일을 선택해주세요",
     "fileTooLarge": "🚨 파일 크기는 5MB 미만이어야 합니다"
   },

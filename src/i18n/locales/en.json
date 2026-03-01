@@ -199,7 +199,7 @@
     "avatarUpdated": "🍀 Avatar updated successfully!",
     "avatarUploadFailed": "❌ Failed to upload avatar.",
     "selectImage": "Select Image",
-    "avatarHint": "🙏 Please select an image file (JPG, PNG, etc.)",
+    "avatarHint": "Please select an image file (JPG, PNG, etc.)",
     "invalidFileType": "🙏 Please select an image file",
     "fileTooLarge": "🚨 File size must be less than 5 MB"
   },

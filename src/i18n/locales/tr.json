@@ -199,7 +199,7 @@
     "avatarUpdated": "🍀 Avatar başarıyla güncellendi!",
     "avatarUploadFailed": "❌ Avatar yüklenemedi.",
     "selectImage": "Resim Seç",
-    "avatarHint": "🙏 Lütfen bir resim dosyası seç (JPG, PNG, vb.)",
+    "avatarHint": " Lütfen bir resim dosyası seç (JPG, PNG, vb.)",
     "invalidFileType": "🙏 Lütfen bir resim dosyası seç",
     "fileTooLarge": "🚨 Dosya boyutu 5 MB'tan küçük olmalı"
   },

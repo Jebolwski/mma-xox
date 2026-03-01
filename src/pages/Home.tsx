@@ -8,6 +8,9 @@ import { ThemeContext } from "../context/ThemeContext";
 import { toast } from "react-toastify";
 import { usePageTitle } from "../hooks/usePageTitle";
 import logo from "../assets/logo.png";
+import gamepad from "../assets/gamepad.svg";
+import loginIcon from "../assets/login.svg";
+import logoutIcon from "../assets/logout.svg";
 
 const Home = () => {
   const { theme, toggleTheme: contextToggleTheme } = useContext(ThemeContext);
@@ -395,7 +398,7 @@ const Home = () => {
           {/* Game Logo */}
           <div className="lg:mb-8 mb-6 text-center animate-bounce-slow">
             <div
-              className={`relative inline-block p-4 px-4 rounded-2xl shadow-2xl backdrop-blur-sm border-4 ${
+              className={`relative inline-block p-4 px-4 rounded-2xl shadow-2xl backdrop-blur-sm border-2 ${
                 theme === "dark"
                   ? "bg-slate-800/60 border-red-500 shadow-red-500/20"
                   : "bg-white/60 border-red-600 shadow-red-600/20"
@@ -468,7 +471,7 @@ const Home = () => {
               <>
                 <div
                   onClick={() => navigate("/menu")}
-                  className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 duration-200 hover:scale-102 active:scale-95 ${
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 duration-200 hover:scale-102 active:scale-95 ${
                     theme === "dark"
                       ? "bg-purple-600 hover:bg-purple-700 border-purple-400 text-white shadow-lg shadow-purple-600/30"
                       : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
@@ -477,12 +480,17 @@ const Home = () => {
                     textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                   }}
                 >
-                  🎮 {t("home.play")}
+                  <img
+                    src={gamepad}
+                    alt="Gamepad"
+                    className="h-7 lg:h-9 mr-2"
+                  />{" "}
+                  {t("home.play")}
                 </div>
 
                 <div
                   onClick={handleLogout}
-                  className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 duration-200 hover:scale-102 active:scale-95 ${
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 duration-200 hover:scale-102 active:scale-95 ${
                     theme === "dark"
                       ? "bg-blue-600 hover:bg-blue-700 border-blue-400 text-white shadow-lg shadow-blue-600/30"
                       : "bg-red-500 hover:bg-red-600 border-red-300 text-white shadow-lg shadow-red-500/30"
@@ -491,7 +499,12 @@ const Home = () => {
                     textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                   }}
                 >
-                  🚪 {t("home.logout")}
+                  <img
+                    src={logoutIcon}
+                    alt="Logout"
+                    className="h-7 lg:h-9 mr-2"
+                  />{" "}
+                  {t("home.logout")}
                 </div>
               </>
             ) : (
@@ -499,7 +512,7 @@ const Home = () => {
               <>
                 <div
                   onClick={() => navigate("/menu")}
-                  className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-200 hover:scale-102 active:scale-95 ${
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-200 hover:scale-102 active:scale-95 ${
                     theme === "dark"
                       ? "bg-purple-600 hover:bg-purple-700 border-purple-400 text-white shadow-lg shadow-purple-600/30"
                       : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
@@ -508,12 +521,17 @@ const Home = () => {
                     textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                   }}
                 >
-                  🎮 {t("home.playAsGuest")}
+                  <img
+                    src={gamepad}
+                    alt="Gamepad"
+                    className="h-7 lg:h-9 mr-2"
+                  />{" "}
+                  {t("home.playAsGuest")}
                 </div>
 
                 <div
                   onClick={() => navigate("/login")}
-                  className={`w-fit px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-200 hover:scale-102 active:scale-95 ${
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-200 hover:scale-102 active:scale-95 ${
                     theme === "dark"
                       ? "bg-blue-600 hover:bg-blue-700 border-blue-400 text-white shadow-lg shadow-blue-600/30"
                       : "bg-blue-500 hover:bg-blue-600 border-blue-300 text-white shadow-lg shadow-blue-500/30"
@@ -522,7 +540,12 @@ const Home = () => {
                     textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                   }}
                 >
-                  🔐 {t("home.login")}
+                  <img
+                    src={loginIcon}
+                    alt="Login"
+                    className="w-7 lg:w-9 h-7 lg:h-9 mr-2"
+                  />{" "}
+                  {t("home.login")}
                 </div>
               </>
             )}

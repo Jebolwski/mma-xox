@@ -199,7 +199,7 @@
     "avatarUpdated": "🍀 Avatar succesvol bijgewerkt!",
     "avatarUploadFailed": "❌ Avatar uploaden mislukt.",
     "selectImage": "Afbeelding Selecteren",
-    "avatarHint": "🙏 Selecteer alstublieft een afbeeldingsbestand (JPG, PNG, enz.)",
+    "avatarHint": " Selecteer alstublieft een afbeeldingsbestand (JPG, PNG, enz.)",
     "invalidFileType": "🙏 Selecteer alstublieft een afbeeldingsbestand",
     "fileTooLarge": "🚨 Bestandsgrootte moet kleiner zijn dan 5 MB"
   },

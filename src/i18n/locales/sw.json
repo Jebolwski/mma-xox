@@ -199,7 +199,7 @@
     "avatarUpdated": "🍀 Avatar uppdaterad!",
     "avatarUploadFailed": "❌ Misslyckades att ladda upp avatar.",
     "selectImage": "Välj bild",
-    "avatarHint": "🙏 Välj en bildfil (JPG, PNG, etc.)",
+    "avatarHint": " Välj en bildfil (JPG, PNG, etc.)",
     "invalidFileType": "🙏 Välj en bildfil",
     "fileTooLarge": "🚨 Filstorleken måste vara mindre än 5 MB"
   },

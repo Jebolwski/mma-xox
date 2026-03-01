@@ -199,7 +199,7 @@
     "avatarUpdated": "🍀 تم تحديث الصورة الرمزية بنجاح!",
     "avatarUploadFailed": "❌ فشل رفع الصورة الرمزية.",
     "selectImage": "اختر صورة",
-    "avatarHint": "🙏 يرجى اختيار ملف صورة (JPG، PNG، إلخ)",
+    "avatarHint": "يرجى اختيار ملف صورة (JPG، PNG، إلخ)",
     "invalidFileType": "🙏 يرجى اختيار ملف صورة",
     "fileTooLarge": "🚨 يجب أن يكون حجم الملف أقل من 5 ميغابايت"
   },

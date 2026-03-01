@@ -199,7 +199,7 @@
     "avatarUpdated": "🍀 アバターを更新しました！",
     "avatarUploadFailed": "❌ アバターのアップロードに失敗しました。",
     "selectImage": "画像を選択",
-    "avatarHint": "🙏 画像ファイル（JPG、PNGなど）を選択してください",
+    "avatarHint": " 画像ファイル（JPG、PNGなど）を選択してください",
     "invalidFileType": "🙏 画像ファイルを選択してください",
     "fileTooLarge": "🚨 ファイルサイズは5MB未満にしてください"
   },

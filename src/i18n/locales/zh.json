@@ -199,7 +199,7 @@
     "avatarUpdated": "🍀 头像更新成功！",
     "avatarUploadFailed": "❌ 上传头像失败。",
     "selectImage": "选择图像",
-    "avatarHint": "🙏 请选择图像文件（JPG、PNG 等）",
+    "avatarHint": " 请选择图像文件（JPG、PNG 等）",
     "invalidFileType": "🙏 请选择图像文件",
     "fileTooLarge": "🚨 文件大小必须小于 5 MB"
   },

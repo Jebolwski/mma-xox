@@ -199,7 +199,7 @@
     "avatarUpdated": "🍀 Avatar berhasil diperbarui!",
     "avatarUploadFailed": "❌ Gagal mengunggah avatar.",
     "selectImage": "Pilih Gambar",
-    "avatarHint": "🙏 Silakan pilih file gambar (JPG, PNG, dll.)",
+    "avatarHint": "Silakan pilih file gambar (JPG, PNG, dll.)",
     "invalidFileType": "🙏 Silakan pilih file gambar",
     "fileTooLarge": "🚨 Ukuran file harus kurang dari 5 MB"
   },

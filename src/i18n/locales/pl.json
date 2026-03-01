@@ -199,7 +199,7 @@
     "avatarUpdated": "🍀 Awatar zaktualizowany pomyślnie!",
     "avatarUploadFailed": "❌ Nie udało się przesłać awatara.",
     "selectImage": "Wybierz obraz",
-    "avatarHint": "🙏 Proszę wybierz plik obrazu (JPG, PNG, itp.)",
+    "avatarHint": " Proszę wybierz plik obrazu (JPG, PNG, itp.)",
     "invalidFileType": "🙏 Proszę wybierz plik obrazu",
     "fileTooLarge": "🚨 Rozmiar pliku musi być mniejszy niż 5 MB"
   },
