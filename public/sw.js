@@ -13,7 +13,6 @@ const STATIC_ASSETS = [
 
 // Install event - cache static assets
 self.addEventListener("install", (event) => {
-  console.log("Service Worker installing...");
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS).catch((err) => {
@@ -26,7 +25,6 @@ self.addEventListener("install", (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener("activate", (event) => {
-  console.log("Service Worker activating...");
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(

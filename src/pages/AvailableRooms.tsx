@@ -91,7 +91,11 @@ const AvailableRooms = () => {
       (snap) => {
         const list: Record<string, unknown>[] = [];
         snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
-        setRooms(list as never[]);
+        // Eğer kullanıcı giriş yapmışsa, kendi oluşturduğu odaları gösterme
+        const filteredRooms = currentUser
+          ? list.filter((room: any) => room.hostEmail !== currentUser.email)
+          : list;
+        setRooms(filteredRooms as never[]);
         setLoading(false);
       },
       (err) => {
@@ -101,7 +105,7 @@ const AvailableRooms = () => {
       },
     );
     return () => unsub();
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
     // oturum başına bir kere dene

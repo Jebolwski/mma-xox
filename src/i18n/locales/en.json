@@ -473,6 +473,7 @@
     "enterNameError": "Please enter your name!",
     "noRoomSelected": "No room selected!",
     "joinRoomFailed": "Failed to join the room!",
+    "cannotJoinOwnRoom": "You cannot join your own room!",
     "listenRoomsFailed": "Failed to listen rooms.",
     "hostDisconnected": "🏆 Host disconnected! You win!",
     "guestDisconnected": "🏆 Guest disconnected! You win!",

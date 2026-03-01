@@ -27,9 +27,11 @@ import "react-toastify/dist/ReactToastify.css";
 import return_img from "../assets/return.png";
 import win from "../assets/sounds/win.mp3";
 import draw from "../assets/sounds/draw.mp3";
-import fighters_url from "../assets/data/fighters.json";
 import wrong from "../assets/sounds/wrong.mp3";
 import correct from "../assets/sounds/correct.mp3";
+import player_joined from "../assets/sounds/player_joined.mp3";
+import player_left from "../assets/sounds/player_left.mp3";
+import fighters_url from "../assets/data/fighters.json";
 import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ThemeContext } from "../context/ThemeContext";
@@ -908,7 +910,7 @@ const Room = () => {
     gameState?.winner,
     timerLength,
     roomId,
-  ]); // gameState dependency'sine gameState.winner da dahil
+  ]);
 
   //! Host'a guest'in katıldığı ve ayrıldığı durumlarda bildirim göster ve oyun durumunu resetle
   useEffect(() => {
@@ -918,10 +920,12 @@ const Room = () => {
       // Önceki değer null iken şimdiki değer doluysa -> Biri katıldı
       if (prevGuestNow.current === null && currentGuestNow !== null) {
         toast.success(t("room.playerJoined", { player: currentGuestNow }));
+        playSfx(player_joined);
       }
       // Önceki değer dolu iken şimdiki değer null ise -> Biri ayrıldı
       else if (prevGuestNow.current !== null && currentGuestNow === null) {
         toast.info(t("room.playerLeft", { player: prevGuestNow.current }));
+        playSfx(player_left);
 
         // Guest çıkınca oyun ve ready state'lerini reset et
         const resetGame = async () => {
@@ -1752,6 +1756,7 @@ const Room = () => {
     });
 
     setFilters(null);
+    setTimerLength("-2"); // ← Local state'i de sıfırla
     setFighter00({
       url: unknown_fighter,
       text: "",
