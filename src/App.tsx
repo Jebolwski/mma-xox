@@ -60,7 +60,8 @@ function AppContent() {
 
   return (
     <>
-      {!location.pathname.startsWith("/room/") && <Header />}
+      {!location.pathname.startsWith("/room/") &&
+        !location.pathname.startsWith("/same-screen") && <Header />}
       <Routes>
         {/* public */}
         <Route

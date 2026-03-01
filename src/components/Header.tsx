@@ -74,7 +74,7 @@ const Header = ({
   };
 
   return (
-    <div className="absolute top-0 left-0 w-full z-50 bg-transparent flex flex-wrap gap-4 justify-between items-center p-4">
+    <div className="absolute top-0 left-0 w-full z-50 bg-transparent flex flex-wrap gap-4 justify-between items-center lg:p-4 p-3">
       <div>
         <div className="flex items-center gap-3">
           <div

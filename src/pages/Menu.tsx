@@ -789,9 +789,9 @@ const Menu = () => {
           ))}
         </div>
 
-        <div className="relative z-10 flex items-center justify-center p-4">
+        <div className="relative z-10 flex items-center justify-center p-3 lg:p-4">
           <div
-            className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-sm w-full ${
+            className={`p-3 sm:p-4 md:p-6 lg:p-8 py-6 lg:py-8 rounded-2xl shadow-2xl border backdrop-blur-sm w-full ${
               isGrid ? "max-w-5xl" : "max-w-md"
             } transition-all duration-300 ${
               theme === "dark"

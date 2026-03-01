@@ -2366,7 +2366,7 @@ const Room = () => {
       />
 
       {/* Header */}
-      <div className="flex flex-wrap gap-4 justify-between items-center p-4">
+      <div className="flex flex-wrap gap-4 justify-between items-center lg:p-4 p-3">
         <div>
           <div className="flex items-center gap-3">
             <div
@@ -2746,7 +2746,7 @@ const Room = () => {
           </div>
         </div>
         {/* Mute + Back buttons */}
-        <div className="z-30 flex items-center gap-3">
+        <div className="flex items-center gap-3">
           <button
             onClick={() => setMuted((m) => !m)}
             aria-pressed={muted}
@@ -2778,37 +2778,6 @@ const Room = () => {
           </div>
         </div>
       </div>
-
-      {/* Kullanıcı adı gösterimi - üst orta */}
-      {showUserBanner && (
-        <div className="absolute top-24 lg:top-6 left-1/2 transform -translate-x-1/2">
-          <div
-            className={`px-4 py-2 rounded-full transition-all duration-300 backdrop-blur-md border shadow-xl ${
-              theme === "dark"
-                ? "bg-slate-800/80 border-slate-600/50 text-white"
-                : "bg-white/80 border-slate-200/50 text-slate-700"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <div
-                className={`w-3 h-3 rounded-full ${
-                  theme === "dark" ? "bg-green-400" : "bg-green-500"
-                } animate-pulse`}
-              />{" "}
-              <span className="font-semibold text-sm">
-                {" "}
-                {userUsername ||
-                  currentUser?.email?.split("@")[0] ||
-                  playerName ||
-                  "Player"}
-              </span>
-              {gameState?.isRankedRoom && (
-                <div className="text-yellow-500 text-xs">🏆</div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Winner Overlay */}
       {!gameState.forfeit ? (
@@ -3021,10 +2990,42 @@ const Room = () => {
             theme == "dark" ? "text-white" : "text-black"
           }`}
         >
-          <div className="w-fit mb-8">
-            <div className="text-2xl mb-2 mt-4 text-center">
-              {t("room.roomCode")} {roomId}
+          {/* Kullanıcı adı gösterimi - üst orta */}
+          {showUserBanner && (
+            <div className="flex items-center justify-center mb-4">
+              <div
+                className={`px-4 py-2 rounded-full transition-all duration-300 backdrop-blur-md border shadow-md ${
+                  theme === "dark"
+                    ? "bg-slate-800/80 border-slate-600/50 text-white"
+                    : "bg-white/80 border-slate-200/50 text-slate-700"
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <div
+                    className={`w-3 h-3 rounded-full ${
+                      theme === "dark" ? "bg-green-400" : "bg-green-500"
+                    } animate-pulse`}
+                  />{" "}
+                  <span className="font-semibold text-sm">
+                    {" "}
+                    {userUsername ||
+                      currentUser?.email?.split("@")[0] ||
+                      playerName ||
+                      "Player"}
+                  </span>
+                  {gameState?.isRankedRoom && (
+                    <div className="text-yellow-500 text-xs">🏆</div>
+                  )}
+                </div>
+              </div>
             </div>
+          )}
+          <div className="w-fit mb-8">
+            {gameState.gameStarted == false ? (
+              <div className="text-xl lg:text-2xl mb-2 mt-4 text-center">
+                {t("room.roomCode")} {roomId}
+              </div>
+            ) : null}
             {gameState.gameStarted == false &&
             gameState.guest.now != null &&
             role == "guest" ? (
