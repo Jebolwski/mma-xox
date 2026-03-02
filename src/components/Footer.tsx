@@ -12,7 +12,9 @@ export default function Footer() {
     location.pathname === "/available-rooms" ||
     location.pathname === "/login" ||
     location.pathname === "/contact" ||
-    location.pathname === "/about";
+    location.pathname === "/about" ||
+    location.pathname === "/world-ranking" ||
+    location.pathname.startsWith("/profile/");
   const currentYear = new Date().getFullYear();
   const email = "mertgkmeen@gmail.com";
   const buyMeACoffeeUrl = "https://buymeacoffee.com/jebolwski";
