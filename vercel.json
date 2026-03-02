@@ -90,10 +90,9 @@
       ]
     }
   ],
-  "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/:path*",
+      "source": "/((?!assets|sitemap\\.xml|robots\\.txt|manifest\\.json|ads\\.txt|\\..*|_next).*)",
       "destination": "/index.html"
     }
   ]
