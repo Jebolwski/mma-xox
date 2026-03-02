@@ -240,7 +240,7 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 ## 🎯 Roadmap
 
 - [ ] Cloud Functions for game logic
-- [✅] OAuth (Google, Discord login)
+- [x] OAuth (Google, Discord login)
 - [ ] In-game chat
 - [ ] Spectate mode
 - [ ] Tournament mode
