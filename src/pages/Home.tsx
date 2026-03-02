@@ -471,7 +471,7 @@ const Home = () => {
               <>
                 <div
                   onClick={() => navigate("/menu")}
-                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 duration-200 hover:scale-102 active:scale-95 ${
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 duration-200 hover:scale-102 active:scale-95 ${
                     theme === "dark"
                       ? "bg-purple-600 hover:bg-purple-700 border-purple-400 text-white shadow-lg shadow-purple-600/30"
                       : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
@@ -490,7 +490,7 @@ const Home = () => {
 
                 <div
                   onClick={handleLogout}
-                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 duration-200 hover:scale-102 active:scale-95 ${
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 duration-200 hover:scale-102 active:scale-95 ${
                     theme === "dark"
                       ? "bg-blue-600 hover:bg-blue-700 border-blue-400 text-white shadow-lg shadow-blue-600/30"
                       : "bg-red-500 hover:bg-red-600 border-red-300 text-white shadow-lg shadow-red-500/30"
@@ -512,7 +512,7 @@ const Home = () => {
               <>
                 <div
                   onClick={() => navigate("/menu")}
-                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-200 hover:scale-102 active:scale-95 ${
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 transition-all duration-200 hover:scale-102 active:scale-95 ${
                     theme === "dark"
                       ? "bg-purple-600 hover:bg-purple-700 border-purple-400 text-white shadow-lg shadow-purple-600/30"
                       : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
@@ -531,7 +531,7 @@ const Home = () => {
 
                 <div
                   onClick={() => navigate("/login")}
-                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-4 transition-all duration-200 hover:scale-102 active:scale-95 ${
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 transition-all duration-200 hover:scale-102 active:scale-95 ${
                     theme === "dark"
                       ? "bg-blue-600 hover:bg-blue-700 border-blue-400 text-white shadow-lg shadow-blue-600/30"
                       : "bg-blue-500 hover:bg-blue-600 border-blue-300 text-white shadow-lg shadow-blue-500/30"

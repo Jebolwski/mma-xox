@@ -55,6 +55,13 @@ const achievementsList = {
   },
 };
 
+// YENİ: Google avatar URL'sini yüksek kaliteli versiyona çevir
+const getHighQualityAvatarUrl = (url: string): string => {
+  if (!url) return url;
+  // Google avatar URL'lerinin sonundaki =s96-c parametresini s300-c olarak değiştir
+  return url.replace(/=s\d+-c$/, "=s300-c");
+};
+
 const Profile = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
@@ -572,7 +579,7 @@ const Profile = () => {
               <div className="flex justify-center items-center gap-4 mb-4">
                 <div className="relative">
                   <img
-                    src={profile.avatarUrl}
+                    src={getHighQualityAvatarUrl(profile.avatarUrl)}
                     alt="avatar"
                     className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-4 border-red-500 cursor-pointer hover:opacity-80 transition-opacity"
                     onClick={() => setShowAvatarView(true)}
@@ -1250,7 +1257,7 @@ const Profile = () => {
 
               {/* Avatar */}
               <img
-                src={profile.avatarUrl}
+                src={getHighQualityAvatarUrl(profile.avatarUrl)}
                 alt="avatar"
                 className="w-64 h-64 sm:w-80 sm:h-80 rounded-2xl border-4 border-red-500 shadow-2xl"
               />

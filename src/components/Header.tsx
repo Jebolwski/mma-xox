@@ -17,10 +17,8 @@ import plFlag from "../assets/pl.png";
 import itFlag from "../assets/it.png";
 import nlFlag from "../assets/nl.png";
 import uaFlag from "../assets/ua_flag.png";
-import light from "../assets/light.png";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/return.png";
-import dark from "../assets/dark.png";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Header = ({

@@ -881,8 +881,6 @@ const Room = () => {
     }
 
     const interval = setInterval(() => {
-      console.log("intervall", timerLength);
-
       if (gameState?.gameStarted == true) {
         if (!roomId) return;
         const roomRef = doc(db, "rooms", roomId);

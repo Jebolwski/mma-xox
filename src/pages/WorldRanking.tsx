@@ -32,9 +32,17 @@ type Row = {
   draws: number;
   totalGames: number;
   winRate: number;
+  avatarUrl?: string;
 };
 
 const PAGE_SIZE = 25;
+
+// YENİ: Google avatar URL'sini yüksek kaliteli versiyona çevir
+const getHighQualityAvatarUrl = (url: string | undefined): string => {
+  if (!url) return "https://via.placeholder.com/40";
+  // Google avatar URL'lerinin sonundaki =s96-c parametresini s300-c olarak değiştir
+  return url.replace(/=s\d+-c$/, "=s300-c");
+};
 
 export default function WorldRanking() {
   const navigate = useNavigate();
@@ -68,6 +76,7 @@ export default function WorldRanking() {
       draws: Number(s.draws ?? 0),
       totalGames: Number(s.totalGames ?? 0),
       winRate: Number(s.winRate ?? 0),
+      avatarUrl: d.avatarUrl,
     };
   };
 
@@ -198,7 +207,7 @@ export default function WorldRanking() {
         <div className="max-w-4xl mx-auto px-4 py-8 lg:pt-24 pt-36">
           {currentUser && myRank && (
             <div
-              className={`mb-6 rounded-xl p-4 border ${
+              className={`mb-6 rounded-xl p-4 border backdrop-blur-md ${
                 theme === "dark"
                   ? "bg-slate-800/70 border-slate-700 text-white"
                   : "bg-white/80 border-slate-300 text-black"
@@ -221,22 +230,25 @@ export default function WorldRanking() {
           )}
 
           <div
-            className={`rounded-2xl overflow-hidden border ${
+            className={`rounded-2xl overflow-hidden border backdrop-blur-md ${
               theme === "dark"
-                ? "bg-slate-800/80 border-slate-700"
+                ? "bg-slate-800/70 border-slate-700"
                 : "bg-white/90 border-slate-300"
             }`}
           >
             <div
-              className={`grid grid-cols-6 gap-2 px-4 py-3 text-xs font-semibold ${
+              className={`grid grid-cols-5 md:grid-cols-7 gap-2 px-4 py-3 text-xs font-semibold ${
                 theme === "dark" ? "text-slate-300" : "text-slate-600"
               }`}
             >
-              <div>{t("ranking.rank")}</div>
+              <div className="w-8">{t("ranking.rank")}</div>
+              <div className="w-8 hidden md:block"></div>
               <div className="col-span-2">{t("ranking.player")}</div>
               <div className="text-right">{t("ranking.points")}</div>
               <div className="text-right">{t("ranking.record")}</div>
-              <div className="text-right">{t("ranking.winRate")}</div>
+              <div className="text-right hidden md:block">
+                {t("ranking.winRate")}
+              </div>
             </div>
 
             {loading && (
@@ -266,10 +278,10 @@ export default function WorldRanking() {
                         : null;
                 const record = `${r.wins}-${r.losses}-${r.draws}`;
                 return (
-                  <Link // YENİ: Satırı Link component'i ile sarmala
+                  <Link
                     to={`/profile/${r.username}`}
                     key={r.id}
-                    className={`grid grid-cols-6 gap-2 px-4 py-3 text-sm border-t transition-colors duration-200 ${
+                    className={`grid grid-cols-5 md:grid-cols-7 gap-2 px-4 py-3 text-sm border-t transition-colors duration-200 items-center ${
                       theme === "dark"
                         ? "text-white border-slate-700 hover:bg-slate-700/50"
                         : "text-black border-slate-200 hover:bg-slate-100"
@@ -282,6 +294,17 @@ export default function WorldRanking() {
                     }`}
                   >
                     <div className="font-semibold">#{rank}</div>
+                    <div className="items-center justify-center hidden md:flex">
+                      {r.avatarUrl ? (
+                        <img
+                          src={getHighQualityAvatarUrl(r.avatarUrl)}
+                          alt="avatar"
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500"></div>
+                      )}
+                    </div>
                     <div className="col-span-2 truncate flex items-center gap-2">
                       {trophy && (
                         <span
@@ -295,7 +318,9 @@ export default function WorldRanking() {
                     </div>
                     <div className="text-right font-semibold">{r.points}</div>
                     <div className="text-right tabular-nums">{record}</div>
-                    <div className="text-right">{r.winRate?.toFixed(1)}%</div>
+                    <div className="text-right hidden md:block">
+                      {r.winRate?.toFixed(1)}%
+                    </div>
                   </Link> // YENİ
                 );
               })}
