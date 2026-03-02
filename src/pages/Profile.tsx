@@ -771,7 +771,7 @@ const Profile = () => {
 
             {/* Win Rate */}
             {profile.stats.totalGames > 0 && (
-              <div className="text-center">
+              <div className="text-center mb-8">
                 <div
                   className={`inline-block px-6 py-3 rounded-xl border ${
                     theme === "dark"
@@ -789,14 +789,46 @@ const Profile = () => {
               </div>
             )}
 
-            {/* Member Since */}
-            <div
-              className={`text-center mt-6 text-sm ${
-                theme === "dark" ? "text-slate-400" : "text-slate-600"
-              }`}
-            >
-              {t("profile.memberSince")}{" "}
-              {new Date(profile.createdAt).toLocaleDateString()}
+            {/* Profile Information Card */}
+            <div className="mt-8 mb-6">
+              <div
+                className={`rounded-2xl border-2 p-3 lg:p-6 ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-slate-800/60 to-slate-700/60 border-slate-600"
+                    : "bg-gradient-to-br from-slate-50/60 to-white/60 border-slate-300"
+                }`}
+              >
+                <h3 className="text-lg font-bold mb-4 text-center">
+                  {t("profile.profileInfo")}
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex flex-wrap gap-2 items-center justify-between">
+                    <span
+                      className={
+                        theme === "dark" ? "text-slate-400" : "text-slate-600"
+                      }
+                    >
+                      📧 {t("profile.email")}
+                    </span>
+                    <span className="font-semibold break-all text-right">
+                      {profile.email}
+                    </span>
+                  </div>
+                  <div className="border-t border-slate-600/30"></div>
+                  <div className="flex flex-wrap gap-2 items-center justify-between">
+                    <span
+                      className={
+                        theme === "dark" ? "text-slate-400" : "text-slate-600"
+                      }
+                    >
+                      📅 {t("profile.memberSince")}
+                    </span>
+                    <span className="font-semibold">
+                      {new Date(profile.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* --- YENİ: Başarımlar Bölümü --- */}

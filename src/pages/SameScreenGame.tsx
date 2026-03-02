@@ -1325,7 +1325,7 @@ function SameScreenGame() {
                       <div className="flex items-center justify-center">
                         <img
                           src={logo_text}
-                          className="xl:w-24 lg:w-20 md:w-16 w-12 rounded-md"
+                          className="xl:w-24 lg:w-20 md:w-16 w-12"
                         />
                       </div>
                     </div>

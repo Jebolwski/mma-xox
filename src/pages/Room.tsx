@@ -2371,24 +2371,16 @@ const Room = () => {
           <div className="flex items-center gap-3">
             <div
               onClick={toggleTheme}
-              className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
+              className={`p-3 w-[50px] h-[50px] flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
                 theme === "dark"
                   ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
                   : "bg-white/80 border-slate-200/50 hover:bg-white/90"
               } shadow-xl hover:scale-110`}
             >
               {theme === "dark" ? (
-                <img
-                  src={light}
-                  className="lg:w-6 lg:h-6 w-5 h-5"
-                  alt="Light mode"
-                />
+                <p className="text-2xl">☀️</p>
               ) : (
-                <img
-                  src={dark}
-                  className="lg:w-6 lg:h-6 w-5 h-5"
-                  alt="Dark mode"
-                />
+                <p className="text-2xl">🌙 </p>
               )}
             </div>
             <div
@@ -2752,7 +2744,7 @@ const Room = () => {
             aria-pressed={muted}
             aria-label={muted ? "Unmute sounds" : "Mute sounds"}
             title={muted ? "Unmute" : "Mute"}
-            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
+            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-md backdrop-blur-md ${
               theme === "dark"
                 ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
                 : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
@@ -2762,7 +2754,7 @@ const Room = () => {
           </button>
           <div
             onClick={handleExit}
-            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-xl backdrop-blur-md ${
+            className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-md backdrop-blur-md ${
               theme === "dark"
                 ? "bg-slate-800/90 border-slate-600 text-slate-200 hover:bg-slate-700/90"
                 : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
@@ -2857,8 +2849,8 @@ const Room = () => {
                   <div
                     className={`text-center mb-4 px-4 py-2 rounded-lg ${
                       theme === "dark"
-                        ? "bg-yellow-900/30 border border-yellow-600"
-                        : "bg-yellow-100 border border-yellow-400"
+                        ? "bg-yellow-900/30 border border-yellow-600 text-white"
+                        : "bg-yellow-100 border border-yellow-400 text-slate-800"
                     }`}
                   >
                     <p className="text-sm text-yellow-600 font-semibold">
@@ -2877,8 +2869,8 @@ const Room = () => {
                   <div
                     className={`p-3 rounded-lg border mb-4 ${
                       theme === "dark"
-                        ? "bg-slate-700/50 border-slate-600"
-                        : "bg-slate-100 border-slate-300"
+                        ? "bg-slate-700/50 border-slate-600 text-white"
+                        : "bg-slate-100 border-slate-300 text-slate-800"
                     }`}
                   >
                     <h3 className="text-sm font-semibold mb-2 text-center">
@@ -3466,7 +3458,7 @@ const Room = () => {
                         <div className="flex items-center justify-center">
                           <img
                             src={logo_text}
-                            className="xl:w-24 lg:w-20 md:w-16 w-12 rounded-md"
+                            className="xl:w-24 lg:w-20 md:w-16 w-12"
                           />
                         </div>
                       </div>
