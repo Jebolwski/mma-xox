@@ -581,7 +581,7 @@ const Profile = () => {
                   <img
                     src={getHighQualityAvatarUrl(profile.avatarUrl)}
                     alt="avatar"
-                    className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-4 border-red-500 cursor-pointer hover:opacity-80 transition-opacity"
+                    className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 lg:border-3 border-red-500 cursor-pointer hover:opacity-80 transition-opacity"
                     onClick={() => setShowAvatarView(true)}
                     title="Click to view full avatar"
                   />
@@ -903,7 +903,7 @@ const Profile = () => {
                   <div
                     role="dialog"
                     aria-modal="true"
-                    className={`w-full max-w-3xl rounded-2xl -mt-42 border shadow-2xl ${
+                    className={`w-full max-w-3xl rounded-2xl -mt-40 border shadow-2xl ${
                       theme === "dark"
                         ? "bg-slate-800 border-slate-700 text-slate-100"
                         : "bg-white border-slate-300 text-slate-800"

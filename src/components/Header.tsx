@@ -467,7 +467,7 @@ const Header = ({
             <div className="flex gap-2">
               <img
                 src={return_img || "/placeholder.svg"}
-                className="w-6"
+                className={`w-6 ${theme === "dark" ? "invert" : ""}`}
               />
               <p className="font-semibold">{t("room.backToMenu")}</p>
             </div>

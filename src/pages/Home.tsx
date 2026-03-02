@@ -25,21 +25,12 @@ const Home = () => {
     setLanguageDropdown(false);
   };
   const handleLanguageClick = () => {
-    // Always open dropdown since we have 3 languages now
     setLanguageDropdown(!languageDropdown);
   };
   usePageTitle(t("home.pageTitle"));
 
   const toggleTheme = contextToggleTheme;
 
-  // AdSense ads push
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    }
-  }, []);
-
-  // Firestore'dan username'i çek
   useEffect(() => {
     if (currentUser?.email) {
       const fetchUsername = async () => {
@@ -550,19 +541,6 @@ const Home = () => {
               </>
             )}
           </div>
-          {/* AdSense Ad */}
-          {/* <div className="w-full my-6 px-4 flex justify-center">
-            <div style={{ minWidth: "280px", width: "100%", maxWidth: "100%" }}>
-              <ins
-                className="adsbygoogle"
-                style={{ display: "block" }}
-                data-ad-client="ca-pub-8479780597628659"
-                data-ad-slot="2618909847"
-                data-ad-format="auto"
-                data-full-width-responsive="true"
-              />
-            </div>
-          </div> */}
         </div>
       </div>
     </>
