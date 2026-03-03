@@ -302,7 +302,8 @@
     "searchForFighter": "搜索格斗选手...",
     "cancel": "取消",
     "pageTitle": "MMA XOX - 同一屏幕游戏",
-    "fighterNotMeetRequirements": "🥺 格斗选手不符合要求。"
+    "fighterNotMeetRequirements": "🥺 霸王不符合要求。",
+    "aiMissedRequirements": "AI 猜错了！ 🤖"
   },
   "filters": {
     "brazilian": "巴西",

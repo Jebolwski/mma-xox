@@ -303,7 +303,8 @@
     "searchForFighter": "ابحث عن مقاتل...",
     "cancel": "إلغاء",
     "pageTitle": "MMA XOX - لعبة نفس الشاشة",
-    "fighterNotMeetRequirements": "🥺 المقاتل لا يستوفي المتطلبات."
+    "fighterNotMeetRequirements": "🥺 المقاتل لا يلبي المتطلبات.",
+    "aiMissedRequirements": "الذكاء الاصطناعي خمن بشكل خاطئ! 🤖"
   },
   "filters": {
     "brazilian": "برازيلي",

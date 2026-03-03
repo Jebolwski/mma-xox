@@ -303,7 +303,8 @@
     "searchForFighter": "Bir dövüşçü ara...",
     "cancel": "İptal",
     "pageTitle": "MMA XOX - Aynı Ekran Oyunu",
-    "fighterNotMeetRequirements": "🥺 Dövüşçü gereksinimleri karşılamıyor."
+    "fighterNotMeetRequirements": "🥺 Dövüşçü gereksinimleri karş0lamıyor.",
+    "aiMissedRequirements": "Yapay zeka yanlış tahmin etti! 🤖"
   },
   "filters": {
     "brazilian": "Brezilyalı",

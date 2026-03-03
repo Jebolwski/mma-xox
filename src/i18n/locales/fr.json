@@ -303,7 +303,8 @@
     "searchForFighter": "Rechercher un combattant...",
     "cancel": "Annuler",
     "pageTitle": "MMA XOX - Jeu sur le même écran",
-    "fighterNotMeetRequirements": "🥺 Le combattant ne répond pas aux exigences."
+    "fighterNotMeetRequirements": "🥺 Le combattant ne répond pas aux exigences.",
+    "aiMissedRequirements": "L'IA a mal deviné! 🤖"
   },
   "filters": {
     "brazilian": "Brésilien",

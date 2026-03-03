@@ -303,7 +303,8 @@
     "searchForFighter": "Пошук бійця...",
     "cancel": "Скасувати",
     "pageTitle": "MMA XOX - Гра на одному екрані",
-    "fighterNotMeetRequirements": "🥺 Боєць не відповідає вимогам."
+    "fighterNotMeetRequirements": "🥺 Боєць не відповідає вимогам.",
+    "aiMissedRequirements": "ШІ вгадав неправильно! 🤖"
   },
   "filters": {
     "brazilian": "Бразильський",

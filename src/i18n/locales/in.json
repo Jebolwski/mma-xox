@@ -303,7 +303,8 @@
     "searchForFighter": "Cari petarung...",
     "cancel": "Batal",
     "pageTitle": "MMA XOX - Permainan Layar yang Sama",
-    "fighterNotMeetRequirements": "🥺 Petarung tidak memenuhi persyaratan."
+    "fighterNotMeetRequirements": "🥺 Petinju tidak memenuhi persyaratan.",
+    "aiMissedRequirements": "AI menebak dengan salah! 🤖"
   },
   "filters": {
     "brazilian": "Brasil",

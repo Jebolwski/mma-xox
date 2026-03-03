@@ -303,7 +303,8 @@
     "searchForFighter": "Nach einem Kämpfer suchen...",
     "cancel": "Abbrechen",
     "pageTitle": "MMA XOX - Gleicher Bildschirm",
-    "fighterNotMeetRequirements": "🥺 Kämpfer erfüllt die Anforderungen nicht."
+    "fighterNotMeetRequirements": "🥺 Kämpfer erfüllt die Anforderungen nicht.",
+    "aiMissedRequirements": "KI hat falsch geraten! 🤖"
   },
   "filters": {
     "brazilian": "Brasilianisch",

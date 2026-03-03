@@ -303,7 +303,8 @@
     "searchForFighter": "Sök efter en fighter...",
     "cancel": "Avbryt",
     "pageTitle": "MMA XOX - Spela på samma skärm",
-    "fighterNotMeetRequirements": "🥺 Fightern uppfyller inte kraven."
+    "fighterNotMeetRequirements": "🥺 Boxaren uppfyller inte kraven.",
+    "aiMissedRequirements": "AI gissade fel! 🤖"
   },
   "filters": {
     "brazilian": "Brasiliansk",

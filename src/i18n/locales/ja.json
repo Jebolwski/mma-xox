@@ -303,7 +303,8 @@
     "searchForFighter": "ファイターを検索...",
     "cancel": "キャンセル",
     "pageTitle": "MMA XOX - 同じ画面ゲーム",
-    "fighterNotMeetRequirements": "🥺 ファイターが条件を満たしていません。"
+    "fighterNotMeetRequirements": "🥺 ファイターが要件を満たしていない。",
+    "aiMissedRequirements": "AIが間違った推測をしました！ 🤖"
   },
   "filters": {
     "brazilian": "ブラジル人",

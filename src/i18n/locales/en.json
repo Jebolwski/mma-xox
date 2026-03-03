@@ -303,7 +303,8 @@
     "searchForFighter": "Search for a fighter...",
     "cancel": "Cancel",
     "pageTitle": "MMA XOX - Same Screen Game",
-    "fighterNotMeetRequirements": "🥺 Fighter doesnt meet the requirements."
+    "fighterNotMeetRequirements": "Fighter doesn't meet requirements!",
+    "aiMissedRequirements": "AI made a wrong guess! 🤖"
   },
   "filters": {
     "brazilian": "Brazilian",

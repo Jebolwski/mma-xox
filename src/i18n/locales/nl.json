@@ -303,7 +303,8 @@
     "searchForFighter": "Zoeken naar een fighter...",
     "cancel": "Annuleren",
     "pageTitle": "MMA XOX - Zelfde Scherm Spel",
-    "fighterNotMeetRequirements": "🥺 Fighter voldoet niet aan de vereisten."
+    "fighterNotMeetRequirements": "🥺 Krijger voldoet niet aan de vereisten.",
+    "aiMissedRequirements": "AI heeft fout geraden! 🤖"
   },
   "filters": {
     "brazilian": "Braziliaans",

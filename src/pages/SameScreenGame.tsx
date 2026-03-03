@@ -382,7 +382,13 @@ function SameScreenGame() {
     const positionKey = fighterMap[selectedBox];
 
     if (!positionsFighters[positionKey].includes(fighter)) {
-      notify();
+      if (selectedParam !== null) {
+        // AI hatası
+        toast.info(t("game.aiMissedRequirements"));
+      } else {
+        // Oyuncu hatası
+        toast.error(t("game.fighterNotMeetRequirements"));
+      }
       playSfx(wrong);
     } else {
       const bgColor =
@@ -1018,8 +1024,6 @@ function SameScreenGame() {
       }, 900); // AI'nın düşünüyormuş gibi gecikmeli oynaması için
     }
   }, [turn, playWithAI, gameStart, gameWinner]);
-
-  const notify = () => toast.error(t("game.fighterNotMeetRequirements"));
 
   return (
     <>
