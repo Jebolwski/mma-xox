@@ -52,9 +52,9 @@
       "url": "/menu",
       "icons": [
         {
-          "src": "/logo.png",
+          "src": "/pictures/logo.webp",
           "sizes": "96x96",
-          "type": "image/png"
+          "type": "image/webp"
         }
       ]
     },
@@ -65,9 +65,9 @@
       "url": "/world-ranking",
       "icons": [
         {
-          "src": "/logo.png",
+          "src": "/pictures/logo.webp",
           "sizes": "96x96",
-          "type": "image/png"
+          "type": "image/webp"
         }
       ]
     }

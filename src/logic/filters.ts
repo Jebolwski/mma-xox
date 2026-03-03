@@ -1,15 +1,15 @@
 import fighters from "../assets/data/fighters.json";
-import usaFlag from "../assets/usa_flag.png";
-import nigeriaFlag from "../assets/nigeria_flag.jpg";
-import russiaFlag from "../assets/russia_flag.jpg";
-import polandFlag from "../assets/poland_flag.jpg";
-import australiaFlag from "../assets/austraila_flag.png";
-import brazilFlag from "../assets/brazil_flag.png";
-import orthodoxStance from "../assets/orthodox.png";
-import southpawStance from "../assets/southpaw.png";
-import switchStance from "../assets/southpaw.png";
-import undefeated from "../assets/undefeated.png";
-import title from "../assets/title.png";
+import usaFlag from "../assets/pictures/flags/usa_flag.webp";
+import nigeriaFlag from "../assets/pictures/flags/nigeria_flag.webp";
+import russiaFlag from "../assets/pictures/flags/russia_flag.webp";
+import polandFlag from "../assets/pictures/flags/poland_flag.webp";
+import australiaFlag from "../assets/pictures/flags/austraila_flag.webp";
+import brazilFlag from "../assets/pictures/flags/brazil_flag.webp";
+import orthodoxStance from "../assets/pictures/orthodox.webp";
+import southpawStance from "../assets/pictures/southpaw.webp";
+import switchStance from "../assets/pictures/southpaw.webp";
+import undefeated from "../assets/pictures/undefeated.webp";
+import title from "../assets/pictures/title.webp";
 
 import { Fighter, Filter, FilterDifficulty } from '../interfaces/Fighter';
 const Filters = (): FilterDifficulty => {

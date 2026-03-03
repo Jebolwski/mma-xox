@@ -7,10 +7,10 @@ import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { toast } from "react-toastify";
 import { usePageTitle } from "../hooks/usePageTitle";
-import logo from "../assets/logo.png";
-import gamepad from "../assets/gamepad.svg";
-import loginIcon from "../assets/login.svg";
-import logoutIcon from "../assets/logout.svg";
+import logo from "../assets/pictures/logo.webp";
+import gamepad from "../assets/pictures/gamepad.webp";
+import loginIcon from "../assets/pictures/login.webp";
+import logoutIcon from "../assets/pictures/logout.webp";
 
 const Home = () => {
   const { theme, toggleTheme: contextToggleTheme } = useContext(ThemeContext);

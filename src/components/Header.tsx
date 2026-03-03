@@ -1,24 +1,24 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import trFlag from "../assets/tr.png";
-import enFlag from "../assets/en.jpg";
-import ptFlag from "../assets/pt.png";
-import spFlag from "../assets/sp.png";
-import ruFlag from "../assets/russia_flag.jpg";
-import deFlag from "../assets/ge.png";
-import arFlag from "../assets/sa.png";
-import hiFlag from "../assets/in.png";
-import zhFlag from "../assets/ch.png";
-import jaFlag from "../assets/jp.png";
-import koFlag from "../assets/kr.png";
-import frFlag from "../assets/fr.png";
-import swFlag from "../assets/sw.png";
-import plFlag from "../assets/pl.png";
-import itFlag from "../assets/it.png";
-import nlFlag from "../assets/nl.png";
-import uaFlag from "../assets/ua_flag.png";
+import trFlag from "../assets/pictures/flags/tr.webp";
+import enFlag from "../assets/pictures/flags/en.webp";
+import ptFlag from "../assets/pictures/flags/pt.webp";
+import spFlag from "../assets/pictures/flags/sp.webp";
+import ruFlag from "../assets/pictures/flags/russia_flag.webp";
+import deFlag from "../assets/pictures/flags/ge.webp";
+import arFlag from "../assets/pictures/flags/sa.webp";
+import hiFlag from "../assets/pictures/flags/in.webp";
+import zhFlag from "../assets/pictures/flags/ch.webp";
+import jaFlag from "../assets/pictures/flags/jp.webp";
+import koFlag from "../assets/pictures/flags/kr.webp";
+import frFlag from "../assets/pictures/flags/fr.webp";
+import swFlag from "../assets/pictures/flags/sw.webp";
+import plFlag from "../assets/pictures/flags/pl.webp";
+import itFlag from "../assets/pictures/flags/it.webp";
+import nlFlag from "../assets/pictures/flags/nl.webp";
+import uaFlag from "../assets/pictures/flags/ua_flag.webp";
 import { ThemeContext } from "../context/ThemeContext";
-import return_img from "../assets/return.png";
+import return_img from "../assets/pictures/return.webp";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Header = ({
@@ -467,6 +467,7 @@ const Header = ({
             <div className="flex gap-2">
               <img
                 src={return_img || "/placeholder.svg"}
+                alt="go back"
                 className={`w-6 ${theme === "dark" ? "invert" : ""}`}
               />
               <p className="font-semibold">{t("room.backToMenu")}</p>

@@ -23,11 +23,6 @@ import {
   cancelFriendRequest,
   removeFriend,
 } from "../services/friends";
-import return_img from "../assets/return.png";
-import trFlag from "../assets/tr.png";
-import enFlag from "../assets/en.jpg";
-import dark from "../assets/dark.png";
-import light from "../assets/light.png";
 
 type Req = {
   id: string;
@@ -70,7 +65,7 @@ export default function Friends() {
         duration: `${(2 + Math.random() * 3).toFixed(2)}s`,
         opacity: 0.35 + Math.random() * 0.45,
       })),
-    []
+    [],
   );
 
   const changeLanguage = (lang) => {
@@ -100,7 +95,7 @@ export default function Friends() {
       await setDoc(
         doc(db, "users", currentUser.email!),
         { email: currentUser.email, friends: [] },
-        { merge: true }
+        { merge: true },
       );
     };
     ensure();
@@ -116,7 +111,7 @@ export default function Friends() {
     const qIn = query(
       collection(db, "friendRequests"),
       where("toEmail", "==", me),
-      where("status", "==", "pending")
+      where("status", "==", "pending"),
     );
     const unsubIn = onSnapshot(qIn, (snap) => {
       setIncoming(snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) })));
@@ -125,7 +120,7 @@ export default function Friends() {
     const qOut = query(
       collection(db, "friendRequests"),
       where("fromEmail", "==", me),
-      where("status", "==", "pending")
+      where("status", "==", "pending"),
     );
     const unsubOut = onSnapshot(qOut, (snap) => {
       setSent(snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) })));
@@ -165,12 +160,12 @@ export default function Friends() {
     const qAcceptedOut = query(
       collection(db, "friendRequests"),
       where("fromEmail", "==", me),
-      where("status", "==", "accepted")
+      where("status", "==", "accepted"),
     );
     const qAcceptedIn = query(
       collection(db, "friendRequests"),
       where("toEmail", "==", me),
-      where("status", "==", "accepted")
+      where("status", "==", "accepted"),
     );
 
     let out: string[] = [];
@@ -290,7 +285,7 @@ export default function Friends() {
                   : "bg-white/80 border-slate-300 text-slate-800"
               }`}
             >
-              <div className="font-semibold mb-3">{t("friends.addFriend")}</div>
+              <h1 className="font-semibold mb-3">{t("friends.addFriend")}</h1>
               <input
                 type="text"
                 placeholder={t("friends.usernameLabel")}
@@ -313,7 +308,7 @@ export default function Friends() {
                     // Username'den email'i bul
                     const q = query(
                       collection(db, "users"),
-                      where("username", "==", addUsername)
+                      where("username", "==", addUsername),
                     );
                     const result = await getDocs(q);
 
@@ -449,8 +444,8 @@ export default function Friends() {
                           `/profile/${encodeURIComponent(
                             (
                               friendsUsernames[e] || e.split("@")[0]
-                            ).toLowerCase()
-                          )}`
+                            ).toLowerCase(),
+                          )}`,
                         )
                       }
                     >
@@ -460,7 +455,7 @@ export default function Friends() {
                       <button
                         onClick={() =>
                           navigate(
-                            `/available-rooms?invite=${encodeURIComponent(e)}`
+                            `/available-rooms?invite=${encodeURIComponent(e)}`,
                           )
                         }
                         className="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm cursor-pointer"

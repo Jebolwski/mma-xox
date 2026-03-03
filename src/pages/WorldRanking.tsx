@@ -15,12 +15,7 @@ import {
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
-import return_img from "../assets/return.png";
 import { usePageTitle } from "../hooks/usePageTitle";
-import dark from "../assets/dark.png";
-import light from "../assets/light.png";
-import trFlag from "../assets/tr.png";
-import enFlag from "../assets/en.jpg";
 
 type Row = {
   id: string;
@@ -213,9 +208,9 @@ export default function WorldRanking() {
                   : "bg-white/80 border-slate-300 text-black"
               }`}
             >
-              <div className="text-sm opacity-80 mb-1">
+              <h1 className="text-sm opacity-80 mb-1">
                 {t("ranking.yourGlobalRank")}
-              </div>
+              </h1>
               <div className="flex items-center justify-between">
                 <div className="font-semibold">
                   #{myRank}{" "}
@@ -298,7 +293,7 @@ export default function WorldRanking() {
                       {r.avatarUrl ? (
                         <img
                           src={getHighQualityAvatarUrl(r.avatarUrl)}
-                          alt="avatar"
+                          alt="profile picture"
                           className="w-8 h-8 rounded-full object-cover"
                         />
                       ) : (

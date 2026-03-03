@@ -24,7 +24,6 @@ import { useTranslation } from "react-i18next";
 import { db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import return_img from "../assets/return.png";
 import win from "../assets/sounds/win.mp3";
 import draw from "../assets/sounds/draw.mp3";
 import wrong from "../assets/sounds/wrong.mp3";
@@ -40,28 +39,27 @@ import { increment } from "firebase/firestore";
 import { useWindowSize } from "react-use";
 import { ROOM_TTL_MS } from "../services/roomCleanup";
 import { useAuth } from "../context/AuthContext";
-import trFlag from "../assets/tr.png";
-import enFlag from "../assets/en.jpg";
-import dark from "../assets/dark.png";
-import light from "../assets/light.png";
-import logo from "../assets/logo.png";
-import logo_text from "../assets/logo_text.png";
-import ptFlag from "../assets/pt.png";
-import spFlag from "../assets/sp.png";
-import ruFlag from "../assets/russia_flag.jpg";
-import deFlag from "../assets/ge.png";
-import arFlag from "../assets/sa.png";
-import hiFlag from "../assets/in.png";
-import zhFlag from "../assets/ch.png";
-import jaFlag from "../assets/jp.png";
-import koFlag from "../assets/kr.png";
-import frFlag from "../assets/fr.png";
-import swFlag from "../assets/sw.png";
-import plFlag from "../assets/pl.png";
-import itFlag from "../assets/it.png";
-import nlFlag from "../assets/nl.png";
-import uaFlag from "../assets/ua_flag.png";
-import unknown_fighter from "../assets/unknown.png";
+import return_img from "../assets/pictures/return.webp";
+import logo_text from "../assets/pictures/logo_text.webp";
+import logo from "../assets/pictures/logo.webp";
+import unknown_fighter from "../assets/pictures/unknown.webp";
+import ruFlag from "../assets/pictures/flags/russia_flag.webp";
+import trFlag from "../assets/pictures/flags/tr.webp";
+import enFlag from "../assets/pictures/flags/en.webp";
+import ptFlag from "../assets/pictures/flags/pt.webp";
+import spFlag from "../assets/pictures/flags/sp.webp";
+import deFlag from "../assets/pictures/flags/ge.webp";
+import arFlag from "../assets/pictures/flags/sa.webp";
+import hiFlag from "../assets/pictures/flags/in.webp";
+import zhFlag from "../assets/pictures/flags/ch.webp";
+import jaFlag from "../assets/pictures/flags/jp.webp";
+import koFlag from "../assets/pictures/flags/kr.webp";
+import frFlag from "../assets/pictures/flags/fr.webp";
+import swFlag from "../assets/pictures/flags/sw.webp";
+import plFlag from "../assets/pictures/flags/pl.webp";
+import itFlag from "../assets/pictures/flags/it.webp";
+import nlFlag from "../assets/pictures/flags/nl.webp";
+import uaFlag from "../assets/pictures/flags/ua_flag.webp";
 
 const Room = () => {
   const { roomId } = useParams();
@@ -2761,6 +2759,7 @@ const Room = () => {
             <div className="flex gap-2">
               <img
                 src={return_img || "/placeholder.svg"}
+                alt="go back"
                 className="w-6"
               />
               <p className="font-semibold">{t("room.backToMenu")}</p>
@@ -3456,6 +3455,7 @@ const Room = () => {
                         <div className="flex items-center justify-center">
                           <img
                             src={logo_text}
+                            alt="logo"
                             className="xl:w-24 lg:w-20 md:w-16 w-12"
                           />
                         </div>
@@ -3476,6 +3476,7 @@ const Room = () => {
                             null ? (
                               <img
                                 src={gameState?.filtersSelected[0].filter_image}
+                                alt="filter 1 image"
                                 className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                                 onLoad={(e) => {
                                   e.currentTarget.classList.remove("opacity-0");
@@ -3523,6 +3524,7 @@ const Room = () => {
                             null ? (
                               <img
                                 src={gameState?.filtersSelected[1].filter_image}
+                                alt="filter 2 image"
                                 className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                                 onLoad={(e) => {
                                   e.currentTarget.classList.remove("opacity-0");
@@ -3570,6 +3572,7 @@ const Room = () => {
                             null ? (
                               <img
                                 src={gameState?.filtersSelected[2].filter_image}
+                                alt="filter 3 image"
                                 className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                                 onLoad={(e) => {
                                   e.currentTarget.classList.remove("opacity-0");
@@ -3619,6 +3622,7 @@ const Room = () => {
                             null ? (
                               <img
                                 src={gameState?.filtersSelected[3].filter_image}
+                                alt="filter 4 image"
                                 className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                                 onLoad={(e) => {
                                   e.currentTarget.classList.remove("opacity-0");
@@ -3686,6 +3690,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter00.url}
+                            alt="fighter top left"
                             className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
@@ -3735,6 +3740,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter01.url}
+                            alt="fighter top middle"
                             className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
@@ -3784,6 +3790,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter02.url}
+                            alt="fighter top right"
                             className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
@@ -3815,6 +3822,7 @@ const Room = () => {
                             null ? (
                               <img
                                 src={gameState?.filtersSelected[4].filter_image}
+                                alt="filter 5 image"
                                 className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                                 onLoad={(e) => {
                                   e.currentTarget.classList.remove("opacity-0");
@@ -3882,6 +3890,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter10.url}
+                            alt="figter middle left"
                             className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
@@ -3931,6 +3940,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter11.url}
+                            alt="fighter middle middle"
                             className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
@@ -3980,6 +3990,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter12.url}
+                            alt="fighter middle right"
                             className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
@@ -4011,6 +4022,7 @@ const Room = () => {
                             null ? (
                               <img
                                 src={gameState?.filtersSelected[5].filter_image}
+                                alt="filter 6 image"
                                 className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                                 onLoad={(e) => {
                                   e.currentTarget.classList.remove("opacity-0");
@@ -4078,6 +4090,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter20.url}
+                            alt="fighter bottom left"
                             className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
@@ -4127,6 +4140,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter21.url}
+                            alt="fighter bottom middle"
                             className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
@@ -4176,6 +4190,7 @@ const Room = () => {
                         <div className="flex justify-center">
                           <img
                             src={gameState.fighter22.url}
+                            alt="fighter bottom right"
                             className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                           />
                         </div>
@@ -4228,6 +4243,7 @@ const Room = () => {
                                     ? unknown_fighter
                                     : fighter.Picture
                                 }
+                                alt="searched fighter picture"
                                 onLoad={(e) => {
                                   e.currentTarget.classList.remove("opacity-0");
                                   e.currentTarget.classList.add("opacity-100");

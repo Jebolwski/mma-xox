@@ -9,10 +9,7 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase";
-import trFlag from "../assets/tr.png";
-import enFlag from "../assets/en.jpg";
 import { toast, ToastContainer } from "react-toastify";
-import return_img from "../assets/return.png";
 import {
   doc,
   setDoc,
@@ -23,11 +20,9 @@ import {
 } from "firebase/firestore";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { db } from "../firebase";
-import light from "../assets/light.png";
-import dark from "../assets/dark.png";
-import logo from "../assets/logo.png";
-import eye_closed from "../assets/eye_closed.svg";
-import eye_open from "../assets/eye_open.svg";
+import logo from "../assets/pictures/logo.webp";
+import eye_closed from "../assets/pictures/eye_closed.webp";
+import eye_open from "../assets/pictures/eye_open.webp";
 
 const Login = () => {
   const { t, i18n } = useTranslation();
@@ -665,7 +660,7 @@ const Login = () => {
                     <img
                       src={eye_open}
                       className={`w-6 ${theme === "dark" ? "invert" : ""}`}
-                      alt="Hide password"
+                      alt="Show password"
                     />
                   ) : (
                     <img

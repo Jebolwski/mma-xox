@@ -14,10 +14,9 @@ import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { ToastContainer, toast } from "react-toastify";
-import return_img from "../assets/return.png";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { updatePassword } from "firebase/auth";
-import photo_machine from "../assets/photo-machine.png";
+import photo_machine from "../assets/pictures/photo-machine.webp";
 
 // --- YENİ: Profil veri yapısı arayüzü ---
 interface UserProfile {
@@ -580,7 +579,7 @@ const Profile = () => {
                 <div className="relative">
                   <img
                     src={getHighQualityAvatarUrl(profile.avatarUrl)}
-                    alt="avatar"
+                    alt="profile picture"
                     className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 lg:border-3 border-red-500 cursor-pointer hover:opacity-80 transition-opacity"
                     onClick={() => setShowAvatarView(true)}
                     title="Click to view full avatar"
@@ -592,7 +591,10 @@ const Profile = () => {
                       className="cursor-pointer absolute -bottom-1 -right-1 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 text-sm transition-all hover:scale-110 shadow-lg h-8 w-8 flex items-center justify-center"
                       title="Change Avatar"
                     >
-                      <img src={photo_machine} />
+                      <img
+                        src={photo_machine}
+                        alt="change profile picture"
+                      />
                     </button>
                   )}
                 </div>
@@ -1258,7 +1260,7 @@ const Profile = () => {
               {/* Avatar */}
               <img
                 src={getHighQualityAvatarUrl(profile.avatarUrl)}
-                alt="avatar"
+                alt="profile picture"
                 className="w-64 h-64 sm:w-80 sm:h-80 rounded-2xl border-4 border-red-500 shadow-2xl"
               />
 
@@ -1292,7 +1294,7 @@ const Profile = () => {
                 <div className="flex justify-center mb-4">
                   <img
                     src={avatarPreview || profile.avatarUrl}
-                    alt="avatar preview"
+                    alt="profile picture preview"
                     className="w-32 h-32 rounded-full border-4 border-blue-500 object-cover"
                   />
                 </div>

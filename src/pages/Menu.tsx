@@ -17,24 +17,10 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
-import return_img from "../assets/return.png";
-import trFlag from "../assets/tr.png";
-import enFlag from "../assets/en.jpg";
-import ptFlag from "../assets/pt.png";
-import spFlag from "../assets/sp.png";
-import ruFlag from "../assets/russia_flag.jpg";
-import deFlag from "../assets/ge.png";
-import arFlag from "../assets/sa.png";
-import hiFlag from "../assets/in.png";
-import zhFlag from "../assets/ch.png";
-import jaFlag from "../assets/jp.png";
-import koFlag from "../assets/kr.png";
 import { useAuth } from "../context/AuthContext";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { sanitizePlayerName } from "../utils/security";
-import light from "../assets/light.png";
-import dark from "../assets/dark.png";
-import logo from "../assets/logo.png";
+import logo from "../assets/pictures/logo.webp";
 
 const Menu = () => {
   const { t, i18n } = useTranslation();

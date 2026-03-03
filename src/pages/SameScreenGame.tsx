@@ -3,7 +3,6 @@ import fighters_url from "../assets/data/fighters.json";
 import Filters from "../logic/filters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
-import return_img from "../assets/return.png";
 import wrong from "../assets/sounds/wrong.mp3";
 import win from "../assets/sounds/win.mp3";
 import draw from "../assets/sounds/draw.mp3";
@@ -14,9 +13,9 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { useTranslation } from "react-i18next";
-import unknown_fighter from "../assets/unknown.png";
-import logo from "../assets/logo.png";
-import logo_text from "../assets/logo_text.png";
+import unknown_fighter from "../assets/pictures/unknown.webp";
+import logo from "../assets/pictures/logo.webp";
+import logo_text from "../assets/pictures/logo_text.webp";
 import Header from "../components/Header";
 
 function SameScreenGame() {
@@ -1325,6 +1324,7 @@ function SameScreenGame() {
                       <div className="flex items-center justify-center">
                         <img
                           src={logo_text}
+                          alt="logo"
                           className="xl:w-24 lg:w-20 md:w-16 w-12"
                         />
                       </div>
@@ -1343,6 +1343,7 @@ function SameScreenGame() {
                           {filtersSelected[0].filter_image != null ? (
                             <img
                               src={filtersSelected[0].filter_image}
+                              alt="filter 1 image"
                               className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                               onLoad={(e) => {
                                 e.currentTarget.classList.remove("opacity-0");
@@ -1386,6 +1387,7 @@ function SameScreenGame() {
                           {filtersSelected[1].filter_image != null ? (
                             <img
                               src={filtersSelected[1].filter_image}
+                              alt="filter 2 image"
                               className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                               onLoad={(e) => {
                                 e.currentTarget.classList.remove("opacity-0");
@@ -1429,6 +1431,7 @@ function SameScreenGame() {
                           {filtersSelected[2].filter_image != null ? (
                             <img
                               src={filtersSelected[2].filter_image}
+                              alt="filter 3 image"
                               className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                               onLoad={(e) => {
                                 e.currentTarget.classList.remove("opacity-0");
@@ -1476,6 +1479,7 @@ function SameScreenGame() {
                           {filtersSelected[3].filter_image != null ? (
                             <img
                               src={filtersSelected[3].filter_image}
+                              alt="filter 4 image"
                               className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                               onLoad={(e) => {
                                 e.currentTarget.classList.remove("opacity-0");
@@ -1538,6 +1542,7 @@ function SameScreenGame() {
                       <div className="flex justify-center">
                         <img
                           src={fighter00.url}
+                          alt="fighter top left"
                           className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                         />
                       </div>
@@ -1585,6 +1590,7 @@ function SameScreenGame() {
                       <div className="flex justify-center">
                         <img
                           src={fighter01.url}
+                          alt="fighter top middle"
                           className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                         />
                       </div>
@@ -1632,6 +1638,7 @@ function SameScreenGame() {
                       <div className="flex justify-center">
                         <img
                           src={fighter02.url}
+                          alt="fighter top right"
                           className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                         />
                       </div>
@@ -1664,6 +1671,7 @@ function SameScreenGame() {
                           {filtersSelected[4].filter_image != null ? (
                             <img
                               src={filtersSelected[4].filter_image}
+                              alt="filter 5 image"
                               className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                               onLoad={(e) => {
                                 e.currentTarget.classList.remove("opacity-0");
@@ -1726,6 +1734,7 @@ function SameScreenGame() {
                       <div className="flex justify-center">
                         <img
                           src={fighter10.url}
+                          alt="fighter middle left"
                           className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                         />
                       </div>
@@ -1773,6 +1782,7 @@ function SameScreenGame() {
                       <div className="flex justify-center">
                         <img
                           src={fighter11.url}
+                          alt="fighter middle middle"
                           className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                         />
                       </div>
@@ -1820,6 +1830,7 @@ function SameScreenGame() {
                       <div className="flex justify-center">
                         <img
                           src={fighter12.url}
+                          alt="fighter middle right"
                           className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                         />
                       </div>
@@ -1852,6 +1863,7 @@ function SameScreenGame() {
                           {filtersSelected[5].filter_image != null ? (
                             <img
                               src={filtersSelected[5].filter_image}
+                              alt="filter 6 image"
                               className="xl:w-12 lg:w-10 md:w-9 w-7 rounded-md transition-opacity duration-500 opacity-0"
                               onLoad={(e) => {
                                 e.currentTarget.classList.remove("opacity-0");
@@ -1914,6 +1926,7 @@ function SameScreenGame() {
                       <div className="flex justify-center">
                         <img
                           src={fighter20.url}
+                          alt="fighter bottom left"
                           className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                         />
                       </div>
@@ -1961,6 +1974,7 @@ function SameScreenGame() {
                       <div className="flex justify-center">
                         <img
                           src={fighter21.url}
+                          alt="fighter bottom middle"
                           className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                         />
                       </div>
@@ -2008,6 +2022,7 @@ function SameScreenGame() {
                       <div className="flex justify-center">
                         <img
                           src={fighter22.url}
+                          alt="fighter bottom right"
                           className="xl:w-12 lg:w-10 md:w-9 w-6 fade-bottom"
                         />
                       </div>
@@ -2060,6 +2075,7 @@ function SameScreenGame() {
                                   ? unknown_fighter
                                   : fighter.Picture
                               }
+                              alt="searched fighter picture"
                               className="xl:w-13 w-10 opacity-0 transition-opacity duration-500"
                               onLoad={(e) => {
                                 e.currentTarget.classList.remove("opacity-0");

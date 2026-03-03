@@ -14,20 +14,15 @@ import { ThemeContext } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext"; // EKLENDI
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
-import number from "../assets/number.svg";
-import return_img from "../assets/return.png";
-import trFlag from "../assets/tr.png";
-import enFlag from "../assets/en.jpg";
-import user_logo from "../assets/user.png";
-// import refresh from "../assets/refresh.png";
+import logo from "../assets/pictures/logo.webp";
+import number from "../assets/pictures/number.webp";
+import user_logo from "../assets/pictures/user.webp";
+
 import {
   logStaleRoomsByLastActivity,
   cleanupAllStaleRooms,
 } from "../services/roomCleanup";
 import { usePageTitle } from "../hooks/usePageTitle";
-import light from "../assets/light.png";
-import dark from "../assets/dark.png";
 
 const AvailableRooms = () => {
   const [languageDropdown, setLanguageDropdown] = useState(false);
@@ -668,6 +663,7 @@ const AvailableRooms = () => {
                     <div className="font-semibold flex gap-2 items-center">
                       <img
                         src={number}
+                        alt="hashtag"
                         className="h-4"
                       />
                       {t("room.roomLabel")}
@@ -684,6 +680,7 @@ const AvailableRooms = () => {
                     <div className="font-semibold flex gap-2 items-center">
                       <img
                         src={user_logo}
+                        alt="user logo placeholder"
                         className="h-4"
                       />
                       {t("room.hostLabel")}
