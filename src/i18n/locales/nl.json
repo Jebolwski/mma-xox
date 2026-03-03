@@ -220,7 +220,15 @@
     "passwordMinLength": "🚨 Wachtwoord moet minstens 6 tekens zijn!",
     "resetSuccess": "🎉 Wachtwoord succesvol opnieuw ingesteld!",
     "passwordTooWeak": "🫣 Wachtwoord is te zwak!",
-    "resetExpiredGeneric": "🥲 Resetlink is verlopen!"
+    "resetExpiredGeneric": "🥲 Resetlink is verlopen!",
+    "resetSubtitle": "Wachtwoord opnieuw instellen",
+    "resettingFor": "Wachtwoord opnieuw instellen voor:",
+    "newPassword": "Nieuw wachtwoord",
+    "confirmPassword": "Wachtwoord bevestigen",
+    "resetting": "Opnieuw instellen...",
+    "resetButton": "Wachtwoord opnieuw instellen",
+    "backToLogin": "Terug naar aanmelding",
+    "verifyingLink": "Resetlink wordt geverifieerd..."
   },
   "common": {
     "loading": "Laden...",
@@ -620,16 +628,6 @@
       "text": "Of je nu een casual speler bent die plezier zoekt of een competitieve gamer die naar de top van de leaderboard streeft, MMA XOX heeft iets voor je. Sluit je aan bij duizenden spelers en ervaar de ultieme tic-tac-toe arena met MMA fighters!",
       "contactText": "Voor meer informatie of vragen, contacteer alstublieft",
       "contactLink": "neem contact op"
-    },
-    "password": {
-      "resetSubtitle": "Wachtwoord opnieuw instellen",
-      "resettingFor": "Wachtwoord opnieuw instellen voor:",
-      "newPassword": "Nieuw wachtwoord",
-      "confirmPassword": "Wachtwoord bevestigen",
-      "resetting": "Opnieuw instellen...",
-      "resetButton": "Wachtwoord opnieuw instellen",
-      "backToLogin": "Terug naar aanmelding",
-      "verifyingLink": "Resetlink wordt geverifieerd..."
-    }  
+    }
   }
 }

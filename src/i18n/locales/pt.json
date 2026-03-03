@@ -220,7 +220,15 @@
     "passwordMinLength": "🚨 A senha deve ter pelo menos 6 caracteres!",
     "resetSuccess": "🎉 Senha redefinida com sucesso!",
     "passwordTooWeak": "🫣 A senha é muito fraca!",
-    "resetExpiredGeneric": "🥲 O link de redefinição expirou!"
+    "resetExpiredGeneric": "🥲 O link de redefinição expirou!",
+    "resetSubtitle": "Redefinir Sua Senha",
+    "resettingFor": "Redefinindo senha para:",
+    "newPassword": "Nova Senha",
+    "confirmPassword": "Confirmar Senha",
+    "resetting": "Redefinindo...",
+    "resetButton": "Redefinir Senha",
+    "backToLogin": "Voltar ao Login",
+    "verifyingLink": "Verificando link de redefinição..."
   },
   "common": {
     "loading": "Carregando...",
@@ -620,16 +628,6 @@
       "text": "Se você é um jogador casual procurando diversão ou um gamer competitivo aiming para o topo do placar, MMA XOX tem algo para você. Junte-se a milhares de jogadores e experimente a arena tic-tac-toe definitiva com lutadores de MMA!",
       "contactText": "Para mais informações ou dúvidas, entre em",
       "contactLink": "contato"
-    },
-    "password": {
-      "resetSubtitle": "Redefinir Sua Senha",
-      "resettingFor": "Redefinindo senha para:",
-      "newPassword": "Nova Senha",
-      "confirmPassword": "Confirmar Senha",
-      "resetting": "Redefinindo...",
-      "resetButton": "Redefinir Senha",
-      "backToLogin": "Voltar ao Login",
-      "verifyingLink": "Verificando link de redefinição..."
-    }  
+    }
   }
 }

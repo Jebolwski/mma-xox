@@ -7,10 +7,10 @@ import { toast, ToastContainer } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 const ResetPassword = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

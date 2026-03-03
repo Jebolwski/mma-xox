@@ -219,7 +219,15 @@
     "passwordMinLength": "🚨 密码必须至少 6 个字符！",
     "resetSuccess": "🎉 密码重置成功！",
     "passwordTooWeak": "🫣 密码太弱！",
-    "resetExpiredGeneric": "🥲 重置链接已过期！"
+    "resetExpiredGeneric": "🥲 重置链接已过期！",
+    "resetSubtitle": "重置您的密码",
+    "resettingFor": "重置密码为:",
+    "newPassword": "新密码",
+    "confirmPassword": "确认密码",
+    "resetting": "重置中...",
+    "resetButton": "重置密码",
+    "backToLogin": "返回登录",
+    "verifyingLink": "验证重置链接..."
   },
   "common": {
     "loading": "加载中...",
@@ -619,16 +627,6 @@
       "text": "无论你是寻求娱乐的休闲玩家，还是力争排行榜顶端的竞争性游戏玩家，MMA XOX 都有为你准备的东西。加入数千名玩家，体验带有 MMA 格斗选手的终极井字棋竞技场！",
       "contactText": "如需更多信息或询问，请",
       "contactLink": "联系我们"
-    },
-    "password": {
-      "resetSubtitle": "重置您的密码",
-      "resettingFor": "重置密码为:",
-      "newPassword": "新密码",
-      "confirmPassword": "确认密码",
-      "resetting": "重置中...",
-      "resetButton": "重置密码",
-      "backToLogin": "返回登录",
-      "verifyingLink": "验证重置链接..."
-    }  
+    } 
   }
 }

@@ -17,27 +17,16 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/pictures/logo.webp";
 import number from "../assets/pictures/number.webp";
 import user_logo from "../assets/pictures/user.webp";
-
-import {
-  logStaleRoomsByLastActivity,
-  cleanupAllStaleRooms,
-} from "../services/roomCleanup";
+import { cleanupAllStaleRooms } from "../services/roomCleanup";
 import { usePageTitle } from "../hooks/usePageTitle";
 
 const AvailableRooms = () => {
-  const [languageDropdown, setLanguageDropdown] = useState(false);
-  const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
-    localStorage.setItem("language", lang);
-    setLanguageDropdown(false);
-  };
-  const { theme, toggleTheme } = useContext(ThemeContext);
-  const { t, i18n } = useTranslation();
+  const { theme } = useContext(ThemeContext);
+  const { t } = useTranslation();
   const { currentUser } = useAuth();
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [guestName, setGuestName] = useState("");
-  // const [cahRefresh, setCahRefresh] = useState(true);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -45,7 +34,6 @@ const AvailableRooms = () => {
   const sanitizeName = (name: string) =>
     (name || "").trim().replace(/\s+/g, " ").slice(0, NAME_MAX);
 
-  // Kullanıcı adını otomatik al
   const getPlayerName = () => {
     if (currentUser) {
       // Giriş yapmış kullanıcı için email'den username al
@@ -54,21 +42,6 @@ const AvailableRooms = () => {
     }
     // Guest kullanıcı için manuel girilen ismi kullan
     return sanitizeName(guestName);
-  };
-
-  const handleLanguageClick = () => {
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(min-width: 768px)").matches
-    ) {
-      // Desktop / md+ -> open dropdown
-      setLanguageDropdown(!languageDropdown);
-    } else {
-      // Mobile -> toggle language directly
-      const newLang = i18n.language === "tr" ? "en" : "tr";
-      changeLanguage(newLang);
-    }
   };
 
   usePageTitle(t("menu.availableRoomsTitle"));
@@ -114,10 +87,6 @@ const AvailableRooms = () => {
     }
   }, [currentUser]);
 
-  // const handleRoomClick = (roomId: any) => {
-  //   setSelectedRoom(roomId);
-  // };
-
   const handleJoinRoom = async () => {
     const finalPlayerName = getPlayerName();
 
@@ -148,7 +117,6 @@ const AvailableRooms = () => {
     }
   };
 
-  // Eğer giriş yapmış kullanıcıysa direkt join et
   const handleDirectJoin = async (roomId: string) => {
     if (currentUser) {
       const finalPlayerName = getPlayerName();
@@ -170,25 +138,6 @@ const AvailableRooms = () => {
       setSelectedRoom(roomId);
     }
   };
-
-  const handleExit = async () => {
-    navigate(-1);
-  };
-
-  // const handleRefresh = async () => {
-  //   if (!cahRefresh) {
-  //     toast.error("Please wait 5 seconds before refreshing again!");
-  //     return;
-  //   }
-  //   setCahRefresh(false);
-  //   setLoading(true);
-  //   setTimeout(() => {
-  //     setCahRefresh(true);
-  //   }, 5000);
-
-  //   // Liste zaten canlı; refresh ile sadece temizlik tetikle
-  //   logStaleRoomsByLastActivity().catch(() => {});
-  // };
 
   const SkeletonRoom = () => (
     <div

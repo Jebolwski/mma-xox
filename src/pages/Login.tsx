@@ -27,7 +27,7 @@ import eye_open from "../assets/pictures/eye_open.webp";
 const Login = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { signInWithGoogle, signInWithTwitter } = useAuth();
 
   usePageTitle(t("auth.loginTitle"));
@@ -40,16 +40,9 @@ const Login = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
-  const [languageDropdown, setLanguageDropdown] = useState(false);
   const [socialLoading, setSocialLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showResetPassword, setShowResetPassword] = useState(false);
 
-  const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
-    localStorage.setItem("language", lang);
-    setLanguageDropdown(false);
-  };
   const handleLogin = async (e: any) => {
     e.preventDefault();
 
@@ -147,24 +140,6 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleLanguageClick = () => {
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(min-width: 768px)").matches
-    ) {
-      // Desktop / md+ -> open dropdown
-      setLanguageDropdown(!languageDropdown);
-    } else {
-      // Mobile -> toggle language directly
-      const newLang = i18n.language === "tr" ? "en" : "tr";
-      changeLanguage(newLang);
-    }
-  };
-  const handleExit = async () => {
-    navigate(-1);
   };
 
   const handleGoogleLogin = async () => {

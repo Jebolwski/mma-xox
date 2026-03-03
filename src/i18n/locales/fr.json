@@ -220,7 +220,15 @@
     "passwordMinLength": "🚨 Le mot de passe doit comporter au moins 6 caractères !",
     "resetSuccess": "🎉 Mot de passe réinitialisé avec succès !",
     "passwordTooWeak": "🫣 Le mot de passe est trop faible !",
-    "resetExpiredGeneric": "🥲 Le lien de réinitialisation a expiré !"
+    "resetExpiredGeneric": "🥲 Le lien de réinitialisation a expiré !",
+    "resetSubtitle": "Réinitialiser votre mot de passe",
+    "resettingFor": "Réinitialisation du mot de passe pour:",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "resetting": "Réinitialisation...",
+    "resetButton": "Réinitialiser le mot de passe",
+    "backToLogin": "Retour à la connexion",
+    "verifyingLink": "Vérification du lien de réinitialisation..."
   },
   "common": {
     "loading": "Chargement...",
@@ -620,16 +628,6 @@
       "text": "Que vous soyez un joueur occasionnel à la recherche de plaisir ou un joueur compétitif visant le sommet du classement, MMA XOX a quelque chose pour vous. Rejoignez des milliers de joueurs et découvrez l'arène ultime du tic-tac-toe avec des combattants de MMA !",
       "contactText": "Pour plus d'informations ou des demandes, veuillez",
       "contactLink": "nous contacter"
-    },
-    "password": {
-      "resetSubtitle": "Réinitialiser votre mot de passe",
-      "resettingFor": "Réinitialisation du mot de passe pour:",
-      "newPassword": "Nouveau mot de passe",
-      "confirmPassword": "Confirmer le mot de passe",
-      "resetting": "Réinitialisation...",
-      "resetButton": "Réinitialiser le mot de passe",
-      "backToLogin": "Retour à la connexion",
-      "verifyingLink": "Vérification du lien de réinitialisation..."
     }
   }
 }

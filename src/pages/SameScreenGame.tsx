@@ -24,15 +24,11 @@ function SameScreenGame() {
   }, []);
   const navigate = useNavigate();
 
-  const handleExit = async () => {
-    navigate("/menu");
-  };
-
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   usePageTitle(t("game.pageTitle"));
 
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   const { width, height } = useWindowSize();
 
@@ -48,7 +44,6 @@ function SameScreenGame() {
   const [selected, setSelected]: any = useState();
 
   const [filters, setFilters]: any = useState();
-  const [languageDropdown, setLanguageDropdown] = useState(false);
 
   const [score, setScore] = useState({ red: 0, blue: 0, draw: 0 });
 
@@ -80,16 +75,6 @@ function SameScreenGame() {
       return false;
     }
   });
-  const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
-    localStorage.setItem("language", lang);
-    setLanguageDropdown(false);
-  };
-
-  const handleLanguageClick = () => {
-    // Always open dropdown since we have 3 languages now
-    setLanguageDropdown(!languageDropdown);
-  };
 
   useEffect(() => {
     try {
@@ -678,7 +663,6 @@ function SameScreenGame() {
     return null;
   };
 
-  // Key -> state map
   const stateByKey: Record<string, any> = {
     fighter00,
     fighter01,
@@ -691,14 +675,12 @@ function SameScreenGame() {
     fighter22,
   };
 
-  // 3x3 grid key haritası (AI kontrolleri için)
   const gridKeys: string[][] = [
     ["fighter00", "fighter01", "fighter02"],
     ["fighter10", "fighter11", "fighter12"],
     ["fighter20", "fighter21", "fighter22"],
   ];
 
-  // Kazanma pattern’leri (checkWinner’daki ile uyumlu)
   const winPatternsAI: [number, number][][] = [
     [
       [0, 0],

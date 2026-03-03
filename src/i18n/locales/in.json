@@ -220,7 +220,15 @@
     "passwordMinLength": "🚨 Kata sandi harus setidaknya 6 karakter!",
     "resetSuccess": "🎉 Kata sandi berhasil diatur ulang!",
     "passwordTooWeak": "🫣 Kata sandi terlalu lemah!",
-    "resetExpiredGeneric": "🥲 Tautan pengaturan ulang telah kedaluwarsa!"
+    "resetExpiredGeneric": "🥲 Tautan pengaturan ulang telah kedaluwarsa!",
+    "resetSubtitle": "Setel Ulang Sandi Anda",
+    "resettingFor": "Mengatur ulang sandi untuk:",
+    "newPassword": "Sandi Baru",
+    "confirmPassword": "Konfirmasi Sandi",
+    "resetting": "Mengatur ulang...",
+    "resetButton": "Setel Ulang Sandi",
+    "backToLogin": "Kembali ke Login",
+    "verifyingLink": "Memverifikasi tautan setel ulang..."   
   },
   "common": {
     "loading": "Memuat...",
@@ -620,16 +628,6 @@
       "text": "Baik Anda pemain kasual yang mencari kesenangan atau gamer kompetitif yang mengincar puncak papan peringkat, MMA XOX memiliki sesuatu untuk Anda. Bergabunglah dengan ribuan pemain dan rasakan arena tic-tac-toe terbaru dengan petarung MMA!",
       "contactText": "Untuk informasi lebih lanjut atau pertanyaan, silakan",
       "contactLink": "hubungi kami"    
-    },
-    "password": {
-      "resetSubtitle": "Setel Ulang Sandi Anda",
-      "resettingFor": "Mengatur ulang sandi untuk:",
-      "newPassword": "Sandi Baru",
-      "confirmPassword": "Konfirmasi Sandi",
-      "resetting": "Mengatur ulang...",
-      "resetButton": "Setel Ulang Sandi",
-      "backToLogin": "Kembali ke Login",
-      "verifyingLink": "Memverifikasi tautan setel ulang..."    
-    }  
+    }
   }
 }

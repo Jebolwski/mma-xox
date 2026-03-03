@@ -220,7 +220,15 @@
     "passwordMinLength": "🚨 ¡La contraseña debe tener al menos 6 caracteres!",
     "resetSuccess": "🎉 ¡Contraseña restablecida exitosamente!",
     "passwordTooWeak": "🫣 ¡La contraseña es demasiado débil!",
-    "resetExpiredGeneric": "🥲 ¡El enlace de restablecimiento ha expirado!"
+    "resetExpiredGeneric": "🥲 ¡El enlace de restablecimiento ha expirado!",
+    "resetSubtitle": "Restablecer tu Contraseña",
+    "resettingFor": "Restableciendo contraseña para:",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "resetting": "Restableciendo...",
+    "resetButton": "Restablecer Contraseña",
+    "backToLogin": "Volver al Inicio de Sesión",
+    "verifyingLink": "Verificando enlace de restablecimiento..."
   },
   "common": {
     "loading": "Cargando...",
@@ -620,16 +628,6 @@
       "text": "Ya seas un jugador casual que busca diversión o un jugador competitivo que apunta a lo más alto de la clasificación, MMA XOX tiene algo para ti. ¡Únete a miles de jugadores y experimenta la arena definitiva de tres en raya con luchadores de MMA!",
       "contactText": "Para más información o consultas, por favor",
       "contactLink": "contáctanos"
-    },
-    "password": {
-      "resetSubtitle": "Restablecer tu Contraseña",
-      "resettingFor": "Restableciendo contraseña para:",
-      "newPassword": "Nueva Contraseña",
-      "confirmPassword": "Confirmar Contraseña",
-      "resetting": "Restableciendo...",
-      "resetButton": "Restablecer Contraseña",
-      "backToLogin": "Volver al Inicio de Sesión",
-      "verifyingLink": "Verificando enlace de restablecimiento..."
     }
   }
 }

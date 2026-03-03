@@ -220,7 +220,15 @@
     "passwordMinLength": "🚨 Hasło musi mieć co najmniej 6 znaków!",
     "resetSuccess": "🎉 Hasło zresetowane pomyślnie!",
     "passwordTooWeak": "🫣 Hasło jest słabe!",
-    "resetExpiredGeneric": "🥲 Link resetowania wygasł!"
+    "resetExpiredGeneric": "🥲 Link resetowania wygasł!",
+    "resetSubtitle": "Resetuj hasło",
+    "resettingFor": "Resetowanie hasła dla:",
+    "newPassword": "Nowe hasło",
+    "confirmPassword": "Potwierdź hasło",
+    "resetting": "Resetowanie...",
+    "resetButton": "Resetuj hasło",
+    "backToLogin": "Powrót do logowania",
+    "verifyingLink": "Weryfikowanie linku resetowania..."
   },
   "common": {
     "loading": "Ładowanie...",
@@ -620,16 +628,6 @@
       "text": "Niezależnie od tego, czy jesteś graczem casual szukającym zabawy, czy konkurencyjnym graczem dążącym do szczytu rankingu, MMA XOX ma coś dla Ciebie. Dołącz do tysięcy graczy i doświadcz ostatecznej areny kółko i krzyżyk z zawodnikami MMA!",
       "contactText": "Aby uzyskać więcej informacji lub pytań, proszę",
       "contactLink": "skontaktuj się z nami"
-    },
-    "password": {
-      "resetSubtitle": "Resetuj hasło",
-      "resettingFor": "Resetowanie hasła dla:",
-      "newPassword": "Nowe hasło",
-      "confirmPassword": "Potwierdź hasło",
-      "resetting": "Resetowanie...",
-      "resetButton": "Resetuj hasło",
-      "backToLogin": "Powrót do logowania",
-      "verifyingLink": "Weryfikowanie linku resetowania..."
-    }  
+    } 
   }
 }
