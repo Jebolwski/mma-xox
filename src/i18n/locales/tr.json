@@ -620,6 +620,16 @@
       "text": "İster eğlence arayan sıradan bir oyuncu olun, ister lider tablosunun zirvesini hedefleyen rekabetçi bir oyuncu, MMA XOX'un size sunacağı bir şey var. Binlerce oyuncuya katılın ve MMA dövüşçüleriyle nihai tic-tac-toe arenasını deneyimleyin!",
       "contactText": "Daha fazla bilgi veya sorularınız için lütfen",
       "contactLink": "bize ulaşın"
+    },
+    "password": {
+      "resetSubtitle": "Şifrenizi Sıfırla",
+      "resettingFor": "Şifre sıfırlanıyor:",
+      "newPassword": "Yeni Şifre",
+      "confirmPassword": "Şifreyi Onayla",
+      "resetting": "Sıfırlanıyor...",
+      "resetButton": "Şifreyi Sıfırla",
+      "backToLogin": "Giriş Ekranına Dön",
+      "verifyingLink": "Sıfırlama linki doğrulanıyor..."
     }
   }
 }

@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           lastUsernameChangeAt: new Date().toISOString(),
           avatarUrl:
             user.photoURL ||
-            "https://preview.redd.it/the-new-discord-default-profile-pictures-v0-tbhgxr7adj7f1.png?width=1024&auto=webp&s=d64e0fdfeac749167246780dcc5e82915c6d7b70",
+            "https://raw.githubusercontent.com/Jebolwski/mma-xox/refs/heads/main/src/assets/pictures/profile_picture.webp",
           activeTitle: "Arena Rookie",
           unlockedTitles: ["Arena Rookie"],
           achievements: {},
@@ -203,7 +203,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           lastUsernameChangeAt: new Date().toISOString(),
           avatarUrl:
             user.photoURL ||
-            "https://preview.redd.it/the-new-discord-default-profile-pictures-v0-tbhgxr7adj7f1.png?width=1024&auto=webp&s=d64e0fdfeac749167246780dcc5e82915c6d7b70",
+            "https://raw.githubusercontent.com/Jebolwski/mma-xox/refs/heads/main/src/assets/pictures/profile_picture.webp",
           activeTitle: "Arena Rookie",
           unlockedTitles: ["Arena Rookie"],
           achievements: {},

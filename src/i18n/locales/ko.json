@@ -619,6 +619,16 @@
       "text": "재미를 찾는 캐주얼 플레이어든 리더보드 상위권을 목표로 하는 경쟁 게이머든, MMA XOX에는 당신을 위한 것이 있습니다. 수천 명의 플레이어와 함께 MMA 파이터와 함께하는 궁극의 틱택토 아레나를 경험하세요!",
       "contactText": "자세한 정보나 문의 사항은",
       "contactLink": "문의하기"
+    },
+    "password": {
+      "resetSubtitle": "비밀번호 재설정",
+      "resettingFor": "비밀번호 재설정:",
+      "newPassword": "새 비밀번호",
+      "confirmPassword": "비밀번호 확인",
+      "resetting": "재설정 중...",
+      "resetButton": "비밀번호 재설정",
+      "backToLogin": "로그인으로 돌아가기",
+      "verifyingLink": "재설정 링크 확인 중..."
     }
   }
 }

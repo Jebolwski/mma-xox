@@ -418,7 +418,7 @@ const Room = () => {
         if (role === "guest") {
           toast.info(t("room.hostLeft"));
           setTimeout(() => {
-            navigate("/");
+            navigate("/", { replace: true });
           }, 1500);
         }
         return;
@@ -2069,10 +2069,10 @@ const Room = () => {
           // Toast mesajını göster ve 1.5 saniye sonra yönlendir
           toast.success(t("room.roomDeleted"));
           setTimeout(() => {
-            navigate("/menu");
+            navigate("/menu", { replace: true });
           }, 1500);
         } else {
-          navigate("/menu");
+          navigate("/menu", { replace: true });
         }
       } else if (role === "guest") {
         // Guest çıkarsa sadece guest'i null yap
@@ -2081,7 +2081,7 @@ const Room = () => {
           guest: { prev: gameState.guest.now || null, now: null },
           gameStarted: false,
         });
-        navigate("/menu");
+        navigate("/menu", { replace: true });
       }
     } catch (error) {
       console.error("Çıkış yapılırken hata oluştu:", error);
@@ -2091,7 +2091,7 @@ const Room = () => {
       );
       toast.error(t("room.exitError"));
       // Hata durumunda da ana sayfaya yönlendir
-      navigate("/menu");
+      navigate("/menu", { replace: true });
     } finally {
       setIsExiting(false);
     }
@@ -2134,7 +2134,7 @@ const Room = () => {
       toast.success(t("room.guestWinsForfeited"));
 
       // Host goes to menu immediately
-      navigate("/menu");
+      navigate("/menu", { replace: true });
 
       // Delete room in background (don't wait)
       runTransaction(db, async (transaction) => {
@@ -2251,7 +2251,7 @@ const Room = () => {
       }).catch((err) => console.warn("Room deletion error:", err));
 
       // Guest goes to menu immediately
-      navigate("/menu");
+      navigate("/menu", { replace: true });
     } catch (error) {
       console.error("Guest forfeit failed:", error);
       toast.error(t("room.forfeitError"));
@@ -2268,7 +2268,7 @@ const Room = () => {
       toast.success(t("room.guestForfeitedYouWin"));
 
       setTimeout(() => {
-        navigate("/menu");
+        navigate("/menu", { replace: true });
       }, 4500);
     }
   }, [gameState?.forfeit, gameState?.winner, role, roomId, navigate]);
@@ -2810,25 +2810,39 @@ const Room = () => {
 
               {/* CASUAL MAÇLAR - Host için Play Again, Guest için Return/Wait */}
               {!gameState?.isRankedRoom && role == "host" && (
-                <div className="flex justify-center">
-                  <button
-                    onClick={restartGame}
-                    className={`bg-gradient-to-r cursor-pointer ${
-                      theme === "dark"
-                        ? "from-sky-600 to-indigo-700 text-white border-indigo-600"
-                        : "from-indigo-200 to-sky-300 text-black border-indigo-400"
-                    } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200 mt-5`}
-                  >
-                    {t("room.playAgain")}
-                  </button>
-                </div>
+                <>
+                  <div className="flex justify-center">
+                    <button
+                      onClick={restartGame}
+                      className={`bg-gradient-to-r w-full cursor-pointer ${
+                        theme === "dark"
+                          ? "from-sky-600 to-indigo-700 text-white border-indigo-600"
+                          : "from-indigo-200 to-sky-300 text-black border-indigo-400"
+                      } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200 mt-5`}
+                    >
+                      {t("room.playAgain")}
+                    </button>
+                  </div>
+                  <div className="flex justify-center mt-4">
+                    <button
+                      onClick={() => navigate("/menu", { replace: true })}
+                      className={`bg-gradient-to-r w-full cursor-pointer ${
+                        theme === "dark"
+                          ? "from-red-600 to-orange-700 text-white border-red-600"
+                          : "from-red-300 to-orange-300 text-black border-red-400"
+                      } border text-lg font-semibold px-3 py-1 rounded-lg shadow-lg hover:shadow-xl duration-200`}
+                    >
+                      {t("room.returnToMenu")}
+                    </button>
+                  </div>
+                </>
               )}
 
               {/* CASUAL MAÇLAR - Guest için seçenekler */}
               {!gameState?.isRankedRoom && role == "guest" && (
                 <div className=" mt-5">
                   <button
-                    onClick={() => navigate("/menu")}
+                    onClick={() => navigate("/menu", { replace: true })}
                     className={`bg-gradient-to-r w-full cursor-pointer ${
                       theme === "dark"
                         ? "from-red-600 to-orange-700 text-white border-red-600"
@@ -2939,7 +2953,7 @@ const Room = () => {
 
                     {/* Return to Menu Button */}
                     <button
-                      onClick={() => navigate("/menu")}
+                      onClick={() => navigate("/menu", { replace: true })}
                       className={`px-4 py-2 rounded-lg font-semibold cursor-pointer transition-all duration-200 ${
                         theme === "dark"
                           ? "bg-red-600 hover:bg-red-700 text-white"
@@ -4736,7 +4750,7 @@ const Room = () => {
               <button
                 onClick={() => {
                   setGuestForfeitModal(false);
-                  navigate("/menu");
+                  navigate("/menu", { replace: true });
                 }}
                 className={`${
                   theme === "dark"
@@ -4801,7 +4815,7 @@ const Room = () => {
             <button
               onClick={() => {
                 setShowWaitingGuest(false);
-                navigate("/menu");
+                navigate("/menu", { replace: true });
               }}
               className={`${
                 theme === "dark"
@@ -4844,7 +4858,7 @@ const Room = () => {
             <button
               onClick={() => {
                 setHostForfeitModal(false);
-                navigate("/menu");
+                navigate("/menu", { replace: true });
               }}
               className={`${
                 theme === "dark"
@@ -4972,7 +4986,7 @@ const Room = () => {
             <button
               onClick={() => {
                 setGuestForfeitVictoryModal(false);
-                navigate("/menu");
+                navigate("/menu", { replace: true });
               }}
               className={`${
                 theme === "dark"

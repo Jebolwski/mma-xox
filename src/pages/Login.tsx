@@ -115,7 +115,7 @@ const Login = () => {
 
           // Kişiselleştirme ve Başarım Alanları
           avatarUrl:
-            "https://preview.redd.it/the-new-discord-default-profile-pictures-v0-tbhgxr7adj7f1.png?width=1024&auto=webp&s=d64e0fdfeac749167246780dcc5e82915c6d7b70", // Varsayılan avatar yolu
+            "https://raw.githubusercontent.com/Jebolwski/mma-xox/refs/heads/main/src/assets/pictures/profile_picture.webp", // Varsayılan avatar yolu
           activeTitle: "Arena Rookie", // Varsayılan unvan
           unlockedTitles: ["Arena Rookie"], // Kazanılan unvanlar listesi
           achievements: {}, // Başlangıçta boş başarım nesnesi

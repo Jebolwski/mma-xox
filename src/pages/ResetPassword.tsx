@@ -93,7 +93,7 @@ const ResetPassword = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
           <p className={theme === "dark" ? "text-slate-300" : "text-slate-700"}>
-            Verifying reset link...
+            {t("password.verifyingLink")}
           </p>
         </div>
       </div>
@@ -112,32 +112,6 @@ const ResetPassword = () => {
         position="bottom-right"
         theme={theme === "dark" ? "dark" : "light"}
       />
-
-      {/* Theme Toggle */}
-      <div className="absolute z-30 top-6 left-6">
-        <div
-          onClick={toggleTheme}
-          className={`p-3 rounded-full cursor-pointer transition-all duration-300 backdrop-blur-md border ${
-            theme === "dark"
-              ? "bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/80"
-              : "bg-white/80 border-slate-200/50 hover:bg-white/90"
-          } shadow-xl hover:scale-110`}
-        >
-          {theme === "dark" ? (
-            <img
-              src="https://clipart-library.com/images/6iypd9jin.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Light mode"
-            />
-          ) : (
-            <img
-              src="https://clipart-library.com/img/1669853.png"
-              className="lg:w-6 lg:h-6 w-5 h-5"
-              alt="Dark mode"
-            />
-          )}
-        </div>
-      </div>
 
       {/* Main Content */}
       <div className="flex items-center justify-center min-h-screen p-6">
@@ -164,7 +138,7 @@ const ResetPassword = () => {
                     theme === "dark" ? "text-slate-400" : "text-slate-600"
                   }`}
                 >
-                  Reset Your Password
+                  {t("password.resetSubtitle")}
                 </p>
               </div>
             </div>
@@ -175,7 +149,7 @@ const ResetPassword = () => {
               theme === "dark" ? "text-slate-400" : "text-slate-600"
             }`}
           >
-            Resetting password for: <strong>{email}</strong>
+            {t("password.resettingFor")} <strong>{email}</strong>
           </p>
 
           <form
@@ -184,7 +158,7 @@ const ResetPassword = () => {
           >
             <div>
               <label className="block text-sm font-medium mb-2">
-                New Password
+                {t("password.newPassword")}
               </label>
               <input
                 type="password"
@@ -201,7 +175,7 @@ const ResetPassword = () => {
 
             <div>
               <label className="block text-sm font-medium mb-2">
-                Confirm Password
+                {t("password.confirmPassword")}
               </label>
               <input
                 type="password"
@@ -225,7 +199,7 @@ const ResetPassword = () => {
                   : "hover:scale-105 cursor-pointer hover:shadow-xl"
               } bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg`}
             >
-              {loading ? "Resetting..." : "Reset Password"}
+              {loading ? t("password.resetting") : t("password.resetButton")}
             </button>
           </form>
 
@@ -238,7 +212,7 @@ const ResetPassword = () => {
                   : "text-indigo-600 hover:text-indigo-500"
               }`}
             >
-              Back to Login
+              {t("password.backToLogin")}
             </button>
           </div>
         </div>

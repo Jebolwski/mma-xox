@@ -619,5 +619,15 @@
       "text": "Whether you're a casual player looking for fun or a competitive gamer aiming for the top of the leaderboard, MMA XOX has something for you. Join thousands of players and experience the ultimate tic-tac-toe arena with MMA fighters!",
       "contactText": "For more information or inquiries, please",
       "contactLink": "contact us"
+    },
+    "password": {
+      "resetSubtitle": "Reset Your Password",
+      "resettingFor": "Resetting password for:",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "resetting": "Resetting...",
+      "resetButton": "Reset Password",
+      "backToLogin": "Back to Login",
+      "verifyingLink": "Verifying reset link..."
     }  }
 }

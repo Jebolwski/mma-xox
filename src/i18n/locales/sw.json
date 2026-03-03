@@ -620,6 +620,16 @@
       "text": "Oavsett om du är en tillfällig spelare som söker nöje eller en tävlingsinriktad spelare som siktar på toppen av topplistan, har MMA XOX något för dig. Gå med i tusentals spelare och upplev den ultimata tre-i-rad-arenan med MMA-fighters!",
       "contactText": "För mer information eller förfrågningar, vänligen",
       "contactLink": "kontakta oss"
+    },
+    "password": {
+      "resetSubtitle": "Återställ ditt lösenord",
+      "resettingFor": "Återställer lösenord för:",
+      "newPassword": "Nytt lösenord",
+      "confirmPassword": "Bekräfta lösenord",
+      "resetting": "Återställer...",
+      "resetButton": "Återställ lösenord",
+      "backToLogin": "Tillbaka till inloggning",
+      "verifyingLink": "Verifierar återställningslänk..."
     }
   }
 }

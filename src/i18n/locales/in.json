@@ -619,7 +619,17 @@
       "title": "🌟 Mulai Hari Ini",
       "text": "Baik Anda pemain kasual yang mencari kesenangan atau gamer kompetitif yang mengincar puncak papan peringkat, MMA XOX memiliki sesuatu untuk Anda. Bergabunglah dengan ribuan pemain dan rasakan arena tic-tac-toe terbaru dengan petarung MMA!",
       "contactText": "Untuk informasi lebih lanjut atau pertanyaan, silakan",
-      "contactLink": "hubungi kami"
+      "contactLink": "hubungi kami"    
+    },
+    "password": {
+      "resetSubtitle": "Setel Ulang Sandi Anda",
+      "resettingFor": "Mengatur ulang sandi untuk:",
+      "newPassword": "Sandi Baru",
+      "confirmPassword": "Konfirmasi Sandi",
+      "resetting": "Mengatur ulang...",
+      "resetButton": "Setel Ulang Sandi",
+      "backToLogin": "Kembali ke Login",
+      "verifyingLink": "Memverifikasi tautan setel ulang..."    
     }  
   }
 }

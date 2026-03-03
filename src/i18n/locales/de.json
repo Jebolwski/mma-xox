@@ -620,6 +620,16 @@
       "text": "Ob du ein Gelegenheitsspieler bist, der Spaß sucht, oder ein kompetitiver Spieler, der an die Spitze der Rangliste will – MMA XOX hat etwas für dich. Schließ dich Tausenden von Spielern an und erlebe die ultimative Tic-Tac-Toe-Arena mit MMA-Kämpfern!",
       "contactText": "Für weitere Informationen oder Anfragen",
       "contactLink": "kontaktiere uns"
+    },
+    "password": {
+      "resetSubtitle": "Passwort zurücksetzen",
+      "resettingFor": "Passwort zurücksetzen für:",
+      "newPassword": "Neues Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "resetting": "Wird zurückgesetzt...",
+      "resetButton": "Passwort zurücksetzen",
+      "backToLogin": "Zurück zur Anmeldung",
+      "verifyingLink": "Zurücksetzen-Link wird überprüft..."
     }
   }
 }

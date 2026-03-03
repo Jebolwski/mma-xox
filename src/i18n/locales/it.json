@@ -620,6 +620,16 @@
       "text": "Che tu sia un giocatore occasionale in cerca di divertimento o un giocatore competitivo che punta alla cima della classifica, MMA XOX ha qualcosa per te. Unisciti a migliaia di giocatori e sperimenta l'arena definitiva del tris con combattenti di MMA!",
       "contactText": "Per maggiori informazioni o richieste, ti preghiamo di",
       "contactLink": "contattarci"
+    },
+    "password": {
+      "resetSubtitle": "Reimposta la tua password",
+      "resettingFor": "Reimpostazione della password per:",
+      "newPassword": "Nuova password",
+      "confirmPassword": "Conferma password",
+      "resetting": "Reimpostazione in corso...",
+      "resetButton": "Reimposta password",
+      "backToLogin": "Torna al Login",
+      "verifyingLink": "Verifica del link di reimpostazione..."
     }
   }
 }

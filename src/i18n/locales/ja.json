@@ -620,6 +620,16 @@
       "text": "楽しみを求めるカジュアルプレイヤーでも、リーダーボードのトップを目指す競技プレイヤーでも、MMA XOXにはあなたのためのものがあります。何千人ものプレイヤーに参加して、MMAファイターと究極の三目並べアリーナを体験してください！",
       "contactText": "詳細やお問い合わせについては、",
       "contactLink": "お問い合わせ"
+    },
+    "password": {
+      "resetSubtitle": "パスワードをリセット",
+      "resettingFor": "パスワードをリセット中:",
+      "newPassword": "新しいパスワード",
+      "confirmPassword": "パスワードを確認",
+      "resetting": "リセット中...",
+      "resetButton": "パスワードをリセット",
+      "backToLogin": "ログインに戻る",
+      "verifyingLink": "リセットリンクを確認しています..."
     }
   }
 }
