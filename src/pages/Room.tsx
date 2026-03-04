@@ -215,11 +215,8 @@ const Room = () => {
       if (gameState.winner !== "draw") {
         setShowConfetti(true);
       }
-      // Bu useEffect sadece bir kere tetiklenir, bu yüzden kontrol ekleyelim
       if (!gameState.statsUpdated) {
-        // statsUpdated gibi bir flag kontrolü
         updatePlayerStats(gameState.winner);
-        // Tekrar çalışmasını önlemek için odaya bir flag yazabiliriz
         if (roomId && role === "host") {
           const roomRef = doc(db, "rooms", roomId);
           updateDoc(roomRef, { statsUpdated: true });
@@ -234,165 +231,6 @@ const Room = () => {
   useEffect(() => {
     document.title = "MMA XOX - Online Game";
   }, []);
-
-  //! HEARTBEAT: Her 5 saniyede bir kendi aktifliğini güncelle
-  useEffect(() => {
-    if (!roomId || !gameState || !gameState.gameStarted || gameState.winner) {
-      return; // Oyun başlamamışsa veya bitmişse heartbeat gönderme
-    }
-
-    const heartbeatInterval = setInterval(async () => {
-      try {
-        const roomRef = doc(db, "rooms", roomId);
-
-        if (role === "host") {
-          // Host heartbeat gönder
-          await updateDoc(roomRef, {
-            hostLastActive: serverTimestamp(),
-          });
-        } else if (role === "guest") {
-          // Guest heartbeat gönder
-          await updateDoc(roomRef, {
-            guestLastActive: serverTimestamp(),
-          });
-        }
-      } catch (error) {
-        console.warn("Heartbeat update failed:", error);
-      }
-    }, 5000); // Her 5 saniyede bir
-
-    return () => clearInterval(heartbeatInterval);
-  }, [roomId, gameState?.gameStarted, gameState?.winner, role]);
-
-  //! TIMEOUT CHECKER: Her 15 saniyede bir opponent'in heartbeat'ini kontrol et
-  useEffect(() => {
-    if (!roomId || !gameState || !gameState.gameStarted || gameState.winner) {
-      return; // Oyun başlamamışsa veya bitmişse kontrol yapma
-    }
-
-    let hasAlreadyForfeit = false; // Forfeit'i sadece bir kere tetikle
-
-    const timeoutCheckInterval = setInterval(async () => {
-      if (hasAlreadyForfeit) return; // Zaten forfeit olduysa çık
-
-      try {
-        const roomRef = doc(db, "rooms", roomId);
-        const roomSnap = await getDoc(roomRef);
-
-        if (!roomSnap.exists()) return;
-
-        const data = roomSnap.data();
-
-        //? Eğer zaten winner varsa, artık kontrol yapma
-        if (data.winner) {
-          hasAlreadyForfeit = true;
-          return;
-        }
-
-        const now = Date.now();
-        const TIMEOUT_MS = 15000; // 15 saniye
-
-        //* Host timeout kontrol et (guest bakısı)
-        if (role === "guest") {
-          const hostLastActive = data.hostLastActive?.toMillis?.() || 0;
-          const hostTimeout = now - hostLastActive > TIMEOUT_MS;
-
-          if (hostTimeout) {
-            hasAlreadyForfeit = true;
-
-            //? Transaction ile atomik güncelleme yap
-            await runTransaction(db, async (transaction) => {
-              const roomDoc = await transaction.get(roomRef);
-              if (!roomDoc.exists() || roomDoc.data().winner) return; // Already updated
-
-              transaction.update(roomRef, {
-                winner: "blue",
-                gameStarted: false,
-                isForfeited: true, // 🚩 Forfeit flag ekle (updatePlayerStats'da skip etmek için)
-                lastActivityAt: serverTimestamp(),
-              });
-              // Stats güncelle
-              if (data.isRankedRoom && data.hostEmail && data.guestEmail) {
-                const hostRef = doc(db, "users", data.hostEmail);
-                const guestRef = doc(db, "users", data.guestEmail);
-
-                transaction.update(hostRef, {
-                  "stats.points": increment(-5),
-                  "stats.losses": increment(1),
-                  "stats.totalGames": increment(1),
-                });
-
-                transaction.update(guestRef, {
-                  "stats.points": increment(15),
-                  "stats.wins": increment(1),
-                  "stats.totalGames": increment(1),
-                });
-              }
-            }).then(() => {
-              const hostEmail = gameState.hostEmail;
-              const guestEmail = gameState.guestEmail;
-              updateWinRates(hostEmail, guestEmail);
-            });
-
-            // Modal aç - guest seçim yapabilir
-            setHostForfeitModal(true);
-            toast.success(t("room.hostDisconnected"));
-          }
-        } else if (role === "host") {
-          // Guest timeout kontrol et (host bakısı)
-          const guestLastActive = data.guestLastActive?.toMillis?.() || 0;
-          const guestTimeout = now - guestLastActive > TIMEOUT_MS;
-
-          if (guestTimeout && data.guest?.now) {
-            hasAlreadyForfeit = true;
-
-            // Transaction ile atomik güncelleme yap
-            await runTransaction(db, async (transaction) => {
-              const roomDoc = await transaction.get(roomRef);
-              if (!roomDoc.exists() || roomDoc.data().winner) return; // Already updated
-
-              transaction.update(roomRef, {
-                winner: "red",
-                gameStarted: false,
-                isForfeited: true, // 🚩 Forfeit flag ekle
-                hostReady: false,
-                guest: { prev: null, now: null },
-                guestReady: false,
-                lastActivityAt: serverTimestamp(),
-                expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
-              });
-
-              // Stats güncelle
-              if (data.isRankedRoom && data.hostEmail && data.guestEmail) {
-                const hostRef = doc(db, "users", data.hostEmail);
-                const guestRef = doc(db, "users", data.guestEmail);
-
-                transaction.update(hostRef, {
-                  "stats.points": increment(15),
-                  "stats.wins": increment(1),
-                  "stats.totalGames": increment(1),
-                });
-
-                transaction.update(guestRef, {
-                  "stats.points": increment(-5),
-                  "stats.losses": increment(1),
-                  "stats.totalGames": increment(1),
-                });
-              }
-            });
-
-            // Modal aç - host seçim yapabilir
-            setGuestForfeitModal(true);
-            toast.success(t("room.guestDisconnected"));
-          }
-        }
-      } catch (error) {
-        console.warn("Timeout check failed:", error);
-      }
-    }, 15000); //* Her 15 saniyede bir kontrol et
-
-    return () => clearInterval(timeoutCheckInterval);
-  }, [roomId, gameState?.gameStarted, gameState?.winner, role, navigate]);
 
   //! Wait for Host modal'ını kapat eğer host yeni maç başlattıysa
   useEffect(() => {
@@ -1073,30 +911,148 @@ const Room = () => {
     fetchHostAvatar();
   }, [gameState?.hostEmail]);
 
+  //! HEARTBEAT: Her 5 saniyede bir kendi aktifliğini güncelle
+  useEffect(() => {
+    if (!roomId || !gameState || !gameState.gameStarted || gameState.winner) {
+      return; // Oyun başlamamışsa veya bitmişse heartbeat gönderme
+    }
+
+    const heartbeatInterval = setInterval(async () => {
+      try {
+        const roomRef = doc(db, "rooms", roomId);
+
+        if (role === "host") {
+          // Host heartbeat gönder
+          await updateDoc(roomRef, {
+            hostLastActive: serverTimestamp(),
+          });
+        } else if (role === "guest") {
+          // Guest heartbeat gönder
+          await updateDoc(roomRef, {
+            guestLastActive: serverTimestamp(),
+          });
+        }
+      } catch (error) {
+        console.warn("Heartbeat update failed:", error);
+      }
+    }, 5000); // Her 5 saniyede bir
+
+    return () => clearInterval(heartbeatInterval);
+  }, [roomId, gameState?.gameStarted, gameState?.winner, role]);
+
+  //! TIMEOUT CHECKER: Her 15 saniyede bir opponent'in heartbeat'ini kontrol et
+  useEffect(() => {
+    if (!roomId || !gameState || !gameState.gameStarted || gameState.winner) {
+      return; // Oyun başlamamışsa veya bitmişse kontrol yapma
+    }
+
+    let hasAlreadyForfeit = false; // Forfeit'i sadece bir kere tetikle
+
+    const timeoutCheckInterval = setInterval(async () => {
+      if (hasAlreadyForfeit) return; // Zaten forfeit olduysa çık
+
+      try {
+        const roomRef = doc(db, "rooms", roomId);
+        const roomSnap = await getDoc(roomRef);
+
+        if (!roomSnap.exists()) return;
+
+        const data = roomSnap.data();
+
+        //? Eğer zaten winner varsa, artık kontrol yapma
+        if (data.winner) {
+          hasAlreadyForfeit = true;
+          return;
+        }
+
+        const now = Date.now();
+        const TIMEOUT_MS = 15000; // 15 saniye
+
+        //* Host timeout kontrol et (guest bakısı)
+        if (role === "guest") {
+          const hostLastActive = data.hostLastActive?.toMillis?.() || 0;
+          const hostTimeout = now - hostLastActive > TIMEOUT_MS;
+
+          if (hostTimeout) {
+            hasAlreadyForfeit = true;
+
+            // Room'ı forfeit olarak işaretle
+            await runTransaction(db, async (transaction) => {
+              const roomDoc = await transaction.get(roomRef);
+              if (!roomDoc.exists() || roomDoc.data().winner) return;
+
+              transaction.update(roomRef, {
+                winner: "blue",
+                gameStarted: false,
+                isForfeited: true,
+                statsUpdated: false,
+                lastActivityAt: serverTimestamp(),
+              });
+            });
+
+            // ✅ Stats'ı direkt burada güncelle
+            await updatePlayerStats("blue"); // Guest kazanır
+
+            setHostForfeitModal(true);
+            toast.success(t("room.hostDisconnected"));
+          }
+        } else if (role === "host") {
+          // Guest timeout kontrol et (host bakısı)
+          const guestLastActive = data.guestLastActive?.toMillis?.() || 0;
+          const guestTimeout = now - guestLastActive > TIMEOUT_MS;
+
+          if (guestTimeout && data.guest?.now) {
+            hasAlreadyForfeit = true;
+
+            // Room'ı forfeit olarak işaretle
+            await runTransaction(db, async (transaction) => {
+              const roomDoc = await transaction.get(roomRef);
+              if (!roomDoc.exists() || roomDoc.data().winner) return;
+
+              transaction.update(roomRef, {
+                winner: "red",
+                gameStarted: false,
+                isForfeited: true,
+                statsUpdated: false,
+                hostReady: false,
+                guest: { prev: null, now: null },
+                guestReady: false,
+                lastActivityAt: serverTimestamp(),
+                expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
+              });
+            });
+
+            // ✅ Stats'ı direkt burada güncelle
+            await updatePlayerStats("red"); // Host kazanır
+
+            setGuestForfeitModal(true);
+            toast.success(t("room.guestDisconnected"));
+          }
+        }
+      } catch (error) {
+        console.warn("Timeout check failed:", error);
+      }
+    }, 15000); //* Her 15 saniyede bir kontrol et
+
+    return () => clearInterval(timeoutCheckInterval);
+  }, [roomId, gameState?.gameStarted, gameState?.winner, role, navigate]);
+
+  //! Kullanıcı istatistiklerini güncelleyen fonksiyon
   const updatePlayerStats = async (winner: "red" | "blue" | "draw") => {
-    // 🚩 FORFEIT CHECK: Eğer forfeit olmuşsa, stats zaten transaction'da güncellendi, skip et
+    // 🚩 FORFEIT CHECK
     if (gameState?.isForfeited) {
       return;
     }
 
+    // 🚩 RANKED CHECK - Sadece ranked maçlarda stats güncelle
     if (!gameState?.isRankedRoom) {
       return;
     }
 
-    const hostEmail = gameState.hostEmail;
-    const guestEmail = gameState.guestEmail;
+    const hostEmail = gameState?.hostEmail;
+    const guestEmail = gameState?.guestEmail;
 
-    if (!hostEmail || !guestEmail) {
-      console.error("❌ Host or guest email is missing for ranked match.");
-      return;
-    }
-
-    // 🔑 Current user'ın kim olduğunu belirle
-    const isHost = currentUser?.email === hostEmail;
-    const isGuest = currentUser?.email === guestEmail;
-
-    if (!isHost && !isGuest) {
-      console.error("❌ Current user is neither host nor guest.");
+    if (!hostEmail && !guestEmail) {
       return;
     }
 
@@ -1104,127 +1060,141 @@ const Room = () => {
     const guestIsWinner = winner === "blue";
 
     try {
-      if (isHost) {
-        // 🏠 HOST: Sadece kendi stats'ını güncelle
+      // 🏠 HOST stats güncelle
+      if (hostEmail) {
         const hostRef = doc(db, "users", hostEmail);
         const hostDoc = await getDoc(hostRef);
 
-        if (!hostDoc.exists()) {
-          throw "Host profile could not be found.";
-        }
+        if (hostDoc.exists()) {
+          const hostProfile = hostDoc.data();
+          const hostStats = hostProfile.stats || {
+            wins: 0,
+            losses: 0,
+            draws: 0,
+            points: 0,
+            totalGames: 0,
+            winRate: 0,
+          };
 
-        const hostProfile = hostDoc.data();
-        const hostNewAchievements = { ...hostProfile.achievements };
-        const hostNewUnlockedTitles = [];
+          const hostNewAchievements = { ...hostProfile.achievements };
+          const hostNewUnlockedTitles = [];
 
-        if (hostIsWinner) {
-          if (!hostProfile.achievements.firstWin) {
-            hostNewAchievements.firstWin = new Date().toISOString();
-            hostNewUnlockedTitles.push("First Blood");
-            toast.success(t("room.firstBloodUnlocked"));
+          if (hostIsWinner) {
+            if (!hostProfile.achievements?.firstWin) {
+              hostNewAchievements.firstWin = new Date().toISOString();
+              hostNewUnlockedTitles.push("First Blood");
+              toast.success(t("room.firstBloodUnlocked"));
+            }
+            const newWinCount = (hostStats.wins || 0) + 1;
+            if (newWinCount >= 10 && !hostProfile.achievements?.tenWins) {
+              hostNewAchievements.tenWins = new Date().toISOString();
+              hostNewUnlockedTitles.push("Arena Master");
+              toast.success(t("room.arenaManagerUnlocked"));
+            }
           }
-          const newWinCount = (hostProfile.stats.wins || 0) + 1;
-          if (newWinCount >= 10 && !hostProfile.achievements.tenWins) {
-            hostNewAchievements.tenWins = new Date().toISOString();
-            hostNewUnlockedTitles.push("Arena Master");
-            toast.success(t("room.arenaManagerUnlocked"));
-          }
+
+          // ✅ Yeni stats hesapla
+          const newHostWins = hostStats.wins + (hostIsWinner ? 1 : 0);
+          const newHostLosses = hostStats.losses + (guestIsWinner ? 1 : 0);
+          const newHostDraws = hostStats.draws + (winner === "draw" ? 1 : 0);
+          const newHostTotalGames = hostStats.totalGames + 1;
+          const newHostWinRate =
+            newHostTotalGames > 0
+              ? Math.round((newHostWins / newHostTotalGames) * 100 * 100) / 100
+              : 0;
+
+          const pointsChange = gameState?.isRankedRoom
+            ? hostIsWinner
+              ? 15
+              : winner === "draw"
+                ? 2
+                : -5
+            : 0;
+
+          await updateDoc(hostRef, {
+            "stats.wins": newHostWins,
+            "stats.losses": newHostLosses,
+            "stats.draws": newHostDraws,
+            "stats.totalGames": newHostTotalGames,
+            "stats.winRate": newHostWinRate,
+            "stats.points": hostStats.points + pointsChange,
+            achievements: hostNewAchievements,
+            unlockedTitles: arrayUnion(...hostNewUnlockedTitles),
+          });
         }
+      }
 
-        await updateDoc(hostRef, {
-          "stats.points": increment(
-            hostIsWinner ? 15 : winner === "draw" ? 2 : -5,
-          ),
-          "stats.wins": increment(hostIsWinner ? 1 : 0),
-          "stats.losses": increment(guestIsWinner ? 1 : 0),
-          "stats.draws": increment(winner === "draw" ? 1 : 0),
-          "stats.totalGames": increment(1),
-          achievements: hostNewAchievements,
-          unlockedTitles: arrayUnion(...hostNewUnlockedTitles),
-        }).then(() => {
-          updateWinRates(hostEmail, guestEmail);
-        });
-
-        toast.success(t("room.rankedMatchCompleted"));
-      } else if (isGuest) {
-        // 👥 GUEST: Sadece kendi stats'ını güncelle
+      // 👥 GUEST stats güncelle
+      if (guestEmail) {
         const guestRef = doc(db, "users", guestEmail);
         const guestDoc = await getDoc(guestRef);
 
-        if (!guestDoc.exists()) {
-          throw "Guest profile could not be found.";
-        }
+        if (guestDoc.exists()) {
+          const guestProfile = guestDoc.data();
+          const guestStats = guestProfile.stats || {
+            wins: 0,
+            losses: 0,
+            draws: 0,
+            points: 0,
+            totalGames: 0,
+            winRate: 0,
+          };
 
-        const guestProfile = guestDoc.data();
-        const guestNewAchievements = { ...guestProfile.achievements };
-        const guestNewUnlockedTitles = [];
+          const guestNewAchievements = { ...guestProfile.achievements };
+          const guestNewUnlockedTitles = [];
 
-        if (guestIsWinner) {
-          if (!guestProfile.achievements.firstWin) {
-            guestNewAchievements.firstWin = new Date().toISOString();
-            guestNewUnlockedTitles.push("First Blood");
-            toast.success(t("room.firstBloodUnlocked"));
+          if (guestIsWinner) {
+            if (!guestProfile.achievements?.firstWin) {
+              guestNewAchievements.firstWin = new Date().toISOString();
+              guestNewUnlockedTitles.push("First Blood");
+              toast.success(t("room.firstBloodUnlocked"));
+            }
+            const newWinCount = (guestStats.wins || 0) + 1;
+            if (newWinCount >= 10 && !guestProfile.achievements?.tenWins) {
+              guestNewAchievements.tenWins = new Date().toISOString();
+              guestNewUnlockedTitles.push("Arena Master");
+              toast.success(t("room.arenaManagerUnlocked"));
+            }
           }
-          const newWinCount = (guestProfile.stats.wins || 0) + 1;
-          if (newWinCount >= 10 && !guestProfile.achievements.tenWins) {
-            guestNewAchievements.tenWins = new Date().toISOString();
-            guestNewUnlockedTitles.push("Arena Master");
-            toast.success(t("room.arenaManagerUnlocked"));
-          }
+
+          // ✅ Yeni stats hesapla
+          const newGuestWins = guestStats.wins + (guestIsWinner ? 1 : 0);
+          const newGuestLosses = guestStats.losses + (hostIsWinner ? 1 : 0);
+          const newGuestDraws = guestStats.draws + (winner === "draw" ? 1 : 0);
+          const newGuestTotalGames = guestStats.totalGames + 1;
+          const newGuestWinRate =
+            newGuestTotalGames > 0
+              ? Math.round((newGuestWins / newGuestTotalGames) * 100 * 100) /
+                100
+              : 0;
+
+          const pointsChange = gameState?.isRankedRoom
+            ? guestIsWinner
+              ? 15
+              : winner === "draw"
+                ? 2
+                : -5
+            : 0;
+
+          await updateDoc(guestRef, {
+            "stats.wins": newGuestWins,
+            "stats.losses": newGuestLosses,
+            "stats.draws": newGuestDraws,
+            "stats.totalGames": newGuestTotalGames,
+            "stats.winRate": newGuestWinRate,
+            "stats.points": guestStats.points + pointsChange,
+            achievements: guestNewAchievements,
+            unlockedTitles: arrayUnion(...guestNewUnlockedTitles),
+          });
         }
+      }
 
-        await updateDoc(guestRef, {
-          "stats.points": increment(
-            guestIsWinner ? 15 : winner === "draw" ? 2 : -5,
-          ),
-          "stats.wins": increment(guestIsWinner ? 1 : 0),
-          "stats.losses": increment(hostIsWinner ? 1 : 0),
-          "stats.draws": increment(winner === "draw" ? 1 : 0),
-          "stats.totalGames": increment(1),
-          achievements: guestNewAchievements,
-          unlockedTitles: arrayUnion(...guestNewUnlockedTitles),
-        }).then(() => {
-          updateWinRates(hostEmail, guestEmail);
-        });
-
+      if (gameState?.isRankedRoom) {
         toast.success(t("room.rankedMatchCompleted"));
       }
     } catch (error) {
       console.error("❌ Failed to update player stats:", error);
       toast.error(t("room.failedUpdateStats"));
-    }
-  };
-
-  // Win rate güncelleme fonksiyonu (future use)
-  const updateWinRates = async (hostEmail: string, guestEmail: string) => {
-    try {
-      const hostDoc = await getDoc(doc(db, "users", hostEmail));
-      if (hostDoc.exists()) {
-        const hostStats = hostDoc.data().stats;
-        const hostWinRate =
-          hostStats.totalGames > 0
-            ? (hostStats.wins / hostStats.totalGames) * 100
-            : 0;
-
-        await updateDoc(doc(db, "users", hostEmail), {
-          "stats.winRate": Math.round(hostWinRate * 100) / 100,
-        });
-      }
-
-      const guestDoc = await getDoc(doc(db, "users", guestEmail));
-      if (guestDoc.exists()) {
-        const guestStats = guestDoc.data().stats;
-        const guestWinRate =
-          guestStats.totalGames > 0
-            ? (guestStats.wins / guestStats.totalGames) * 100
-            : 0;
-
-        await updateDoc(doc(db, "users", guestEmail), {
-          "stats.winRate": Math.round(guestWinRate * 100) / 100,
-        });
-      }
-    } catch (error) {
-      console.error("Win rate güncelleme hatası:", error);
     }
   };
 
@@ -1987,14 +1957,12 @@ const Room = () => {
           updateDoc(roomRef, {
             winner: "red",
           });
-          // updatePlayerStats("red"); KALDIR
           playSfx(win);
           return "red";
         } else {
           updateDoc(roomRef, {
             winner: "blue",
           });
-          // updatePlayerStats("blue"); KALDIR
           playSfx(win);
           return "blue";
         }
@@ -2106,30 +2074,26 @@ const Room = () => {
 
     try {
       const roomRef = doc(db, "rooms", roomId);
-      const hostRef = doc(db, "users", gameState.hostEmail);
-      const guestRef = doc(db, "users", gameState.guestEmail);
 
-      // Update game result - guest wins by forfeit
+      // Room'ı forfeit olarak işaretle
       await runTransaction(db, async (transaction) => {
+        const roomDoc = await transaction.get(roomRef);
+        if (!roomDoc.exists() || roomDoc.data().winner) return;
+
         transaction.update(roomRef, {
-          winner: "guest",
+          winner: "blue", // Guest wins
           forfeit: true,
           gameStarted: false,
+          isForfeited: true,
+          statsUpdated: false, // ← updatePlayerStats'ı tetiklemek için
           filtersSelected: [],
-        });
-
-        // Host loses, guest wins
-        transaction.update(hostRef, {
-          "stats.totalGames": increment(1),
-          "stats.losses": increment(1),
-        });
-
-        transaction.update(guestRef, {
-          "stats.totalGames": increment(1),
-          "stats.wins": increment(1),
-          "stats.points": increment(15),
+          lastActivityAt: serverTimestamp(),
+          expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
         });
       });
+
+      // ✅ Stats'ı updatePlayerStats ile güncelle
+      await updatePlayerStats("blue"); // Guest kazanır
 
       toast.success(t("room.guestWinsForfeited"));
 
@@ -2162,79 +2126,27 @@ const Room = () => {
     setIsExiting(true);
 
     try {
-      const hostEmail = gameState.hostEmail;
-      const guestEmail = gameState.guestEmail;
-
-      if (!hostEmail || !guestEmail) {
-        toast.error(t("room.couldNotDeterminePlayers"));
-        setIsExiting(false);
-        return;
-      }
-
-      const hostRef = doc(db, "users", hostEmail);
-      const guestRef = doc(db, "users", guestEmail);
       const roomRef = doc(db, "rooms", roomId);
 
-      // Transaction: Update stats and room
+      // Room'ı forfeit olarak işaretle
       await runTransaction(db, async (transaction) => {
-        const hostDoc = await transaction.get(hostRef);
-        const guestDoc = await transaction.get(guestRef);
+        const roomDoc = await transaction.get(roomRef);
+        if (!roomDoc.exists() || roomDoc.data().winner) return;
 
-        if (!hostDoc.exists() || !guestDoc.exists()) {
-          throw new Error("User documents not found");
-        }
-
-        const hostStats = hostDoc.data()?.stats || {
-          totalGames: 0,
-          wins: 0,
-          losses: 0,
-          draws: 0,
-          points: 0,
-          winRate: 0,
-        };
-        const guestStats = guestDoc.data()?.stats || {
-          totalGames: 0,
-          wins: 0,
-          losses: 0,
-          draws: 0,
-          points: 0,
-          winRate: 0,
-        };
-
-        // Host wins, guest loses
-        const newHostStats = {
-          totalGames: hostStats.totalGames + 1,
-          wins: hostStats.wins + 1,
-          losses: hostStats.losses,
-          draws: hostStats.draws,
-          points: hostStats.points + 15,
-          winRate:
-            ((hostStats.wins + 1) / (hostStats.totalGames + 1)) * 100 || 0,
-        };
-
-        const newGuestStats = {
-          totalGames: guestStats.totalGames + 1,
-          wins: guestStats.wins,
-          losses: guestStats.losses + 1,
-          draws: guestStats.draws,
-          points: Math.max(0, guestStats.points - 5),
-          winRate: (guestStats.wins / (guestStats.totalGames + 1)) * 100 || 0,
-        };
-
-        transaction.update(hostRef, { stats: newHostStats });
-        transaction.update(guestRef, { stats: newGuestStats });
-
-        // Update room: host wins, forfeit flag, room reset
         transaction.update(roomRef, {
-          winner: "red",
+          winner: "red", // Host wins
           forfeit: true,
           gameStarted: false,
+          isForfeited: true,
+          statsUpdated: false, // ← updatePlayerStats'ı tetiklemek için
           filtersSelected: [],
-          statsUpdated: true,
           lastActivityAt: serverTimestamp(),
           expireAt: Timestamp.fromMillis(Date.now() + ROOM_TTL_MS),
         });
       });
+
+      // ✅ Stats'ı updatePlayerStats ile güncelle
+      await updatePlayerStats("red"); // Host kazanır
 
       toast.success(t("room.hostWinsForfeited"));
 

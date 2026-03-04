@@ -29,7 +29,7 @@ export async function sendFriendRequest(fromEmail: string, toEmail: string) {
     collection(db, "friendRequests"),
     where("fromEmail", "==", fromEmail),
     where("toEmail", "==", toEmail),
-    where("status", "==", "pending")
+    where("status", "==", "pending"),
   );
   const existing = await getDocs(q);
   if (!existing.empty) throw new Error("Request already sent");
@@ -46,7 +46,7 @@ export async function sendFriendRequest(fromEmail: string, toEmail: string) {
 export async function acceptFriendRequest(
   reqId: string,
   fromEmail: string,
-  toEmail: string
+  toEmail: string,
 ) {
   const reqRef = doc(db, "friendRequests", reqId);
   await updateDoc(reqRef, { status: "accepted" });
@@ -55,12 +55,12 @@ export async function acceptFriendRequest(
   await setDoc(
     doc(db, "users", fromEmail),
     { email: fromEmail, friends: arrayUnion(toEmail) },
-    { merge: true }
+    { merge: true },
   );
   await setDoc(
     doc(db, "users", toEmail),
     { email: toEmail, friends: arrayUnion(fromEmail) },
-    { merge: true }
+    { merge: true },
   );
 }
 
@@ -84,13 +84,13 @@ export async function removeFriend(aEmail: string, bEmail: string) {
     col,
     where("fromEmail", "==", a),
     where("toEmail", "==", b),
-    where("status", "==", "accepted")
+    where("status", "==", "accepted"),
   );
   const q2 = query(
     col,
     where("fromEmail", "==", b),
     where("toEmail", "==", a),
-    where("status", "==", "accepted")
+    where("status", "==", "accepted"),
   );
 
   const [s1, s2] = await Promise.all([getDocs(q1), getDocs(q2)]);

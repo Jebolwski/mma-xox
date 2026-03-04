@@ -13,7 +13,7 @@ import loginIcon from "../assets/pictures/login.webp";
 import logoutIcon from "../assets/pictures/logout.webp";
 
 const Home = () => {
-  const { theme, toggleTheme: contextToggleTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
@@ -28,8 +28,6 @@ const Home = () => {
     setLanguageDropdown(!languageDropdown);
   };
   usePageTitle(t("home.pageTitle"));
-
-  const toggleTheme = contextToggleTheme;
 
   useEffect(() => {
     if (currentUser?.email) {
