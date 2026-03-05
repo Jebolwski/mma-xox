@@ -131,3 +131,50 @@
 .corner-pulse {
   animation: pulse-corner 1.5s ease-in-out infinite;
 }
+
+@keyframes lightSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.animate-lightSweep {
+  animation: lightSweep 8s linear infinite;
+}
+@keyframes floatFighter {
+  0%,
+  100% {
+    transform: translateY(0) scaleX(1);
+  }
+  50% {
+    transform: translateY(-20px) scaleX(1);
+  }
+}
+.animate-floatFighter {
+  animation: floatFighter 10s ease-in-out infinite;
+}
+@keyframes ping-slow {
+  75%,
+  100% {
+    transform: scale(1.1);
+    opacity: 0;
+  }
+}
+.animate-ping-slow {
+  animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes borderGlow {
+  0%,
+  100% {
+    border-color: rgba(239, 68, 68, 0);
+  }
+  50% {
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+}
+.animate-borderGlow {
+  animation: borderGlow 2s ease-in-out infinite;
+}

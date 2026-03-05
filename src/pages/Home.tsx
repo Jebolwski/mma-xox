@@ -67,9 +67,28 @@ const Home = () => {
             : "bg-gradient-to-b from-blue-400 via-blue-300 to-green-400"
         }`}
       >
-        {/* Animated Background Elements */}
+        {/* ========== YENİ: Octagon Desen (Arena Zemini) ========== */}
+        <div
+          className="absolute inset-0 opacity-10 pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L55 15 L55 45 L30 60 L5 45 L5 15 Z' fill='none' stroke='%23ef4444' stroke-width='0.5' /%3E%3C/svg%3E")`,
+            backgroundSize: "60px 60px",
+          }}
+        />
+
+        {/* ========== YENİ: Ring Işıkları (Animasyonlu) ========== */}
+        <div
+          className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-red-500 to-transparent animate-lightSweep"
+          style={{ filter: "blur(4px)" }}
+        />
+        <div
+          className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-red-500 to-transparent animate-lightSweep"
+          style={{ filter: "blur(4px)", animationDelay: "2s" }}
+        />
+
+        {/* ========== MEVCUT: Yıldızlar ve Parçacıklar (Geliştirildi) ========== */}
         <div className="absolute inset-0 overflow-hidden flex items-end justify-center">
-          {/* Stars / Sky elements */}
+          {/* Yıldızlar - daha belirgin */}
           {[...Array(50)].map((_, i) => (
             <div
               key={`star-${i}`}
@@ -86,6 +105,7 @@ const Home = () => {
             />
           ))}
 
+          {/* MEVCUT: Dağ katmanları (aynı kalabilir, sadece opacity ayarı yapıldı) */}
           {/* Far Mountains (Background Layer) - Subtle, misty */}
           <svg
             className="absolute bottom-0 left-1/2 transform -translate-x-1/2"
@@ -352,7 +372,7 @@ const Home = () => {
             />
           </svg>
 
-          {/* Mist/fog layer */}
+          {/* Sis tabakası */}
           <div
             className="absolute bottom-0 left-0 w-full"
             style={{
@@ -364,7 +384,7 @@ const Home = () => {
             }}
           />
 
-          {/* Floating particles */}
+          {/* Parçacıklar */}
           {[...Array(25)].map((_, i) => (
             <div
               key={`particle-${i}`}
@@ -382,19 +402,24 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Main Content */}
+        {/* ========== ANA İÇERİK ========== */}
         <div className="relative z-10 flex flex-col min-h-[calc(100vh-61px)] items-center justify-center px-3 lg:px-4 pt-20 lg:pt-0 pb-4 lg:pb-2">
-          {/* Game Logo */}
-          <div className="lg:mb-8 mb-6 text-center animate-bounce-slow">
+          {/* ========== YENİ: Logo Alanı (Gelişmiş Efektler) ========== */}
+          <div className="lg:mb-8 mb-6 text-center animate-bounce-slow group">
             <div
-              className={`relative inline-block p-4 px-4 rounded-2xl shadow-2xl backdrop-blur-sm border-2 ${
-                theme === "dark"
-                  ? "bg-slate-800/60 border-red-500 shadow-red-500/20"
-                  : "bg-white/60 border-red-600 shadow-red-600/20"
-              }`}
+              className={`relative inline-block p-4 px-4 rounded-2xl shadow-2xl backdrop-blur-sm border-2 transition-all duration-500
+                ${
+                  theme === "dark"
+                    ? "bg-slate-800/60 border-red-500 shadow-red-500/20 group-hover:shadow-red-500/40"
+                    : "bg-white/60 border-red-600 shadow-red-600/20 group-hover:shadow-red-600/40"
+                }`}
             >
+              {/* Nabız efekti veren halkalar */}
+              <div className="absolute inset-0 rounded-2xl border-2 border-red-500/50 animate-ping-slow" />
               <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full animate-pulse" />
               <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-orange-400 rounded-full animate-pulse delay-500" />
+
+              {/* Logo görseli */}
               <div className="flex justify-center">
                 <img
                   src={logo}
@@ -402,10 +427,12 @@ const Home = () => {
                   className="lg:w-22 lg:h-22 w-18 h-18 mb-1"
                 />
               </div>
+
+              {/* MMA yazısı */}
               <h1
-                className={`text-5xl md:text-8xl font-black tracking-wider ${
-                  theme === "dark" ? "text-red-400" : "text-red-600"
-                } drop-shadow-lg`}
+                className={`text-5xl md:text-8xl font-black tracking-wider transition-all duration-300
+                  ${theme === "dark" ? "text-red-400" : "text-red-600"}
+                  drop-shadow-lg group-hover:scale-105`}
                 style={{
                   textShadow:
                     theme === "dark"
@@ -415,10 +442,12 @@ const Home = () => {
               >
                 MMA
               </h1>
+
+              {/* XOX yazısı */}
               <h2
-                className={`text-3xl md:text-6xl font-black tracking-widest ${
-                  theme === "dark" ? "text-purple-600" : "text-purple-500"
-                } drop-shadow-lg`}
+                className={`text-3xl md:text-6xl font-black tracking-widest
+                  ${theme === "dark" ? "text-purple-600" : "text-purple-500"}
+                  drop-shadow-lg group-hover:scale-105 transition-all duration-300 delay-75`}
                 style={{
                   textShadow:
                     theme === "dark"
@@ -431,13 +460,18 @@ const Home = () => {
             </div>
           </div>
 
+          {/* ========== YENİ: Açıklama Kartı (Canlı Kenar Işığı) ========== */}
           <div
-            className={`max-w-2xl mx-auto lg:mb-10 mb-4 p-4 lg:p-6 rounded-xl backdrop-blur-sm border-2 ${
-              theme === "dark"
-                ? "bg-slate-800/60 border-slate-600 text-slate-200"
-                : "bg-white/60 border-slate-300 text-slate-700"
-            } shadow-xl`}
+            className={`max-w-2xl mx-auto lg:mb-10 mb-4 p-4 lg:p-6 rounded-xl backdrop-blur-sm border-2 relative overflow-hidden
+              ${
+                theme === "dark"
+                  ? "bg-slate-800/60 border-slate-600 text-slate-200"
+                  : "bg-white/60 border-slate-300 text-slate-700"
+              } shadow-xl`}
           >
+            {/* Hareketli kenar ışığı */}
+            <div className="absolute inset-0 rounded-xl border-2 border-transparent animate-borderGlow" />
+
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-3">
               <span className="font-bold text-red-500">MMA XOX</span> -{" "}
               {t("home.title")}
@@ -446,25 +480,27 @@ const Home = () => {
               {t("home.description")}
             </p>
             <p
-              className={`text-base md:text-lg text-center font-bold ${
-                theme === "dark" ? "text-yellow-400" : "text-red-600"
-              }`}
+              className={`text-base md:text-lg text-center font-bold
+                ${theme === "dark" ? "text-yellow-400" : "text-red-600"}`}
             >
               {t("home.tagline")}
             </p>
           </div>
-          {/* Menu Buttons */}
-          <div className="flex flex-wrap justify-center lg:gap-4 gap-3 ">
+
+          {/* ========== YENİ: Butonlar (Daha Çarpıcı) ========== */}
+          <div className="flex flex-wrap justify-center lg:gap-4 gap-3">
             {currentUser ? (
-              // Giriş yapmış kullanıcı için PLAY ve LOGOUT butonları
               <>
+                {/* PLAY butonu */}
                 <div
                   onClick={() => navigate("/menu")}
-                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 duration-200 hover:scale-102 active:scale-95 ${
-                    theme === "dark"
-                      ? "bg-purple-600 hover:bg-purple-700 border-purple-400 text-white shadow-lg shadow-purple-600/30"
-                      : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
-                  }`}
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 
+                    transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95
+                    ${
+                      theme === "dark"
+                        ? "bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 border-purple-400 text-white shadow-lg shadow-purple-600/50"
+                        : "bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 border-green-300 text-white shadow-lg shadow-green-500/50"
+                    }`}
                   style={{
                     textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                   }}
@@ -473,17 +509,20 @@ const Home = () => {
                     src={gamepad}
                     alt="Gamepad"
                     className="h-7 lg:h-9 mr-2"
-                  />{" "}
+                  />
                   {t("home.play")}
                 </div>
 
+                {/* LOGOUT butonu */}
                 <div
                   onClick={handleLogout}
-                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 duration-200 hover:scale-102 active:scale-95 ${
-                    theme === "dark"
-                      ? "bg-blue-600 hover:bg-blue-700 border-blue-400 text-white shadow-lg shadow-blue-600/30"
-                      : "bg-red-500 hover:bg-red-600 border-red-300 text-white shadow-lg shadow-red-500/30"
-                  }`}
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 
+                    transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95
+                    ${
+                      theme === "dark"
+                        ? "bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 border-blue-400 text-white shadow-lg shadow-blue-600/50"
+                        : "bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 border-red-300 text-white shadow-lg shadow-red-500/50"
+                    }`}
                   style={{
                     textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                   }}
@@ -492,20 +531,22 @@ const Home = () => {
                     src={logoutIcon}
                     alt="Logout"
                     className="h-7 lg:h-9 mr-2"
-                  />{" "}
+                  />
                   {t("home.logout")}
                 </div>
               </>
             ) : (
-              // Giriş yapmamış kullanıcı için PLAY AS GUEST ve LOGIN butonları
               <>
+                {/* PLAY AS GUEST butonu */}
                 <div
                   onClick={() => navigate("/menu")}
-                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 transition-all duration-200 hover:scale-102 active:scale-95 ${
-                    theme === "dark"
-                      ? "bg-purple-600 hover:bg-purple-700 border-purple-400 text-white shadow-lg shadow-purple-600/30"
-                      : "bg-green-500 hover:bg-green-600 border-green-300 text-white shadow-lg shadow-green-500/30"
-                  }`}
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 
+                    transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95
+                    ${
+                      theme === "dark"
+                        ? "bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 border-purple-400 text-white shadow-lg shadow-purple-600/50"
+                        : "bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 border-green-300 text-white shadow-lg shadow-green-500/50"
+                    }`}
                   style={{
                     textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                   }}
@@ -514,17 +555,20 @@ const Home = () => {
                     src={gamepad}
                     alt="Gamepad"
                     className="h-7 lg:h-9 mr-2"
-                  />{" "}
+                  />
                   {t("home.playAsGuest")}
                 </div>
 
+                {/* LOGIN butonu */}
                 <div
                   onClick={() => navigate("/login")}
-                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 transition-all duration-200 hover:scale-102 active:scale-95 ${
-                    theme === "dark"
-                      ? "bg-blue-600 hover:bg-blue-700 border-blue-400 text-white shadow-lg shadow-blue-600/30"
-                      : "bg-blue-500 hover:bg-blue-600 border-blue-300 text-white shadow-lg shadow-blue-500/30"
-                  }`}
+                  className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 
+                    transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95
+                    ${
+                      theme === "dark"
+                        ? "bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 border-blue-400 text-white shadow-lg shadow-blue-600/50"
+                        : "bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 border-blue-300 text-white shadow-lg shadow-blue-500/50"
+                    }`}
                   style={{
                     textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                   }}
@@ -533,7 +577,7 @@ const Home = () => {
                     src={loginIcon}
                     alt="Login"
                     className="w-7 lg:w-9 h-7 lg:h-9 mr-2"
-                  />{" "}
+                  />
                   {t("home.login")}
                 </div>
               </>
