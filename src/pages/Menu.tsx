@@ -191,17 +191,21 @@ const Menu = () => {
     return sanitizePlayerName(name).slice(0, NAME_MAX);
   };
   const getPlayerName = () => {
+    if (!currentUser && !playerName) {
+      return;
+    }
     if (currentUser) {
       // Kullanıcının username'i kullan
       return userUsername || "User";
     }
+
     return sanitizeGuestName(playerName);
   };
 
   const handleCreateRoom = async () => {
     const finalPlayerName = getPlayerName();
     if (!currentUser && !finalPlayerName) {
-      toast.error(t("menu.enterName"));
+      toast.warning(t("menu.enterName"));
       return;
     }
 
@@ -236,12 +240,12 @@ const Menu = () => {
   const handleJoinRoom = async () => {
     const finalPlayerName = getPlayerName();
     if (!currentUser && !finalPlayerName) {
-      toast.error(t("menu.enterName"));
+      toast.warning(t("menu.enterName"));
       return;
     }
 
     if (!roomCode) {
-      toast.error(t("menu.enterRoomCodeError"));
+      toast.warning(t("menu.enterRoomCodeError"));
       return;
     }
 
@@ -279,8 +283,9 @@ const Menu = () => {
   // Random Match (Puansız) - mevcut fonksiyonu güncelle
   const handleRandomMatch = async () => {
     const finalPlayerName = getPlayerName();
+
     if (!currentUser && !finalPlayerName) {
-      toast.error(t("menu.enterName"));
+      toast.warning(t("menu.enterName"));
       return;
     }
 
@@ -335,6 +340,10 @@ const Menu = () => {
   // Yeni Ranked Match fonksiyonu
   const handleRankedMatch = async () => {
     const finalPlayerName = getPlayerName();
+    if (!currentUser && !finalPlayerName) {
+      toast.warning(t("menu.enterName"));
+      return;
+    }
 
     try {
       // Sadece RANKED odaları ara
