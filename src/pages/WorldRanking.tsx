@@ -58,6 +58,8 @@ export default function WorldRanking() {
   const [myRank, setMyRank] = useState<number | null>(null);
   const [myRow, setMyRow] = useState<Row | null>(null);
 
+  console.log(myRank, myRow);
+
   const mapUserDoc = (docSnap: any): Row => {
     const d = docSnap.data() || {};
     const s = d.stats || {};
@@ -100,24 +102,45 @@ export default function WorldRanking() {
       const { list, nextCursor } = await fetchPage(null);
       setRows(list);
       setLastDoc(nextCursor);
+      console.log("messi, geliyoruz", currentUser, list);
 
       // compute my rank if signed in
       if (currentUser) {
-        // find my row from docs, or fetch my doc if not in the first page
-        const mine = list.find((r) => r.email === currentUser.email) || null;
-        setMyRow(mine || null);
+        // find my row from docs
+        let mine = list.find((r) => r.email === currentUser.email) || null;
+        console.log(mine);
 
-        // rank = count(users with points > myPoints) + 1
-        // if user doc might not exist, skip
-        const myPoints = mine?.points;
-        if (myPoints != null) {
-          const base = collection(db, "users");
-          const countSnap = await getCountFromServer(
-            query(base, where("stats.points", ">", myPoints)),
-          );
-          setMyRank(countSnap.data().count + 1);
+        if (mine) {
+          // User found in first page
+          setMyRow(mine);
+          setMyRank(list.indexOf(mine) + 1);
         } else {
-          setMyRank(null);
+          // User not in first page, search through all pages
+          let rank = list.length; // Start after first page
+          let cursor = nextCursor;
+          let found = false;
+
+          while (!found && cursor) {
+            const { list: nextList, nextCursor: nextNextCursor } =
+              await fetchPage(cursor);
+            const foundInPage = nextList.find(
+              (r) => r.email === currentUser.email,
+            );
+
+            if (foundInPage) {
+              setMyRow(foundInPage);
+              setMyRank(rank + nextList.indexOf(foundInPage) + 1);
+              found = true;
+            } else {
+              rank += nextList.length;
+              cursor = nextNextCursor;
+            }
+          }
+
+          if (!found) {
+            setMyRow(null);
+            setMyRank(null);
+          }
         }
       }
     } catch (e: any) {
