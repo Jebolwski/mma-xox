@@ -3031,7 +3031,7 @@ const Room = () => {
                         <img
                           src={hostAvatarUrl}
                           alt="Host"
-                          className="w-8 h-8 rounded-full object-cover border-2 border-red-400"
+                          className="w-8 h-8 rounded-full object-cover border-2 bg-blue-600 border-red-400"
                         />
                       )}
                       <p>
@@ -3070,7 +3070,7 @@ const Room = () => {
                         <img
                           src={guestAvatarUrl}
                           alt="Guest"
-                          className="w-8 h-8 rounded-full object-cover border-2 border-blue-400"
+                          className="w-8 h-8 rounded-full object-cover border-2 bg-blue-600 border-blue-400"
                         />
                       )}
                       <p>

@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           lastUsernameChangeAt: new Date().toISOString(),
           avatarUrl:
             user.photoURL ||
-            "https://raw.githubusercontent.com/Jebolwski/mma-xox/refs/heads/main/src/assets/pictures/profile_picture.webp",
+            `https://api.dicebear.com/7.x/avataaars/svg?seed=${username || user.email}`,
           activeTitle: "Arena Rookie",
           unlockedTitles: ["Arena Rookie"],
           achievements: {},
@@ -203,7 +203,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           lastUsernameChangeAt: new Date().toISOString(),
           avatarUrl:
             user.photoURL ||
-            "https://raw.githubusercontent.com/Jebolwski/mma-xox/refs/heads/main/src/assets/pictures/profile_picture.webp",
+            `https://api.dicebear.com/7.x/avataaars/svg?seed=${username || user.email}`,
           activeTitle: "Arena Rookie",
           unlockedTitles: ["Arena Rookie"],
           achievements: {},

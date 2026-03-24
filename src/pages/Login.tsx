@@ -107,8 +107,7 @@ const Login = () => {
           lastUsernameChangeAt: new Date().toISOString(), // YENİ: Son username değişikliği tarihi
 
           // Kişiselleştirme ve Başarım Alanları
-          avatarUrl:
-            "https://raw.githubusercontent.com/Jebolwski/mma-xox/refs/heads/main/src/assets/pictures/profile_picture.webp", // Varsayılan avatar yolu
+          avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${desiredUsername || result.user.email}`, // Varsayılan avatar yolu
           activeTitle: "Arena Rookie", // Varsayılan unvan
           unlockedTitles: ["Arena Rookie"], // Kazanılan unvanlar listesi
           achievements: {}, // Başlangıçta boş başarım nesnesi

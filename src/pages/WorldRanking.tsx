@@ -294,7 +294,7 @@ export default function WorldRanking() {
                         <img
                           src={getHighQualityAvatarUrl(r.avatarUrl)}
                           alt="profile picture"
-                          className="w-8 h-8 rounded-full object-cover"
+                          className="w-8 h-8 rounded-full object-cover bg-blue-600"
                         />
                       ) : (
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500"></div>

@@ -580,7 +580,7 @@ const Profile = () => {
                   <img
                     src={getHighQualityAvatarUrl(profile.avatarUrl)}
                     alt="profile picture"
-                    className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 lg:border-3 border-red-500 cursor-pointer hover:opacity-80 transition-opacity"
+                    className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 lg:border-3 border-red-500 bg-blue-600 cursor-pointer hover:opacity-80 transition-opacity"
                     onClick={() => setShowAvatarView(true)}
                     title="Click to view full avatar"
                   />
@@ -1263,7 +1263,7 @@ const Profile = () => {
               <img
                 src={getHighQualityAvatarUrl(profile.avatarUrl)}
                 alt="profile picture"
-                className="w-64 h-64 sm:w-80 sm:h-80 rounded-2xl border-4 border-red-500 shadow-2xl"
+                className="w-64 h-64 sm:w-80 sm:h-80 rounded-2xl border-4 border-red-500 shadow-2xl bg-blue-600"
               />
 
               {/* Kullanıcı Adı */}
