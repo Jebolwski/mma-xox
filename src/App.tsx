@@ -48,6 +48,21 @@ function AppContent() {
     return children;
   };
 
+  const ProtectedRouteReverse = ({ children }: { children: any }) => {
+    const { currentUser } = useAuth();
+    const location = useLocation();
+    if (currentUser) {
+      return (
+        <Navigate
+          to="/menu"
+          replace
+          state={{ from: location }}
+        />
+      );
+    }
+    return children;
+  };
+
   const location = useLocation();
 
   // Track page views
@@ -70,7 +85,11 @@ function AppContent() {
         />
         <Route
           path="/login"
-          element={<Login />}
+          element={
+            <ProtectedRouteReverse>
+              <Login />
+            </ProtectedRouteReverse>
+          }
         />
         <Route
           path="/reset-password"

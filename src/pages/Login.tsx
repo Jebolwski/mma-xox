@@ -1,8 +1,7 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../context/ThemeContext";
-import { useAuth } from "../context/AuthContext";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -23,11 +22,13 @@ import { db } from "../firebase";
 import logo from "../assets/pictures/logo.webp";
 import eye_closed from "../assets/pictures/eye_closed.webp";
 import eye_open from "../assets/pictures/eye_open.webp";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
+  const { currentUser } = useAuth();
   const { signInWithGoogle, signInWithTwitter } = useAuth();
 
   usePageTitle(t("auth.loginTitle"));
@@ -42,6 +43,12 @@ const Login = () => {
   const [resetLoading, setResetLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/menu");
+    }
+  }, []);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();

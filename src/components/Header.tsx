@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../context/AuthContext";
 import trFlag from "../assets/pictures/flags/tr.webp";
 import enFlag from "../assets/pictures/flags/en.webp";
 import ptFlag from "../assets/pictures/flags/pt.webp";
@@ -31,12 +32,12 @@ const Header = ({
   const { theme, toggleTheme: contextToggleTheme } = useContext(ThemeContext);
   const toggleTheme = contextToggleTheme;
   const { t, i18n } = useTranslation();
+  const { currentUser } = useAuth();
   const [languageDropdown, setLanguageDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Outside click detection for language dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -53,6 +54,7 @@ const Header = ({
         document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [languageDropdown]);
+
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("language", lang);
