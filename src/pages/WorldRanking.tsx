@@ -46,9 +46,8 @@ export default function WorldRanking() {
   // ...existing code...
 
   const [rows, setRows] = useState<Row[]>([]);
+  const [supplementaryRows, setSupplementaryRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [lastDoc, setLastDoc] = useState<DocumentData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [languageDropdown, setLanguageDropdown] = useState(false);
   const { t, i18n } = useTranslation();
@@ -101,7 +100,6 @@ export default function WorldRanking() {
     try {
       const { list, nextCursor } = await fetchPage(null);
       setRows(list);
-      setLastDoc(nextCursor);
       console.log("messi, geliyoruz", currentUser, list);
 
       // compute my rank if signed in
@@ -111,9 +109,10 @@ export default function WorldRanking() {
         console.log(mine);
 
         if (mine) {
-          // User found in first page
+          // User found in first page (top 25)
           setMyRow(mine);
           setMyRank(list.indexOf(mine) + 1);
+          setSupplementaryRows([]); // No supplementary needed
         } else {
           // User not in first page, search through all pages
           let rank = list.length; // Start after first page
@@ -128,8 +127,37 @@ export default function WorldRanking() {
             );
 
             if (foundInPage) {
+              const userRank = rank + nextList.indexOf(foundInPage) + 1;
               setMyRow(foundInPage);
-              setMyRank(rank + nextList.indexOf(foundInPage) + 1);
+              setMyRank(userRank);
+
+              // Get ±1 users around current user
+              const myIndex = nextList.indexOf(foundInPage);
+              const supplementary: Row[] = [];
+
+              // Add 1 user before (if exists)
+              if (myIndex > 0) {
+                supplementary.push(nextList[myIndex - 1]);
+              } else if (cursor) {
+                // If user is first in this page, need to fetch previous page's last user
+                // For now, we'll just skip it
+              }
+
+              // Add current user
+              supplementary.push(foundInPage);
+
+              // Add 1 user after (if exists)
+              if (myIndex < nextList.length - 1) {
+                supplementary.push(nextList[myIndex + 1]);
+              } else if (nextNextCursor) {
+                // If user is last in this page, need to fetch next page's first user
+                const { list: followingList } = await fetchPage(nextNextCursor);
+                if (followingList.length > 0) {
+                  supplementary.push(followingList[0]);
+                }
+              }
+
+              setSupplementaryRows(supplementary);
               found = true;
             } else {
               rank += nextList.length;
@@ -140,6 +168,7 @@ export default function WorldRanking() {
           if (!found) {
             setMyRow(null);
             setMyRank(null);
+            setSupplementaryRows([]);
           }
         }
       }
@@ -168,18 +197,6 @@ export default function WorldRanking() {
       // Mobile -> toggle language directly
       const newLang = i18n.language === "tr" ? "en" : "tr";
       changeLanguage(newLang);
-    }
-  };
-
-  const loadMore = async () => {
-    if (!lastDoc || loadingMore) return;
-    setLoadingMore(true);
-    try {
-      const { list, nextCursor } = await fetchPage(lastDoc);
-      setRows((prev) => [...prev, ...list]);
-      setLastDoc(nextCursor);
-    } finally {
-      setLoadingMore(false);
     }
   };
 
@@ -235,7 +252,7 @@ export default function WorldRanking() {
                 {t("ranking.yourGlobalRank")}
               </h1>
               <div className="flex items-center justify-between">
-                <div className="font-semibold">
+                <div className="font-semibold md:text-base text-xs">
                   #{myRank}{" "}
                   {myRow?.username || currentUser.email?.split("@")[0]}
                 </div>
@@ -279,6 +296,7 @@ export default function WorldRanking() {
               </div>
             )}
 
+            {/* TOP 25 LEADERBOARD */}
             {!loading &&
               rows.map((r, idx) => {
                 const rank = idx + 1;
@@ -323,7 +341,7 @@ export default function WorldRanking() {
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500"></div>
                       )}
                     </div>
-                    <div className="col-span-2 truncate flex items-center gap-2">
+                    <div className="col-span-2 truncate flex items-center gap-1">
                       {trophy && (
                         <span
                           className="text-lg"
@@ -332,10 +350,16 @@ export default function WorldRanking() {
                           {trophy}
                         </span>
                       )}
-                      <span className="truncate">{r.username}</span>
+                      <span className="truncate md:text-base text-xs">
+                        {r.username}
+                      </span>
                     </div>
-                    <div className="text-right font-semibold">{r.points}</div>
-                    <div className="text-right tabular-nums">{record}</div>
+                    <div className="text-right font-semibold md:text-base text-xs">
+                      {r.points}
+                    </div>
+                    <div className="text-right tabular-nums md:text-base text-xs">
+                      {record}
+                    </div>
                     <div className="text-right hidden md:block">
                       {r.winRate?.toFixed(1)}%
                     </div>
@@ -348,27 +372,90 @@ export default function WorldRanking() {
                 {t("ranking.noPlayersFound")}
               </div>
             )}
-          </div>
 
-          {/* Load more */}
-          <div className="flex justify-center py-6">
-            <button
-              disabled={!lastDoc || loadingMore}
-              onClick={loadMore}
-              className={`px-4 py-2 rounded-lg font-semibold ${
-                theme === "dark"
-                  ? "bg-slate-700 hover:bg-slate-600 text-white disabled:bg-slate-600/60"
-                  : "bg-white/90 hover:bg-white text-slate-800 border border-slate-300 disabled:opacity-60"
-              } ${lastDoc && !loadingMore ? "cursor-pointer" : "cursor-default"}`}
-              aria-disabled={!lastDoc || loadingMore}
-              aria-busy={loadingMore}
-            >
-              {lastDoc
-                ? loadingMore
-                  ? t("ranking.loading")
-                  : t("ranking.loadMore")
-                : t("ranking.endOfList")}
-            </button>
+            {/* SUPPLEMENTARY ROWS (±1 around user if outside top 25) */}
+            {!loading &&
+              supplementaryRows.length > 0 &&
+              myRank &&
+              myRank > 25 && (
+                <>
+                  <div
+                    className={`px-4 py-2 text-xs font-semibold text-center ${
+                      theme === "dark"
+                        ? "bg-slate-700/50 text-slate-300"
+                        : "bg-slate-100 text-slate-600"
+                    }`}
+                  >
+                    · · · · · · · · · ·
+                  </div>
+                  {supplementaryRows.map((r, idx) => {
+                    const indexInSupplementary = supplementaryRows.indexOf(r);
+                    let actualRank = (myRank ?? 0) - 1 + indexInSupplementary;
+                    const highlight = r.email === currentUser?.email;
+                    const trophy =
+                      actualRank === 1
+                        ? "🥇"
+                        : actualRank === 2
+                          ? "🥈"
+                          : actualRank === 3
+                            ? "🥉"
+                            : null;
+                    const record = `${r.wins}-${r.losses}-${r.draws}`;
+                    return (
+                      <Link
+                        to={`/profile/${r.username}`}
+                        key={r.id}
+                        className={`grid grid-cols-5 md:grid-cols-7 gap-2 px-4 py-3 text-sm border-t transition-colors duration-200 items-center ${
+                          theme === "dark"
+                            ? "text-white border-slate-700 hover:bg-slate-700/50"
+                            : "text-black border-slate-200 hover:bg-slate-100"
+                        } ${
+                          highlight
+                            ? theme === "dark"
+                              ? "bg-indigo-900/30"
+                              : "bg-indigo-50"
+                            : ""
+                        }`}
+                      >
+                        <div className="font-semibold">#{actualRank}</div>
+                        <div className="items-center justify-center hidden md:flex">
+                          {r.avatarUrl ? (
+                            <img
+                              src={getHighQualityAvatarUrl(r.avatarUrl)}
+                              alt="profile picture"
+                              className="w-8 h-8 rounded-full object-cover bg-blue-600"
+                            />
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500"></div>
+                          )}
+                        </div>
+                        <div className="col-span-2 truncate flex items-center gap-1">
+                          {trophy && (
+                            <span
+                              className="text-lg"
+                              aria-label="trophy"
+                            >
+                              {trophy}
+                            </span>
+                          )}
+                          <span className="truncate md:text-base text-xs">
+                            {r.username}
+                          </span>
+                        </div>
+                        <div className="text-right font-semibold md:text-base text-xs">
+                          {r.points}
+                        </div>
+                        <div className="text-right tabular-nums md:text-base text-xs">
+                          {record}
+                        </div>
+                        <div className="text-right hidden md:block">
+                          {r.winRate?.toFixed(1)}%
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </>
+              )}
           </div>
 
           {error && (

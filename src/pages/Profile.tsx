@@ -56,7 +56,7 @@ const achievementsList = {
 
 // YENİ: Google avatar URL'sini yüksek kaliteli versiyona çevir
 const getHighQualityAvatarUrl = (url: string): string => {
-  if (!url) return url;
+  if (!url) return;
   // Google avatar URL'lerinin sonundaki =s96-c parametresini s300-c olarak değiştir
   return url.replace(/=s\d+-c$/, "=s300-c");
 };
@@ -577,13 +577,18 @@ const Profile = () => {
             <div className="text-center mb-8">
               <div className="flex justify-center items-center gap-4 mb-4">
                 <div className="relative">
-                  <img
-                    src={getHighQualityAvatarUrl(profile.avatarUrl)}
-                    alt="profile picture"
-                    className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 lg:border-3 border-red-500 bg-blue-600 cursor-pointer hover:opacity-80 transition-opacity"
-                    onClick={() => setShowAvatarView(true)}
-                    title="Click to view full avatar"
-                  />
+                  {profile.avatarUrl ? (
+                    <img
+                      src={getHighQualityAvatarUrl(profile.avatarUrl)}
+                      alt="profile picture"
+                      className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 lg:border-3 border-red-500 bg-blue-600 cursor-pointer hover:opacity-80 transition-opacity"
+                      onClick={() => setShowAvatarView(true)}
+                      title="Click to view full avatar"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 border-2 lg:border-3 border-red-500"></div>
+                  )}
+
                   {/* YENİ: Avatar değiştir butonu - sadece kendi profilinde */}
                   {isMyProfile && (
                     <button

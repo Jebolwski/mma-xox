@@ -75,7 +75,9 @@ export default function Footer() {
               📧 {t("footer.contact")}
             </Link>
           </div>
-
+          <div className="text-center sm:text-left">
+            <p>{t("footer.copyright", { year: currentYear })}</p>
+          </div>
           <div
             className={`text-sm ${
               theme === "dark" ? "text-slate-200" : "text-slate-600"
@@ -106,9 +108,6 @@ export default function Footer() {
             >
               🔒 {t("privacy.title")}
             </Link>
-          </div>
-          <div className="text-center sm:text-left">
-            <p>{t("footer.copyright", { year: currentYear })}</p>
           </div>
         </div>
       </div>
