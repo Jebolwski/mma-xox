@@ -308,6 +308,9 @@
   },
   "filters": {
     "brazilian": "Brasil",
+    "british": "Britania",
+    "swedish": "Swedia",
+    "french": "Prancis",
     "undefeated": "Tak Terkalahkan",
     "beenInTitleFight": "Pernah dalam Pertarungan Judul",
     "welterweight": "Berat Menengah",

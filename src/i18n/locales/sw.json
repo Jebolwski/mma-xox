@@ -308,6 +308,9 @@
   },
   "filters": {
     "brazilian": "Brasiliansk",
+    "british": "Britisk",
+    "swedish": "Svensk",
+    "french": "Fransk",
     "undefeated": "Obesegrad",
     "beenInTitleFight": "Har varit i titelmatch",
     "welterweight": "Weltervikt",

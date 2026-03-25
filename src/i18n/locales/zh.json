@@ -307,6 +307,9 @@
   },
   "filters": {
     "brazilian": "巴西",
+    "british": "英国",
+    "swedish": "瑞典",
+    "french": "法国",
     "undefeated": "不败",
     "beenInTitleFight": "参加过冠军赛",
     "welterweight": "次中量级",

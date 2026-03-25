@@ -308,6 +308,9 @@
   },
   "filters": {
     "brazilian": "ブラジル人",
+    "british": "イギリス人",
+    "swedish": "スウェーデン人",
+    "french": "フランス人",
     "undefeated": "無敗",
     "beenInTitleFight": "タイトル戦経験あり",
     "welterweight": "ウェルター級",

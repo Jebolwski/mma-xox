@@ -5,6 +5,9 @@ import russiaFlag from "../assets/pictures/flags/russia_flag.webp";
 import polandFlag from "../assets/pictures/flags/poland_flag.webp";
 import australiaFlag from "../assets/pictures/flags/austraila_flag.webp";
 import brazilFlag from "../assets/pictures/flags/brazil_flag.webp";
+import enFlag from "../assets/pictures/flags/en.webp";
+import swFlag from "../assets/pictures/flags/sw.webp";
+import frFlag from "../assets/pictures/flags/fr.webp";
 import orthodoxStance from "../assets/pictures/orthodox.webp";
 import southpawStance from "../assets/pictures/southpaw.webp";
 import switchStance from "../assets/pictures/southpaw.webp";
@@ -349,6 +352,15 @@ const Filters = (): FilterDifficulty => {
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseInt(fighter.OctagonDebut) < 2015;
         })
+    },
+    {
+        "id": 24,
+        "filter_image": enFlag,
+        "filter_text": "filters.british",
+        "filter_no_image_text": null,
+        "filter_fighters": fighters.filter((fighter: Fighter) => {
+            return fighter.Nationality == "England" || fighter.Nationality == "Scotland" || fighter.Nationality == "Wales" || fighter.Nationality == "United Kingdom";
+        })
     }];
     const filters_hard: Filter[] = [
         {
@@ -369,14 +381,6 @@ const Filters = (): FilterDifficulty => {
             })
         }, {
             "id": 3,
-            "filter_image": title,
-            "filter_text": "filters.beenInTitleFight",
-            "filter_no_image_text": null,
-            "filter_fighters": fighters.filter((fighter: Fighter) => {
-                return parseInt(fighter.TotalTitleBouts) > 0;
-            })
-        }, {
-            "id": 4,
             "filter_image": null,
             "filter_text": "filters.welterweight",
             "filter_no_image_text": "170",
@@ -386,7 +390,7 @@ const Filters = (): FilterDifficulty => {
                     .includes(170);
             })
         }, {
-            "id": 5,
+            "id": 4,
             "filter_image": null,
             "filter_text": "filters.middleweight",
             "filter_no_image_text": "185",
@@ -396,7 +400,7 @@ const Filters = (): FilterDifficulty => {
                     .includes(185);
             })
         }, {
-            "id": 6,
+            "id": 5,
             "filter_image": null,
             "filter_text": "filters.lightweight",
             "filter_no_image_text": "155",
@@ -406,7 +410,7 @@ const Filters = (): FilterDifficulty => {
                     .includes(155);
             })
         }, {
-            "id": 7,
+            "id": 6,
             "filter_image": null,
             "filter_text": "filters.lightHeavyweight",
             "filter_no_image_text": "205",
@@ -416,7 +420,7 @@ const Filters = (): FilterDifficulty => {
                     .includes(205);
             })
         }, {
-            "id": 8,
+            "id": 7,
             "filter_image": null,
             "filter_text": "filters.heavyweight",
             "filter_no_image_text": "205>",
@@ -426,7 +430,7 @@ const Filters = (): FilterDifficulty => {
                     .some((weight: number): boolean => weight > 205);
             })
         }, {
-            "id": 9,
+            "id": 8,
             "filter_image": null,
             "filter_text": "filters.featherweight",
             "filter_no_image_text": "145",
@@ -436,7 +440,7 @@ const Filters = (): FilterDifficulty => {
                     .includes(145);
             })
         }, {
-            "id": 10,
+            "id": 9,
             "filter_image": null,
             "filter_text": "filters.bantamweight",
             "filter_no_image_text": "135",
@@ -446,7 +450,7 @@ const Filters = (): FilterDifficulty => {
                     .includes(135);
             })
         }, {
-            "id": 11,
+            "id": 10,
             "filter_image": null,
             "filter_text": "filters.flyweight",
             "filter_no_image_text": "125",
@@ -456,7 +460,7 @@ const Filters = (): FilterDifficulty => {
                     .includes(125);
             })
         }, {
-            "id": 12,
+            "id": 11,
             "filter_image": usaFlag,
             "filter_text": "filters.usa",
             "filter_no_image_text": null,
@@ -464,7 +468,7 @@ const Filters = (): FilterDifficulty => {
                 return fighter.Nationality == "United States";
             })
         }, {
-            "id": 13,
+            "id": 12,
             "filter_image": polandFlag,
             "filter_text": "filters.poland",
             "filter_no_image_text": null,
@@ -472,7 +476,7 @@ const Filters = (): FilterDifficulty => {
                 return fighter.Nationality == "Poland";
             })
         }, {
-            "id": 14,
+            "id": 13,
             "filter_image": nigeriaFlag,
             "filter_text": "filters.nigeria",
             "filter_no_image_text": null,
@@ -480,7 +484,7 @@ const Filters = (): FilterDifficulty => {
                 return fighter.Nationality == "Nigeria";
             })
         }, {
-            "id": 15,
+            "id": 14,
             "filter_image": australiaFlag,
             "filter_text": "filters.australia",
             "filter_no_image_text": null,
@@ -489,7 +493,7 @@ const Filters = (): FilterDifficulty => {
             })
         },
         {
-            "id": 16,
+            "id": 15,
             "filter_image": russiaFlag,
             "filter_text": "filters.russia",
             "filter_no_image_text": null,
@@ -497,7 +501,7 @@ const Filters = (): FilterDifficulty => {
                 return fighter.Nationality == "Russia";
             })
         }, {
-            "id": 17,
+            "id": 16,
             "filter_image": null,
             "filter_text": "filters.octagonDebut",
             "filter_no_image_text": "2015>",
@@ -505,33 +509,33 @@ const Filters = (): FilterDifficulty => {
                 return parseInt(fighter.OctagonDebut) > 2015;
             })
         },
+        // {
+        //     "id": 17,
+        //     "filter_image": orthodoxStance,
+        //     "filter_text": "filters.orthodox",
+        //     "filter_no_image_text": null,
+        //     "filter_fighters": fighters.filter((fighter: Fighter) => {
+        //         return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
+        //     })
+        // }, {
+        //     "id": 18,
+        //     "filter_image": switchStance,
+        //     "filter_text": "filters.switch",
+        //     "filter_no_image_text": null,
+        //     "filter_fighters": fighters.filter((fighter: Fighter) => {
+        //         return fighter.Stance == "Switch";
+        //     })
+        // }, {
+        //     "id": 19,
+        //     "filter_image": southpawStance,
+        //     "filter_text": "filters.southpaw",
+        //     "filter_no_image_text": null,
+        //     "filter_fighters": fighters.filter((fighter: Fighter) => {
+        //         return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
+        //     })
+        // },
         {
-            "id": 18,
-            "filter_image": orthodoxStance,
-            "filter_text": "filters.orthodox",
-            "filter_no_image_text": null,
-            "filter_fighters": fighters.filter((fighter: Fighter) => {
-                return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
-            })
-        }, {
-            "id": 19,
-            "filter_image": switchStance,
-            "filter_text": "filters.switch",
-            "filter_no_image_text": null,
-            "filter_fighters": fighters.filter((fighter: Fighter) => {
-                return fighter.Stance == "Switch";
-            })
-        }, {
-            "id": 20,
-            "filter_image": southpawStance,
-            "filter_text": "filters.southpaw",
-            "filter_no_image_text": null,
-            "filter_fighters": fighters.filter((fighter: Fighter) => {
-                return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
-            })
-        },
-        {
-            "id": 21,
+            "id": 17,
             "filter_image": null,
             "filter_text": "filters.totalTitleBouts",
             "filter_no_image_text": ">2",
@@ -540,7 +544,7 @@ const Filters = (): FilterDifficulty => {
             })
         },
         {
-            "id": 22,
+            "id": 18,
             "filter_image": null,
             "filter_text": "filters.height",
             "filter_no_image_text": ">180",
@@ -549,7 +553,7 @@ const Filters = (): FilterDifficulty => {
             })
         },
         {
-            "id": 23,
+            "id": 19,
             "filter_image": null,
             "filter_text": "filters.roundsFought",
             "filter_no_image_text": ">20",
@@ -558,12 +562,36 @@ const Filters = (): FilterDifficulty => {
             })
         },
         {
-            "id": 24,
+            "id": 20,
             "filter_image": null,
             "filter_text": "filters.octagonDebut",
             "filter_no_image_text": "2014<",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return parseInt(fighter.OctagonDebut) < 2014;
+            })
+        }, {
+            "id": 21,
+            "filter_image": enFlag,
+            "filter_text": "filters.british",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return fighter.Nationality == "England" || fighter.Nationality == "Scotland" || fighter.Nationality == "Wales" || fighter.Nationality == "United Kingdom";
+            })
+        }, {
+            "id": 22,
+            "filter_image": swFlag,
+            "filter_text": "filters.swedish",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return fighter.Nationality == "Sweden";
+            })
+        }, {
+            "id": 23,
+            "filter_image": frFlag,
+            "filter_text": "filters.french",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return fighter.Nationality == "France";
             })
         }
     ];

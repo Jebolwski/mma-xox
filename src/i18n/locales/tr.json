@@ -308,6 +308,9 @@
   },
   "filters": {
     "brazilian": "Brezilyalı",
+    "british": "Britanyalı",
+    "swedish": "İsveçli",
+    "french": "Fransız",
     "undefeated": "Yenilgisiz",
     "beenInTitleFight": "Şampiyonluk Maçına Çıkmış",
     "welterweight": "Velter Sıklet",

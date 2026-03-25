@@ -308,6 +308,9 @@
   },
   "filters": {
     "brazilian": "Бразильський",
+    "british": "Британський",
+    "swedish": "Шведський",
+    "french": "Французский",
     "undefeated": "Непереможений",
     "beenInTitleFight": "Брав участь у титульній боротьбі",
     "welterweight": "Напівсередня вага",

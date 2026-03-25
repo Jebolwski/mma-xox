@@ -308,6 +308,9 @@
   },
   "filters": {
     "brazilian": "Brasiliano",
+    "british": "Britannico",
+    "swedish": "Svedese",
+    "french": "Francese",
     "undefeated": "Imbattuto",
     "beenInTitleFight": "Ha partecipato a un titolo",
     "welterweight": "Pesi welter",

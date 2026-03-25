@@ -308,6 +308,9 @@
   },
   "filters": {
     "brazilian": "برازيلي",
+    "british": "بريطاني",
+    "swedish": "سويدي",
+    "french": "فرنسي",
     "undefeated": "غير مهزوم",
     "beenInTitleFight": "شارك في مباراة لقب",
     "welterweight": "وزن الوسط الخفيف",
