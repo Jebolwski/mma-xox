@@ -490,7 +490,7 @@ const AvailableRooms = () => {
       {/* Main Content */}
       <div className="relative z-10 flex justify-center items-center min-h-[calc(100vh-61px)] px-4">
         <div
-          className={`mt-8 p-6 rounded-2xl border-4 shadow-2xl backdrop-blur-sm transition-all duration-300 ${
+          className={`mt-8 p-6 rounded-2xl border-3 shadow-2xl backdrop-blur-sm transition-all duration-300 ${
             theme === "dark"
               ? "bg-slate-800/60 border-red-500 shadow-red-500/20"
               : "bg-white/60 border-red-600 shadow-red-600/20"

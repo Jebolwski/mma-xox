@@ -1357,7 +1357,11 @@ function SameScreenGame() {
                         </p>
                       </div>
                     ) : (
-                      <p>{t("game.loading")}</p>
+                      <p
+                        className={`text-center text-xs sm:text-sm md:text-base ${theme === "dark" ? "text-white" : "text-black"}`}
+                      >
+                        {t("game.loading")}
+                      </p>
                     )}
                   </div>
                   <div
@@ -1401,7 +1405,11 @@ function SameScreenGame() {
                         </p>
                       </div>
                     ) : (
-                      <p>{t("game.loading")}</p>
+                      <p
+                        className={`text-center text-xs sm:text-sm md:text-base ${theme === "dark" ? "text-white" : "text-black"}`}
+                      >
+                        {t("game.loading")}
+                      </p>
                     )}
                   </div>
                   <div
@@ -1445,7 +1453,11 @@ function SameScreenGame() {
                         </p>
                       </div>
                     ) : (
-                      <p>{t("game.loading")}</p>
+                      <p
+                        className={`text-center text-xs sm:text-sm md:text-base ${theme === "dark" ? "text-white" : "text-black"}`}
+                      >
+                        {t("game.loading")}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -1493,7 +1505,11 @@ function SameScreenGame() {
                         </p>
                       </div>
                     ) : (
-                      <p>{t("game.loading")}</p>
+                      <p
+                        className={`text-center text-xs sm:text-sm md:text-base ${theme === "dark" ? "text-white" : "text-black"}`}
+                      >
+                        {t("game.loading")}
+                      </p>
                     )}
                   </div>
                   <div
@@ -1685,7 +1701,11 @@ function SameScreenGame() {
                         </p>
                       </div>
                     ) : (
-                      <p>{t("game.loading")}</p>
+                      <p
+                        className={`text-center text-xs sm:text-sm md:text-base ${theme === "dark" ? "text-white" : "text-black"}`}
+                      >
+                        {t("game.loading")}
+                      </p>
                     )}
                   </div>
                   <div
@@ -1877,7 +1897,11 @@ function SameScreenGame() {
                         </p>
                       </div>
                     ) : (
-                      <p>{t("game.loading")}</p>
+                      <p
+                        className={`text-center text-xs sm:text-sm md:text-base ${theme === "dark" ? "text-white" : "text-black"}`}
+                      >
+                        {t("game.loading")}
+                      </p>
                     )}
                   </div>
                   <div
