@@ -16,137 +16,154 @@ import title from "../assets/pictures/title.webp";
 
 import { Fighter, Filter, FilterDifficulty } from '../interfaces/Fighter';
 const Filters = (): FilterDifficulty => {
-    const filters_easy: Filter[] = [{
-        "id": 1,
-        "filter_image": brazilFlag,
-        "filter_text": "filters.brazilian",
-        "filter_no_image_text": null,
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return fighter.Nationality == "Brazil";
-        })
-    }, {
-        "id": 2,
-        "filter_image": undefeated,
-        "filter_text": "filters.undefeated",
-        "filter_no_image_text": null,
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return fighter.Losses == "0";
-        })
-    }, {
-        "id": 3,
-        "filter_image": title,
-        "filter_text": "filters.beenInTitleFight",
-        "filter_no_image_text": null,
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return parseInt(fighter.TotalTitleBouts) > 0;
-        })
-    }, {
-        "id": 4,
-        "filter_image": null,
-        "filter_text": "filters.welterweight",
-        "filter_no_image_text": "170",
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return (fighter.WeightLbs as string).split(", ")
-                .map(Number)
-                .includes(170);
-        })
-    }, {
-        "id": 5,
-        "filter_image": null,
-        "filter_text": "filters.middleweight",
-        "filter_no_image_text": "185",
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return (fighter.WeightLbs as string).split(", ")
-                .map(Number)
-                .includes(185);
-        })
-    }, {
-        "id": 6,
-        "filter_image": null,
-        "filter_text": "filters.lightweight",
-        "filter_no_image_text": "155",
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return (fighter.WeightLbs as string).split(", ")
-                .map(Number)
-                .includes(155);
-        })
-    }, {
-        "id": 7,
-        "filter_image": null,
-        "filter_text": "filters.lightHeavyweight",
-        "filter_no_image_text": "205",
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return (fighter.WeightLbs as string).split(", ")
-                .map(Number)
-                .includes(205);
-        })
-    }, {
-        "id": 8,
-        "filter_image": null,
-        "filter_text": "filters.heavyweight",
-        "filter_no_image_text": "205>",
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return (fighter.WeightLbs as string).split(", ")
-                .map(Number)
-                .some((weight: number): boolean => weight > 205);
-        })
-    }, {
-        "id": 9,
-        "filter_image": null,
-        "filter_text": "filters.featherweight",
-        "filter_no_image_text": "145",
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return (fighter.WeightLbs as string).split(", ")
-                .map(Number)
-                .includes(145);
-        })
-    }, {
-        "id": 10,
-        "filter_image": null,
-        "filter_text": "filters.bantamweight",
-        "filter_no_image_text": "135",
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return (fighter.WeightLbs as string).split(", ")
-                .map(Number)
-                .includes(135);
-        })
-    }, {
-        "id": 11,
-        "filter_image": null,
-        "filter_text": "filters.flyweight",
-        "filter_no_image_text": "125",
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return (fighter.WeightLbs as string).split(", ")
-                .map(Number)
-                .includes(125);
-        })
-    }, {
-        "id": 12,
-        "filter_image": usaFlag,
-        "filter_text": "filters.usa",
-        "filter_no_image_text": null,
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return fighter.Nationality == "United States";
-        })
-    },
-    {
-        "id": 13,
-        "filter_image": null,
-        "filter_text": "filters.roundsFought",
-        "filter_no_image_text": ">20",
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return parseFloat(fighter.totalRoundsFought) > 20;
-        })
-    },
-    {
-        "id": 14,
-        "filter_image": null,
-        "filter_text": "filters.octagonDebut",
-        "filter_no_image_text": "2018<",
-        "filter_fighters": fighters.filter((fighter: Fighter) => {
-            return parseInt(fighter.OctagonDebut) < 2018;
-        })
-    }];
+    const filters_easy: Filter[] = [
+        {
+            "id": 1,
+            "filter_image": brazilFlag,
+            "filter_text": "filters.brazilian",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return fighter.Nationality == "Brazil";
+            })
+        }, {
+            "id": 2,
+            "filter_image": undefeated,
+            "filter_text": "filters.undefeated",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return fighter.Losses == "0";
+            })
+        }, {
+            "id": 3,
+            "filter_image": title,
+            "filter_text": "filters.beenInTitleFight",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return parseInt(fighter.TotalTitleBouts) > 0;
+            })
+        }, {
+            "id": 4,
+            "filter_image": null,
+            "filter_text": "filters.welterweight",
+            "filter_no_image_text": "170",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return (fighter.WeightLbs as string).split(", ")
+                    .map(Number)
+                    .includes(170);
+            })
+        }, {
+            "id": 5,
+            "filter_image": null,
+            "filter_text": "filters.middleweight",
+            "filter_no_image_text": "185",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return (fighter.WeightLbs as string).split(", ")
+                    .map(Number)
+                    .includes(185);
+            })
+        }, {
+            "id": 6,
+            "filter_image": null,
+            "filter_text": "filters.lightweight",
+            "filter_no_image_text": "155",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return (fighter.WeightLbs as string).split(", ")
+                    .map(Number)
+                    .includes(155);
+            })
+        }, {
+            "id": 7,
+            "filter_image": null,
+            "filter_text": "filters.lightHeavyweight",
+            "filter_no_image_text": "205",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return (fighter.WeightLbs as string).split(", ")
+                    .map(Number)
+                    .includes(205);
+            })
+        }, {
+            "id": 8,
+            "filter_image": null,
+            "filter_text": "filters.heavyweight",
+            "filter_no_image_text": "205>",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return (fighter.WeightLbs as string).split(", ")
+                    .map(Number)
+                    .some((weight: number): boolean => weight > 205);
+            })
+        }, {
+            "id": 9,
+            "filter_image": null,
+            "filter_text": "filters.featherweight",
+            "filter_no_image_text": "145",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return (fighter.WeightLbs as string).split(", ")
+                    .map(Number)
+                    .includes(145);
+            })
+        }, {
+            "id": 10,
+            "filter_image": null,
+            "filter_text": "filters.bantamweight",
+            "filter_no_image_text": "135",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return (fighter.WeightLbs as string).split(", ")
+                    .map(Number)
+                    .includes(135);
+            })
+        }, {
+            "id": 11,
+            "filter_image": null,
+            "filter_text": "filters.flyweight",
+            "filter_no_image_text": "125",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return (fighter.WeightLbs as string).split(", ")
+                    .map(Number)
+                    .includes(125);
+            })
+        }, {
+            "id": 12,
+            "filter_image": usaFlag,
+            "filter_text": "filters.usa",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return fighter.Nationality == "United States";
+            })
+        },
+        {
+            "id": 13,
+            "filter_image": null,
+            "filter_text": "filters.roundsFought",
+            "filter_no_image_text": ">20",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return parseFloat(fighter.totalRoundsFought) > 20;
+            })
+        },
+        {
+            "id": 14,
+            "filter_image": null,
+            "filter_text": "filters.octagonDebut",
+            "filter_no_image_text": "2018<",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return parseInt(fighter.OctagonDebut) < 2018;
+            })
+        }, {
+            "id": 15,
+            "filter_image": null,
+            "filter_text": "filters.losses",
+            "filter_no_image_text": ">3",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return parseInt(fighter.Losses) > 3;
+            })
+        }, {
+            "id": 16,
+            "filter_image": null,
+            "filter_text": "filters.wins",
+            "filter_no_image_text": ">20",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return parseInt(fighter.Wins) > 20;
+            })
+        }];
     const filters_medium: Filter[] = [{
         "id": 1,
         "filter_image": brazilFlag,
@@ -360,6 +377,22 @@ const Filters = (): FilterDifficulty => {
         "filter_no_image_text": null,
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return fighter.Nationality == "England" || fighter.Nationality == "Scotland" || fighter.Nationality == "Wales" || fighter.Nationality == "United Kingdom";
+        })
+    }, {
+        "id": 25,
+        "filter_image": null,
+        "filter_text": "filters.currentWinStreak",
+        "filter_no_image_text": ">3",
+        "filter_fighters": fighters.filter((fighter: Fighter) => {
+            return parseInt(fighter.CurrentWinStreak) > 3;
+        })
+    }, {
+        "id": 26,
+        "filter_image": null,
+        "filter_text": "filters.currentLoseStreak",
+        "filter_no_image_text": ">2",
+        "filter_fighters": fighters.filter((fighter: Fighter) => {
+            return parseInt(fighter.CurrentLoseStreak) > 2;
         })
     }];
     const filters_hard: Filter[] = [
@@ -592,6 +625,22 @@ const Filters = (): FilterDifficulty => {
             "filter_no_image_text": null,
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return fighter.Nationality == "France";
+            })
+        }, {
+            "id": 24,
+            "filter_image": null,
+            "filter_text": "filters.currentWinStreak",
+            "filter_no_image_text": ">4",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return parseInt(fighter.CurrentWinStreak) > 4;
+            })
+        }, {
+            "id": 25,
+            "filter_image": null,
+            "filter_text": "filters.currentLoseStreak",
+            "filter_no_image_text": ">4",
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+                return parseInt(fighter.CurrentLoseStreak) > 4;
             })
         }
     ];
