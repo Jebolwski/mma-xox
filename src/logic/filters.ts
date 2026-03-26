@@ -8,9 +8,7 @@ import brazilFlag from "../assets/pictures/flags/brazil_flag.webp";
 import enFlag from "../assets/pictures/flags/en.webp";
 import swFlag from "../assets/pictures/flags/sw.webp";
 import frFlag from "../assets/pictures/flags/fr.webp";
-import orthodoxStance from "../assets/pictures/orthodox.webp";
-import southpawStance from "../assets/pictures/southpaw.webp";
-import switchStance from "../assets/pictures/southpaw.webp";
+import multiWeightClass from "../assets/pictures/multiWeightClass.webp";
 import undefeated from "../assets/pictures/undefeated.webp";
 import title from "../assets/pictures/title.webp";
 
@@ -394,6 +392,15 @@ const Filters = (): FilterDifficulty => {
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseInt(fighter.CurrentLoseStreak) > 2;
         })
+    }, {
+        "id": 27,
+        "filter_image": multiWeightClass,
+        "filter_text": "filters.multiWeightFighter",
+        "filter_no_image_text": null,
+        "filter_fighters": fighters.filter((fighter: Fighter) => {
+
+            return fighter.WeightClasses?.length > 1;
+        })
     }];
     const filters_hard: Filter[] = [
         {
@@ -542,31 +549,6 @@ const Filters = (): FilterDifficulty => {
                 return parseInt(fighter.OctagonDebut) > 2015;
             })
         },
-        // {
-        //     "id": 17,
-        //     "filter_image": orthodoxStance,
-        //     "filter_text": "filters.orthodox",
-        //     "filter_no_image_text": null,
-        //     "filter_fighters": fighters.filter((fighter: Fighter) => {
-        //         return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
-        //     })
-        // }, {
-        //     "id": 18,
-        //     "filter_image": switchStance,
-        //     "filter_text": "filters.switch",
-        //     "filter_no_image_text": null,
-        //     "filter_fighters": fighters.filter((fighter: Fighter) => {
-        //         return fighter.Stance == "Switch";
-        //     })
-        // }, {
-        //     "id": 19,
-        //     "filter_image": southpawStance,
-        //     "filter_text": "filters.southpaw",
-        //     "filter_no_image_text": null,
-        //     "filter_fighters": fighters.filter((fighter: Fighter) => {
-        //         return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
-        //     })
-        // },
         {
             "id": 17,
             "filter_image": null,
@@ -641,6 +623,15 @@ const Filters = (): FilterDifficulty => {
             "filter_no_image_text": ">4",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return parseInt(fighter.CurrentLoseStreak) > 4;
+            })
+        }, {
+            "id": 26,
+            "filter_image": multiWeightClass,
+            "filter_text": "filters.multiWeightFighter",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+
+                return fighter.WeightClasses?.length > 1;
             })
         }
     ];
