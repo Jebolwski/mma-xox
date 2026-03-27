@@ -239,7 +239,7 @@ export default function WorldRanking() {
           ))}
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 py-8 lg:pt-24 pt-36">
+        <div className="max-w-4xl mx-auto px-4 py-8 lg:pt-24 pt-40">
           {currentUser && myRank && (
             <div
               className={`mb-6 rounded-xl p-4 border backdrop-blur-md ${
