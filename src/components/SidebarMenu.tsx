@@ -221,7 +221,9 @@ const SidebarMenu = ({
           {/* Language Selection */}
           <div
             className={`py-3 px-4 rounded-lg mb-2 ${
-              theme === "dark" ? "bg-slate-700/50" : "bg-slate-200/50"
+              theme === "dark"
+                ? "bg-slate-700/50 text-white"
+                : "bg-slate-200/50 text-black"
             }`}
           >
             <p className="text-sm font-medium mb-3 opacity-75">
