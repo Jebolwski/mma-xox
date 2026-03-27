@@ -638,5 +638,11 @@
       "contactText": "詳細やお問い合わせについては、",
       "contactLink": "お問い合わせ"
     }
+  },
+  "sidebar":{
+    "theme":"テーマ",
+    "language":"言語",
+    "logout":"ログアウト",
+    "games":"プレイしたゲーム"
   }
 }

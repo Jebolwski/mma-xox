@@ -638,5 +638,11 @@
       "contactText": "Per maggiori informazioni o richieste, ti preghiamo di",
       "contactLink": "contattarci"
     }
+  },
+  "sidebar": {
+    "theme": "Tema",
+    "language": "Lingua",
+    "logout": "Esci",
+    "games": "Partite giocate"
   }
 }

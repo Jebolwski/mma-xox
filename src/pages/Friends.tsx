@@ -263,7 +263,7 @@ export default function Friends() {
         ))}
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-10 lg:pt-24 pt-40">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-10 pt-24">
         {!canUse && (
           <div
             className={`rounded-xl p-4 mb-6 border text-center ${

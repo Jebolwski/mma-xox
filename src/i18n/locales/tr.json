@@ -638,5 +638,12 @@
       "contactText": "Daha fazla bilgi veya sorularınız için lütfen",
       "contactLink": "bize ulaşın"
     }
+  },
+  "sidebar": {
+    "theme": "Tema",
+    "language": "Dil",
+    "logout": "Çıkış Yap",
+    "games": "Oynanan oyunlar"
   }
+
 }

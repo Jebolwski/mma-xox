@@ -637,5 +637,11 @@
       "contactText": "For more information or inquiries, please",
       "contactLink": "contact us"
     }
+  },
+  "sidebar":{
+    "theme":"Theme",
+    "language":"Language",
+    "logout":"Logout",
+    "games":"Games played"
   }
 }

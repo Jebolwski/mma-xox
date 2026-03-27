@@ -57,8 +57,6 @@ export default function WorldRanking() {
   const [myRank, setMyRank] = useState<number | null>(null);
   const [myRow, setMyRow] = useState<Row | null>(null);
 
-  console.log(myRank, myRow);
-
   const mapUserDoc = (docSnap: any): Row => {
     const d = docSnap.data() || {};
     const s = d.stats || {};
@@ -100,13 +98,11 @@ export default function WorldRanking() {
     try {
       const { list, nextCursor } = await fetchPage(null);
       setRows(list);
-      console.log("messi, geliyoruz", currentUser, list);
 
       // compute my rank if signed in
       if (currentUser) {
         // find my row from docs
         let mine = list.find((r) => r.email === currentUser.email) || null;
-        console.log(mine);
 
         if (mine) {
           // User found in first page (top 25)
@@ -239,7 +235,7 @@ export default function WorldRanking() {
           ))}
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 py-8 lg:pt-24 pt-40">
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24 ">
           {currentUser && myRank && (
             <div
               className={`mb-6 rounded-xl p-4 border backdrop-blur-md ${

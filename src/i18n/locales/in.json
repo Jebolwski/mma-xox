@@ -638,5 +638,11 @@
       "contactText": "Untuk informasi lebih lanjut atau pertanyaan, silakan",
       "contactLink": "hubungi kami"    
     }
+  },
+  "sidebar": {
+    "theme": "Theem",
+    "language": "Bhaasha",
+    "logout": "Log Aaut",
+    "games": "Khele Gae Khel"
   }
 }

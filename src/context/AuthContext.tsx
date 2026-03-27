@@ -75,8 +75,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           createdAt: new Date().toISOString(),
           lastActive: new Date().toISOString(),
         });
-
-        console.log("User profile created in Firestore");
       }
     } catch (error) {
       console.error("Error creating user profile:", error);
@@ -86,9 +84,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const register = async (email: string, password: string): Promise<void> => {
     await createUserWithEmailAndPassword(auth, email, password).then(
       (userCredential) => {
-        // Kullanıcı oluşturulduktan sonra Firestore'a ekle
-        console.log("userCredential:", userCredential);
-
         createUserProfile(userCredential.user);
       },
     );

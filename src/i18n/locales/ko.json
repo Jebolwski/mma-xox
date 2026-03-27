@@ -637,5 +637,11 @@
       "contactText": "자세한 정보나 문의 사항은",
       "contactLink": "문의하기"
     }
+  },
+  "sidebar":{
+    "theme":"테마",
+    "language":"언어",
+    "logout":"로그아웃",
+    "games":"플레이한 게임"
   }
 }

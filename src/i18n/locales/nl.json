@@ -638,5 +638,11 @@
       "contactText": "Voor meer informatie of vragen, contacteer alstublieft",
       "contactLink": "neem contact op"
     }
+  },
+  "sidebar": {
+    "theme": "Thema",
+    "language": "Taal",
+    "logout": "Uitloggen",
+    "games": "Gespeelde spellen"
   }
 }

@@ -638,5 +638,9 @@
       "contactText": "För mer information eller förfrågningar, vänligen",
       "contactLink": "kontakta oss"
     }
+  },
+  "sidebar":{
+    "theme":"Tema",
+    "language":"Linguagem"
   }
 }

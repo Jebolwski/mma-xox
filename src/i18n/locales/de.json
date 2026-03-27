@@ -638,5 +638,11 @@
       "contactText": "Für weitere Informationen oder Anfragen",
       "contactLink": "kontaktiere uns"
     }
+  },
+  "sidebar": {
+    "theme": "Design",
+    "language": "Sprache",
+    "logout": "Abmelden",
+    "games": "Gespielte Spiele"
   }
 }

@@ -638,5 +638,11 @@
       "contactText": "Para mais informações ou dúvidas, entre em",
       "contactLink": "contato"
     }
+  },
+  "sidebar": {
+    "theme": "Tema",
+    "language": "Idioma",
+    "logout": "Sair",
+    "games": "Jogos jogados"
   }
 }

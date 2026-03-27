@@ -637,5 +637,11 @@
       "contactText": "如需更多信息或询问，请",
       "contactLink": "联系我们"
     } 
+  },
+  "sidebar":{
+    "theme":"主题",
+    "language":"语言",
+    "logout":"退出登录",
+    "games":"已玩游戏"
   }
 }
