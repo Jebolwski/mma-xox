@@ -641,6 +641,7 @@
   "sidebar":{
     "theme":"테마",
     "language":"언어",
+    "login":"로그인",
     "logout":"로그아웃",
     "games":"플레이한 게임"
   }

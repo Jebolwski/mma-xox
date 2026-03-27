@@ -642,6 +642,7 @@
   "sidebar": {
     "theme": "Tema",
     "language": "Dil",
+    "login": "Giriş Yap",
     "logout": "Çıkış Yap",
     "games": "Oynanan oyunlar"
   }

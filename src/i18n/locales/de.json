@@ -642,6 +642,7 @@
   "sidebar": {
     "theme": "Design",
     "language": "Sprache",
+    "login": "Anmelden",
     "logout": "Abmelden",
     "games": "Gespielte Spiele"
   }

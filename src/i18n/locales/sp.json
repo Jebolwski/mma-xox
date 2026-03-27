@@ -642,6 +642,7 @@
   "sidebar": {
     "theme": "Tema",
     "language": "Idioma",
+    "login": "Iniciar sesión",
     "logout": "Cerrar sesión",
     "games": "Partidas jugadas"
   }

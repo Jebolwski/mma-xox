@@ -642,6 +642,7 @@
   "sidebar":{
     "theme":"テーマ",
     "language":"言語",
+    "login":"ログイン",
     "logout":"ログアウト",
     "games":"プレイしたゲーム"
   }

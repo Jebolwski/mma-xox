@@ -642,6 +642,7 @@
   "sidebar": {
     "theme": "Motyw",
     "language": "Język",
+    "login": "Zaloguj",
     "logout": "Wyloguj",
     "games": "Rozegrane gry"
   }

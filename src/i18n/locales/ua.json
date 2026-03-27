@@ -642,6 +642,7 @@
   "sidebar": {
     "theme": "Тема",
     "language": "Мова",
+    "login": "Увійти",
     "logout": "Вийти",
     "games": "Зіграно ігор"
   }

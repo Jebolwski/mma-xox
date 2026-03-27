@@ -642,6 +642,7 @@
   "sidebar": {
     "theme": "Tema",
     "language": "Idioma",
+    "login": "Entrar",
     "logout": "Sair",
     "games": "Jogos jogados"
   }

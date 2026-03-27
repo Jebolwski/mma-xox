@@ -639,8 +639,11 @@
       "contactLink": "kontakta oss"
     }
   },
-  "sidebar":{
-    "theme":"Tema",
-    "language":"Linguagem"
+  "sidebar": {
+    "theme": "Tema",
+    "language": "Språk",
+    "login": "Logga in",
+    "logout": "Logga ut",
+    "games": "Spelade spel"
   }
 }

@@ -642,6 +642,7 @@
   "sidebar": {
     "theme": "Thema",
     "language": "Taal",
+    "login": "Inloggen",
     "logout": "Uitloggen",
     "games": "Gespeelde spellen"
   }

@@ -641,6 +641,7 @@
   "sidebar":{
     "theme":"Theme",
     "language":"Language",
+    "login":"Login",
     "logout":"Logout",
     "games":"Games played"
   }

@@ -84,6 +84,11 @@ const SidebarMenu = ({
     }
   };
 
+  const handleLogin = async () => {
+    navigate("/login");
+    onClose();
+  };
+
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("language", lang);
@@ -279,11 +284,25 @@ const SidebarMenu = ({
               className={`w-full py-3 px-4 rounded-lg flex items-center justify-center cursor-pointer gap-2 transition-all font-medium ${
                 theme === "dark"
                   ? "bg-red-900/50 hover:bg-red-800/50 text-red-200"
-                  : "bg-red-100/50 hover:bg-red-200/50 text-red-700"
+                  : "bg-red-200/50 hover:bg-red-300/50 text-red-700"
               }`}
             >
               <span className="text-xl">🚪</span>
               <span>{t("sidebar.logout")}</span>
+            </button>
+          )}
+          {/* Login Button */}
+          {!currentUser && (
+            <button
+              onClick={handleLogin}
+              className={`w-full py-3 px-4 rounded-lg flex items-center justify-center cursor-pointer gap-2 transition-all font-medium ${
+                theme === "dark"
+                  ? "bg-green-900/50 hover:bg-green-800/50 text-green-200"
+                  : "bg-green-300/50 hover:bg-green-400/50 text-green-700"
+              }`}
+            >
+              <span className="text-xl">🚪</span>
+              <span>{t("sidebar.login")}</span>
             </button>
           )}
         </div>
