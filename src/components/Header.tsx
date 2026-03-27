@@ -1,6 +1,8 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 import trFlag from "../assets/pictures/flags/tr.webp";
 import enFlag from "../assets/pictures/flags/en.webp";
 import ptFlag from "../assets/pictures/flags/pt.webp";
@@ -21,6 +23,7 @@ import uaFlag from "../assets/pictures/flags/ua_flag.webp";
 import { ThemeContext } from "../context/ThemeContext";
 import return_img from "../assets/pictures/return.webp";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Header = ({
   muted,
@@ -34,6 +37,7 @@ const Header = ({
   const { t, i18n } = useTranslation();
   const { currentUser } = useAuth();
   const [languageDropdown, setLanguageDropdown] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,6 +58,23 @@ const Header = ({
         document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [languageDropdown]);
+
+  useEffect(() => {
+    if (currentUser?.email && location.pathname !== "/") {
+      const fetchUserData = async () => {
+        try {
+          const userRef = doc(db, "users", currentUser.email);
+          const userDoc = await getDoc(userRef);
+          if (userDoc.exists()) {
+            setUserData(userDoc.data());
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+      fetchUserData();
+    }
+  }, [currentUser, location]);
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -458,6 +479,38 @@ const Header = ({
               <span className="text-xl">{muted ? "🔇" : "🔊"}</span>
             </button>
           )}
+          {userData &&
+            currentUser &&
+            (location.pathname == "/menu" ||
+              location.pathname == "/friends" ||
+              location.pathname == "/world-ranking" ||
+              location.pathname == "/available-rooms") && (
+              <Link
+                to={"/profile/" + userData.username}
+                className={`flex items-center gap-2 px-3 py-1 rounded-xl backdrop-blur-md border transition-all duration-300 ${
+                  theme === "dark"
+                    ? "bg-slate-900/40 border-slate-600/50 hover:bg-slate-800/50 text-white"
+                    : "bg-slate-100/40 border-slate-300/50 hover:bg-slate-200/50 text-black"
+                }`}
+              >
+                <img
+                  src={userData.avatarUrl}
+                  alt={userData.username}
+                  className="w-10 h-10 rounded-full object-cover border border-slate-400/50 bg-blue-600"
+                />
+                <div className="flex flex-col text-xs sm:text-sm gap-0.5">
+                  <span className="font-bold">{userData.username}</span>
+                  <div className="flex gap-3 flex-wrap">
+                    <span className="text-xs opacity-75">
+                      🏆 {userData.activeTitle}
+                    </span>
+                    <span className="text-xs opacity-75">
+                      ⭐ {userData.stats?.points || 0}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            )}
           <div
             onClick={handleExit}
             className={`p-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer shadow-md backdrop-blur-md ${
@@ -466,7 +519,7 @@ const Header = ({
                 : "bg-white/90 border-slate-300 text-slate-700 hover:bg-white"
             }`}
           >
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <img
                 src={return_img || "/placeholder.svg"}
                 alt="go back"

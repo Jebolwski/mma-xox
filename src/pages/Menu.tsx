@@ -783,6 +783,36 @@ const Menu = () => {
             />
           ))}
         </div>
+        <div className="flex items-center justify-center gap-2 mb-3 mt-24 md:mt-4">
+          <div className="relative">
+            <img
+              src={logo}
+              alt="MMA XOX Logo"
+              className="w-18 h-18"
+              style={{
+                filter: "drop-shadow(0 12px 24px #af1f91)",
+              }}
+            />
+          </div>
+          <div className="z-100">
+            <h1
+              className={`text-[2.4rem] h-min font-bold bg-gradient-to-r ${
+                theme === "dark"
+                  ? "from-purple-400 to-pink-600"
+                  : "from-purple-600 to-pink-600"
+              } bg-clip-text text-transparent`}
+            >
+              MMA XOX
+            </h1>
+            <p
+              className={`text-[0.95rem] ${
+                theme === "dark" ? "text-slate-400" : "text-slate-600"
+              }`}
+            >
+              {t("auth.ultimateTicTacToe")}
+            </p>
+          </div>
+        </div>
 
         <div className="relative z-10 flex items-center justify-center p-3 lg:p-4">
           <div
@@ -794,55 +824,6 @@ const Menu = () => {
                 : "bg-white/50 border-slate-200/50 text-slate-800"
             }`}
           >
-            <div className="flex items-center justify-center gap-2 mb-8">
-              <div className="relative">
-                <img
-                  src={logo}
-                  alt="MMA XOX Logo"
-                  className="w-16 h-16"
-                  style={{
-                    filter: "drop-shadow(0 12px 24px #af1f91)",
-                  }}
-                />
-              </div>
-              <div>
-                <h1
-                  className={`text-4xl font-bold bg-gradient-to-r ${
-                    theme === "dark"
-                      ? "from-purple-400 to-red-600"
-                      : "from-purple-600 to-red-600"
-                  } bg-clip-text text-transparent`}
-                >
-                  MMA XOX
-                </h1>
-                <p
-                  className={`text-sm ${
-                    theme === "dark" ? "text-slate-400" : "text-slate-600"
-                  }`}
-                >
-                  {t("auth.ultimateTicTacToe")}
-                </p>
-              </div>
-            </div>
-
-            {/* AdSense Ad */}
-            {/* {isGrid && (
-              <div className="w-full mb-6 px-4 flex justify-center">
-                <div
-                  style={{ minWidth: "280px", width: "100%", maxWidth: "100%" }}
-                >
-                  <ins
-                    className="adsbygoogle"
-                    style={{ display: "block" }}
-                    data-ad-client="ca-pub-8479780597628659"
-                    data-ad-slot="2618909847"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"
-                  />
-                </div>
-              </div>
-            )} */}
-
             {isGrid ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {tiles.map((title) => {
