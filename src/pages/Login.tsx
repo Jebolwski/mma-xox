@@ -688,7 +688,7 @@ const Login = () => {
                     theme === "dark" ? "text-slate-400" : "text-slate-600"
                   }`}
                 >
-                  Or continue with
+                  {t("auth.orContinueWith")}
                 </span>
                 <div
                   className={`flex-1 h-px ${

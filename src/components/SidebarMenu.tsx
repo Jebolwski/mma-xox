@@ -234,7 +234,7 @@ const SidebarMenu = ({
             <p className="text-sm font-medium mb-3 opacity-75">
               {t("sidebar.language")}
             </p>
-            <div className="grid grid-cols-4 gap-2 max-h-30 overflow-y-auto">
+            <div className="grid grid-cols-4 gap-2 max-h-34 overflow-y-auto p-1">
               {[
                 { code: "en", flag: enFlag },
                 { code: "tr", flag: trFlag },

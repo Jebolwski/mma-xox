@@ -783,7 +783,7 @@ const Menu = () => {
             />
           ))}
         </div>
-        <div className="flex items-center justify-center gap-2 mb-3 mt-24 md:mt-4">
+        <div className="flex items-center justify-center gap-2 mb-3 mt-6">
           <div className="relative">
             <img
               src={logo}

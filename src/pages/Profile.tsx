@@ -907,7 +907,7 @@ const Profile = () => {
                 />
 
                 {/* Merkezleyici katman */}
-                <div className="relative z-10 flex min-h-screen items-center justify-center p-4 lg:mt-0 mt-5">
+                <div className="relative z-10 flex min-h-screen items-center justify-center p-4 lg:mt-0 mt-12">
                   {/* İçerik kutusu */}
                   <div
                     role="dialog"
