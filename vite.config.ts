@@ -27,6 +27,9 @@ export default defineConfig({
         assetFileNames: 'assets/[name]-[hash][extname]',
       },
     },
+    // ========== SEO OPTIMIZATION ==========
+    // Pre-render critical routes for SEO
+    emptyOutDir: true,
   },
   publicDir: 'public',
   test: {
