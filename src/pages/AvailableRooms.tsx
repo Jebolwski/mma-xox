@@ -511,8 +511,12 @@ const AvailableRooms = () => {
               <div className="relative">
                 <img
                   src={logo}
-                  alt="logo"
+                  alt="MMA XOX Logo"
                   className="w-12 h-12"
+                  width={48}
+                  height={48}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div>
@@ -612,8 +616,12 @@ const AvailableRooms = () => {
                     <div className="font-semibold flex gap-2 items-center">
                       <img
                         src={number}
-                        alt="hashtag"
+                        alt="Room Number"
                         className="h-4"
+                        width={16}
+                        height={16}
+                        loading="lazy"
+                        decoding="async"
                       />
                       {t("room.roomLabel")}
                     </div>
@@ -629,8 +637,12 @@ const AvailableRooms = () => {
                     <div className="font-semibold flex gap-2 items-center">
                       <img
                         src={user_logo}
-                        alt="user logo placeholder"
+                        alt="Host User"
                         className="h-4"
+                        width={16}
+                        height={16}
+                        loading="lazy"
+                        decoding="async"
                       />
                       {t("room.hostLabel")}
                     </div>

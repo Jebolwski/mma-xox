@@ -129,8 +129,12 @@ const ResetPassword = () => {
             <div className="flex items-center gap-3">
               <img
                 src="https://cdn-icons-png.freepik.com/512/921/921676.png"
-                alt="MMA XOX"
+                alt="MMA XOX Logo"
                 className="w-12 h-12 drop-shadow-lg"
+                width={48}
+                height={48}
+                loading="lazy"
+                decoding="async"
               />
               <div>
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -182,8 +186,12 @@ const ResetPassword = () => {
                 >
                   <img
                     src={showPassword ? eye_open : eye_closed}
-                    alt={showPassword ? "hide" : "show"}
+                    alt={showPassword ? "show password" : "hide password"}
                     className="w-5 h-5"
+                    width={20}
+                    height={20}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </button>
               </div>
@@ -212,8 +220,12 @@ const ResetPassword = () => {
                 >
                   <img
                     src={showPassword ? eye_open : eye_closed}
-                    alt={showPassword ? "hide" : "show"}
+                    alt={showPassword ? "show password" : "hide password"}
                     className="w-5 h-5"
+                    width={20}
+                    height={20}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </button>
               </div>

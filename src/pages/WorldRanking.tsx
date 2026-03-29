@@ -102,7 +102,7 @@ export default function WorldRanking() {
       // compute my rank if signed in
       if (currentUser) {
         // find my row from docs
-        let mine = list.find((r) => r.email === currentUser.email) || null;
+        const mine = list.find((r) => r.email === currentUser.email) || null;
 
         if (mine) {
           // User found in first page (top 25)
@@ -330,8 +330,12 @@ export default function WorldRanking() {
                       {r.avatarUrl ? (
                         <img
                           src={getHighQualityAvatarUrl(r.avatarUrl)}
-                          alt="profile picture"
+                          alt="user avatar"
                           className="w-8 h-8 rounded-full object-cover bg-blue-600"
+                          width={32}
+                          height={32}
+                          loading="lazy"
+                          decoding="async"
                         />
                       ) : (
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500"></div>
@@ -386,7 +390,7 @@ export default function WorldRanking() {
                   </div>
                   {supplementaryRows.map((r, idx) => {
                     const indexInSupplementary = supplementaryRows.indexOf(r);
-                    let actualRank = (myRank ?? 0) - 1 + indexInSupplementary;
+                    const actualRank = (myRank ?? 0) - 1 + indexInSupplementary;
                     const highlight = r.email === currentUser?.email;
                     const trophy =
                       actualRank === 1
@@ -418,8 +422,12 @@ export default function WorldRanking() {
                           {r.avatarUrl ? (
                             <img
                               src={getHighQualityAvatarUrl(r.avatarUrl)}
-                              alt="profile picture"
+                              alt="user avatar"
                               className="w-8 h-8 rounded-full object-cover bg-blue-600"
+                              width={32}
+                              height={32}
+                              loading="lazy"
+                              decoding="async"
                             />
                           ) : (
                             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500"></div>

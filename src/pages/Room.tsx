@@ -2372,6 +2372,10 @@ const Room = () => {
                                                     : "English"
                   }
                   className="w-full h-full rounded-full object-cover"
+                  width={50}
+                  height={50}
+                  loading="lazy"
+                  decoding="async"
                 />
               </button>
 
@@ -2671,8 +2675,12 @@ const Room = () => {
             <div className="flex gap-2">
               <img
                 src={return_img || "/placeholder.svg"}
-                alt="go back"
+                alt="back to menu"
                 className="w-6"
+                width={24}
+                height={24}
+                loading="lazy"
+                decoding="async"
               />
               <p className="font-semibold">{t("room.backToMenu")}</p>
             </div>

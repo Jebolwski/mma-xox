@@ -789,6 +789,10 @@ const Menu = () => {
               src={logo}
               alt="MMA XOX Logo"
               className="w-18 h-18"
+              width={72}
+              height={72}
+              loading="lazy"
+              decoding="async"
               style={{
                 filter: "drop-shadow(0 12px 24px #af1f91)",
               }}

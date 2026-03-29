@@ -2137,8 +2137,12 @@ function SameScreenGame() {
               <div className="flex gap-2 justify-center items-center">
                 <img
                   src={logo}
-                  alt="logo"
+                  alt="MMA XOX Logo"
                   className="w-9 drop-shadow-lg"
+                  width={36}
+                  height={36}
+                  loading="lazy"
+                  decoding="async"
                 />
                 <h1 className="font-bold text-2xl bg-gradient-to-r from-indigo-400 to-indigo-400 bg-clip-text text-transparent">
                   MMA XOX

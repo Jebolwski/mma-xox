@@ -423,8 +423,12 @@ const Home = () => {
               <div className="flex justify-center">
                 <img
                   src={logo}
-                  alt="logo"
+                  alt="MMA XOX Logo"
                   className="lg:w-22 lg:h-22 w-18 h-18 mb-1"
+                  width={88}
+                  height={88}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 
@@ -507,8 +511,12 @@ const Home = () => {
                 >
                   <img
                     src={gamepad}
-                    alt="Gamepad"
+                    alt="Play Game"
                     className="h-7 lg:h-9 mr-2"
+                    width={36}
+                    height={36}
+                    loading="lazy"
+                    decoding="async"
                   />
                   {t("home.play")}
                 </div>
@@ -531,6 +539,10 @@ const Home = () => {
                     src={logoutIcon}
                     alt="Logout"
                     className="h-7 lg:h-9 mr-2"
+                    width={36}
+                    height={36}
+                    loading="lazy"
+                    decoding="async"
                   />
                   {t("home.logout")}
                 </div>
@@ -553,8 +565,12 @@ const Home = () => {
                 >
                   <img
                     src={gamepad}
-                    alt="Gamepad"
+                    alt="Play as Guest"
                     className="h-7 lg:h-9 mr-2"
+                    width={36}
+                    height={36}
+                    loading="lazy"
+                    decoding="async"
                   />
                   {t("home.playAsGuest")}
                 </div>
@@ -577,6 +593,10 @@ const Home = () => {
                     src={loginIcon}
                     alt="Login"
                     className="w-7 lg:w-9 h-7 lg:h-9 mr-2"
+                    width={36}
+                    height={36}
+                    loading="lazy"
+                    decoding="async"
                   />
                   {t("home.login")}
                 </div>

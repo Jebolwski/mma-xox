@@ -17,6 +17,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { updatePassword } from "firebase/auth";
 import photo_machine from "../assets/pictures/photo-machine.webp";
+import LoadingFallback from "../components/LoadingFallback";
 
 // --- YENİ: Profil veri yapısı arayüzü ---
 interface UserProfile {
@@ -485,23 +486,7 @@ const Profile = () => {
   };
 
   if (loading) {
-    return (
-      <div
-        className={`min-h-screen flex items-center justify-center ${
-          theme === "dark"
-            ? "bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
-            : "bg-gradient-to-br from-blue-400 via-blue-300 to-green-400"
-        }`}
-      >
-        <div
-          className={`text-2xl font-semibold animate-pulse ${
-            theme === "dark" ? "text-white" : "text-slate-800"
-          }`}
-        >
-          {t("profile.loading")}
-        </div>
-      </div>
-    );
+    return <LoadingFallback />;
   }
 
   // --- GÜNCELLENDİ: Artık !profile kontrolü yapılıyor ---

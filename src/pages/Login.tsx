@@ -542,8 +542,12 @@ const Login = () => {
             <div className="flex items-center gap-3">
               <img
                 src={logo}
-                alt="MMA XOX"
+                alt="MMA XOX Logo"
                 className="w-12 h-12 drop-shadow-lg"
+                width={48}
+                height={48}
+                loading="lazy"
+                decoding="async"
               />
               <div>
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -642,12 +646,20 @@ const Login = () => {
                       src={eye_open}
                       className={`w-6 ${theme === "dark" ? "invert" : ""}`}
                       alt="Show password"
+                      width={24}
+                      height={24}
+                      loading="lazy"
+                      decoding="async"
                     />
                   ) : (
                     <img
                       src={eye_closed}
                       className={`w-6 ${theme === "dark" ? "invert" : ""}`}
                       alt="Hide password"
+                      width={24}
+                      height={24}
+                      loading="lazy"
+                      decoding="async"
                     />
                   )}
                 </button>
