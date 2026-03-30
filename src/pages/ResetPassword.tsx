@@ -7,6 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import eye_closed from "../assets/pictures/eye_closed.webp";
 import eye_open from "../assets/pictures/eye_open.webp";
+import logo from "../assets/pictures/logo.webp";
 
 const ResetPassword = () => {
   const { t } = useTranslation();
@@ -128,7 +129,7 @@ const ResetPassword = () => {
           <div className="flex items-center justify-center mb-8">
             <div className="flex items-center gap-3">
               <img
-                src="https://cdn-icons-png.freepik.com/512/921/921676.png"
+                src={logo}
                 alt="MMA XOX Logo"
                 className="w-12 h-12 drop-shadow-lg"
                 width={48}

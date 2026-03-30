@@ -513,8 +513,8 @@ const Home = () => {
                     src={gamepad}
                     alt="Play Game"
                     className="h-7 lg:h-9 mr-2"
-                    width={36}
-                    height={36}
+                    width={"auto"}
+                    height={"auto"}
                     loading="lazy"
                     decoding="async"
                   />
@@ -539,8 +539,8 @@ const Home = () => {
                     src={logoutIcon}
                     alt="Logout"
                     className="h-7 lg:h-9 mr-2"
-                    width={36}
-                    height={36}
+                    width={"auto"}
+                    height={"auto"}
                     loading="lazy"
                     decoding="async"
                   />
@@ -593,8 +593,8 @@ const Home = () => {
                     src={loginIcon}
                     alt="Login"
                     className="w-7 lg:w-9 h-7 lg:h-9 mr-2"
-                    width={36}
-                    height={36}
+                    width={"auto"}
+                    height={"auto"}
                     loading="lazy"
                     decoding="async"
                   />

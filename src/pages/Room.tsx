@@ -30,8 +30,8 @@ import wrong from "../assets/sounds/wrong.mp3";
 import correct from "../assets/sounds/correct.mp3";
 import player_joined from "../assets/sounds/player_joined.mp3";
 import player_left from "../assets/sounds/player_left.mp3";
-import fighters_url from "../assets/data/fighters.json";
 import Filters from "../logic/filters";
+import { useFighters } from "../hooks/useFighters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ThemeContext } from "../context/ThemeContext";
 import Confetti from "react-confetti";
@@ -90,6 +90,7 @@ const Room = () => {
   const prevGuestNow = useRef<string | null>(null);
   const [languageDropdown, setLanguageDropdown] = useState(false);
   const { t, i18n } = useTranslation();
+  const { fighters: fighters_url, loading: fightersLoading } = useFighters();
 
   usePageTitle(roomId ? `MMA XOX - Room ${roomId}` : "MMA XOX • Room");
 
@@ -341,7 +342,8 @@ const Room = () => {
         };
 
         // Sunucudan gelen filter metadata'sından lokal Filters()'te tam filtreleri bul
-        const allFilters = Filters();
+        const allFilters = Filters(fighters_url);
+
         const fullFilters = (updatedData.filtersSelected || [])
           .map((filterMetadata: any) => {
             // Tüm filter listelerinde bu ID'ye sahip filtreyi bul
@@ -412,7 +414,7 @@ const Room = () => {
     return () => {
       unsubscribe();
     };
-  }, [roomId, role]);
+  }, [roomId, role, fighters_url]);
 
   //! Host'un oyunu başlatması: Eğer role host ise ve gameState yoksa, yeni oyun oluştur
   useEffect(() => {
@@ -1258,7 +1260,7 @@ const Room = () => {
       }
     }
 
-    const f: FilterDifficulty = Filters();
+    const f: FilterDifficulty = Filters(fighters_url);
 
     if (difficulty == "EASY") {
       setFilters(f.easy);
@@ -1451,7 +1453,7 @@ const Room = () => {
       !activeFilters ||
       (Array.isArray(activeFilters) && activeFilters.length === 0)
     ) {
-      const all = Filters();
+      const all = Filters(fighters_url);
       activeFilters =
         difficulty === "EASY"
           ? all.easy

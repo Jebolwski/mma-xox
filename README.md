@@ -8,7 +8,7 @@
 
 > A stunning real-time multiplayer Tic Tac Toe game with MMA fighter themes, ranked matchmaking, and global leaderboards. Built with React, Firebase, and Tailwind CSS.
 
-![Game Screenshot](./public/game_white.png)
+![Game Screenshot](./public/game_white.webp)
 
 ## ✨ Features
 
@@ -176,12 +176,12 @@ Supports 17 languages with i18next:
 
 ## 🎨 Screenshots
 
-| Feature     | Preview                                  |
-| ----------- | ---------------------------------------- |
-| Main Menu   | ![Menu](./public/menu.png)               |
-| Game Board  | ![Game](./public/game.png)               |
-| Leaderboard | ![Leaderboard](./public/leaderboard.png) |
-| Profile     | ![Profile](./public/profile.png)         |
+| Feature     | Preview                                   |
+| ----------- | ----------------------------------------- |
+| Main Menu   | ![Menu](./public/menu.webp)               |
+| Game Board  | ![Game](./public/game.webp)               |
+| Leaderboard | ![Leaderboard](./public/leaderboard.webp) |
+| Profile     | ![Profile](./public/profile.webp)         |
 
 ## 📝 Development
 

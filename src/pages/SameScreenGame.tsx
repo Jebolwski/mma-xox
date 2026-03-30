@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import fighters_url from "../assets/data/fighters.json";
 import Filters from "../logic/filters";
+import { useFighters } from "../hooks/useFighters";
 import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
 import wrong from "../assets/sounds/wrong.mp3";
@@ -31,6 +31,8 @@ function SameScreenGame() {
   const { theme } = useContext(ThemeContext);
 
   const { width, height } = useWindowSize();
+
+  const { fighters: fighters_url, loading: fightersLoading } = useFighters();
 
   const [difficulty, setDifficulty]: any = useState("MEDIUM");
 
@@ -426,7 +428,7 @@ function SameScreenGame() {
   };
 
   const startGame = () => {
-    const f: FilterDifficulty = Filters();
+    const f: FilterDifficulty = Filters(fighters_url);
 
     setTimer(timerLength);
     if (difficulty == "EASY") {
