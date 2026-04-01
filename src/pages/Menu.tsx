@@ -77,13 +77,6 @@ const Menu = () => {
 
   usePageTitle(t("menu.title"));
 
-  // AdSense ads push
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    }
-  }, []);
-
   // Grid görünüm mü? (form ekranlarında max-w-md kalsın)
   const isGrid =
     !showJoinFields &&
