@@ -514,7 +514,15 @@
     "guestForfeitedYouWin": "🏆 Гість поддався, ви переміг!",
     "fighterRequirements": "🚨 Боєць не відповідає вимогам.",
     "noParticipantFound": "🥺 Не знайдено учасника для гри!",
-    "fighterAlreadySelected": "🫣 Боєць вже вибраний."
+    "fighterAlreadySelected": "🫣 Боєць уже вибраний.",
+    "joinGame": "Приєднатися до гри",
+    "spectate": "Спостерігати",
+    "noSpectatorGames": "Немає ігор для спостереження",
+    "clickToSpectate": "Натисніть для спостереження",
+    "spectating": "Спостереження",
+    "spectatorCannotPickError": "Спостерігачі не можуть вибирати бійців",
+    "spectatorCannotPlayError": "Спостерігачі не можуть вибирати бійців",
+    "spectatorCannotRestartError": "Спостерігачі не можуть перезапустити гру"
   },
   "privacy": {
       "title": "Політика конфіденційності",

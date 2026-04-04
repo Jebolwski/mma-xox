@@ -514,7 +514,15 @@
     "guestForfeitedYouWin": "🏆 Misafir çekildi, sen kazandın!",
     "fighterRequirements": "🚨 Dövüşçü gereksinimleri karşılamıyor.",
     "noParticipantFound": "🥺 Oyun için katılımcı bulunamadı!",
-    "fighterAlreadySelected": "🫣 Dövüşçü zaten seçildi."
+    "fighterAlreadySelected": "🫣 Dövüşçü zaten seçildi.",
+    "joinGame": "Oyuna Katıl",
+    "spectate": "İzle",
+    "noSpectatorGames": "İzlenecek oyun yok",
+    "clickToSpectate": "Oyunu izlemek için tıkla",
+    "spectating": "İzliyor",
+    "spectatorCannotPickError": "Seyirciler dövüşçü seçemez",
+    "spectatorCannotPlayError": "Seyirciler dövüşçü seçemez",
+    "spectatorCannotRestartError": "Seyirciler oyunu yeniden başlatamazlar"
   },
   "privacy": {
       "title": "Gizlilik Politikası",

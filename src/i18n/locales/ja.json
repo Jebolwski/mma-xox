@@ -514,7 +514,15 @@
     "guestForfeitedYouWin": "🏆 ゲストが棄権しました。あなたの勝利！",
     "fighterRequirements": "🚨 ファイターが条件を満たしていません。",
     "noParticipantFound": "🥺 ゲームの参加者が見つかりませんでした！",
-    "fighterAlreadySelected": "🫣 このファイターはすでに選択されています。"
+    "fighterAlreadySelected": "🫣 ファイターは既に選択されています。",
+    "joinGame": "ゲームに参加",
+    "spectate": "観戦",
+    "noSpectatorGames": "観戦するゲームはありません",
+    "clickToSpectate": "クリックして観戦",
+    "spectating": "観戦中",
+    "spectatorCannotPickError": "観戦者はファイターを選択できません",
+    "spectatorCannotPlayError": "観戦者はファイターを選択できません",
+    "spectatorCannotRestartError": "観戦者はゲームを再開できません"
   },
   "privacy": {
     "title": "プライバシーポリシー",

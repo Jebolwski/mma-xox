@@ -514,7 +514,15 @@
     "guestForfeitedYouWin": "🏆 Gast gaf op, je wint!",
     "fighterRequirements": "🚨 Fighter voldoet niet aan de vereisten.",
     "noParticipantFound": "🥺 Geen deelnemer gevonden voor het spel!",
-    "fighterAlreadySelected": "🫣 Fighter al geselecteerd."
+    "fighterAlreadySelected": "🫣 Vechter al geselecteerd.",
+    "joinGame": "Voeg je in bij het spel",
+    "spectate": "Kijken",
+    "noSpectatorGames": "Geen spellen om naar te kijken",
+    "clickToSpectate": "Klik om te kijken",
+    "spectating": "Kijken",
+    "spectatorCannotPickError": "Toeschouwers kunnen geen vechters kiezen",
+    "spectatorCannotPlayError": "Toeschouwers kunnen geen vechters kiezen",
+    "spectatorCannotRestartError": "Toeschouwers kunnen het spel niet opnieuw starten"
   },
   "privacy": {
       "title": "Privacybeleid",

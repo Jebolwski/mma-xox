@@ -514,7 +514,15 @@
     "guestForfeitedYouWin": "🏆 Gast hat aufgegeben, du gewinnst!",
     "fighterRequirements": "🚨 Kämpfer erfüllt die Anforderungen nicht.",
     "noParticipantFound": "🥺 Kein Teilnehmer für das Spiel gefunden!",
-    "fighterAlreadySelected": "🫣 Kämpfer bereits ausgewählt."
+    "fighterAlreadySelected": "🫣 Kämpfer bereits ausgewählt.",
+    "joinGame": "Spiel beitreten",
+    "spectate": "Zuschauen",
+    "noSpectatorGames": "Keine Spiele zum Zuschauen",
+    "clickToSpectate": "Klicken Sie, um zuzuschauen",
+    "spectating": "Zuschauen",
+    "spectatorCannotPickError": "Zuschauer können keine Kämpfer auswählen",
+    "spectatorCannotPlayError": "Zuschauer können keine Kämpfer auswählen",
+    "spectatorCannotRestartError": "Zuschauer können das Spiel nicht neu starten"
   },
   "privacy": {
     "title": "Datenschutzrichtlinie",

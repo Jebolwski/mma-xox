@@ -513,7 +513,15 @@
     "guestForfeitedYouWin": "🏆 访客弃权，你获胜！",
     "fighterRequirements": "🚨 格斗选手不符合要求。",
     "noParticipantFound": "🥺 找不到游戏参与者！",
-    "fighterAlreadySelected": "🫣 格斗选手已选择。"
+    "fighterAlreadySelected": "🫣 格斗士已选择。",
+    "joinGame": "加入游戏",
+    "spectate": "观看",
+    "noSpectatorGames": "没有可观看的游戏",
+    "clickToSpectate": "点击观看",
+    "spectating": "观看中",
+    "spectatorCannotPickError": "观众无法选择格斗士",
+    "spectatorCannotPlayError": "观众无法选择格斗士",
+    "spectatorCannotRestartError": "观众无法重启游戏"
   },
   "privacy": {
       "title": "隐私政策",

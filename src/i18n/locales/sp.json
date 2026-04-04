@@ -514,7 +514,15 @@
     "guestForfeitedYouWin": "🏆 ¡El invitado se rindió, ganaste!",
     "fighterRequirements": "🚨 El luchador no cumple los requisitos.",
     "noParticipantFound": "🥺 ¡No se encontró ningún participante para el juego!",
-    "fighterAlreadySelected": "🫣 Luchador ya seleccionado."
+    "fighterAlreadySelected": "🫣 Luchador ya seleccionado.",
+    "joinGame": "Unirse al juego",
+    "spectate": "Mirar",
+    "noSpectatorGames": "No hay juegos para ver",
+    "clickToSpectate": "Haz clic para ver",
+    "spectating": "Viendo",
+    "spectatorCannotPickError": "Los espectadores no pueden elegir luchadores",
+    "spectatorCannotPlayError": "Los espectadores no pueden elegir luchadores",
+    "spectatorCannotRestartError": "Los espectadores no pueden reiniciar el juego"
   },
   "privacy": {
     "title": "Política de Privacidad",

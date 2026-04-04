@@ -514,7 +514,15 @@
     "guestForfeitedYouWin": "🏆 Gästen gav upp, du vinner!",
     "fighterRequirements": "🚨 Fightern uppfyller inte kraven.",
     "noParticipantFound": "🥺 Ingen deltagare hittades för spelet!",
-    "fighterAlreadySelected": "🫣 Fighter redan vald."
+    "fighterAlreadySelected": "🫣 Fighters redan vald.",
+    "joinGame": "Gå med i spelet",
+    "spectate": "Titta på",
+    "noSpectatorGames": "Inga spel att titta på",
+    "clickToSpectate": "Klicka för att titta",
+    "spectating": "Tittar på",
+    "spectatorCannotPickError": "Åskådare kan inte välja fighters",
+    "spectatorCannotPlayError": "Åskådare kan inte välja fighters",
+    "spectatorCannotRestartError": "Åskådare kan inte starta om spelet"
   },
   "privacy": {
       "title": "Integritetspolicy",

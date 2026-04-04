@@ -7,11 +7,9 @@ import brazilFlag from "../assets/pictures/flags/brazil_flag.webp";
 import enFlag from "../assets/pictures/flags/en.webp";
 import swFlag from "../assets/pictures/flags/sw.webp";
 import frFlag from "../assets/pictures/flags/fr.webp";
-import orthodoxStance from "../assets/pictures/orthodox.webp";
-import southpawStance from "../assets/pictures/southpaw.webp";
-import switchStance from "../assets/pictures/southpaw.webp";
 import undefeated from "../assets/pictures/undefeated.webp";
 import title from "../assets/pictures/title.webp";
+import multiWeightClass from "../assets/pictures/multiWeightClass.webp";
 
 import { Fighter, Filter, FilterDifficulty } from '../interfaces/Fighter';
 const Filters = (fighters: Fighter[]): FilterDifficulty => {
@@ -393,6 +391,15 @@ const Filters = (fighters: Fighter[]): FilterDifficulty => {
         "filter_fighters": fighters.filter((fighter: Fighter) => {
             return parseInt(fighter.CurrentLoseStreak) > 2;
         })
+    }, {
+        "id": 27,
+        "filter_image": multiWeightClass,
+        "filter_text": "filters.multiWeightFighter",
+        "filter_no_image_text": null,
+        "filter_fighters": fighters.filter((fighter: Fighter) => {
+
+            return fighter.WeightClasses?.length > 1;
+        })
     }];
     const filters_hard: Filter[] = [
         {
@@ -640,6 +647,15 @@ const Filters = (fighters: Fighter[]): FilterDifficulty => {
             "filter_no_image_text": ">4",
             "filter_fighters": fighters.filter((fighter: Fighter) => {
                 return parseInt(fighter.CurrentLoseStreak) > 4;
+            })
+        }, {
+            "id": 26,
+            "filter_image": multiWeightClass,
+            "filter_text": "filters.multiWeightFighter",
+            "filter_no_image_text": null,
+            "filter_fighters": fighters.filter((fighter: Fighter) => {
+
+                return fighter.WeightClasses?.length > 1;
             })
         }
     ];

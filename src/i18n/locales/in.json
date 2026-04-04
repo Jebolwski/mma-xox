@@ -514,7 +514,15 @@
     "guestForfeitedYouWin": "🏆 Tamu menyerah, Anda menang!",
     "fighterRequirements": "🚨 Petarung tidak memenuhi persyaratan.",
     "noParticipantFound": "🥺 Tidak ada peserta yang ditemukan untuk permainan!",
-    "fighterAlreadySelected": "🫣 Petarung sudah dipilih."
+    "fighterAlreadySelected": "🫣 Pejuang sudah dipilih.",
+    "joinGame": "Bergabung dengan Permainan",
+    "spectate": "Menonton",
+    "noSpectatorGames": "Tidak ada permainan untuk ditonton",
+    "clickToSpectate": "Klik untuk menonton",
+    "spectating": "Menonton",
+    "spectatorCannotPickError": "Penonton tidak dapat memilih pejuang",
+    "spectatorCannotPlayError": "Penonton tidak dapat memilih pejuang",
+    "spectatorCannotRestartError": "Penonton tidak dapat memulai ulang permainan"
   },
   "privacy": {
       "title": "Kebijakan Privasi",

@@ -95,9 +95,11 @@ const Room = () => {
   usePageTitle(roomId ? `MMA XOX - Room ${roomId}` : "MMA XOX • Room");
 
   const isRankedRoom = (gameState?.isRankedRoom ?? isRanked) === true;
+  const isSpectator = role === "spectator";
 
   const showUserBanner =
-    !!currentUser || (!isRankedRoom && (role === "host" || role === "guest"));
+    !!currentUser ||
+    (!isRankedRoom && (role === "host" || role === "guest") && !isSpectator);
 
   const [fighter00, setFighter00]: any = useState({
     url: unknown_fighter,
@@ -1632,6 +1634,7 @@ const Room = () => {
   };
 
   const openFighterPickModal = () => {
+    if (isSpectator) return; // Spectators cannot pick fighters
     if (selected) {
     }
     const div = document.querySelector(".select-fighter");
@@ -1648,6 +1651,14 @@ const Room = () => {
   };
 
   const restartGame = async () => {
+    if (isSpectator) {
+      toast.error(
+        t("room.spectatorCannotRestartError") ||
+          "Spectators cannot restart games",
+      );
+      return;
+    }
+
     if (!roomId) return;
 
     const roomRef = doc(db, "rooms", roomId);
@@ -1776,6 +1787,13 @@ const Room = () => {
 
   //! Fighter seçildikten sonra, seçilen fighter'ın doğru kutuya konup konulmadığını kontrol eden ve Firestore'u güncelleyen fonksiyon
   const updateBox = async (fighter: Fighter) => {
+    if (isSpectator) {
+      toast.error(
+        t("room.spectatorCannotPlayError") || "Spectators cannot pick fighters",
+      );
+      return;
+    }
+
     const picture =
       fighter.Picture === "Unknown" ? unknown_fighter : fighter.Picture;
     const name = fighter.Fighter;
@@ -1992,6 +2010,12 @@ const Room = () => {
 
   //! Odayı terk etme işlemi - ranked maçta host veya guest çıkmak isterse konfirmasyonlu modal aç
   const handleExit = async () => {
+    // Spectators can just leave without showing any modals
+    if (isSpectator) {
+      navigate("/menu", { replace: true });
+      return;
+    }
+
     if (!roomId || !playerName || !role || isExiting) return;
 
     //! Ranked maçta oyun devam ederken host çıkmak isterse modal aç
@@ -2933,10 +2957,12 @@ const Room = () => {
                   />{" "}
                   <span className="font-semibold text-sm">
                     {" "}
-                    {userUsername ||
-                      currentUser?.email?.split("@")[0] ||
-                      playerName ||
-                      "Player"}
+                    {isSpectator
+                      ? `👁️ ${t("room.spectating") || "Spectating"}`
+                      : userUsername ||
+                        currentUser?.email?.split("@")[0] ||
+                        playerName ||
+                        "Player"}
                   </span>
                   {gameState?.isRankedRoom && (
                     <div className="text-yellow-500 text-xs">🏆</div>
@@ -3594,6 +3620,13 @@ const Room = () => {
                     </div>
                     <div
                       onClick={() => {
+                        if (isSpectator) {
+                          toast.error(
+                            t("room.spectatorCannotPickError") ||
+                              "Spectators cannot pick fighters",
+                          );
+                          return;
+                        }
                         if (
                           gameState.fighter00.bg ===
                           "from-stone-300/70 to-stone-500/70"
@@ -3604,13 +3637,17 @@ const Room = () => {
                           toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
-                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 ${
+                        isSpectator
+                          ? "cursor-not-allowed"
+                          : `cursor-pointer ${selectedClass("fighter00")}`
+                      } border ${
                         theme === "dark"
                           ? "border-stone-500"
                           : "border-stone-500"
                       } shadow-md bg-gradient-to-b ${
                         gameState.fighter00.bg
-                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter00")}`}
+                      } backdrop-blur-md text-center flex items-center justify-center`}
                     >
                       {selected === "fighter00" && (
                         <>
@@ -3644,6 +3681,13 @@ const Room = () => {
                     </div>
                     <div
                       onClick={() => {
+                        if (isSpectator) {
+                          toast.error(
+                            t("room.spectatorCannotPickError") ||
+                              "Spectators cannot pick fighters",
+                          );
+                          return;
+                        }
                         if (
                           gameState.fighter01.bg ===
                           "from-stone-300/70 to-stone-500/70"
@@ -3654,13 +3698,17 @@ const Room = () => {
                           toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
-                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                        isSpectator
+                          ? "cursor-not-allowed"
+                          : `cursor-pointer ${selectedClass("fighter01")}`
+                      } ${
                         theme === "dark"
                           ? "border-stone-500"
                           : "border-stone-500"
                       } shadow-md bg-gradient-to-b ${
                         gameState.fighter01.bg
-                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter01")}`}
+                      } backdrop-blur-md text-center flex items-center justify-center`}
                     >
                       {selected === "fighter01" && (
                         <>
@@ -3694,6 +3742,13 @@ const Room = () => {
                     </div>
                     <div
                       onClick={() => {
+                        if (isSpectator) {
+                          toast.error(
+                            t("room.spectatorCannotPickError") ||
+                              "Spectators cannot pick fighters",
+                          );
+                          return;
+                        }
                         if (
                           gameState.fighter02.bg ===
                           "from-stone-300/70 to-stone-500/70"
@@ -3704,13 +3759,17 @@ const Room = () => {
                           toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
-                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                        isSpectator
+                          ? "cursor-not-allowed"
+                          : `cursor-pointer ${selectedClass("fighter02")}`
+                      } ${
                         theme === "dark"
                           ? "border-stone-500"
                           : "border-stone-500"
                       } shadow-md bg-gradient-to-b ${
                         gameState.fighter02.bg
-                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter02")}`}
+                      } backdrop-blur-md text-center flex items-center justify-center`}
                     >
                       {selected === "fighter02" && (
                         <>
@@ -3746,6 +3805,8 @@ const Room = () => {
                   <div className={`flex gap-[2px] mt-[2px] text-white`}>
                     <div
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                        isSpectator ? "cursor-not-allowed" : "cursor-pointer"
+                      } ${
                         theme === "dark"
                           ? "border-stone-500 bg-stone-700/70"
                           : "border-stone-500 bg-stone-300/70"
@@ -3794,6 +3855,13 @@ const Room = () => {
                     </div>
                     <div
                       onClick={() => {
+                        if (isSpectator) {
+                          toast.error(
+                            t("room.spectatorCannotPickError") ||
+                              "Spectators cannot pick fighters",
+                          );
+                          return;
+                        }
                         if (
                           gameState.fighter10.bg ===
                           "from-stone-300/70 to-stone-500/70"
@@ -3804,13 +3872,17 @@ const Room = () => {
                           toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
-                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                        isSpectator
+                          ? "cursor-not-allowed"
+                          : `cursor-pointer ${selectedClass("fighter10")}`
+                      } ${
                         theme === "dark"
                           ? "border-stone-500"
                           : "border-stone-500"
                       } shadow-md bg-gradient-to-b ${
                         gameState.fighter10.bg
-                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter10")}`}
+                      } backdrop-blur-md text-center flex items-center justify-center`}
                     >
                       {selected === "fighter10" && (
                         <>
@@ -3844,6 +3916,13 @@ const Room = () => {
                     </div>
                     <div
                       onClick={() => {
+                        if (isSpectator) {
+                          toast.error(
+                            t("room.spectatorCannotPickError") ||
+                              "Spectators cannot pick fighters",
+                          );
+                          return;
+                        }
                         if (
                           gameState.fighter11.bg ===
                           "from-stone-300/70 to-stone-500/70"
@@ -3854,13 +3933,17 @@ const Room = () => {
                           toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
-                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                        isSpectator
+                          ? "cursor-not-allowed"
+                          : `cursor-pointer ${selectedClass("fighter11")}`
+                      } ${
                         theme === "dark"
                           ? "border-stone-500"
                           : "border-stone-500"
                       } shadow-md bg-gradient-to-b ${
                         gameState.fighter11.bg
-                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter11")}`}
+                      } backdrop-blur-md text-center flex items-center justify-center`}
                     >
                       {selected === "fighter11" && (
                         <>
@@ -3894,6 +3977,13 @@ const Room = () => {
                     </div>
                     <div
                       onClick={() => {
+                        if (isSpectator) {
+                          toast.error(
+                            t("room.spectatorCannotPickError") ||
+                              "Spectators cannot pick fighters",
+                          );
+                          return;
+                        }
                         if (
                           gameState.fighter12.bg ===
                           "from-stone-300/70 to-stone-500/70"
@@ -3904,13 +3994,17 @@ const Room = () => {
                           toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
-                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                        isSpectator
+                          ? "cursor-not-allowed"
+                          : `cursor-pointer ${selectedClass("fighter12")}`
+                      } ${
                         theme === "dark"
                           ? "border-stone-500"
                           : "border-stone-500"
                       } shadow-md bg-gradient-to-b ${
                         gameState.fighter12.bg
-                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter12")}`}
+                      } backdrop-blur-md text-center flex items-center justify-center`}
                     >
                       {selected === "fighter12" && (
                         <>
@@ -3946,6 +4040,8 @@ const Room = () => {
                   <div className={`flex gap-[2px] mt-[2px] text-white`}>
                     <div
                       className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                        isSpectator ? "cursor-not-allowed" : "cursor-pointer"
+                      } ${
                         theme === "dark"
                           ? "border-stone-500 bg-stone-700/70"
                           : "border-stone-500 bg-stone-300/70"
@@ -3994,6 +4090,13 @@ const Room = () => {
                     </div>
                     <div
                       onClick={() => {
+                        if (isSpectator) {
+                          toast.error(
+                            t("room.spectatorCannotPickError") ||
+                              "Spectators cannot pick fighters",
+                          );
+                          return;
+                        }
                         if (
                           gameState.fighter20.bg ===
                           "from-stone-300/70 to-stone-500/70"
@@ -4004,13 +4107,17 @@ const Room = () => {
                           toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
-                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                        isSpectator
+                          ? "cursor-not-allowed"
+                          : `cursor-pointer ${selectedClass("fighter20")}`
+                      } ${
                         theme === "dark"
                           ? "border-stone-500"
                           : "border-stone-500"
                       } shadow-md bg-gradient-to-b ${
                         gameState.fighter20.bg
-                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter20")}`}
+                      } backdrop-blur-md text-center flex items-center justify-center`}
                     >
                       {selected === "fighter20" && (
                         <>
@@ -4044,6 +4151,13 @@ const Room = () => {
                     </div>
                     <div
                       onClick={() => {
+                        if (isSpectator) {
+                          toast.error(
+                            t("room.spectatorCannotPickError") ||
+                              "Spectators cannot pick fighters",
+                          );
+                          return;
+                        }
                         if (
                           gameState.fighter21.bg ===
                           "from-stone-300/70 to-stone-500/70"
@@ -4054,13 +4168,17 @@ const Room = () => {
                           toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
-                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                        isSpectator
+                          ? "cursor-not-allowed"
+                          : `cursor-pointer ${selectedClass("fighter21")}`
+                      } ${
                         theme === "dark"
                           ? "border-stone-500"
                           : "border-stone-500"
                       } shadow-md bg-gradient-to-b ${
                         gameState.fighter21.bg
-                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter21")}`}
+                      } backdrop-blur-md text-center flex items-center justify-center `}
                     >
                       {selected === "fighter21" && (
                         <>
@@ -4094,6 +4212,13 @@ const Room = () => {
                     </div>
                     <div
                       onClick={() => {
+                        if (isSpectator) {
+                          toast.error(
+                            t("room.spectatorCannotPickError") ||
+                              "Spectators cannot pick fighters",
+                          );
+                          return;
+                        }
                         if (
                           gameState.fighter22.bg ===
                           "from-stone-300/70 to-stone-500/70"
@@ -4104,13 +4229,17 @@ const Room = () => {
                           toast.info(t("room.fighterAlreadySelected"));
                         }
                       }}
-                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 cursor-pointer border ${
+                      className={`xl:w-44 xl:h-44 md:w-32 md:h-32 sm:w-24 sm:h-24 w-20 h-20 border ${
+                        isSpectator
+                          ? "cursor-not-allowed"
+                          : `cursor-pointer ${selectedClass("fighter22")}`
+                      } ${
                         theme === "dark"
                           ? "border-stone-500"
                           : "border-stone-500"
                       } shadow-md bg-gradient-to-b ${
                         gameState.fighter22.bg
-                      } backdrop-blur-md text-center flex items-center justify-center ${selectedClass("fighter22")}`}
+                      } backdrop-blur-md text-center flex items-center justify-center `}
                     >
                       {selected === "fighter22" && (
                         <>

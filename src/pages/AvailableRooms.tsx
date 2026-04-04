@@ -25,9 +25,12 @@ const AvailableRooms = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const [rooms, setRooms] = useState([]);
+  const [spectatorRooms, setSpectatorRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [guestName, setGuestName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [spectatorLoading, setSpectatorLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<"waiting" | "spectate">("waiting");
   const navigate = useNavigate();
 
   const NAME_MAX = 16;
@@ -74,6 +77,37 @@ const AvailableRooms = () => {
     );
     return () => unsub();
   }, [currentUser]);
+
+  // Spectator rooms - oyun devam eden odalar
+  useEffect(() => {
+    setSpectatorLoading(true);
+    const roomsRef = collection(db, "rooms");
+    const q = query(
+      roomsRef,
+      where("gameStarted", "==", true),
+      where("isRankedRoom", "==", false),
+    );
+    const unsub = onSnapshot(
+      q,
+      (snap) => {
+        const list: Record<string, unknown>[] = [];
+        snap.forEach((d) => {
+          const data: any = { id: d.id, ...d.data() };
+          // Filter: guest.now != null (oyun devam eden odalar)
+          if (data.guest?.now) {
+            list.push(data);
+          }
+        });
+        setSpectatorRooms(list as never[]);
+        setSpectatorLoading(false);
+      },
+      (err) => {
+        console.error("spectator rooms subscribe failed:", err);
+        setSpectatorLoading(false);
+      },
+    );
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     // oturum başına bir kere dene
@@ -137,6 +171,12 @@ const AvailableRooms = () => {
     } else {
       setSelectedRoom(roomId);
     }
+  };
+
+  const handleSpectateRoom = (roomId: string) => {
+    navigate(`/room/${roomId}`, {
+      state: { role: "spectator" },
+    });
   };
 
   const SkeletonRoom = () => (
@@ -577,94 +617,250 @@ const AvailableRooms = () => {
             </div>
           </div> */}
 
-          {loading ? (
-            <ul className="space-y-4">
-              {[...Array(3)].map((_, i) => (
-                <li key={i}>
-                  <SkeletonRoom />
-                </li>
-              ))}
-            </ul>
-          ) : rooms.length === 0 ? (
-            <div
-              className={`text-center py-8 px-4 rounded-xl border-2 border-dashed ${
-                theme === "dark"
-                  ? "text-slate-300 border-slate-600"
-                  : "text-slate-600 border-slate-400"
+          {/* Tab Buttons */}
+          <div className="flex gap-2 mb-6">
+            <button
+              onClick={() => setActiveTab("waiting")}
+              className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
+                activeTab === "waiting"
+                  ? theme === "dark"
+                    ? "bg-red-600 text-white"
+                    : "bg-red-500 text-white"
+                  : theme === "dark"
+                    ? "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                    : "bg-slate-300/50 text-slate-700 hover:bg-slate-300"
               }`}
             >
-              <p className="text-lg font-semibold">
-                {t("room.noAvailableRooms")}
-              </p>
-              <p className="text-sm opacity-75 mt-1">
-                {t("room.checkBackLater")}
-              </p>
-            </div>
-          ) : (
-            <ul className="space-y-4">
-              {rooms.map((room: any) => (
-                <li
-                  key={room.id}
-                  className={`p-4 rounded-xl shadow-lg border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer backdrop-blur-sm ${
-                    theme === "dark"
-                      ? "bg-slate-700/80 border-slate-600 text-slate-200 hover:bg-slate-600/80 hover:border-slate-500"
-                      : "bg-white/80 border-slate-300 text-slate-700 hover:bg-white hover:border-slate-400"
-                  }`}
-                  onClick={() => handleDirectJoin(room.id)} // DEĞİŞTİRİLDİ
-                >
-                  <div className="flex gap-2 items-center">
-                    <div className="font-semibold flex gap-2 items-center">
-                      <img
-                        src={number}
-                        alt="Room Number"
-                        className="h-4"
-                        width={16}
-                        height={16}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                      {t("room.roomLabel")}
-                    </div>
-                    <span
-                      className={`font-mono ${
-                        theme === "dark" ? "text-yellow-400" : "text-red-600"
-                      }`}
-                    >
-                      {room.id}
-                    </span>
-                  </div>
-                  <div className="flex gap-2 items-center mt-2">
-                    <div className="font-semibold flex gap-2 items-center">
-                      <img
-                        src={user_logo}
-                        alt="Host User"
-                        className="h-4"
-                        width={16}
-                        height={16}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                      {t("room.hostLabel")}
-                    </div>
-                    <span
-                      className={`font-semibold ${
-                        theme === "dark" ? "text-green-400" : "text-green-600"
-                      }`}
-                    >
-                      {room.host}
-                    </span>
-                  </div>
+              🕹️ {t("room.joinGame") || "Join Game"}
+            </button>
+            <button
+              onClick={() => setActiveTab("spectate")}
+              className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
+                activeTab === "spectate"
+                  ? theme === "dark"
+                    ? "bg-purple-600 text-white"
+                    : "bg-purple-500 text-white"
+                  : theme === "dark"
+                    ? "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                    : "bg-slate-300/50 text-slate-700 hover:bg-slate-300"
+              }`}
+            >
+              👁️ {t("room.spectate") || "Spectate"}
+            </button>
+          </div>
 
-                  {/* Giriş yapmış kullanıcı için bilgi göster */}
-                  {currentUser && (
-                    <div className="mt-2 text-xs opacity-75">
-                      {t("room.clickToJoinAs")}{" "}
-                      <strong>{getPlayerName()}</strong>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
+          {/* Join Game Tab */}
+          {activeTab === "waiting" && (
+            <>
+              {loading ? (
+                <ul className="space-y-4">
+                  {[...Array(3)].map((_, i) => (
+                    <li key={i}>
+                      <SkeletonRoom />
+                    </li>
+                  ))}
+                </ul>
+              ) : rooms.length === 0 ? (
+                <div
+                  className={`text-center py-8 px-4 rounded-xl border-2 border-dashed ${
+                    theme === "dark"
+                      ? "text-slate-300 border-slate-600"
+                      : "text-slate-600 border-slate-400"
+                  }`}
+                >
+                  <p className="text-lg font-semibold">
+                    {t("room.noAvailableRooms")}
+                  </p>
+                  <p className="text-sm opacity-75 mt-1">
+                    {t("room.checkBackLater")}
+                  </p>
+                </div>
+              ) : (
+                <ul className="space-y-4">
+                  {rooms.map((room: any) => (
+                    <li
+                      key={room.id}
+                      className={`p-4 rounded-xl shadow-lg border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer backdrop-blur-sm ${
+                        theme === "dark"
+                          ? "bg-slate-700/80 border-slate-600 text-slate-200 hover:bg-slate-600/80 hover:border-slate-500"
+                          : "bg-white/80 border-slate-300 text-slate-700 hover:bg-white hover:border-slate-400"
+                      }`}
+                      onClick={() => handleDirectJoin(room.id)} // DEĞİŞTİRİLDİ
+                    >
+                      <div className="flex gap-2 items-center">
+                        <div className="font-semibold flex gap-2 items-center">
+                          <img
+                            src={number}
+                            alt="Room Number"
+                            className="h-4"
+                            width={16}
+                            height={16}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          {t("room.roomLabel")}
+                        </div>
+                        <span
+                          className={`font-mono ${
+                            theme === "dark"
+                              ? "text-yellow-400"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {room.id}
+                        </span>
+                      </div>
+                      <div className="flex gap-2 items-center mt-2">
+                        <div className="font-semibold flex gap-2 items-center">
+                          <img
+                            src={user_logo}
+                            alt="Host User"
+                            className="h-4"
+                            width={16}
+                            height={16}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          {t("room.hostLabel")}
+                        </div>
+                        <span
+                          className={`font-semibold ${
+                            theme === "dark"
+                              ? "text-green-400"
+                              : "text-green-600"
+                          }`}
+                        >
+                          {room.host}
+                        </span>
+                      </div>
+
+                      {/* Giriş yapmış kullanıcı için bilgi göster */}
+                      {currentUser && (
+                        <div className="mt-2 text-xs opacity-75">
+                          {t("room.clickToJoinAs")}{" "}
+                          <strong>{getPlayerName()}</strong>
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+
+          {/* Spectate Tab */}
+          {activeTab === "spectate" && (
+            <>
+              {spectatorLoading ? (
+                <ul className="space-y-4">
+                  {[...Array(3)].map((_, i) => (
+                    <li key={i}>
+                      <SkeletonRoom />
+                    </li>
+                  ))}
+                </ul>
+              ) : spectatorRooms.length === 0 ? (
+                <div
+                  className={`text-center py-8 px-4 rounded-xl border-2 border-dashed ${
+                    theme === "dark"
+                      ? "text-slate-300 border-slate-600"
+                      : "text-slate-600 border-slate-400"
+                  }`}
+                >
+                  <p className="text-lg font-semibold">
+                    {t("room.noSpectatorGames") || "No games to spectate"}
+                  </p>
+                  <p className="text-sm opacity-75 mt-1">
+                    {t("room.checkBackLater")}
+                  </p>
+                </div>
+              ) : (
+                <ul className="space-y-4">
+                  {spectatorRooms.map((room: any) => (
+                    <li
+                      key={room.id}
+                      onClick={() => handleSpectateRoom(room.id)}
+                      className={`p-4 rounded-xl shadow-lg border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer backdrop-blur-sm ${
+                        theme === "dark"
+                          ? "bg-slate-700/80 border-slate-600 text-slate-200 hover:bg-slate-600/80 hover:border-slate-500"
+                          : "bg-slate-200/80 border-slate-300 text-slate-700 hover:bg-slate-200/90 hover:border-slate-500"
+                      }`}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex gap-2 items-center">
+                          <img
+                            src={number}
+                            alt="Room Number"
+                            className="h-5"
+                            width={20}
+                            height={20}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          {t("room.roomLabel")}
+                        </div>
+                        <span
+                          className={`font-mono ${
+                            theme === "dark"
+                              ? "text-yellow-400"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {room.id}
+                        </span>
+                      </div>
+                      <div className="flex gap-2 items-center mt-2">
+                        <div className="font-semibold flex gap-2 items-center">
+                          <img
+                            src={user_logo}
+                            alt="Host User"
+                            className="h-4"
+                            width={16}
+                            height={16}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          {t("room.hostLabel")}
+                        </div>
+                        <span
+                          className={`font-semibold ${
+                            theme === "dark"
+                              ? "text-green-400"
+                              : "text-green-600"
+                          }`}
+                        >
+                          {room.host}
+                        </span>
+                      </div>
+                      <div className="flex gap-2 items-center mt-2">
+                        <div className="font-semibold flex gap-2 items-center">
+                          <img
+                            src={user_logo}
+                            alt="Guest User"
+                            className="h-4"
+                            width={16}
+                            height={16}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          {t("room.guestLabel")}
+                        </div>
+                        <span
+                          className={`font-semibold ${
+                            theme === "dark" ? "text-blue-400" : "text-blue-600"
+                          }`}
+                        >
+                          {room.guest?.now || "Waiting..."}
+                        </span>
+                      </div>
+                      <div className="mt-3 text-xs opacity-75 text-center">
+                        👁️ {t("room.clickToSpectate") || "Click to spectate"}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
           )}
         </div>
 

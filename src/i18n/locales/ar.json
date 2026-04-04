@@ -514,7 +514,15 @@
     "guestForfeitedYouWin": "🏆 الضيف استسلم، لقد فزت!",
     "fighterRequirements": "🚨 المقاتل لا يستوفي المتطلبات.",
     "noParticipantFound": "🥺 لم يتم العثور على مشارك للعبة!",
-    "fighterAlreadySelected": "🫣 تم اختيار المقاتل مسبقاً."
+    "fighterAlreadySelected": "🫣 تم اختيار المقاتل مسبقاً.",
+    "joinGame": "الانضمام للعبة",
+    "spectate": "المشاهدة",
+    "noSpectatorGames": "لا توجد ألعاب للمشاهدة",
+    "clickToSpectate": "انقر للمشاهدة",
+    "spectating": "المشاهدة",
+    "spectatorCannotPickError": "لا يمكن للمتفرجين اختيار المقاتلين",
+    "spectatorCannotPlayError": "لا يمكن للمتفرجين اختيار المقاتلين",
+    "spectatorCannotRestartError": "لا يمكن للمتفرجين إعادة تشغيل اللعبة"
   },
   "privacy": {
     "title": "سياسة الخصوصية",

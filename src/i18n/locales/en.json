@@ -514,7 +514,15 @@
     "guestForfeitedYouWin": "🏆 Guest forfeited, you win!",
     "fighterRequirements": "🚨 Fighter doesnt meet the requirements.",
     "noParticipantFound": "🥺 No participant found for the game!",
-    "fighterAlreadySelected": "🫣 Fighter already selected."
+    "fighterAlreadySelected": "🫣 Fighter already selected.",
+    "joinGame": "Join Game",
+    "spectate": "Spectate",
+    "noSpectatorGames": "No games to spectate",
+    "clickToSpectate": "Click to spectate",
+    "spectating": "Spectating",
+    "spectatorCannotPickError": "Spectators cannot pick fighters",
+    "spectatorCannotPlayError": "Spectators cannot pick fighters",
+    "spectatorCannotRestartError": "Spectators cannot restart games"
   },
   "privacy": {
       "title": "Privacy Policy",

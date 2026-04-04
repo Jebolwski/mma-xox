@@ -514,7 +514,15 @@
     "guestForfeitedYouWin": "🏆 Гость сдался, вы побеждаете!",
     "fighterRequirements": "🚨 Боец не соответствует требованиям.",
     "noParticipantFound": "🥺 Участник не найден для игры!",
-    "fighterAlreadySelected": "🫣 Боец уже выбран."
+    "fighterAlreadySelected": "🫣 Боец уже выбран.",
+    "joinGame": "Присоединиться к игре",
+    "spectate": "Смотреть",
+    "noSpectatorGames": "Нет игр для просмотра",
+    "clickToSpectate": "Нажмите для просмотра",
+    "spectating": "Просмотр",
+    "spectatorCannotPickError": "Зрители не могут выбирать бойцов",
+    "spectatorCannotPlayError": "Зрители не могут выбирать бойцов",
+    "spectatorCannotRestartError": "Зрители не могут перезапустить игру"
   },
   "privacy": {
       "title": "Политика конфиденциальности",
