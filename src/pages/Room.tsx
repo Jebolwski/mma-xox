@@ -88,6 +88,7 @@ const Room = () => {
   const [selected, setSelected]: any = useState();
   const [showConfetti, setShowConfetti] = useState(false);
   const prevGuestNow = useRef<string | null>(null);
+  const timerInitialized = useRef(false);
   const [languageDropdown, setLanguageDropdown] = useState(false);
   const { t, i18n } = useTranslation();
   const { fighters: fighters_url, loading: fightersLoading } = useFighters();
@@ -345,14 +346,20 @@ const Room = () => {
 
         // Sunucudan gelen filter metadata'sından lokal Filters()'te tam filtreleri bul
         const allFilters = Filters(fighters_url);
+        const gameDifficulty = updatedData.difficulty || "MEDIUM"; // Firestore'da kaydedilen difficulty
 
         const fullFilters = (updatedData.filtersSelected || [])
           .map((filterMetadata: any) => {
-            // Tüm filter listelerinde bu ID'ye sahip filtreyi bul
-            return (
-              allFilters.easy.find((f: any) => f.id === filterMetadata.id) ||
-              allFilters.medium.find((f: any) => f.id === filterMetadata.id) ||
-              allFilters.hard.find((f: any) => f.id === filterMetadata.id)
+            // Doğru difficulty seviyesinde filtreyi bul
+            let difficultyFilters: any = allFilters.medium;
+            if (gameDifficulty === "EASY") {
+              difficultyFilters = allFilters.easy;
+            } else if (gameDifficulty === "HARD") {
+              difficultyFilters = allFilters.hard;
+            }
+
+            return difficultyFilters.find(
+              (f: any) => f.id === filterMetadata.id,
             );
           })
           .filter(Boolean);
@@ -400,13 +407,20 @@ const Room = () => {
         if (updatedData.turn) setTurn(updatedData.turn);
         if (updatedData.filtersSelected)
           setFiltersSelected(updatedData.filtersSelected);
-        // Timer ve difficulty değerlerini de restore et
-        if (updatedData.timerLength !== undefined) {
+        // Timer ve difficulty değerlerini de restore et - sadece ilk başladığında
+        if (
+          !timerInitialized.current &&
+          updatedData.timerLength !== undefined
+        ) {
           setTimerLength(String(updatedData.timerLength));
+          timerInitialized.current = true;
         }
         if (updatedData.difficulty) {
           setDifficulty(updatedData.difficulty);
         }
+      } else if (!updatedData.gameStarted && timerInitialized.current) {
+        // Oyun bittiğinde timer initialize flagını sıfırla
+        timerInitialized.current = false;
       }
 
       setGuest(updatedData?.guest.now);
@@ -1661,6 +1675,9 @@ const Room = () => {
 
     if (!roomId) return;
 
+    // Timer initialize flagını sıfırla - yeni oyun başlayacak
+    timerInitialized.current = false;
+
     const roomRef = doc(db, "rooms", roomId);
 
     await updateDoc(roomRef, {
@@ -1827,6 +1844,16 @@ const Room = () => {
     const positionKey = fighterMap[selected];
 
     if (!positionsFighters[positionKey].includes(fighter)) {
+      // DEBUG: Hard difficulty'de sorun olduğunda kontrol et
+      console.log("❌ Fighter not found in position:", {
+        positionKey,
+        fighter: { id: fighter.Id, name: fighter.Fighter },
+        allowedFighters: positionsFighters[positionKey].map((f: any) => ({
+          id: f.Id,
+          name: f.Fighter,
+        })),
+        difficulty: gameState?.difficulty || difficulty,
+      });
       notify();
       playSfx(wrong); // ❌ Yanlış seçim sesi
       await updateDoc(roomRef, {

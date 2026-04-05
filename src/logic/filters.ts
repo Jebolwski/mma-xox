@@ -548,31 +548,6 @@ const Filters = (fighters: Fighter[]): FilterDifficulty => {
                 return parseInt(fighter.OctagonDebut) > 2015;
             })
         },
-        // {
-        //     "id": 17,
-        //     "filter_image": orthodoxStance,
-        //     "filter_text": "filters.orthodox",
-        //     "filter_no_image_text": null,
-        //     "filter_fighters": fighters.filter((fighter: Fighter) => {
-        //         return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
-        //     })
-        // }, {
-        //     "id": 18,
-        //     "filter_image": switchStance,
-        //     "filter_text": "filters.switch",
-        //     "filter_no_image_text": null,
-        //     "filter_fighters": fighters.filter((fighter: Fighter) => {
-        //         return fighter.Stance == "Switch";
-        //     })
-        // }, {
-        //     "id": 19,
-        //     "filter_image": southpawStance,
-        //     "filter_text": "filters.southpaw",
-        //     "filter_no_image_text": null,
-        //     "filter_fighters": fighters.filter((fighter: Fighter) => {
-        //         return fighter.Stance == "Orthodox" || fighter.Stance == "Switch";
-        //     })
-        // },
         {
             "id": 17,
             "filter_image": null,
