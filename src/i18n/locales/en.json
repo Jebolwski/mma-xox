@@ -522,7 +522,12 @@
     "spectating": "Spectating",
     "spectatorCannotPickError": "Spectators cannot pick fighters",
     "spectatorCannotPlayError": "Spectators cannot pick fighters",
-    "spectatorCannotRestartError": "Spectators cannot restart games"
+    "spectatorCannotRestartError": "Spectators cannot restart games",
+    "chat": "Game Chat",
+    "noMessagesYet": "No messages yet",
+    "typeMessage": "Type message...",
+    "send": "Send",
+    "toggleChat": "Toggle Chat"
   },
   "privacy": {
       "title": "Privacy Policy",

@@ -522,7 +522,12 @@
     "spectating": "Tittar på",
     "spectatorCannotPickError": "Åskådare kan inte välja fighters",
     "spectatorCannotPlayError": "Åskådare kan inte välja fighters",
-    "spectatorCannotRestartError": "Åskådare kan inte starta om spelet"
+    "spectatorCannotRestartError": "Åskådare kan inte starta om spelet",
+    "chat": "Spelchatt",
+    "noMessagesYet": "Inga meddelanden än",
+    "typeMessage": "Skriv meddelande...",
+    "send": "Skicka",
+    "toggleChat": "Växla chatt"
   },
   "privacy": {
       "title": "Integritetspolicy",

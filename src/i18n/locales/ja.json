@@ -522,7 +522,12 @@
     "spectating": "観戦中",
     "spectatorCannotPickError": "観戦者はファイターを選択できません",
     "spectatorCannotPlayError": "観戦者はファイターを選択できません",
-    "spectatorCannotRestartError": "観戦者はゲームを再開できません"
+    "spectatorCannotRestartError": "観戦者はゲームを再開できません",
+    "chat": "ゲームチャット",
+    "noMessagesYet": "メッセージはまだありません",
+    "typeMessage": "メッセージを入力...",
+    "send": "送信",
+    "toggleChat": "チャットを切り替え"
   },
   "privacy": {
     "title": "プライバシーポリシー",

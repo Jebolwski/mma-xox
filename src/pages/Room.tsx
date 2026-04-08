@@ -18,6 +18,8 @@ import {
   where,
   serverTimestamp,
   getDoc,
+  addDoc,
+  orderBy,
 } from "firebase/firestore";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { useTranslation } from "react-i18next";
@@ -174,6 +176,11 @@ const Room = () => {
   const [guestExitConfirmModal, setGuestExitConfirmModal] = useState(false);
   const [showWaitingGuest, setShowWaitingGuest] = useState(false);
   const [userUsername, setUserUsername] = useState("");
+  const [messages, setMessages] = useState<any[]>([]);
+  const [messageInput, setMessageInput] = useState("");
+  const [showChat, setShowChat] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const { width, height } = useWindowSize();
 
   const [muted, setMuted] = useState<boolean>(() => {
@@ -928,6 +935,35 @@ const Room = () => {
 
     fetchHostAvatar();
   }, [gameState?.hostEmail]);
+
+  //! Chat messages dinle
+  useEffect(() => {
+    if (!roomId) return;
+
+    const messagesRef = collection(db, "rooms", roomId, "messages");
+    const q = query(messagesRef, orderBy("timestamp", "asc"));
+
+    const unsub = onSnapshot(q, (snapshot) => {
+      const msgs: any[] = [];
+      snapshot.forEach((doc) => {
+        msgs.push({ id: doc.id, ...doc.data() });
+      });
+
+      // Yeni mesaj geldiğinde unread sayısını artır (chat kapalıysa)
+      if (!showChat && msgs.length > messages.length) {
+        setUnreadCount((prev) => prev + (msgs.length - messages.length));
+      }
+
+      setMessages(msgs);
+
+      // Auto-scroll to bottom
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    });
+
+    return () => unsub();
+  }, [roomId, showChat, messages.length]);
 
   //! HEARTBEAT: Her 5 saniyede bir kendi aktifliğini güncelle
   useEffect(() => {
@@ -2239,6 +2275,30 @@ const Room = () => {
   }, [gameState?.forfeit, gameState?.winner, role, roomId, navigate]);
 
   const notify = () => toast.error(t("room.fighterRequirements"));
+
+  const sendMessage = async () => {
+    if (!messageInput.trim() || !roomId) return;
+
+    try {
+      const messagesRef = collection(db, "rooms", roomId, "messages");
+      await addDoc(messagesRef, {
+        sender: playerName || userUsername || "Guest",
+        senderRole: role,
+        text: messageInput.slice(0, 200),
+        timestamp: serverTimestamp(),
+      });
+      setMessageInput("");
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
+  const handleSendMessage = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
 
   if (!gameState) {
     return (
@@ -5077,6 +5137,146 @@ const Room = () => {
           </div>
         </div>
       )}
+
+      {/* Chat Panel - Sağ Alt */}
+      <div className="fixed bottom-0 right-0 z-40 mb-4 mr-4">
+        {/* Chat Toggle Button */}
+        <div className="relative">
+          <div
+            onClick={() => {
+              setShowChat(!showChat);
+              if (!showChat) setUnreadCount(0);
+            }}
+            className={`w-14 h-14 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 shadow-xl ${
+              showChat
+                ? theme === "dark"
+                  ? "bg-purple-600 hover:bg-purple-700"
+                  : "bg-purple-500 hover:bg-purple-600"
+                : theme === "dark"
+                  ? "bg-gray-700 hover:bg-gray-600"
+                  : "bg-gray-300 hover:bg-gray-400"
+            } text-white text-2xl`}
+            title={t("room.toggleChat")}
+          >
+            💬
+          </div>
+          {/* Unread Badge */}
+          {unreadCount > 0 && (
+            <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-lg">
+              {unreadCount > 9 ? "9+" : unreadCount}
+            </div>
+          )}
+        </div>
+
+        {/* Chat Panel */}
+        {showChat && (
+          <div
+            className={`absolute bottom-20 right-0 w-80 h-96 rounded-xl shadow-2xl border flex flex-col overflow-hidden ${
+              theme === "dark"
+                ? "bg-slate-800 border-slate-600"
+                : "bg-white border-slate-300"
+            }`}
+          >
+            {/* Header */}
+            <div
+              className={`px-4 py-3 font-semibold text-sm ${
+                theme === "dark"
+                  ? "bg-slate-900 text-white border-b border-slate-600"
+                  : "bg-slate-100 text-slate-900 border-b border-slate-300"
+              }`}
+            >
+              💬 {t("room.chat")} ({messages.length})
+            </div>
+
+            {/* Messages */}
+            <div
+              className={`flex-1 overflow-y-auto px-3 py-2 space-y-2 ${
+                theme === "dark" ? "bg-slate-800" : "bg-white"
+              }`}
+            >
+              {messages.length === 0 ? (
+                <div
+                  className={`text-xs text-center py-8 opacity-50 ${
+                    theme === "dark" ? "text-slate-400" : "text-slate-500"
+                  }`}
+                >
+                  {t("room.noMessagesYet")}
+                </div>
+              ) : (
+                messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className="text-xs"
+                  >
+                    <div
+                      className={`flex gap-1 ${
+                        msg.senderRole === "spectator" ? "opacity-75" : ""
+                      }`}
+                    >
+                      <span
+                        className={`font-semibold ${
+                          msg.senderRole === "host"
+                            ? "text-red-500"
+                            : msg.senderRole === "guest"
+                              ? "text-blue-500"
+                              : "text-purple-500"
+                        }`}
+                      >
+                        {msg.senderRole === "spectator" ? "👁️" : ""}
+                        {msg.sender}
+                      </span>
+                      <span
+                        className={
+                          theme === "dark" ? "text-slate-300" : "text-slate-700"
+                        }
+                      >
+                        : {msg.text}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input */}
+            <div
+              className={`border-t px-3 py-2 ${
+                theme === "dark"
+                  ? "bg-slate-900 border-slate-600"
+                  : "bg-slate-50 border-slate-300"
+              }`}
+            >
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  onKeyDown={handleSendMessage}
+                  placeholder={t("room.typeMessage")}
+                  maxLength={200}
+                  className={`flex-1 px-2 py-1 text-xs rounded border outline-none ${
+                    theme === "dark"
+                      ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400"
+                      : "bg-white border-slate-300 text-slate-900 placeholder-slate-500"
+                  }`}
+                />
+                <button
+                  onClick={sendMessage}
+                  disabled={!messageInput.trim()}
+                  className={`px-3 py-1 text-xs font-semibold rounded transition-all ${
+                    messageInput.trim()
+                      ? "bg-purple-600 hover:bg-purple-700 text-white cursor-pointer"
+                      : "bg-gray-400 text-gray-600 cursor-not-allowed opacity-50"
+                  }`}
+                >
+                  {t("room.send")}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

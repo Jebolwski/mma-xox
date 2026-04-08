@@ -522,7 +522,12 @@
     "spectating": "Assistindo",
     "spectatorCannotPickError": "Espectadores não podem escolher lutadores",
     "spectatorCannotPlayError": "Espectadores não podem escolher lutadores",
-    "spectatorCannotRestartError": "Espectadores não podem reiniciar o jogo"
+    "spectatorCannotRestartError": "Espectadores não podem reiniciar o jogo",
+    "chat": "Chat do jogo",
+    "noMessagesYet": "Nenhuma mensagem ainda",
+    "typeMessage": "Digite a mensagem...",
+    "send": "Enviar",
+    "toggleChat": "Alternar chat"
   },
   "privacy": {
       "title": "Política de Privacidade",

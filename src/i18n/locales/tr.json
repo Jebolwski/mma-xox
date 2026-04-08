@@ -522,7 +522,12 @@
     "spectating": "İzliyor",
     "spectatorCannotPickError": "Seyirciler dövüşçü seçemez",
     "spectatorCannotPlayError": "Seyirciler dövüşçü seçemez",
-    "spectatorCannotRestartError": "Seyirciler oyunu yeniden başlatamazlar"
+    "spectatorCannotRestartError": "Seyirciler oyunu yeniden başlatamazlar",
+    "chat": "Oyun Sohbeti",
+    "noMessagesYet": "Henüz mesaj yok",
+    "typeMessage": "Mesaj yazın...",
+    "send": "Gönder",
+    "toggleChat": "Sohbeti Aç/Kapat"
   },
   "privacy": {
       "title": "Gizlilik Politikası",

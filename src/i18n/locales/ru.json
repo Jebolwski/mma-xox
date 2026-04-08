@@ -522,7 +522,12 @@
     "spectating": "Просмотр",
     "spectatorCannotPickError": "Зрители не могут выбирать бойцов",
     "spectatorCannotPlayError": "Зрители не могут выбирать бойцов",
-    "spectatorCannotRestartError": "Зрители не могут перезапустить игру"
+    "spectatorCannotRestartError": "Зрители не могут перезапустить игру",
+    "chat": "Игровой чат",
+    "noMessagesYet": "Нет сообщений",
+    "typeMessage": "Введите сообщение...",
+    "send": "Отправить",
+    "toggleChat": "Переключить чат"
   },
   "privacy": {
       "title": "Политика конфиденциальности",

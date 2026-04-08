@@ -522,7 +522,12 @@
     "spectating": "Zuschauen",
     "spectatorCannotPickError": "Zuschauer können keine Kämpfer auswählen",
     "spectatorCannotPlayError": "Zuschauer können keine Kämpfer auswählen",
-    "spectatorCannotRestartError": "Zuschauer können das Spiel nicht neu starten"
+    "spectatorCannotRestartError": "Zuschauer können das Spiel nicht neu starten",
+    "chat": "Spiel-Chat",
+    "noMessagesYet": "Noch keine Nachrichten",
+    "typeMessage": "Nachricht eingeben...",
+    "send": "Senden",
+    "toggleChat": "Chat umschalten"
   },
   "privacy": {
     "title": "Datenschutzrichtlinie",

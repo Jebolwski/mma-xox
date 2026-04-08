@@ -522,7 +522,12 @@
     "spectating": "Obserwujesz",
     "spectatorCannotPickError": "Obserwatorzy nie mogą wybierać zawodników",
     "spectatorCannotPlayError": "Obserwatorzy nie mogą wybierać zawodników",
-    "spectatorCannotRestartError": "Obserwatorzy nie mogą ponownie uruchomić gry"
+    "spectatorCannotRestartError": "Obserwatorzy nie mogą ponownie uruchomić gry",
+    "chat": "Chat gry",
+    "noMessagesYet": "Brak wiadomości",
+    "typeMessage": "Wpisz wiadomość...",
+    "send": "Wyślij",
+    "toggleChat": "Przełącz chat"
   },
   "privacy": {
       "title": "Polityka prywatności",

@@ -522,7 +522,12 @@
     "spectating": "Спостереження",
     "spectatorCannotPickError": "Спостерігачі не можуть вибирати бійців",
     "spectatorCannotPlayError": "Спостерігачі не можуть вибирати бійців",
-    "spectatorCannotRestartError": "Спостерігачі не можуть перезапустити гру"
+    "spectatorCannotRestartError": "Спостерігачі не можуть перезапустити гру",
+    "chat": "Ігровий чат",
+    "noMessagesYet": "Немає повідомлень",
+    "typeMessage": "Введіть повідомлення...",
+    "send": "Надіслати",
+    "toggleChat": "Перемикати чат"
   },
   "privacy": {
       "title": "Політика конфіденційності",

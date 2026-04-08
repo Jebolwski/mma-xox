@@ -522,7 +522,12 @@
     "spectating": "Kijken",
     "spectatorCannotPickError": "Toeschouwers kunnen geen vechters kiezen",
     "spectatorCannotPlayError": "Toeschouwers kunnen geen vechters kiezen",
-    "spectatorCannotRestartError": "Toeschouwers kunnen het spel niet opnieuw starten"
+    "spectatorCannotRestartError": "Toeschouwers kunnen het spel niet opnieuw starten",
+    "chat": "Spelchat",
+    "noMessagesYet": "Nog geen berichten",
+    "typeMessage": "Bericht intypen...",
+    "send": "Verzenden",
+    "toggleChat": "Chat in-/uitschakelen"
   },
   "privacy": {
       "title": "Privacybeleid",

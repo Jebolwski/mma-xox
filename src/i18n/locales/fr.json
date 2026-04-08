@@ -522,7 +522,12 @@
     "spectating": "Regarde",
     "spectatorCannotPickError": "Les spectateurs ne peuvent pas choisir de combattants",
     "spectatorCannotPlayError": "Les spectateurs ne peuvent pas choisir de combattants",
-    "spectatorCannotRestartError": "Les spectateurs ne peuvent pas redémarrer le jeu"
+    "spectatorCannotRestartError": "Les spectateurs ne peuvent pas redémarrer le jeu",
+    "chat": "Chat de jeu",
+    "noMessagesYet": "Aucun message pour l'instant",
+    "typeMessage": "Tapez votre message...",
+    "send": "Envoyer",
+    "toggleChat": "Activer/Désactiver le chat"
   },
   "privacy": {
       "title": "Politique de confidentialité",

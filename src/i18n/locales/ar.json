@@ -522,7 +522,12 @@
     "spectating": "المشاهدة",
     "spectatorCannotPickError": "لا يمكن للمتفرجين اختيار المقاتلين",
     "spectatorCannotPlayError": "لا يمكن للمتفرجين اختيار المقاتلين",
-    "spectatorCannotRestartError": "لا يمكن للمتفرجين إعادة تشغيل اللعبة"
+    "spectatorCannotRestartError": "لا يمكن للمتفرجين إعادة تشغيل اللعبة",
+    "chat": "دردشة اللعبة",
+    "noMessagesYet": "لا توجد رسائل حتى الآن",
+    "typeMessage": "اكتب الرسالة...",
+    "send": "إرسال",
+    "toggleChat": "تبديل الدردشة"
   },
   "privacy": {
     "title": "سياسة الخصوصية",

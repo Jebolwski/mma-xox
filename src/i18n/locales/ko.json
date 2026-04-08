@@ -513,7 +513,15 @@
     "guestForfeitedYouWin": "🏆 게스트가 기권했습니다. 승리했습니다!",
     "fighterRequirements": "🚨 파이터가 조건을 충족하지 않습니다.",
     "noParticipantFound": "🥺 게임 참가자를 찾을 수 없습니다!",
-    "fighterAlreadySelected": "🫣 이미 선택된 파이터입니다."
+    "fighterAlreadySelected": "🫣 이미 선택된 파이터입니다.",
+    "spectatorCannotPickError": "관전자는 전투원을 선택할 수 없습니다",
+    "spectatorCannotPlayError": "관전자는 전투원을 선택할 수 없습니다",
+    "spectatorCannotRestartError": "관전자는 게임을 다시 시작할 수 없습니다",
+    "chat": "게임 채팅",
+    "noMessagesYet": "아직 메시지가 없습니다",
+    "typeMessage": "메시지를 입력하세요...",
+    "send": "보내기",
+    "toggleChat": "채팅 전환"
   },
   "privacy": {
     "title": "개인정보처리방침",

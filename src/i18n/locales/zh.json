@@ -521,7 +521,12 @@
     "spectating": "观看中",
     "spectatorCannotPickError": "观众无法选择格斗士",
     "spectatorCannotPlayError": "观众无法选择格斗士",
-    "spectatorCannotRestartError": "观众无法重启游戏"
+    "spectatorCannotRestartError": "观众无法重启游戏",
+    "chat": "游戏聊天",
+    "noMessagesYet": "尚无消息",
+    "typeMessage": "输入消息...",
+    "send": "发送",
+    "toggleChat": "切换聊天"
   },
   "privacy": {
       "title": "隐私政策",

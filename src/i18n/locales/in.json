@@ -522,7 +522,12 @@
     "spectating": "Menonton",
     "spectatorCannotPickError": "Penonton tidak dapat memilih pejuang",
     "spectatorCannotPlayError": "Penonton tidak dapat memilih pejuang",
-    "spectatorCannotRestartError": "Penonton tidak dapat memulai ulang permainan"
+    "spectatorCannotRestartError": "Penonton tidak dapat memulai ulang permainan",
+    "chat": "Obrolan Permainan",
+    "noMessagesYet": "Tidak ada pesan",
+    "typeMessage": "Ketik pesan...",
+    "send": "Kirim",
+    "toggleChat": "Aktifkan/Nonaktifkan obrolan"
   },
   "privacy": {
       "title": "Kebijakan Privasi",
