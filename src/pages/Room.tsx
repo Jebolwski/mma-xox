@@ -231,6 +231,7 @@ const Room = () => {
       }
       if (!gameState.statsUpdated) {
         updatePlayerStats(gameState.winner);
+        createMatchRecord(gameState.winner); // Match history kaydı ekle
         if (roomId && role === "host") {
           const roomRef = doc(db, "rooms", roomId);
           updateDoc(roomRef, { statsUpdated: true });
@@ -1109,6 +1110,50 @@ const Room = () => {
   }, [roomId, gameState?.gameStarted, gameState?.winner, role, navigate]);
 
   //! Kullanıcı istatistiklerini güncelleyen fonksiyon
+  // Maç geçmişine kayıt ekle (casual ve ranked her ikisi için)
+  const createMatchRecord = async (winner: "red" | "blue" | "draw") => {
+    const hostEmail = gameState?.hostEmail;
+    const guestEmail = gameState?.guestEmail;
+    const hostName = gameState?.host;
+    const guestName = gameState?.guest?.now;
+
+    if (!hostEmail && !guestEmail) {
+      return;
+    }
+
+    try {
+      // Host'un match record'ı
+      if (hostEmail && guestName) {
+        const result =
+          winner === "red" ? "win" : winner === "blue" ? "loss" : "draw";
+        await addDoc(collection(db, "users", hostEmail, "matches"), {
+          opponent: guestName,
+          opponentEmail: guestEmail,
+          result: result,
+          isRanked: gameState?.isRankedRoom || false,
+          timestamp: serverTimestamp(),
+          roomId: roomId,
+        });
+      }
+
+      // Guest'in match record'ı
+      if (guestEmail && hostName) {
+        const result =
+          winner === "blue" ? "win" : winner === "red" ? "loss" : "draw";
+        await addDoc(collection(db, "users", guestEmail, "matches"), {
+          opponent: hostName,
+          opponentEmail: hostEmail,
+          result: result,
+          isRanked: gameState?.isRankedRoom || false,
+          timestamp: serverTimestamp(),
+          roomId: roomId,
+        });
+      }
+    } catch (e) {
+      console.error("[matchRecord] Error:", e);
+    }
+  };
+
   const updatePlayerStats = async (winner: "red" | "blue" | "draw") => {
     // 🚩 FORFEIT CHECK
     if (gameState?.isForfeited) {

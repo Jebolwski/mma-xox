@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/pictures/logo.webp";
 import number from "../assets/pictures/number.webp";
 import user_logo from "../assets/pictures/user.webp";
-import { cleanupAllStaleRooms } from "../services/roomCleanup";
 import { usePageTitle } from "../hooks/usePageTitle";
 
 const AvailableRooms = () => {
@@ -108,18 +107,6 @@ const AvailableRooms = () => {
     );
     return () => unsub();
   }, []);
-
-  useEffect(() => {
-    // oturum başına bir kere dene
-    const last = Number(localStorage.getItem("cleanupAt") || 0);
-
-    if (Date.now() - last > 2 * 60 * 1000) {
-      // 2 dk throttling
-      // Hem casual hem ranked odaları temizle
-      cleanupAllStaleRooms();
-      localStorage.setItem("cleanupAt", String(Date.now()));
-    }
-  }, [currentUser]);
 
   const handleJoinRoom = async () => {
     const finalPlayerName = getPlayerName();

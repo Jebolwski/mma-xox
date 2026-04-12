@@ -9,6 +9,8 @@ import {
   query,
   updateDoc,
   where,
+  orderBy,
+  limit,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
@@ -79,15 +81,18 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordLoading, setPasswordLoading] = useState(false);
-  const [showChangeUsername, setShowChangeUsername] = useState(false); // YENİ
-  const [newUsername, setNewUsername] = useState(""); // YENİ
-  const [usernameLoading, setUsernameLoading] = useState(false); // YENİ
-  const [canChangeUsername, setCanChangeUsername] = useState(true); // YENİ
-  const [showChangeAvatar, setShowChangeAvatar] = useState(false); // YENİ: Avatar Modal
-  const [avatarFile, setAvatarFile] = useState<File | null>(null); // YENİ: Seçilen dosya
-  const [avatarPreview, setAvatarPreview] = useState<string>(""); // YENİ: Ön izleme
-  const [avatarLoading, setAvatarLoading] = useState(false); // YENİ: Yükleniyor durumu
-  const [showAvatarView, setShowAvatarView] = useState(false); // YENİ: Avatar büyük görüntü modal
+  const [showChangeUsername, setShowChangeUsername] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [usernameLoading, setUsernameLoading] = useState(false);
+  const [canChangeUsername, setCanChangeUsername] = useState(true);
+  const [showChangeAvatar, setShowChangeAvatar] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string>("");
+  const [avatarLoading, setAvatarLoading] = useState(false);
+  const [showAvatarView, setShowAvatarView] = useState(false);
+  // Match history states
+  const [matches, setMatches] = useState<any[]>([]);
+  const [matchesLoading, setMatchesLoading] = useState(false);
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -485,6 +490,35 @@ const Profile = () => {
     }
   };
 
+  // Match history yükleme
+  useEffect(() => {
+    if (!profile?.email) return;
+
+    const fetchMatches = async () => {
+      setMatchesLoading(true);
+      try {
+        const q = query(
+          collection(db, "users", profile.email, "matches"),
+          orderBy("timestamp", "desc"),
+          limit(10),
+        );
+        const snap = await getDocs(q);
+        const matchesList = snap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          timestamp: doc.data().timestamp?.toDate() || new Date(),
+        }));
+        setMatches(matchesList);
+      } catch (e) {
+        console.error("Error fetching matches:", e);
+      } finally {
+        setMatchesLoading(false);
+      }
+    };
+
+    fetchMatches();
+  }, [profile?.email]);
+
   if (loading) {
     return <LoadingFallback />;
   }
@@ -788,6 +822,69 @@ const Profile = () => {
               </div>
             )}
 
+            {/* Match History Section */}
+            <div className="mt-10 mb-8">
+              <h3 className="text-xl font-bold mb-4">Last 10 Matches</h3>
+              {matchesLoading ? (
+                <div className="text-center py-6">Loading...</div>
+              ) : matches.length === 0 ? (
+                <div
+                  className={`text-center py-6 rounded-xl ${
+                    theme === "dark" ? "bg-slate-700/30" : "bg-slate-100/30"
+                  }`}
+                >
+                  {t("room.noMessagesYet") || "No matches yet"}
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {matches.map((match) => (
+                    <div
+                      key={match.id}
+                      className={`flex items-center justify-between p-3 rounded-lg border ${
+                        theme === "dark"
+                          ? "bg-slate-700/40 border-slate-600"
+                          : "bg-slate-50/40 border-slate-300"
+                      }`}
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold">
+                            {match.opponent}
+                          </span>
+                          <span
+                            className={`text-xs px-2 py-0.5 rounded ${
+                              match.isRanked
+                                ? "bg-yellow-500/20 text-yellow-600"
+                                : "bg-blue-500/20 text-blue-600"
+                            }`}
+                          >
+                            {match.isRanked ? "RANKED" : "CASUAL"}
+                          </span>
+                        </div>
+                        <div className="text-xs opacity-60 mt-1">
+                          {match.timestamp?.toLocaleDateString()}{" "}
+                          {match.timestamp?.toLocaleTimeString()}
+                        </div>
+                      </div>
+                      <div className="text-right font-bold">
+                        <span
+                          className={
+                            match.result === "win"
+                              ? "text-green-500"
+                              : match.result === "loss"
+                                ? "text-red-500"
+                                : "text-yellow-500"
+                          }
+                        >
+                          {match.result.toUpperCase()}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Profile Information Card */}
             {isMyProfile && (
               <div className="mt-8 mb-6">
@@ -988,11 +1085,11 @@ const Profile = () => {
             {/* --- YENİ: Unvan Seçme Modalı --- */}
             {titlesOpen && (
               <div
-                className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 rounded-xl"
+                className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 p-3 rounded-xl"
                 onClick={() => setTitlesOpen(false)}
               >
                 <div
-                  className={`relative z-10 p-6 rounded-xl w-full max-w-md ${
+                  className={`relative z-10 p-6 rounded-xl w-full mt-24 ${
                     theme === "dark" ? "bg-slate-800" : "bg-white"
                   }`}
                   onClick={(e) => e.stopPropagation()}

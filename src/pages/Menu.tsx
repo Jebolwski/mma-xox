@@ -21,6 +21,7 @@ import { useAuth } from "../context/AuthContext";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { sanitizePlayerName } from "../utils/security";
 import logo from "../assets/pictures/logo.webp";
+import { cleanupAllStaleRooms } from "../services/roomCleanup";
 
 const Menu = () => {
   const { t, i18n } = useTranslation();
@@ -49,6 +50,15 @@ const Menu = () => {
       });
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    // Arka planda stale room'ları sil (ücretsiz)
+    cleanupAllStaleRooms().catch((err) => {
+      if (err.code !== "permission-denied") {
+        console.log("Cleanup ran");
+      }
+    });
+  }, []); // Sadece bir kere component mount olurken çalış
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);

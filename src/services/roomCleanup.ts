@@ -3,10 +3,12 @@ import {
     collection, query, where, getDocs, Timestamp, orderBy, deleteDoc,
 } from "firebase/firestore";
 
-export const ROOM_TTL_MINUTES = 5; // 10 minutes
+// Room'ların TTL süresi (5 dakika sonra silinecek)
+export const ROOM_TTL_MINUTES = 5;
 export const ROOM_TTL_MS = ROOM_TTL_MINUTES * 60 * 1000;
 
-// Helper: Firestore Timestamp/number'dan ms çıkar
+// Firestore Timestamp'ı millisecond'a dönüştür
+// Eğer zaten number ise olduğu gibi döndür, Timestamp nesnesi ise toMillis() çağır
 const toMillis = (ts: any): number | null => {
     if (!ts) return null;
     if (typeof ts.toMillis === "function") return ts.toMillis();
@@ -14,100 +16,44 @@ const toMillis = (ts: any): number | null => {
     return null;
 };
 
-// Helper: lastMs -> şimdiye kadar geçen süre (h, m)
-const elapsedHM = (lastMs: number) => {
-    const diff = Date.now() - lastMs;
-    const h = Math.floor(diff / 3_600_000);
-    const m = Math.floor((diff % 3_600_000) / 60_000);
-    return { h, m, iso: new Date(lastMs).toISOString() };
-};
-
-export async function logStaleRoomsByLastActivity(
-    minutesAgo = ROOM_TTL_MINUTES,
-    remove = true
-) {
+// Tüm eski room'ları sil (casual ve ranked farketmez)
+// @param minutesAgo: Bu kaç dakika önceki room'ları sil (varsayılan: 5 dakika)
+export async function cleanupAllStaleRooms(minutesAgo = ROOM_TTL_MINUTES) {
     const roomsRef = collection(db, "rooms");
+    // Eşikteki timestamp'ı hesapla (şimdi - minutesAgo dakika)
     const threshold = Timestamp.fromMillis(Date.now() - minutesAgo * 60_000);
 
-
+    // Tüm room'ları query et: sadece lastActivityAt < threshold
+    // isRankedRoom kontrol etmiyoruz, herkes silebilsin
     const q = query(
         roomsRef,
-        where("isRankedRoom", "==", false),
         where("lastActivityAt", "<", threshold),
         orderBy("lastActivityAt", "asc")
     );
 
-    const snap = await getDocs(q);
+    try {
+        const snap = await getDocs(q);
+        let deleted = 0;
 
-    let deleted = 0;
-    for (const d of snap.docs) {
-        const data: any = d.data();
-        const ms = toMillis(data?.lastActivityAt);
-        const info = ms ? elapsedHM(ms) : null;
-
-        if (remove) {
+        // Her eski room'u işle
+        for (const d of snap.docs) {
             try {
+                // Önce: Room'daki tüm messages'ı sil
+                const messagesRef = collection(db, "rooms", d.id, "messages");
+                const msgSnap = await getDocs(messagesRef);
+                for (const msgDoc of msgSnap.docs) {
+                    await deleteDoc(msgDoc.ref);
+                }
+                // Sonra: Room'u kendisini sil
                 await deleteDoc(d.ref);
                 deleted++;
             } catch (e: any) {
                 console.warn(`[cleanup] delete failed: ${d.id}`, e?.code || e);
             }
         }
-    }
 
-    if (remove) {
-    }
-}
-
-export async function cleanupStaleRankedRooms(
-    minutesAgo = ROOM_TTL_MINUTES,
-    remove = true
-) {
-    const roomsRef = collection(db, "rooms");
-    const threshold = Timestamp.fromMillis(Date.now() - minutesAgo * 60_000);
-
-
-    const q = query(
-        roomsRef,
-        where("isRankedRoom", "==", true),
-        where("lastActivityAt", "<", threshold),
-        orderBy("lastActivityAt", "asc")
-    );
-
-    const snap = await getDocs(q);
-
-    let deleted = 0;
-    for (const d of snap.docs) {
-        const data: any = d.data();
-        const ms = toMillis(data?.lastActivityAt);
-        const info = ms ? elapsedHM(ms) : null;
-
-
-        if (remove) {
-            try {
-                await deleteDoc(d.ref);
-                deleted++;
-            } catch (e: any) {
-            }
-        }
-    }
-
-    if (remove) {
-    }
-}
-
-export async function cleanupAllStaleRooms(minutesAgo = ROOM_TTL_MINUTES) {
-
-    try {
-        await logStaleRoomsByLastActivity(minutesAgo, true);
+        // console.log(`[cleanup] ${deleted} room(s) deleted`);
     } catch (e) {
-        console.error("[cleanup-all] Casual cleanup failed:", e);
+        console.error("[cleanup] Cleanup failed:", e);
     }
-
-    try {
-        await cleanupStaleRankedRooms(minutesAgo, true);
-    } catch (e) {
-        console.error("[cleanup-all] Ranked cleanup failed:", e);
-    }
-
 }
