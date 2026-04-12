@@ -203,7 +203,14 @@
     "selectImage": "选择图像",
     "avatarHint": " 请选择图像文件（JPG、PNG 等）",
     "invalidFileType": "🙏 请选择图像文件",
-    "fileTooLarge": "🚨 文件大小必须小于 5 MB"
+    "fileTooLarge": "🚨 文件大小必须小于 5 MB",
+    "noMatchesYet": "还没有玩过的比赛。",
+    "last10Games": "最近 10 场比赛",
+    "matchRanked": "排名赛",
+    "matchCasual": "休闲赛",
+    "matchWin": "胜利",
+    "matchLoss": "失败",
+    "matchDraw": "平局"
   },
   "errors": {
     "createRoom": "创建房间时出错！",

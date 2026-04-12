@@ -204,7 +204,14 @@
     "selectImage": "اختر صورة",
     "avatarHint": "يرجى اختيار ملف صورة (JPG، PNG، إلخ)",
     "invalidFileType": "🙏 يرجى اختيار ملف صورة",
-    "fileTooLarge": "🚨 يجب أن يكون حجم الملف أقل من 5 ميغابايت"
+    "fileTooLarge": "🚨 يجب أن يكون حجم الملف أقل من 5 ميغابايت",
+    "noMatchesYet": "لا توجد مباريات بعد.",
+    "last10Games": "آخر 10 مباريات",
+    "matchRanked": "مصنَّف",
+    "matchCasual": "عادي",
+    "matchWin": "فوز",
+    "matchLoss": "خسارة",
+    "matchDraw": "تعادل"
   },
   "errors": {
     "createRoom": "حدث خطأ أثناء إنشاء الغرفة!",

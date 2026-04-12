@@ -204,7 +204,14 @@
     "selectImage": "Välj bild",
     "avatarHint": " Välj en bildfil (JPG, PNG, etc.)",
     "invalidFileType": "🙏 Välj en bildfil",
-    "fileTooLarge": "🚨 Filstorleken måste vara mindre än 5 MB"
+    "fileTooLarge": "🚨 Filstorleken måste vara mindre än 5 MB",
+    "noMatchesYet": "Inga spelade matcher än.",
+    "last10Games": "Senaste 10 Spel",
+    "matchRanked": "Rankad",
+    "matchCasual": "Icke-rankad",
+    "matchWin": "Vinst",
+    "matchLoss": "Förlust",
+    "matchDraw": "Oavgjort"
   },
   "errors": {
     "createRoom": "Ett fel uppstod när rummet skapades!",

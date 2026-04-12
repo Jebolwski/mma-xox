@@ -204,7 +204,14 @@
     "selectImage": "Afbeelding Selecteren",
     "avatarHint": " Selecteer alstublieft een afbeeldingsbestand (JPG, PNG, enz.)",
     "invalidFileType": "🙏 Selecteer alstublieft een afbeeldingsbestand",
-    "fileTooLarge": "🚨 Bestandsgrootte moet kleiner zijn dan 5 MB"
+    "fileTooLarge": "🚨 Bestandsgrootte moet kleiner zijn dan 5 MB",
+    "noMatchesYet": "Nog geen gespeelde wedstrijden.",
+    "last10Games": "Laatste 10 Spellen",
+    "matchRanked": "Gerangschikt",
+    "matchCasual": "Niet-gerangschikt",
+    "matchWin": "Gewonnen",
+    "matchLoss": "Verloren",
+    "matchDraw": "Gelijkspel"
   },
   "errors": {
     "createRoom": "Er is een fout opgetreden bij het maken van de kamer!",

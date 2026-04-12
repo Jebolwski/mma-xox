@@ -203,7 +203,14 @@
     "selectImage": "이미지 선택",
     "avatarHint": " 이미지 파일(JPG, PNG 등)을 선택해주세요",
     "invalidFileType": "🙏 이미지 파일을 선택해주세요",
-    "fileTooLarge": "🚨 파일 크기는 5MB 미만이어야 합니다"
+    "fileTooLarge": "🚨 파일 크기는 5MB 미만이어야 합니다",
+    "noMatchesYet": "아직 플레이된 매치가 없습니다.",
+    "last10Games": "마지막 10 게임",
+    "matchRanked": "랭크전",
+    "matchCasual": "일반전",
+    "matchWin": "승리",
+    "matchLoss": "패배",
+    "matchDraw": "무승부"
   },
   "errors": {
     "createRoom": "방을 만드는 중 오류가 발생했습니다!",

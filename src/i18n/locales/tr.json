@@ -204,7 +204,14 @@
     "selectImage": "Resim Seç",
     "avatarHint": " Lütfen bir resim dosyası seç (JPG, PNG, vb.)",
     "invalidFileType": "🙏 Lütfen bir resim dosyası seç",
-    "fileTooLarge": "🚨 Dosya boyutu 5 MB'tan küçük olmalı"
+    "fileTooLarge": "🚨 Dosya boyutu 5 MB'tan küçük olmalı",
+    "noMatchesYet": "Henüz oynanmış maç yok.",
+    "last10Games": "Son 10 Maç",
+    "matchRanked": "Dereceli",
+    "matchCasual": "Derecesiz",
+    "matchWin": "Kazandı",
+    "matchLoss": "Kaybetti",
+    "matchDraw": "Berabere"
   },
   "errors": {
     "createRoom": "Oda oluşturulurken bir hata oluştu!",

@@ -204,7 +204,14 @@
     "selectImage": "Bild auswählen",
     "avatarHint": "Bitte wähle eine Bilddatei aus (JPG, PNG usw.)",
     "invalidFileType": "🙏 Bitte wähle eine Bilddatei aus",
-    "fileTooLarge": "🚨 Die Dateigröße muss kleiner als 5 MB sein"
+    "fileTooLarge": "🚨 Die Dateigröße muss kleiner als 5 MB sein",
+    "noMatchesYet": "Noch keine gespielten Matches",
+    "last10Games": "Letzte 10 Spiele",
+    "matchRanked": "Gewertet",
+    "matchCasual": "Zum Spaß",
+    "matchWin": "Sieg",
+    "matchLoss": "Niederlage",
+    "matchDraw": "Unentschieden"
   },
   "errors": {
     "createRoom": "Beim Erstellen des Raums ist ein Fehler aufgetreten!",

@@ -204,7 +204,14 @@
     "selectImage": "Pilih Gambar",
     "avatarHint": "Silakan pilih file gambar (JPG, PNG, dll.)",
     "invalidFileType": "🙏 Silakan pilih file gambar",
-    "fileTooLarge": "🚨 Ukuran file harus kurang dari 5 MB"
+    "fileTooLarge": "🚨 Ukuran file harus kurang dari 5 MB",
+    "noMatchesYet": "Belum ada pertandingan yang dimainkan.",
+    "last10Games": "10 Permainan Terakhir",
+    "matchRanked": "Peringkat",
+    "matchCasual": "Casual",
+    "matchWin": "Kemenangan",
+    "matchLoss": "Kekalahan",
+    "matchDraw": "Seri"
   },
   "errors": {
     "createRoom": "Terjadi kesalahan saat membuat ruangan!",

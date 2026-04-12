@@ -824,7 +824,9 @@ const Profile = () => {
 
             {/* Match History Section */}
             <div className="mt-10 mb-8">
-              <h3 className="text-xl font-bold mb-4">Last 10 Matches</h3>
+              <h3 className="text-xl font-bold mb-4">
+                {t("profile.last10Games")}
+              </h3>
               {matchesLoading ? (
                 <div className="text-center py-6">Loading...</div>
               ) : matches.length === 0 ? (
@@ -833,7 +835,7 @@ const Profile = () => {
                     theme === "dark" ? "bg-slate-700/30" : "bg-slate-100/30"
                   }`}
                 >
-                  {t("room.noMessagesYet") || "No matches yet"}
+                  {t("profile.noMatchesYet") || "No matches yet"}
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -854,16 +856,21 @@ const Profile = () => {
                           <span
                             className={`text-xs px-2 py-0.5 rounded ${
                               match.isRanked
-                                ? "bg-yellow-500/20 text-yellow-600"
-                                : "bg-blue-500/20 text-blue-600"
+                                ? "bg-yellow-500/40 text-white"
+                                : "bg-blue-500/40 text-white"
                             }`}
                           >
-                            {match.isRanked ? "RANKED" : "CASUAL"}
+                            {match.isRanked
+                              ? t("profile.matchRanked")
+                              : t("profile.matchCasual")}
                           </span>
                         </div>
                         <div className="text-xs opacity-60 mt-1">
                           {match.timestamp?.toLocaleDateString()}{" "}
-                          {match.timestamp?.toLocaleTimeString()}
+                          {match.timestamp?.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
                         </div>
                       </div>
                       <div className="text-right font-bold">
@@ -876,7 +883,10 @@ const Profile = () => {
                                 : "text-yellow-500"
                           }
                         >
-                          {match.result.toUpperCase()}
+                          {(() => {
+                            const resultKey = `profile.match${match.result.charAt(0).toUpperCase() + match.result.slice(1)}`;
+                            return t(resultKey).toUpperCase();
+                          })()}
                         </span>
                       </div>
                     </div>

@@ -204,7 +204,14 @@
     "selectImage": "画像を選択",
     "avatarHint": " 画像ファイル（JPG、PNGなど）を選択してください",
     "invalidFileType": "🙏 画像ファイルを選択してください",
-    "fileTooLarge": "🚨 ファイルサイズは5MB未満にしてください"
+    "fileTooLarge": "🚨 ファイルサイズは5MB未満にしてください",
+    "noMatchesYet": "まだ試合がプレイされていません。",
+    "last10Games": "最後の10試合",
+    "matchRanked": "ランク戦",
+    "matchCasual": "カジュアル",
+    "matchWin": "勝利",
+    "matchLoss": "敗北",
+    "matchDraw": "引き分け"
   },
   "errors": {
     "createRoom": "ルームの作成中にエラーが発生しました！",
