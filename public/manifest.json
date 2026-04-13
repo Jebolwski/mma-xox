@@ -1,6 +1,6 @@
 {
   "name": "MMA XOX - Ultimate Tic Tac Toe with Fighters",
-  "short_name": "XOX",
+  "short_name": "MMA XOX",
   "description": "Free online tic tac toe game featuring real MMA fighters. Compete in multiplayer arenas, create ranked rooms, and play against friends worldwide.",
   "start_url": "/",
   "scope": "/",
@@ -11,19 +11,19 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/og-image.webp",
+      "src": "/logo.webp",
       "sizes": "192x192",
       "type": "image/webp",
       "purpose": "any"
     },
     {
-      "src": "/og-image.webp",
+      "src": "/logo.webp",
       "sizes": "512x512",
       "type": "image/webp",
       "purpose": "any"
     },
     {
-      "src": "/og-image.webp",
+      "src": "/logo.webp",
       "sizes": "192x192",
       "type": "image/webp",
       "purpose": "maskable"
