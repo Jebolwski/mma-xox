@@ -433,7 +433,7 @@ const Home = () => {
               </div>
 
               {/* MMA yazısı */}
-              <h1
+              <h2
                 className={`text-5xl md:text-8xl font-black tracking-wider transition-all duration-300
                   ${theme === "dark" ? "text-red-400" : "text-red-600"}
                   drop-shadow-lg group-hover:scale-105`}
@@ -445,7 +445,7 @@ const Home = () => {
                 }}
               >
                 MMA
-              </h1>
+              </h2>
 
               {/* XOX yazısı */}
               <h2
@@ -476,10 +476,10 @@ const Home = () => {
             {/* Hareketli kenar ışığı */}
             <div className="absolute inset-0 rounded-xl border-2 border-transparent animate-borderGlow" />
 
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-3">
+            <h1 className="text-2xl md:text-3xl font-bold text-center mb-3">
               <span className="font-bold text-red-500">MMA XOX</span> -{" "}
               {t("home.title")}
-            </h2>
+            </h1>
             <p className="text-sm md:text-base text-center leading-relaxed mb-3">
               {t("home.description")}
             </p>
