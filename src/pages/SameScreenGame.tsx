@@ -5,13 +5,13 @@ import { Fighter, FilterDifficulty } from "../interfaces/Fighter";
 import { ToastContainer, toast } from "react-toastify";
 import wrong from "../assets/sounds/wrong.mp3";
 import win from "../assets/sounds/win.mp3";
+import { Helmet } from "react-helmet-async";
 import draw from "../assets/sounds/draw.mp3";
 import correct from "../assets/sounds/correct.mp3";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
-import { usePageTitle } from "../hooks/usePageTitle";
 import { useTranslation } from "react-i18next";
 import unknown_fighter from "../assets/pictures/unknown.webp";
 import logo from "../assets/pictures/logo.webp";
@@ -19,14 +19,9 @@ import logo_text from "../assets/pictures/logo_text.webp";
 import Header from "../components/Header";
 
 function SameScreenGame() {
-  useEffect(() => {
-    document.title = "MMA XOX"; // Sayfa başlığını değiştir
-  }, []);
   const navigate = useNavigate();
 
   const { t } = useTranslation();
-
-  usePageTitle(t("game.pageTitle"));
 
   const { theme } = useContext(ThemeContext);
 
@@ -1029,6 +1024,25 @@ function SameScreenGame() {
 
   return (
     <>
+      <Helmet>
+        <title>Same Screen Game | MMA XOX - Local UFC Battle</title>
+        <meta
+          name="description"
+          content="Play UFC tic tac toe on the same screen with friends. Local multiplayer game with real UFC fighters, perfect for head-to-head matches."
+        />
+        <meta
+          name="keywords"
+          content="local multiplayer, same screen game, UFC battle, two player game, tic tac toe"
+        />
+        <meta
+          property="og:title"
+          content="Same Screen Game | MMA XOX"
+        />
+        <meta
+          property="og:description"
+          content="Play local UFC tic tac toe battles on the same screen with friends."
+        />
+      </Helmet>
       <Header
         muted={muted}
         setMuted={setMuted}

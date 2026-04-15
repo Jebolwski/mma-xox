@@ -2,14 +2,12 @@ import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { Helmet } from "react-helmet-async";
 
 const NotFound = () => {
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-  usePageTitle(t("notFound.title"));
 
   return (
     <div
@@ -19,6 +17,25 @@ const NotFound = () => {
           : "bg-gradient-to-b from-blue-400 via-blue-300 to-green-400"
       }`}
     >
+      <Helmet>
+        <title>404 Not Found | MMA XOX</title>
+        <meta
+          name="description"
+          content="Page not found on MMA XOX. Return to the home page or explore our UFC tic tac toe game."
+        />
+        <meta
+          name="keywords"
+          content="404 error, not found, MMA XOX"
+        />
+        <meta
+          property="og:title"
+          content="404 Not Found | MMA XOX"
+        />
+        <meta
+          property="og:description"
+          content="This page could not be found."
+        />
+      </Helmet>
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden flex items-end justify-center">
         {/* Stars / Sky elements */}

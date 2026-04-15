@@ -5,6 +5,7 @@ import { confirmPasswordReset, verifyPasswordResetCode } from "firebase/auth";
 import { auth } from "../firebase";
 import { toast, ToastContainer } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
 import eye_closed from "../assets/pictures/eye_closed.webp";
 import eye_open from "../assets/pictures/eye_open.webp";
 import logo from "../assets/pictures/logo.webp";
@@ -90,6 +91,25 @@ const ResetPassword = () => {
             : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
         }`}
       >
+        <Helmet>
+          <title>Reset Password | MMA XOX</title>
+          <meta
+            name="description"
+            content="Reset your MMA XOX account password securely. Follow the reset link sent to your email address."
+          />
+          <meta
+            name="keywords"
+            content="password reset, account security, MMA XOX"
+          />
+          <meta
+            property="og:title"
+            content="Reset Password | MMA XOX"
+          />
+          <meta
+            property="og:description"
+            content="Reset your account password securely."
+          />
+        </Helmet>
         <ToastContainer
           position="bottom-right"
           theme={theme === "dark" ? "dark" : "light"}
@@ -116,7 +136,25 @@ const ResetPassword = () => {
         position="bottom-right"
         theme={theme === "dark" ? "dark" : "light"}
       />
-
+      <Helmet>
+        <title>Reset Password | MMA XOX</title>
+        <meta
+          name="description"
+          content="Reset your MMA XOX account password securely. Follow the reset link sent to your email address."
+        />
+        <meta
+          name="keywords"
+          content="password reset, account security, MMA XOX"
+        />
+        <meta
+          property="og:title"
+          content="Reset Password | MMA XOX"
+        />
+        <meta
+          property="og:description"
+          content="Reset your account password securely."
+        />
+      </Helmet>
       {/* Main Content */}
       <div className="flex items-center justify-center min-h-screen p-6">
         <div

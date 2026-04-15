@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../context/ThemeContext";
@@ -17,7 +18,6 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-import { usePageTitle } from "../hooks/usePageTitle";
 import { db } from "../firebase";
 import logo from "../assets/pictures/logo.webp";
 import eye_closed from "../assets/pictures/eye_closed.webp";
@@ -30,8 +30,6 @@ const Login = () => {
   const { theme } = useContext(ThemeContext);
   const { currentUser } = useAuth();
   const { signInWithGoogle, signInWithTwitter } = useAuth();
-
-  usePageTitle(t("auth.loginTitle"));
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -209,6 +207,13 @@ const Login = () => {
           : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
       }`}
     >
+      <Helmet>
+        <title>Login | MMA XOX - UFC Fighter Tic Tac Toe Game</title>
+        <meta
+          name="description"
+          content="Login to MMA XOX and challenge others in UFC-themed tic tac toe. Play ranked or casual matches."
+        />
+      </Helmet>
       <ToastContainer
         position="bottom-right"
         theme={theme === "dark" ? "dark" : "light"}

@@ -1,4 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { ThemeContext } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -238,6 +239,25 @@ export default function Friends() {
         position="bottom-right"
         theme="dark"
       />
+      <Helmet>
+        <title>Friends | MMA XOX - Connect and Challenge</title>
+        <meta
+          name="description"
+          content="Manage your friends list and send battle challenges to play UFC tic tac toe against your friends."
+        />
+        <meta
+          name="keywords"
+          content="friend challenges, UFC multiplayer, battle friends, MMA gaming"
+        />
+        <meta
+          property="og:title"
+          content="Friends | MMA XOX"
+        />
+        <meta
+          property="og:description"
+          content="Connect with friends and challenge them to UFC tic tac toe battles."
+        />
+      </Helmet>
       {/* Background stars & soft glows */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {/* soft glows */}

@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -6,7 +7,6 @@ import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { toast } from "react-toastify";
-import { usePageTitle } from "../hooks/usePageTitle";
 import logo from "../assets/pictures/logo.webp";
 import gamepad from "../assets/pictures/gamepad.webp";
 import loginIcon from "../assets/pictures/login.webp";
@@ -27,7 +27,6 @@ const Home = () => {
   const handleLanguageClick = () => {
     setLanguageDropdown(!languageDropdown);
   };
-  usePageTitle(t("home.pageTitle"));
 
   useEffect(() => {
     if (currentUser?.email) {
@@ -58,8 +57,39 @@ const Home = () => {
     }
   };
 
+  const pageTitle = "MMA XOX - Play Tic Tac Toe with Real UFC Fighters Online";
+  const pageDescription =
+    "Play MMA XOX - Free tic tac toe game with real UFC fighters. Challenge friends, climb the ranked leaderboards, and become the ultimate UFC fighter champion in this exciting multiplayer strategy game.";
+
   return (
     <>
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta
+          name="description"
+          content={pageDescription}
+        />
+        <meta
+          name="keywords"
+          content="UFC fighters tic tac toe, UFC game online, play UFC fighters, UFC multiplayer game, tic tac toe game, ranked online game, free UFC game, browser strategy game, MMA XOX, UFC themed game"
+        />
+        <meta
+          property="og:title"
+          content="MMA XOX - Play Tic Tac Toe with Real UFC Fighters"
+        />
+        <meta
+          property="og:description"
+          content={pageDescription}
+        />
+        <meta
+          property="og:url"
+          content="https://www.mma-xox.online/"
+        />
+        <link
+          rel="canonical"
+          href="https://www.mma-xox.online/"
+        />
+      </Helmet>
       <div
         className={`relative min-h-[calc(100vh-61px)] overflow-hidden transition-all duration-1000 ${
           theme === "dark"

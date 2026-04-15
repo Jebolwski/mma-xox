@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import {
   collection,
@@ -17,7 +18,6 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/pictures/logo.webp";
 import number from "../assets/pictures/number.webp";
 import user_logo from "../assets/pictures/user.webp";
-import { usePageTitle } from "../hooks/usePageTitle";
 
 const AvailableRooms = () => {
   const { theme } = useContext(ThemeContext);
@@ -45,8 +45,6 @@ const AvailableRooms = () => {
     // Guest kullanıcı için manuel girilen ismi kullan
     return sanitizeName(guestName);
   };
-
-  usePageTitle(t("menu.availableRoomsTitle"));
 
   useEffect(() => {
     setLoading(true);
@@ -195,6 +193,13 @@ const AvailableRooms = () => {
           : "bg-gradient-to-b from-blue-400 via-blue-300 to-green-400"
       }`}
     >
+      <Helmet>
+        <title>Available Rooms | MMA XOX - Join a Game</title>
+        <meta
+          name="description"
+          content="Browse and join available rooms in MMA XOX. Play tic tac toe with other players in real-time."
+        />
+      </Helmet>
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden flex items-end justify-center">
         {/* Stars / Sky elements */}

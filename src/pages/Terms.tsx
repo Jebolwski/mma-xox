@@ -1,12 +1,11 @@
 import { useContext } from "react";
+import { Helmet } from "react-helmet-async";
 import { ThemeContext } from "../context/ThemeContext";
 import { useTranslation } from "react-i18next";
-import { usePageTitle } from "../hooks/usePageTitle";
 
 const Terms = () => {
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
-  usePageTitle(`${t("terms.title")} - MMA XOX`);
 
   return (
     <>
@@ -17,6 +16,13 @@ const Terms = () => {
             : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
         }`}
       >
+        <Helmet>
+          <title>Terms of Service | MMA XOX</title>
+          <meta
+            name="description"
+            content="Review the terms of service for MMA XOX. Understand your rights and responsibilities when using our UFC tic tac toe game."
+          />
+        </Helmet>
         <div className="max-w-4xl mx-auto">
           <div
             className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md transition-all duration-300 ${

@@ -1,12 +1,11 @@
 import { useContext } from "react";
+import { Helmet } from "react-helmet-async";
 import { ThemeContext } from "../context/ThemeContext";
 import { useTranslation } from "react-i18next";
-import { usePageTitle } from "../hooks/usePageTitle";
 
 const Privacy = () => {
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
-  usePageTitle(`${t("privacy.title")} - MMA XOX`);
 
   return (
     <>
@@ -17,6 +16,13 @@ const Privacy = () => {
             : "bg-gradient-to-br from-stone-200 via-indigo-200 to-stone-300"
         }`}
       >
+        <Helmet>
+          <title>Privacy Policy | MMA XOX</title>
+          <meta
+            name="description"
+            content="Read our privacy policy to understand how we collect, use, and protect your data on MMA XOX."
+          />
+        </Helmet>
         <div className="max-w-4xl mx-auto">
           <div
             className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md transition-all duration-300 ${

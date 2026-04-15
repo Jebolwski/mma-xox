@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useContext, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ReactGA from "react-ga4";
@@ -18,7 +19,6 @@ import {
 import { db } from "../firebase";
 import { ThemeContext } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
-import { usePageTitle } from "../hooks/usePageTitle";
 import { sanitizePlayerName } from "../utils/security";
 import logo from "../assets/pictures/logo.webp";
 import { cleanupAllStaleRooms } from "../services/roomCleanup";
@@ -84,8 +84,6 @@ const Menu = () => {
       changeLanguage(newLang);
     }
   };
-
-  usePageTitle(t("menu.title"));
 
   // Grid görünüm mü? (form ekranlarında max-w-md kalsın)
   const isGrid =
@@ -420,6 +418,25 @@ const Menu = () => {
         theme={theme === "dark" ? "dark" : "light"}
         style={{ zIndex: 9999 }}
       />
+      <Helmet>
+        <title>Game Menu | MMA XOX - Start Your UFC Tic Tac Toe Battle</title>
+        <meta
+          name="description"
+          content="Choose your game mode - Ranked, Quick Play, or Same Screen. Challenge UFC fighters in real-time multiplayer matches."
+        />
+        <meta
+          name="keywords"
+          content="UFC game modes, ranked tic tac toe, multiplayer games, UFC challenges"
+        />
+        <meta
+          property="og:title"
+          content="Game Menu | MMA XOX"
+        />
+        <meta
+          property="og:description"
+          content="Choose your game mode and start playing against real UFC fighters."
+        />
+      </Helmet>
 
       <div
         className="relative w-screen min-h-[calc(100vh-61px)] overflow-x-hidden pb-24 lg:pb-0 pt-[82px]"

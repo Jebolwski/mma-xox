@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../context/ThemeContext";
-import { usePageTitle } from "../hooks/usePageTitle";
 import { toast } from "react-toastify";
 import emailjs from "@emailjs/browser";
 
@@ -15,8 +15,6 @@ const Contact = () => {
     message: "",
   });
   const [loading, setLoading] = useState(false);
-
-  usePageTitle(t("contact.pageTitle"));
 
   // Initialize EmailJS
   useEffect(() => {
@@ -83,6 +81,13 @@ const Contact = () => {
           : "bg-gradient-to-b from-blue-400 via-blue-300 to-green-400"
       }`}
     >
+      <Helmet>
+        <title>Contact | MMA XOX - Get in Touch</title>
+        <meta
+          name="description"
+          content="Contact MMA XOX with feedback, bug reports, or inquiries about our UFC fighter tic tac toe game."
+        />
+      </Helmet>
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-12 pt-20">
         {/* Header */}
         <div className="text-center mb-12">

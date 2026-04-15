@@ -1,13 +1,11 @@
 import { useContext } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../context/ThemeContext";
-import { usePageTitle } from "../hooks/usePageTitle";
 
 const About = () => {
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
-
-  usePageTitle(t("about.pageTitle"));
 
   return (
     <div
@@ -17,6 +15,13 @@ const About = () => {
           : "bg-gradient-to-b from-blue-400 via-blue-300 to-green-400"
       }`}
     >
+      <Helmet>
+        <title>About | MMA XOX - UFC Fighter Tic Tac Toe</title>
+        <meta
+          name="description"
+          content="Learn about MMA XOX: a free online tic tac toe game featuring real UFC fighters with multiplayer and ranked gameplay."
+        />
+      </Helmet>
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-12 pt-20">
         {/* Header */}
         <div className="text-center mb-12">

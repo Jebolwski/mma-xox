@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom"; // useParams EKLENDİ
 import { useTranslation } from "react-i18next";
 import {
@@ -16,7 +17,6 @@ import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { ToastContainer, toast } from "react-toastify";
-import { usePageTitle } from "../hooks/usePageTitle";
 import { updatePassword } from "firebase/auth";
 import photo_machine from "../assets/pictures/photo-machine.webp";
 import LoadingFallback from "../components/LoadingFallback";
@@ -107,8 +107,6 @@ const Profile = () => {
 
   // YENİ: Kendi profilimiz mi diye kontrol et
   const isMyProfile = profile ? currentUser?.email === profile.email : false;
-
-  usePageTitle("MMA XOX - Profile");
 
   useEffect(() => {
     if (!tiersOpen) return;
@@ -553,6 +551,13 @@ const Profile = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Profile | MMA XOX - View Stats & Rankings</title>
+        <meta
+          name="description"
+          content="View your MMA XOX profile, stats, rankings, and match history. Compete with UFC fighter themes."
+        />
+      </Helmet>
       <div
         className={`min-h-screen relative overflow-hidden transition-all duration-1000 ${
           theme === "dark"

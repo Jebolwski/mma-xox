@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate, Link } from "react-router-dom"; // Link EKLENDİ
 import { useTranslation } from "react-i18next";
 import {
@@ -15,7 +16,6 @@ import {
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
-import { usePageTitle } from "../hooks/usePageTitle";
 
 type Row = {
   id: string;
@@ -52,7 +52,6 @@ export default function WorldRanking() {
   const [languageDropdown, setLanguageDropdown] = useState(false);
   const { t, i18n } = useTranslation();
 
-  usePageTitle(`MMA XOX - ${t("ranking.title")}`);
   // current user rank info
   const [myRank, setMyRank] = useState<number | null>(null);
   const [myRow, setMyRow] = useState<Row | null>(null);
@@ -207,6 +206,13 @@ export default function WorldRanking() {
 
   return (
     <>
+      <Helmet>
+        <title>World Rankings | MMA XOX - Top UFC Fighter Players</title>
+        <meta name="description" content="View global rankings and leaderboards. See top players competing in ranked UFC tic tac toe battles worldwide." />
+        <meta name="keywords" content="UFC rankings, global leaderboards, top players, tic tac toe rankings, competitive gaming" />
+        <meta property="og:title" content="World Rankings | MMA XOX" />
+        <meta property="og:description" content="Check the global rankings of UFC fighter tic tac toe players." />
+      </Helmet>
       <div
         className={`min-h-[calc(100vh-61px)] w-full relative ${
           theme === "dark"

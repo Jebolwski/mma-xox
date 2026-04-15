@@ -1,4 +1,5 @@
 import { useEffect, useContext, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import {
   useParams,
   useSearchParams,
@@ -21,7 +22,6 @@ import {
   addDoc,
   orderBy,
 } from "firebase/firestore";
-import { usePageTitle } from "../hooks/usePageTitle";
 import { useTranslation } from "react-i18next";
 import { db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
@@ -97,8 +97,6 @@ const Room = () => {
   const [languageDropdown, setLanguageDropdown] = useState(false);
   const { t, i18n } = useTranslation();
   const { fighters: fighters_url, loading: fightersLoading } = useFighters();
-
-  usePageTitle(roomId ? `MMA XOX - Room ${roomId}` : "MMA XOX • Room");
 
   const isRankedRoom = (gameState?.isRankedRoom ?? isRanked) === true;
   const isSpectator = role === "spectator";
@@ -2386,6 +2384,25 @@ const Room = () => {
           numberOfPieces={400}
         />
       )}
+      <Helmet>
+        <title>Online Game Room | MMA XOX - Real-time UFC Battle</title>
+        <meta
+          name="description"
+          content="Join live multiplayer UFC tic tac toe games. Connect with players worldwide and compete in real-time battles with real UFC fighters."
+        />
+        <meta
+          name="keywords"
+          content="online multiplayer, UFC battles, real-time game, live gaming, UFC tic tac toe"
+        />
+        <meta
+          property="og:title"
+          content="Game Room | MMA XOX"
+        />
+        <meta
+          property="og:description"
+          content="Play live UFC tic tac toe in multiplayer game rooms."
+        />
+      </Helmet>
       {/* Animated Mountains */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
