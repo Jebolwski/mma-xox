@@ -27,6 +27,9 @@ export default defineConfig({
     assetsDir: 'assets',
     copyPublicDir: true,
     sourcemap: false,
+    minify: 'esbuild',
+    cssCodeSplit: true,
+    cssMinify: true,
     rollupOptions: {
       output: {
         entryFileNames: 'assets/[name]-[hash].js',

@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
@@ -496,8 +496,8 @@ const Home = () => {
             {currentUser ? (
               <>
                 {/* PLAY butonu */}
-                <div
-                  onClick={() => navigate("/menu")}
+                <Link
+                  to="/menu"
                   className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 
                     transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95
                     ${
@@ -519,10 +519,10 @@ const Home = () => {
                     decoding="async"
                   />
                   {t("home.play")}
-                </div>
+                </Link>
 
                 {/* LOGOUT butonu */}
-                <div
+                <button
                   onClick={handleLogout}
                   className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 
                     transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95
@@ -545,13 +545,13 @@ const Home = () => {
                     decoding="async"
                   />
                   {t("home.logout")}
-                </div>
+                </button>
               </>
             ) : (
               <>
                 {/* PLAY AS GUEST butonu */}
-                <div
-                  onClick={() => navigate("/menu")}
+                <Link
+                  to="/menu"
                   className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 
                     transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95
                     ${
@@ -573,11 +573,11 @@ const Home = () => {
                     decoding="async"
                   />
                   {t("home.playAsGuest")}
-                </div>
+                </Link>
 
                 {/* LOGIN butonu */}
-                <div
-                  onClick={() => navigate("/login")}
+                <Link
+                  to="/login"
                   className={`w-fit flex flex-wrap items-center px-10 py-3 text-lg lg:text-2xl font-bold cursor-pointer rounded-xl border-3 
                     transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95
                     ${
@@ -599,7 +599,7 @@ const Home = () => {
                     decoding="async"
                   />
                   {t("home.login")}
-                </div>
+                </Link>
               </>
             )}
           </div>
