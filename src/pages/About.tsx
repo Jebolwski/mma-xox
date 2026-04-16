@@ -21,6 +21,10 @@ const About = () => {
           name="description"
           content="Learn about MMA XOX: a free online tic tac toe game featuring real UFC fighters with multiplayer and ranked gameplay."
         />
+        <link
+          rel="canonical"
+          href="https://www.mma-xox.online/about"
+        />
       </Helmet>
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-12 pt-20">
         {/* Header */}

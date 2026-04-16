@@ -199,6 +199,10 @@ const AvailableRooms = () => {
           name="description"
           content="Browse and join available rooms in MMA XOX. Play tic tac toe with other players in real-time."
         />
+        <link
+          rel="canonical"
+          href="https://www.mma-xox.online/available-rooms"
+        />
       </Helmet>
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden flex items-end justify-center">

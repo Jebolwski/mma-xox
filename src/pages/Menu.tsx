@@ -436,6 +436,10 @@ const Menu = () => {
           property="og:description"
           content="Choose your game mode and start playing against real UFC fighters."
         />
+        <link
+          rel="canonical"
+          href="https://www.mma-xox.online/menu"
+        />
       </Helmet>
 
       <div

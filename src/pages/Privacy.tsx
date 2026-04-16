@@ -22,6 +22,10 @@ const Privacy = () => {
             name="description"
             content="Read our privacy policy to understand how we collect, use, and protect your data on MMA XOX."
           />
+          <link
+            rel="canonical"
+            href="https://www.mma-xox.online/privacy"
+          />
         </Helmet>
         <div className="max-w-4xl mx-auto">
           <div

@@ -257,6 +257,10 @@ export default function Friends() {
           property="og:description"
           content="Connect with friends and challenge them to UFC tic tac toe battles."
         />
+        <link
+          rel="canonical"
+          href="https://www.mma-xox.online/friends"
+        />
       </Helmet>
       {/* Background stars & soft glows */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">

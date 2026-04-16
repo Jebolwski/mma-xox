@@ -110,6 +110,7 @@ const Login = () => {
           email: result.user.email,
           username: desiredUsername,
           lastUsernameChangeAt: new Date().toISOString(), // YENİ: Son username değişikliği tarihi
+          bio: "", // YENİ: Başlangıçta boş biyografi
 
           // Kişiselleştirme ve Başarım Alanları
           avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${desiredUsername || result.user.email}`, // Varsayılan avatar yolu

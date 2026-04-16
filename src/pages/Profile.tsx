@@ -29,6 +29,13 @@ interface UserProfile {
   activeTitle: string;
   unlockedTitles: string[];
   lastUsernameChangeAt?: string; // YENİ: Son username değişikliği tarihi
+  bio?: string; // YENİ: Kullanıcı biyografisi (maks 200 karakter)
+  favoriteFighter?: {
+    id: number;
+    name: string;
+    nickname: string;
+    picture: string;
+  };
   stats: {
     points: number;
     totalGames: number;
@@ -90,6 +97,15 @@ const Profile = () => {
   const [avatarPreview, setAvatarPreview] = useState<string>("");
   const [avatarLoading, setAvatarLoading] = useState(false);
   const [showAvatarView, setShowAvatarView] = useState(false);
+  // YENİ: Bio edit states
+  const [showBioEdit, setShowBioEdit] = useState(false);
+  const [bioText, setBioText] = useState<string>("");
+  const [bioLoading, setBioLoading] = useState(false);
+  // YENİ: Favori dövüşçü states
+  const [showFighterSelect, setShowFighterSelect] = useState(false);
+  const [fighters, setFighters] = useState<any[]>([]);
+  const [fighterLoading, setFighterLoading] = useState(false);
+  const [searchFighter, setSearchFighter] = useState("");
   // Match history states
   const [matches, setMatches] = useState<any[]>([]);
   const [matchesLoading, setMatchesLoading] = useState(false);
@@ -250,6 +266,101 @@ const Profile = () => {
       setTitlesOpen(false);
     } catch (error) {
       toast.error(t("profile.titleUpdateFailed"));
+    }
+  };
+
+  // YENİ: Bio kaydetme fonksiyonu
+  const handleSaveBio = async () => {
+    if (!currentUser?.email || !profile) return;
+
+    const trimmedBio = bioText.trim();
+
+    // Maksimum 200 karakter kontrolü
+    if (trimmedBio.length > 200) {
+      toast.error(
+        t("profile.bioTooLong") || "Bio must be 200 characters or less",
+      );
+      return;
+    }
+
+    setBioLoading(true);
+    try {
+      const userRef = doc(db, "users", currentUser.email);
+      await updateDoc(userRef, { bio: trimmedBio });
+      setProfile((prev) => (prev ? { ...prev, bio: trimmedBio } : null));
+      toast.success(t("profile.bioUpdated") || "Bio updated successfully");
+      setShowBioEdit(false);
+    } catch (error) {
+      console.error("Error updating bio:", error);
+      toast.error(t("profile.failedUpdateBio") || "Failed to update bio");
+    } finally {
+      setBioLoading(false);
+    }
+  };
+
+  // YENİ: Dövüşçüleri yükleme
+  useEffect(() => {
+    const loadFighters = async () => {
+      try {
+        const response = await fetch("/fighters.json");
+        const data = await response.json();
+        setFighters(data);
+      } catch (error) {
+        console.error("Error loading fighters:", error);
+      }
+    };
+
+    loadFighters();
+  }, []);
+
+  // YENİ: Favori dövüşçü seçme
+  const handleSelectFavoriteFighter = async (fighter: any) => {
+    if (!currentUser?.email || !profile) return;
+
+    setFighterLoading(true);
+    try {
+      const userRef = doc(db, "users", currentUser.email);
+      const favoriteFighter = {
+        id: fighter.Id,
+        name: fighter.Fighter,
+        nickname: fighter.Nickname || "No nickname",
+        picture: fighter.Picture,
+      };
+      await updateDoc(userRef, { favoriteFighter });
+      setProfile((prev) => (prev ? { ...prev, favoriteFighter } : null));
+      toast.success(
+        t("profile.favoriteFighterUpdated") || "Favorite fighter updated!",
+      );
+      setShowFighterSelect(false);
+      setSearchFighter("");
+    } catch (error) {
+      console.error("Error updating favorite fighter:", error);
+      toast.error(
+        t("profile.failedUpdateFighter") || "Failed to update favorite fighter",
+      );
+    } finally {
+      setFighterLoading(false);
+    }
+  };
+
+  // YENİ: Favori dövüşçüyü kaldırma
+  const handleRemoveFavoriteFighter = async () => {
+    if (!currentUser?.email || !profile) return;
+
+    try {
+      const userRef = doc(db, "users", currentUser.email);
+      await updateDoc(userRef, { favoriteFighter: null });
+      setProfile((prev) =>
+        prev ? { ...prev, favoriteFighter: undefined } : null,
+      );
+      toast.success(
+        t("profile.favoriteFighterRemoved") || "Favorite fighter removed!",
+      );
+    } catch (error) {
+      console.error("Error removing favorite fighter:", error);
+      toast.error(
+        t("profile.failedRemoveFighter") || "Failed to remove favorite fighter",
+      );
     }
   };
 
@@ -557,6 +668,10 @@ const Profile = () => {
           name="description"
           content="View your MMA XOX profile, stats, rankings, and match history. Compete with UFC fighter themes."
         />
+        <link
+          rel="canonical"
+          href="https://www.mma-xox.online/profile"
+        />
       </Helmet>
       <div
         className={`min-h-screen relative overflow-hidden transition-all duration-1000 ${
@@ -598,8 +713,21 @@ const Profile = () => {
             }`}
           >
             {/* --- GÜNCELLENDİ: Header --- */}
-            <div className="text-center mb-8">
-              <div className="flex justify-center items-center gap-4 mb-4">
+            <div className={`text-center pb-4 mb-3`}>
+              {/* Active Title Badge - Üstte küçük */}
+              <div
+                onClick={() => isMyProfile && setTitlesOpen(true)}
+                className={`inline-block mb-3 px-3 py-1 rounded-full text-xs lg:text-sm font-semibold transition-transform ${
+                  isMyProfile
+                    ? "cursor-pointer hover:scale-105 bg-yellow-400/20 border border-yellow-400"
+                    : "cursor-default bg-yellow-400/10 border border-yellow-400/50"
+                } ${theme === "dark" ? "text-yellow-300" : "text-yellow-700"}`}
+              >
+                <span>{profile.activeTitle}</span>
+                {isMyProfile && <span className="ml-1">✏️</span>}
+              </div>
+
+              <div className="flex items-center gap-3 justify-center">
                 <div className="relative">
                   {profile.avatarUrl ? (
                     <img
@@ -628,22 +756,39 @@ const Profile = () => {
                   )}
                 </div>
                 <div>
-                  <h1 className="text-2xl lg:text-3xl font-bold">
+                  <h1 className="text-2xl text-left lg:text-3xl font-bold">
                     {profile.username.slice(0, 14)}
                   </h1>
-                  <div
-                    onClick={() => isMyProfile && setTitlesOpen(true)} // GÜNCELLENDİ: Sadece kendi profilinde tıkla
-                    className={`text-base lg:text-lg flex items-center gap-2 justify-center font-semibold transition-transform ${
-                      isMyProfile
-                        ? "cursor-pointer hover:scale-105"
-                        : "cursor-default"
-                    } ${
-                      theme === "dark" ? "text-yellow-400" : "text-yellow-600"
-                    }`}
-                  >
-                    <p>{profile.activeTitle}</p>
-                    {/* GÜNCELLENDİ: Sadece kendi profilinde kalemi göster */}
-                    {isMyProfile && <span className="text-sm">✏️</span>}
+                  {/* YENİ: Bio Alanı - Username'in Altında */}
+                  <div className="text-left">
+                    {profile.bio ? (
+                      <div className="rounded-lg flex items-center gap-2">
+                        <p className="text-sm break-words leading-relaxed italic opacity-90">
+                          {profile.bio}
+                        </p>
+                        {isMyProfile && (
+                          <button
+                            onClick={() => {
+                              setBioText(profile.bio || "");
+                              setShowBioEdit(true);
+                            }}
+                            className="block mx-2 text-xs px-2 py-0.5 rounded cursor-pointer bg-blue-500/80 hover:bg-blue-500/60 text-white transition-all"
+                          >
+                            {t("profile.edit") || "Edit"}
+                          </button>
+                        )}
+                      </div>
+                    ) : isMyProfile ? (
+                      <button
+                        onClick={() => {
+                          setBioText("");
+                          setShowBioEdit(true);
+                        }}
+                        className="text-xs px-3 py-1 cursor-pointer rounded bg-blue-500/40 hover:bg-blue-500/60 text-white transition-all"
+                      >
+                        + {t("profile.addBio") || "Add Bio"}
+                      </button>
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -652,9 +797,9 @@ const Profile = () => {
             {/* Level Badge */}
             <div className="text-center mb-8">
               <div
-                className={`inline-block px-6 py-3 rounded-2xl bg-gradient-to-r ${level.color} text-white shadow-lg`}
+                className={`block px-6 py-3 rounded-2xl bg-gradient-to-r ${level.color} text-white shadow-lg`}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex justify-center items-center gap-2">
                   <span className="text-2xl">{level.icon}</span>
                   <span className="text-xl font-bold">{level.name}</span>
                 </div>
@@ -678,6 +823,90 @@ const Profile = () => {
                   {nextLevelInfo}
                 </p>
               </div>
+            </div>
+
+            {/* YENİ: Favori Dövüşçü Bölümü */}
+            <div className="mb-8">
+              {profile.favoriteFighter ? (
+                <div
+                  className={`rounded-2xl border-2 p-4 ${
+                    theme === "dark"
+                      ? "bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-600"
+                      : "bg-gradient-to-br from-purple-100/40 to-pink-100/40 border-purple-300"
+                  }`}
+                >
+                  <h3 className="text-center font-semibold mb-3">
+                    🥊 {t("profile.favoriteFighter") || "Favorite Fighter"}
+                  </h3>
+                  <div className="flex flex-wrap justify-center items-center gap-4">
+                    {/* Fighter Picture */}
+                    <div className="flex-shrink-0">
+                      <img
+                        src={
+                          profile.favoriteFighter.picture
+                            ? profile.favoriteFighter.picture
+                            : "/src/assets/pictures/unknown.webp"
+                        }
+                        alt={profile.favoriteFighter.name}
+                        className={`w-20 h-20 rounded-full border-2 border-purple-500 pt-1 object-cover object-top ${
+                          theme === "dark" ? "bg-purple-800" : "bg-purple-200"
+                        }`}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src =
+                            "/src/assets/pictures/unknown.webp";
+                        }}
+                      />
+                    </div>
+                    {/* Fighter Info */}
+                    <div className="flex-1">
+                      <h4 className="font-bold text-lg">
+                        {profile.favoriteFighter.name}
+                      </h4>
+                      {profile.favoriteFighter.nickname !== "No nickname" && (
+                        <p className="text-sm opacity-80">
+                          {profile.favoriteFighter.nickname}
+                        </p>
+                      )}
+                    </div>
+                    {/* Change & Remove Buttons */}
+                    {isMyProfile && (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            setShowFighterSelect(true);
+                            setSearchFighter("");
+                          }}
+                          className="px-3 py-1 text-xs cursor-pointer rounded-lg bg-purple-500/70 hover:bg-purple-600 text-white transition-all"
+                        >
+                          {t("profile.change") || "Change"}
+                        </button>
+                        <button
+                          onClick={handleRemoveFavoriteFighter}
+                          className="px-3 py-1 text-xs cursor-pointer rounded-lg bg-red-500/70 hover:bg-red-600 text-white transition-all"
+                        >
+                          {t("profile.remove") || "Remove"}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : isMyProfile ? (
+                <button
+                  onClick={() => {
+                    setShowFighterSelect(true);
+                    setSearchFighter("");
+                  }}
+                  className={`w-full px-4 py-3 rounded-lg font-semibold transition-all ${
+                    theme === "dark"
+                      ? "bg-purple-700/60 hover:bg-purple-600 text-white border-2 border-purple-600"
+                      : "bg-purple-500/60 hover:bg-purple-600 text-white border-2 border-purple-400"
+                  }`}
+                >
+                  +{" "}
+                  {t("profile.selectFavoriteFighter") ||
+                    "Select Favorite Fighter"}
+                </button>
+              ) : null}
             </div>
 
             {/* Şifremi Değiştir Butonu - Sadece kendi profilinde göster */}
@@ -901,19 +1130,19 @@ const Profile = () => {
             </div>
 
             {/* Profile Information Card */}
-            {isMyProfile && (
-              <div className="mt-8 mb-6">
-                <div
-                  className={`rounded-2xl border-2 p-3 lg:p-6 ${
-                    theme === "dark"
-                      ? "bg-gradient-to-br from-slate-800/60 to-slate-700/60 border-slate-600"
-                      : "bg-gradient-to-br from-slate-50/60 to-white/60 border-slate-300"
-                  }`}
-                >
-                  <h3 className="text-lg font-bold mb-4 text-center">
-                    {t("profile.profileInfo")}
-                  </h3>
-                  <div className="space-y-3">
+            <div className="mt-8 mb-6">
+              <div
+                className={`rounded-2xl border-2 p-3 lg:p-6 ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-slate-800/60 to-slate-700/60 border-slate-600"
+                    : "bg-gradient-to-br from-slate-50/60 to-white/60 border-slate-300"
+                }`}
+              >
+                <h3 className="text-lg font-bold mb-4 text-center">
+                  {t("profile.profileInfo")}
+                </h3>
+                <div className="space-y-3">
+                  {isMyProfile && (
                     <div className="flex flex-wrap gap-2 items-center justify-between">
                       <span
                         className={
@@ -926,23 +1155,24 @@ const Profile = () => {
                         {profile.email}
                       </span>
                     </div>
-                    <div className="border-t border-slate-600/30"></div>
-                    <div className="flex flex-wrap gap-2 items-center justify-between">
-                      <span
-                        className={
-                          theme === "dark" ? "text-slate-400" : "text-slate-600"
-                        }
-                      >
-                        📅 {t("profile.memberSince")}
-                      </span>
-                      <span className="font-semibold">
-                        {new Date(profile.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
+                  )}
+
+                  <div className="border-t border-slate-600/30"></div>
+                  <div className="flex flex-wrap gap-2 items-center justify-between">
+                    <span
+                      className={
+                        theme === "dark" ? "text-slate-400" : "text-slate-600"
+                      }
+                    >
+                      📅 {t("profile.memberSince")}
+                    </span>
+                    <span className="font-semibold">
+                      {new Date(profile.createdAt).toLocaleDateString()}
+                    </span>
                   </div>
                 </div>
               </div>
-            )}
+            </div>
 
             {/* --- YENİ: Başarımlar Bölümü --- */}
             <div className="mt-6">
@@ -1457,6 +1687,215 @@ const Profile = () => {
                     {avatarLoading
                       ? t("profile.uploading")
                       : t("profile.uploadAvatar")}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* YENİ: Bio Edit Modal */}
+        {showBioEdit && isMyProfile && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-6">
+            <div
+              className={`p-8 rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-md transition-all duration-300 ${
+                theme === "dark"
+                  ? "bg-slate-800/90 border-slate-600/50 text-slate-100"
+                  : "bg-white/90 border-slate-200/50 text-slate-800"
+              }`}
+            >
+              <h2 className="text-2xl font-bold mb-6 text-center">
+                {t("profile.editBio") || "Edit Bio"}
+              </h2>
+
+              <div className="space-y-4">
+                {/* Bio Textarea */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    {t("profile.bioDescription") || "About You"}
+                    <span className="text-xs text-slate-500 ml-2">
+                      ({bioText.length}/200)
+                    </span>
+                  </label>
+                  <textarea
+                    value={bioText}
+                    onChange={(e) => {
+                      const text = e.target.value.slice(0, 200);
+                      setBioText(text);
+                    }}
+                    placeholder={
+                      t("profile.bioPlaceholder") ||
+                      "Write something about yourself..."
+                    }
+                    maxLength={200}
+                    disabled={bioLoading}
+                    rows={5}
+                    className={`w-full px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 resize-none ${
+                      theme === "dark"
+                        ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-blue-500/50"
+                        : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-blue-500/50"
+                    } ${bioLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  />
+                  <p className="text-xs mt-1 text-slate-500">
+                    {t("profile.bioHint") || "Maximum 200 characters"}
+                  </p>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-3 pt-4">
+                  <button
+                    onClick={() => {
+                      setShowBioEdit(false);
+                      setBioText("");
+                    }}
+                    disabled={bioLoading}
+                    className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      bioLoading
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:scale-105 cursor-pointer"
+                    } ${
+                      theme === "dark"
+                        ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
+                        : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
+                    }`}
+                  >
+                    {t("common.cancel")}
+                  </button>
+                  <button
+                    onClick={handleSaveBio}
+                    disabled={bioLoading}
+                    className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      bioLoading
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:scale-105 cursor-pointer hover:shadow-xl"
+                    } bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-lg`}
+                  >
+                    {bioLoading
+                      ? t("profile.saving") || "Saving..."
+                      : t("profile.saveBio") || "Save Bio"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* YENİ: Favori Dövüşçü Seçme Modal */}
+        {showFighterSelect && isMyProfile && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-6">
+            <div
+              className={`flex flex-col rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-2xl transition-all duration-300 max-h-[80vh] ${
+                theme === "dark"
+                  ? "bg-slate-800/90 border-slate-600/50 text-slate-100"
+                  : "bg-white/90 border-slate-200/50 text-slate-800"
+              }`}
+            >
+              <div className="flex-1 overflow-y-auto p-8">
+                <h2 className="text-2xl font-bold mb-4 text-center">
+                  🥊{" "}
+                  {t("profile.selectFavoriteFighter") ||
+                    "Select Favorite Fighter"}
+                </h2>
+
+                {/* Arama */}
+                <input
+                  type="text"
+                  placeholder={
+                    t("profile.searchFighter") || "Search fighter..."
+                  }
+                  value={searchFighter}
+                  onChange={(e) =>
+                    setSearchFighter(e.target.value.toLowerCase())
+                  }
+                  className={`w-full px-4 py-2 rounded-xl border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 mb-4 ${
+                    theme === "dark"
+                      ? "bg-slate-700/80 border-slate-600/50 text-white placeholder-slate-400 focus:ring-purple-500/50"
+                      : "bg-white/80 border-slate-300/50 text-slate-800 placeholder-slate-500 focus:ring-purple-500/50"
+                  }`}
+                />
+
+                {/* Dövüşçü Listesi */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {fighters
+                    .filter((f) => {
+                      // Eğer arama yapılıyorsa, tüm list'i ara
+                      if (searchFighter) {
+                        return (
+                          f.Fighter.toLowerCase().includes(searchFighter) ||
+                          (f.Nickname &&
+                            f.Nickname.toLowerCase().includes(searchFighter))
+                        );
+                      }
+                      // Arama yoksa ilk 100'ü göster
+                      return f.Id <= 100;
+                    })
+                    .map((fighter) => (
+                      <button
+                        key={fighter.Id}
+                        onClick={() => handleSelectFavoriteFighter(fighter)}
+                        disabled={fighterLoading}
+                        className={`p-3 rounded-lg border-2 transition-all text-left ${
+                          fighterLoading
+                            ? "opacity-50 cursor-not-allowed"
+                            : "hover:scale-105 cursor-pointer"
+                        } ${
+                          theme === "dark"
+                            ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700 hover:border-purple-500"
+                            : "bg-slate-100/50 border-slate-300 hover:bg-slate-200 hover:border-purple-400"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <img
+                            src={fighter.Picture}
+                            alt={fighter.Fighter}
+                            className="w-12 h-12 rounded-full object-cover object-top border-2 border-slate-300 bg-slate-400 pt-1 flex-shrink-0"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src =
+                                "/src/assets/pictures/unknown.webp";
+                            }}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold truncate">
+                              {fighter.Fighter}
+                            </h4>
+                            {fighter.Nickname && (
+                              <p className="text-xs opacity-70 truncate">
+                                {fighter.Nickname}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                </div>
+              </div>
+
+              {/* Buttons - Sticky Footer */}
+              <div
+                className={`sticky bottom-0 p-8 pt-4 border-t ${
+                  theme === "dark"
+                    ? "bg-slate-800/90 border-slate-600/50"
+                    : "bg-white/90 border-slate-200/50"
+                }`}
+              >
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      setShowFighterSelect(false);
+                      setSearchFighter("");
+                    }}
+                    disabled={fighterLoading}
+                    className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      fighterLoading
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:scale-105 cursor-pointer"
+                    } ${
+                      theme === "dark"
+                        ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600"
+                        : "bg-slate-400 hover:bg-slate-500 text-white border-2 border-slate-300"
+                    }`}
+                  >
+                    {t("common.cancel")}
                   </button>
                 </div>
               </div>

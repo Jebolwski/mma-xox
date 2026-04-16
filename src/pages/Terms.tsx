@@ -22,6 +22,10 @@ const Terms = () => {
             name="description"
             content="Review the terms of service for MMA XOX. Understand your rights and responsibilities when using our UFC tic tac toe game."
           />
+          <link
+            rel="canonical"
+            href="https://www.mma-xox.online/terms"
+          />
         </Helmet>
         <div className="max-w-4xl mx-auto">
           <div

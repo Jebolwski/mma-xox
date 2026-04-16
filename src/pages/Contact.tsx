@@ -87,6 +87,10 @@ const Contact = () => {
           name="description"
           content="Contact MMA XOX with feedback, bug reports, or inquiries about our UFC fighter tic tac toe game."
         />
+        <link
+          rel="canonical"
+          href="https://www.mma-xox.online/contact"
+        />
       </Helmet>
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-12 pt-20">
         {/* Header */}

@@ -208,10 +208,26 @@ export default function WorldRanking() {
     <>
       <Helmet>
         <title>World Rankings | MMA XOX - Top UFC Fighter Players</title>
-        <meta name="description" content="View global rankings and leaderboards. See top players competing in ranked UFC tic tac toe battles worldwide." />
-        <meta name="keywords" content="UFC rankings, global leaderboards, top players, tic tac toe rankings, competitive gaming" />
-        <meta property="og:title" content="World Rankings | MMA XOX" />
-        <meta property="og:description" content="Check the global rankings of UFC fighter tic tac toe players." />
+        <meta
+          name="description"
+          content="View global rankings and leaderboards. See top players competing in ranked UFC tic tac toe battles worldwide."
+        />
+        <meta
+          name="keywords"
+          content="UFC rankings, global leaderboards, top players, tic tac toe rankings, competitive gaming"
+        />
+        <meta
+          property="og:title"
+          content="World Rankings | MMA XOX"
+        />
+        <meta
+          property="og:description"
+          content="Check the global rankings of UFC fighter tic tac toe players."
+        />
+        <link
+          rel="canonical"
+          href="https://www.mma-xox.online/world-ranking"
+        />
       </Helmet>
       <div
         className={`min-h-[calc(100vh-61px)] w-full relative ${
