@@ -896,7 +896,7 @@ const Profile = () => {
                     setShowFighterSelect(true);
                     setSearchFighter("");
                   }}
-                  className={`w-full px-4 py-3 rounded-lg font-semibold transition-all ${
+                  className={`w-full px-4 py-3 cursor-pointer rounded-lg font-semibold transition-all ${
                     theme === "dark"
                       ? "bg-purple-700/60 hover:bg-purple-600 text-white border-2 border-purple-600"
                       : "bg-purple-500/60 hover:bg-purple-600 text-white border-2 border-purple-400"
