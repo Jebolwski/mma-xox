@@ -740,25 +740,25 @@ const Profile = () => {
                 {isMyProfile && <span className="ml-1">✏️</span>}
               </div>
 
-              <div className="flex items-center gap-3 justify-center">
-                <div className="relative">
+              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 justify-center">
+                <div className="relative flex-shrink-0">
                   {profile.avatarUrl ? (
                     <img
                       src={getHighQualityAvatarUrl(profile.avatarUrl)}
                       alt="profile picture"
-                      className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 lg:border-3 border-red-500 bg-blue-600 cursor-pointer hover:opacity-80 transition-opacity"
+                      className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full border-2 lg:border-3 border-red-500 bg-blue-600 cursor-pointer hover:opacity-80 transition-opacity"
                       onClick={() => setShowAvatarView(true)}
                       title="Click to view full avatar"
                     />
                   ) : (
-                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 border-2 lg:border-3 border-red-500"></div>
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 border-2 lg:border-3 border-red-500"></div>
                   )}
 
                   {/* YENİ: Avatar değiştir butonu - sadece kendi profilinde */}
                   {isMyProfile && (
                     <button
                       onClick={() => setShowChangeAvatar(true)}
-                      className="cursor-pointer absolute -bottom-1 -right-1 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 text-sm transition-all hover:scale-110 shadow-lg h-8 w-8 flex items-center justify-center"
+                      className="cursor-pointer absolute -bottom-1 -right-1 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 text-sm transition-all hover:scale-110 shadow-lg h-7 w-7 sm:h-8 sm:w-8 flex items-center justify-center"
                       title="Change Avatar"
                     >
                       <img
@@ -768,15 +768,15 @@ const Profile = () => {
                     </button>
                   )}
                 </div>
-                <div>
-                  <h1 className="text-2xl text-left lg:text-3xl font-bold">
+                <div className="text-center sm:text-left">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold">
                     {profile.username.slice(0, 14)}
                   </h1>
                   {/* YENİ: Bio Alanı - Username'in Altında */}
-                  <div className="text-left">
+                  <div className="text-center sm:text-left">
                     {profile.bio ? (
-                      <div className="rounded-lg flex items-center gap-2">
-                        <p className="text-sm break-words leading-relaxed italic opacity-90">
+                      <div className="rounded-lg flex flex-col sm:flex-row sm:items-center sm:gap-2">
+                        <p className="text-xs sm:text-sm break-words leading-relaxed italic opacity-90">
                           {profile.bio}
                         </p>
                         {isMyProfile && (
@@ -785,7 +785,7 @@ const Profile = () => {
                               setBioText(profile.bio || "");
                               setShowBioEdit(true);
                             }}
-                            className="block mx-2 text-xs px-2 py-0.5 rounded cursor-pointer bg-blue-500/80 hover:bg-blue-500/60 text-white transition-all"
+                            className="mt-1 sm:mt-0 text-xs px-2 py-0.5 rounded cursor-pointer bg-blue-500/80 hover:bg-blue-500/60 text-white transition-all whitespace-nowrap"
                           >
                             {t("profile.edit") || "Edit"}
                           </button>
