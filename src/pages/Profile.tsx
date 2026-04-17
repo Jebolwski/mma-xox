@@ -890,7 +890,7 @@ const Profile = () => {
                     {/* Change & Remove Buttons */}
                     {isMyProfile && (
                       <div
-                        className="flex gap-2"
+                        className="flex flex-wrap justify-center gap-2"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <button
@@ -1098,14 +1098,14 @@ const Profile = () => {
                   {matches.map((match) => (
                     <div
                       key={match.id}
-                      className={`flex items-center justify-between p-3 rounded-lg border ${
+                      className={`flex flex-wrap items-center justify-between gap-3 p-3 rounded-lg border ${
                         theme === "dark"
                           ? "bg-slate-700/40 border-slate-600"
                           : "bg-slate-50/40 border-slate-300"
                       }`}
                     >
                       <div className="flex-1">
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                           <span className="font-semibold">
                             {match.opponent}
                           </span>
