@@ -232,7 +232,15 @@
     "favoriteFighterRemoved": "最喜欢的格斗家已删除！",
     "failedRemoveFighter": "删除最喜欢的格斗家失败",
     "change": "更改",
-    "remove": "删除"
+    "remove": "删除",
+    "clickForDetails": "点击查看详情",
+    "nationality": "国籍",
+    "age": "年龄",
+    "height": "身高",
+    "weight": "体重",
+    "weightClass": "体重级别",
+    "record": "战绩",
+    "totalTitleBouts": "冠军争夺战"
   },
   "errors": {
     "createRoom": "创建房间时出错！",

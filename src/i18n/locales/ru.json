@@ -233,7 +233,15 @@
     "favoriteFighterRemoved": "Любимый боец удален!",
     "failedRemoveFighter": "Ошибка при удалении любимого бойца",
     "change": "Изменить",
-    "remove": "Удалить"
+    "remove": "Удалить",
+    "clickForDetails": "Нажмите для подробностей",
+    "nationality": "Национальность",
+    "age": "Возраст",
+    "height": "Рост",
+    "weight": "Вес",
+    "weightClass": "Весовая категория",
+    "record": "Запись",
+    "totalTitleBouts": "Титульные бои"
   },
   "errors": {
     "createRoom": "Произошла ошибка при создании комнаты!",

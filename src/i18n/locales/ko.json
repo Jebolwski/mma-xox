@@ -230,7 +230,15 @@
     "favoriteFighterUpdated": "좋아하는 선수가 업데이트되었습니다!",
     "failedUpdateFighter": "좋아하는 선수 업데이트 실패",
     "change": "바꾸기",
-    "remove": "제거"
+    "remove": "제거",
+    "clickForDetails": "자세히 보려면 클릭",
+    "nationality": "국적",
+    "age": "나이",
+    "height": "키",
+    "weight": "몸무게",
+    "weightClass": "무게급별",
+    "record": "기록",
+    "totalTitleBouts": "타이틀전"
   },
   "errors": {
     "createRoom": "방을 만드는 중 오류가 발생했습니다!",

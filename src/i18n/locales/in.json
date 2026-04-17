@@ -231,7 +231,15 @@
     "favoriteFighterUpdated": "Petarung favorit diperbarui!",
     "failedUpdateFighter": "Gagal memperbarui petarung favorit",
     "change": "Ubah",
-    "remove":"Hapus"
+    "remove":"Hapus",
+    "clickForDetails": "Klik untuk melihat detail",
+    "nationality": "Kebangsaan",
+    "age": "Usia",
+    "height": "Tinggi",
+    "weight": "Berat",
+    "weightClass": "Kelas Berat",
+    "record": "Rekor",
+    "totalTitleBouts": "Pertarungan Gelar"
   },
   "errors": {
     "createRoom": "Terjadi kesalahan saat membuat ruangan!",

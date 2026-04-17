@@ -106,6 +106,8 @@ const Profile = () => {
   const [fighters, setFighters] = useState<any[]>([]);
   const [fighterLoading, setFighterLoading] = useState(false);
   const [searchFighter, setSearchFighter] = useState("");
+  const [showFighterDetail, setShowFighterDetail] = useState(false);
+  const [selectedFighterDetail, setSelectedFighterDetail] = useState<any>(null);
   // Match history states
   const [matches, setMatches] = useState<any[]>([]);
   const [matchesLoading, setMatchesLoading] = useState(false);
@@ -361,6 +363,17 @@ const Profile = () => {
       toast.error(
         t("profile.failedRemoveFighter") || "Failed to remove favorite fighter",
       );
+    }
+  };
+
+  // YENİ: Dövüşçü detaylarını göster
+  const handleShowFighterDetail = () => {
+    const fullFighterData = fighters.find(
+      (f) => f.Id === profile?.favoriteFighter?.id,
+    );
+    if (fullFighterData) {
+      setSelectedFighterDetail(fullFighterData);
+      setShowFighterDetail(true);
     }
   };
 
@@ -838,7 +851,10 @@ const Profile = () => {
                   <h3 className="text-center font-semibold mb-3">
                     🥊 {t("profile.favoriteFighter") || "Favorite Fighter"}
                   </h3>
-                  <div className="flex flex-wrap justify-center items-center gap-4">
+                  <div
+                    className="flex flex-wrap justify-center items-center gap-4 cursor-pointer group"
+                    onClick={handleShowFighterDetail}
+                  >
                     {/* Fighter Picture */}
                     <div className="flex-shrink-0">
                       <img
@@ -848,7 +864,7 @@ const Profile = () => {
                             : "/src/assets/pictures/unknown.webp"
                         }
                         alt={profile.favoriteFighter.name}
-                        className={`w-20 h-20 rounded-full border-2 border-purple-500 pt-1 object-cover object-top ${
+                        className={`w-20 h-20 rounded-full border-2 border-purple-500 pt-1 object-cover object-top transition-transform group-hover:scale-110 ${
                           theme === "dark" ? "bg-purple-800" : "bg-purple-200"
                         }`}
                         onError={(e) => {
@@ -859,7 +875,7 @@ const Profile = () => {
                     </div>
                     {/* Fighter Info */}
                     <div className="flex-1">
-                      <h4 className="font-bold text-lg">
+                      <h4 className="font-bold text-lg group-hover:text-purple-600 transition-colors">
                         {profile.favoriteFighter.name}
                       </h4>
                       {profile.favoriteFighter.nickname !== "No nickname" && (
@@ -867,10 +883,16 @@ const Profile = () => {
                           {profile.favoriteFighter.nickname}
                         </p>
                       )}
+                      <p className="text-xs opacity-60 mt-1">
+                        {t("profile.clickForDetails") || "Click for details"}
+                      </p>
                     </div>
                     {/* Change & Remove Buttons */}
                     {isMyProfile && (
-                      <div className="flex gap-2">
+                      <div
+                        className="flex gap-2"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <button
                           onClick={() => {
                             setShowFighterSelect(true);
@@ -1897,6 +1919,196 @@ const Profile = () => {
                   >
                     {t("common.cancel")}
                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* YENİ: Dövüşçü Detay Modal */}
+        {showFighterDetail && selectedFighterDetail && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-6">
+            <div
+              className={`rounded-2xl shadow-2xl border backdrop-blur-md w-full max-w-2xl max-h-[85vh] overflow-y-auto ${
+                theme === "dark"
+                  ? "bg-slate-800/90 border-slate-600/50 text-slate-100"
+                  : "bg-white/90 border-slate-200/50 text-slate-800"
+              }`}
+            >
+              {/* Kapatma Butonu */}
+              <div className="flex justify-end p-4">
+                <button
+                  onClick={() => setShowFighterDetail(false)}
+                  className="text-2xl font-bold hover:text-red-500 transition-colors cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* İçerik */}
+              <div className="px-8 pb-8">
+                {/* Fighter Görüntüsü */}
+                <div className="flex justify-center mb-6">
+                  <img
+                    src={selectedFighterDetail.Picture}
+                    alt={selectedFighterDetail.Fighter}
+                    className="w-48 h-48 rounded-xl border-4 border-purple-500 object-cover object-top pt-3 bg-purple-400"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        "/src/assets/pictures/unknown.webp";
+                    }}
+                  />
+                </div>
+
+                {/* İsim */}
+                <h2 className="text-3xl font-bold text-center">
+                  {selectedFighterDetail.Fighter}
+                </h2>
+                {selectedFighterDetail.Nickname && (
+                  <p className="text-center text-lg opacity-70 mb-6">
+                    {selectedFighterDetail.Nickname}
+                  </p>
+                )}
+
+                {/* Detaylar Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6 mt-4">
+                  {/* Uyruk */}
+                  {selectedFighterDetail.Nationality && (
+                    <div
+                      className={`p-4 rounded-xl ${
+                        theme === "dark" ? "bg-slate-700/50" : "bg-slate-100/50"
+                      }`}
+                    >
+                      <p className="text-xs opacity-70 mb-1">
+                        {t("profile.nationality") || "Nationality"}
+                      </p>
+                      <p className="font-semibold">
+                        {selectedFighterDetail.Nationality}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Yaş */}
+                  {selectedFighterDetail.Age && (
+                    <div
+                      className={`p-4 rounded-xl ${
+                        theme === "dark" ? "bg-slate-700/50" : "bg-slate-100/50"
+                      }`}
+                    >
+                      <p className="text-xs opacity-70 mb-1">
+                        {t("profile.age") || "Age"}
+                      </p>
+                      <p className="font-semibold">
+                        {selectedFighterDetail.Age}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Boy */}
+                  {selectedFighterDetail.HeightCms && (
+                    <div
+                      className={`p-4 rounded-xl ${
+                        theme === "dark" ? "bg-slate-700/50" : "bg-slate-100/50"
+                      }`}
+                    >
+                      <p className="text-xs opacity-70 mb-1">
+                        {t("profile.height") || "Height"}
+                      </p>
+                      <p className="font-semibold">
+                        {selectedFighterDetail.HeightCms} cm
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Kilo */}
+                  {selectedFighterDetail.WeightLbs && (
+                    <div
+                      className={`p-4 rounded-xl ${
+                        theme === "dark" ? "bg-slate-700/50" : "bg-slate-100/50"
+                      }`}
+                    >
+                      <p className="text-xs opacity-70 mb-1">
+                        {t("profile.weight") || "Weight"}
+                      </p>
+                      <p className="font-semibold">
+                        {selectedFighterDetail.WeightLbs} lbs
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Siklet */}
+                  {selectedFighterDetail.WeightClasses &&
+                    selectedFighterDetail.WeightClasses.length > 0 && (
+                      <div
+                        className={`p-4 rounded-xl ${
+                          theme === "dark"
+                            ? "bg-slate-700/50"
+                            : "bg-slate-100/50"
+                        }`}
+                      >
+                        <p className="text-xs opacity-70 mb-1">
+                          {t("profile.weightClass") || "Weight Class"}
+                        </p>
+                        <p className="font-semibold">
+                          {selectedFighterDetail.WeightClasses.join(", ")}
+                        </p>
+                      </div>
+                    )}
+
+                  {/* Title Bouts */}
+                  {selectedFighterDetail.TotalTitleBouts && (
+                    <div
+                      className={`p-4 rounded-xl ${
+                        theme === "dark" ? "bg-slate-700/50" : "bg-slate-100/50"
+                      }`}
+                    >
+                      <p className="text-xs opacity-70 mb-1">
+                        {t("profile.totalTitleBouts") || "Title Bouts"}
+                      </p>
+                      <p className="font-semibold">
+                        {selectedFighterDetail.TotalTitleBouts}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Record */}
+                <div
+                  className={`p-4 rounded-xl ${
+                    theme === "dark"
+                      ? "bg-purple-900/30 border border-purple-600/50"
+                      : "bg-purple-100/30 border border-purple-300/50"
+                  }`}
+                >
+                  <p className="text-sm opacity-70 text-center font-semibold mb-2">
+                    {t("profile.record") || "Record"}
+                  </p>
+                  <div className="flex justify-center gap-6 text-center">
+                    <div>
+                      <p className="text-2xl font-bold text-green-500">
+                        {selectedFighterDetail.Wins || 0}
+                      </p>
+                      <p className="text-xs opacity-70">
+                        {t("ranking.wins") || "Wins"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-red-500">
+                        {selectedFighterDetail.Losses || 0}
+                      </p>
+                      <p className="text-xs opacity-70">
+                        {t("ranking.losses") || "Losses"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-yellow-500">
+                        {selectedFighterDetail.Draws || 0}
+                      </p>
+                      <p className="text-xs opacity-70">
+                        {t("ranking.draws") || "Draws"}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

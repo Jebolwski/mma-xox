@@ -233,7 +233,15 @@
     "favoriteFighterRemoved": "Lieblingskämpfer entfernt!",
     "failedRemoveFighter": "Lieblingskämpfer konnte nicht entfernt werden",
     "change": "Ändern",
-    "remove": "Entfernen"
+    "remove": "Entfernen",
+    "clickForDetails": "Klick für Details",
+    "nationality": "Nationalität",
+    "age": "Alter",
+    "height": "Größe",
+    "weight": "Gewicht",
+    "weightClass": "Gewichtsklasse",
+    "record": "Rekord",
+    "totalTitleBouts": "Titelkämpfe"
   },
   "errors": {
     "createRoom": "Beim Erstellen des Raums ist ein Fehler aufgetreten!",

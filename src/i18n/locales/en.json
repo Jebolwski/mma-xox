@@ -233,7 +233,15 @@
     "favoriteFighterRemoved": "Favorite fighter removed!",
     "failedRemoveFighter": "Failed to remove favorite fighter",
     "change": "Change",
-    "remove": "Remove"
+    "remove": "Remove",
+    "clickForDetails": "Click for details",
+    "nationality": "Nationality",
+    "age": "Age",
+    "height": "Height",
+    "weight": "Weight",
+    "weightClass": "Weight Class",
+    "record": "Record",
+    "totalTitleBouts": "Title Bouts"
   },
   "errors": {
     "createRoom": "An error occurred while creating the room!",

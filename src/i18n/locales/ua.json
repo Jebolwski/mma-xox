@@ -231,7 +231,15 @@
     "favoriteFighterUpdated": "Обраний бойцевик оновлено!",
     "failedUpdateFighter": "Помилка при оновленні обраного бойца",
     "change": "Змінити",
-    "remove": "Удалить"
+    "remove": "Удалить",
+    "clickForDetails": "Кликните, чтобы увидеть детали",
+    "nationality": "Национальность",
+    "age": "Вік",
+    "height": "Зріст",
+    "weight": "Вага",
+    "weightClass": "Клас ваги",
+    "record": "Рекорд",
+    "totalTitleBouts": "Чемпіонські поєдинки"
   },
   "errors": {
     "createRoom": "Помилка при створенні кімнати!",

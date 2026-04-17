@@ -518,11 +518,15 @@ const Header = ({
                       : "bg-slate-100/40 border-slate-300/50 hover:bg-slate-200/50 text-black"
                   }`}
                 >
-                  <img
-                    src={userData.avatarUrl}
-                    alt={userData.username}
-                    className="w-10 h-10 rounded-full object-cover border border-slate-400/50 bg-blue-600"
-                  />
+                  {userData.avatarUrl ? (
+                    <img
+                      src={userData.avatarUrl}
+                      alt={userData.username}
+                      className="w-10 h-10 rounded-full object-cover border border-slate-400/50 bg-blue-600"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 border border-slate-400/50"></div>
+                  )}
                   <div className="flex flex-col text-xs sm:text-sm gap-0.5">
                     <span className="font-bold">{userData.username}</span>
                     <div className="flex gap-3 flex-wrap">

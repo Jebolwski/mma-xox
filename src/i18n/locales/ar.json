@@ -231,7 +231,15 @@
     "favoriteFighterUpdated": "تم تحديث مقاتلك المفضل!",
     "failedUpdateFighter": "فشل تحديث مقاتلك المفضل",
     "change": "غير",
-    "remove": "إزالة"
+    "remove": "إزالة",
+    "clickForDetails": "انقر لرؤية التفاصيل",
+    "nationality": "الجنسية",
+    "age": "العمر",
+    "height": "الطول",
+    "weight": "الوزن",
+    "weightClass": "فئة الوزن",
+    "record": "السجل",
+    "totalTitleBouts": "معارك الألقاب"
   },
   "errors": {
     "createRoom": "حدث خطأ أثناء إنشاء الغرفة!",

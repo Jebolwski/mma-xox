@@ -231,7 +231,15 @@
     "favoriteFighterUpdated": "Favoritkämpare uppdaterad!",
     "failedUpdateFighter": "Misslyckades att uppdatera favoritkämpare",
     "change": "Byta",
-    "remove": "Ta bort"
+    "remove": "Ta bort",
+    "clickForDetails": "Klicka för att se detaljer",
+    "nationality": "Nationalitet",
+    "age": "Ålder",
+    "height": "Längd",
+    "weight": "Vikt",
+    "weightClass": "Vikt-klass",
+    "record": "Rekord",
+    "totalTitleBouts": "Titelkamper"
   },
   "errors": {
     "createRoom": "Ett fel uppstod när rummet skapades!",

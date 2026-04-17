@@ -233,7 +233,15 @@
     "favoriteFighterRemoved": "Ulubiony zawodnik usunięty!",
     "failedRemoveFighter": "Nie udało się usunąć ulubionego zawodnika",
     "change": "Zmień",
-    "remove": "Usuń"
+    "remove": "Usuń",
+    "clickForDetails": "Kliknij, aby zobaczyć szczegóły",
+    "nationality": "Narodowość",
+    "age": "Wiek",
+    "height": "Wzrost",
+    "weight": "Waga",
+    "weightClass": "Klasa wagi",
+    "record": "Rekord",
+    "totalTitleBouts": "Walki o Tytuł"
   },
   "errors": {
     "createRoom": "Błąd podczas tworzenia pokoju!",

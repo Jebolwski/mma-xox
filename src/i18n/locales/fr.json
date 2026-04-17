@@ -233,7 +233,15 @@
     "favoriteFighterRemoved": "Combattant préféré supprimé!",
     "failedRemoveFighter": "Impossible de supprimer le combattant préféré",
     "change": "Modifier",
-    "remove": "Supprimer"
+    "remove": "Supprimer",
+    "clickForDetails": "Cliquez pour voir les détails",
+    "nationality": "Nationalité",
+    "age": "Age",
+    "height": "Taille",
+    "weight": "Poids",
+    "weightClass": "Catégorie de poids",
+    "record": "Dossier",
+    "totalTitleBouts": "Combats de Titre"
   },
   "errors": {
     "createRoom": "Une erreur s'est produite lors de la création de la salle !",

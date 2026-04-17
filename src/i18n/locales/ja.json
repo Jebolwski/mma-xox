@@ -231,7 +231,15 @@
     "favoriteFighterUpdated": "好きな選手れています！",
     "failedUpdateFighter": "好きな選手の更新に失敗しました",
     "change": "変更",
-    "remove": "削除"
+    "remove": "削除",
+    "clickForDetails": "クリックして詳細を見る",
+    "nationality": "国籍",
+    "age": "年齢",
+    "height": "身長",
+    "weight": "体重",
+    "weightClass": "重量級",
+    "record": "記録",
+    "totalTitleBouts": "タイトル戦"
   },
   "errors": {
     "createRoom": "ルームの作成中にエラーが発生しました！",

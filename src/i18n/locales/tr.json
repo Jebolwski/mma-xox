@@ -233,7 +233,15 @@
     "favoriteFighterRemoved": "Favori dövüşçü kaldırıldı!",
     "failedRemoveFighter": "Favori dövüşçü kaldırılamadı",
     "change": "Değiştir",
-    "remove": "Kaldır"
+    "remove": "Kaldır",
+    "clickForDetails": "Detaylar için tıkla",
+    "nationality": "Uyruk",
+    "age": "Yaş",
+    "height": "Boy",
+    "weight": "Kilo",
+    "weightClass": "Ağırlık Kategorisi",
+    "record": "Rekor",
+    "totalTitleBouts": "Şampiyonluk Maçları"
   },
   "errors": {
     "createRoom": "Oda oluşturulurken bir hata oluştu!",

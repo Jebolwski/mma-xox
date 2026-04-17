@@ -231,7 +231,15 @@
     "favoriteFighterUpdated": "Combattente preferito aggiornato!",
     "failedUpdateFighter": "Impossibile aggiornare il combattente preferito",
     "change": "Modifica",
-    "remove":"Rimuovi"
+    "remove":"Rimuovi",
+    "clickForDetails": "Clicca per vedere i dettagli",
+    "nationality": "Nazionalità",
+    "age": "Età",
+    "height": "Altezza",
+    "weight": "Peso",
+    "weightClass": "Categoria di Peso",
+    "record": "Record",
+    "totalTitleBouts": "Incontri per il Titolo"
   },
   "errors": {
     "createRoom": "Si è verificato un errore durante la creazione della stanza!",

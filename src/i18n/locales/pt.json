@@ -233,7 +233,15 @@
     "favoriteFighterRemoved": "Lutador favorito removido!",
     "failedRemoveFighter": "Falha ao remover lutador favorito",
     "change": "Alterar",
-    "remove": "Remover"
+    "remove": "Remover",
+    "clickForDetails": "Clique para detalhes",
+    "nationality": "Nacionalidade",
+    "age": "Idade",
+    "height": "Altura",
+    "weight": "Peso",
+    "weightClass": "Categoria de Peso",
+    "record": "Recorde",
+    "totalTitleBouts": "Combates por Título"
   },
   "errors": {
     "createRoom": "Ocorreu um erro ao criar a sala!",
